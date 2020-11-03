@@ -22,7 +22,7 @@ public interface EntityInterface {
      *
      * @return
      */
-    String bundle();
+    String getType();
 
     /**
      *
@@ -58,19 +58,19 @@ public interface EntityInterface {
      *
      * @return
      */
-    Entity create();
+    Entity create( );
 
     /**
      *
      * @return
      */
-    Entity load();
+    Entity load( int id);
 
     /**
      *
      * @return
      */
-    Entity[] loadMultiple();
+    Entity[] loadMultiple( int[] ids );
 
     /**
      *

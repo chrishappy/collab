@@ -11,6 +11,16 @@ package com.themusicians.musiclms;
  * Created by Nathan Tsai on 2020-11-02
  */
 public class Entity implements EntityInterface {
+
+
+//    private String baseTable = "node";
+//    private String dataTable = "node_field_data";
+
+    /**
+     * The fields for the default Entity
+     */
+//    private String
+
     /**
      *
      * @return
@@ -23,37 +33,54 @@ public class Entity implements EntityInterface {
      *
      * @return
      */
-    String bundle();
+    public String getType() {
+        return " "; //$this->bundle;
+    }
+
+    /**
+     *
+     * @return The Entity Type (e.g. Node, Attachment)
+     */
+    public String getEntityType() {
+    return " "; //$this->entityType;
+    }
 
     /**
      *
      * @return
      */
-    String getEntityType();
+    public int getCreatedTime() {
+        return 0;
+    }
 
     /**
      *
      * @return
      */
-    int getCreatedTime();
+    public int getUpdatedTime() {
+        return 0;
+
+    }
 
     /**
      *
      * @return
      */
-    int getUpdatedTime();
+    public String getLabel() {
+        return " ";
+    }
 
     /**
      *
      * @return
      */
-    String getLabel();
+    public Attachment[] getAttachments() {
 
-    /**
-     *
-     * @return
-     */
-    Attachment[] getAttachments();
+        // Dummy code
+        Attachment temp = new Attachment();
+        Attachment[] results = { temp  };
+        return results;
+    }
 
     /**
      *
@@ -65,23 +92,37 @@ public class Entity implements EntityInterface {
      *
      * @return
      */
-    Entity load();
+    public Entity load( int id ) {
+        // Dummy code
+        Entity temp = new Entity();
+        return temp;
+    }
 
     /**
      *
      * @return
      */
-    Entity[] loadMultiple();
+    public Entity[] loadMultiple( int[] id) {
+
+        // Dummy code
+        Entity temp = new Entity();
+        Entity[] results = {  temp  };
+        return results;
+    }
 
     /**
      *
      * @return
      */
-    boolean save();
+    public boolean save() {
+        return true;
+    }
 
     /**
      *
      * @return
      */
-    boolean delete();
+    public boolean delete() {
+        return true;
+    }
 }
