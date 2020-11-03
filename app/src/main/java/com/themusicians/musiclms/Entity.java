@@ -1,5 +1,9 @@
 package com.themusicians.musiclms;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @file
  * Entity.java
@@ -19,23 +23,42 @@ public abstract class Entity implements EntityInterface {
     /**
      * The fields for the default Entity
      */
-    private int id;
+    public String id;
 
-    private String type;
+    public String type;
 
-    private String entityType;
+    public String entityType;
 
-    private int created; // In UTC timestamp format
+    public int created; // In UTC timestamp format
 
-    private int updated; // In UTC format
+    public int updated; // In UTC format
 
-    private int uid; // User who the entity belongs to
+    public boolean status;
+
+    public int uid; // User who the entity belongs to
+
+    /**
+     * Default constructor without arguments for Firebase
+     */
+    public Entity() {
+    }
+
+    /**
+     *
+     * @param valueMap
+     */
+    public Entity(Map<String, Object> valueMap){
+        for (String key : valueMap.keySet()){
+            setField(key, valueMap.get(key));
+        }
+    }
 
     /**
      *
      * @return
      */
-    public int id() {
+    @Override
+    public String id() {
         return this.id;
     }
 
@@ -43,6 +66,7 @@ public abstract class Entity implements EntityInterface {
      *
      * @return
      */
+    @Override
     public String getType() {
         return this.type;
     }
@@ -51,6 +75,7 @@ public abstract class Entity implements EntityInterface {
      *
      * @return The Entity Type (e.g. Node, Attachment)
      */
+    @Override
     public String getEntityType() {
         return this.entityType;
     }
@@ -59,6 +84,7 @@ public abstract class Entity implements EntityInterface {
      *
      * @return
      */
+    @Override
     public int getCreatedTime() {
         return this.created;
     }
@@ -67,6 +93,7 @@ public abstract class Entity implements EntityInterface {
      *
      * @return
      */
+    @Override
     public int getUpdatedTime() {
         return this.updated;
     }
@@ -75,42 +102,37 @@ public abstract class Entity implements EntityInterface {
      *
      * @return
      */
+    @Override
     public abstract String getLabel();
 
     /**
      *
+     * @param valueMap The fields values for the Entity
+     *
      * @return
      */
-    public Attachment[] getAttachments() {
-
-        // Dummy code
-        Attachment temp = new Attachment();
-        Attachment[] results = { temp  };
-        return results;
-    }
+    @Override
+    public abstract Entity create(Map<String, Object> valueMap);
 
     /**
      *
      * @return
      */
-    public abstract Entity create( Object[] values );
-
-    /**
-     *
-     * @return
-     */
+    @Override
     public abstract Entity load( int id );
 
     /**
      *
      * @return
      */
-    public abstract Entity[] loadMultiple( int[] id);
+    @Override
+    public abstract List<Entity> loadMultiple(int[] id);
 
     /**
      *
      * @return
      */
+    @Override
     public boolean save() {
         return true;
     }
@@ -119,7 +141,23 @@ public abstract class Entity implements EntityInterface {
      *
      * @return
      */
+    @Override
     public boolean delete() {
         return true;
+    }
+
+    /**
+     *
+     * @param fieldName
+     * @param value
+     */
+    private void setField(String fieldName, Object value) {
+        Field field;
+        try {
+            field = getClass().getDeclaredField(fieldName);
+            field.set(this, value);
+        } catch (SecurityException | NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }
