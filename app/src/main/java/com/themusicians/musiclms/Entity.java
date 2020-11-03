@@ -10,7 +10,7 @@ package com.themusicians.musiclms;
  *
  * Created by Nathan Tsai on 2020-11-02
  */
-public class Entity implements EntityInterface {
+public abstract class Entity implements EntityInterface {
 
 
 //    private String baseTable = "node";
@@ -19,14 +19,24 @@ public class Entity implements EntityInterface {
     /**
      * The fields for the default Entity
      */
-//    private String
+    private int id;
+
+    private String type;
+
+    private String entityType;
+
+    private int created; // In UTC timestamp format
+
+    private int updated; // In UTC format
+
+    private int uid; // User who the entity belongs to
 
     /**
      *
      * @return
      */
     public int id() {
-        return 0;
+        return this.id;
     }
 
     /**
@@ -34,7 +44,7 @@ public class Entity implements EntityInterface {
      * @return
      */
     public String getType() {
-        return " "; //$this->bundle;
+        return this.type;
     }
 
     /**
@@ -42,7 +52,7 @@ public class Entity implements EntityInterface {
      * @return The Entity Type (e.g. Node, Attachment)
      */
     public String getEntityType() {
-    return " "; //$this->entityType;
+        return this.entityType;
     }
 
     /**
@@ -50,7 +60,7 @@ public class Entity implements EntityInterface {
      * @return
      */
     public int getCreatedTime() {
-        return 0;
+        return this.created;
     }
 
     /**
@@ -58,17 +68,14 @@ public class Entity implements EntityInterface {
      * @return
      */
     public int getUpdatedTime() {
-        return 0;
-
+        return this.updated;
     }
 
     /**
      *
      * @return
      */
-    public String getLabel() {
-        return " ";
-    }
+    public abstract String getLabel();
 
     /**
      *
@@ -86,29 +93,19 @@ public class Entity implements EntityInterface {
      *
      * @return
      */
-    Entity create();
+    public abstract Entity create( Object[] values );
 
     /**
      *
      * @return
      */
-    public Entity load( int id ) {
-        // Dummy code
-        Entity temp = new Entity();
-        return temp;
-    }
+    public abstract Entity load( int id );
 
     /**
      *
      * @return
      */
-    public Entity[] loadMultiple( int[] id) {
-
-        // Dummy code
-        Entity temp = new Entity();
-        Entity[] results = {  temp  };
-        return results;
-    }
+    public abstract Entity[] loadMultiple( int[] id);
 
     /**
      *

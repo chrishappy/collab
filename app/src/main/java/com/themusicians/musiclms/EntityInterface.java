@@ -14,6 +14,7 @@ package com.themusicians.musiclms;
 public interface EntityInterface {
     /**
      *
+     *
      * @return
      */
     int id();
@@ -56,11 +57,15 @@ public interface EntityInterface {
 
     /**
      *
+     * @param values The fields values for the Entity
+     *
      * @return
      */
-    Entity create( );
+    Entity create( Object[] values );
 
     /**
+     *
+     * @param id The id of the Entity to retrieve from the database
      *
      * @return
      */
