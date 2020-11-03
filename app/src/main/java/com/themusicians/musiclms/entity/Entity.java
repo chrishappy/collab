@@ -1,4 +1,4 @@
-package com.themusicians.musiclms;
+package com.themusicians.musiclms.entity;
 
 import java.lang.reflect.Field;
 import java.util.List;

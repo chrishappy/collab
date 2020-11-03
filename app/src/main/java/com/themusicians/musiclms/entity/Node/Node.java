@@ -1,9 +1,25 @@
-package com.themusicians.musiclms;
+package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.DatabaseReference;
+import com.themusicians.musiclms.entity.Attachment.Attachment;
+import com.themusicians.musiclms.entity.Entity;
 
 import java.util.List;
 import java.util.Map;
+
+/**
+ * @file Node.java
+ *
+ * ....
+ *
+ * Contributors: Nathan Tsai
+ * Created by Nathan Tsai on 2020-11-02
+ *
+ * --------------------------------
+ *
+ * @todo Create Class
+ * @todo Create UI
+ */
 
 public class Node extends Entity {
 
@@ -14,12 +30,17 @@ public class Node extends Entity {
 
   /**
    * The fields for the default Node
+   *
+   * Public properties will be automatically saved by Firebase
+   * Private will not
    */
   public String name;
 
-  private List<Attachment> attachments;
+  public List<Integer> attachmentIds;
 
-  private String[] allowedAttachments;
+  public String[] allowedAttachments;
+
+  private Map<Map, Attachment> attachments;
 
   /* End fields */
 
