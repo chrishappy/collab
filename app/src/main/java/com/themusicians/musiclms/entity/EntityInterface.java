@@ -1,4 +1,7 @@
-package com.themusicians.musiclms;
+package com.themusicians.musiclms.entity;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @file
@@ -12,12 +15,12 @@ package com.themusicians.musiclms;
  */
 
 public interface EntityInterface {
+
     /**
      *
-     *
-     * @return
+     * @return the entity id
      */
-    int id();
+    String id();
 
     /**
      *
@@ -51,17 +54,11 @@ public interface EntityInterface {
 
     /**
      *
-     * @return
-     */
-    Attachment[] getAttachments();
-
-    /**
-     *
-     * @param values The fields values for the Entity
+     * @param valueMap The fields values for the Entity
      *
      * @return
      */
-    Entity create( Object[] values );
+    Entity create(Map<String, Object> valueMap );
 
     /**
      *
@@ -75,7 +72,7 @@ public interface EntityInterface {
      *
      * @return
      */
-    Entity[] loadMultiple( int[] ids );
+    List<Entity> loadMultiple(int[] ids );
 
     /**
      *
