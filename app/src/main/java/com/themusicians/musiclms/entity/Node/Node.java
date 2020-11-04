@@ -42,7 +42,7 @@ public class Node extends Entity {
 
   private Map<Map, Attachment> attachments;
 
-  /* End fields */
+  /*** End fields ***/
 
   /**
    *
