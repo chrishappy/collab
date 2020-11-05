@@ -17,8 +17,6 @@ import android.widget.Toast;
 import com.themusicians.musiclms.ui.login.signin;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.message";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
