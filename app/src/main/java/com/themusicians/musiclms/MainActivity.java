@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.themusicians.musiclms.ui.login.signin;
+
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.message";
 
@@ -21,6 +23,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+            // allows to go to login page ny clicking on text
+            TextView textview;
+            textview = (TextView)findViewById(R.id.Or_login);
+            textview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent nextPageLogin = new Intent(MainActivity.this, signin.class);
+                    startActivity(nextPageLogin);
+                }
+            });
+
     }
 
     public void teacherSignup(View view) {
@@ -32,21 +45,6 @@ public class MainActivity extends AppCompatActivity {
         Intent nextPageS = new Intent(this, signup.class);
         startActivity(nextPageS);
     }
-    public void orLogin(View view) {
-        TextView textview = findViewById(R.id.Or_login);
-        String text = "or Login";
-        SpannableString ss1 = new SpannableString(text);
 
-        ClickableSpan clickablespanLogin = new ClickableSpan(){
-            @Override
-            public void onClick(@NonNull View view) {
-                Toast.makeText(MainActivity.this,"one",Toast.LENGTH_SHORT);
-            }
-        };
-        ss1.setSpan(clickablespanLogin,3,7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textview.setText(ss1);
-        textview.setMovementMethod(LinkMovementMethod.getInstance());
-
-    }
 
 }
