@@ -21,18 +21,23 @@
 
     <TextView
         android:id="@+id/Im_a"
-        android:layout_width="125dp"
-        android:layout_height="51dp"
-        android:text="Im a ...."
+        android:layout_width="141dp"
+        android:layout_height="43dp"
+        android:text="I am a ...."
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="128dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.237"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.21" />
 
     <Button
         android:id="@+id/teacher_button"
         android:layout_width="192dp"
         android:layout_height="76dp"
         android:layout_marginBottom="72dp"
+        android:onClick="teacherSignup"
         android:text="Teacher"
         app:layout_constraintBottom_toTopOf="@+id/Student_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +51,7 @@
         android:layout_width="189dp"
         android:layout_height="85dp"
         android:layout_marginBottom="264dp"
+        android:onClick="studentSignup"
         android:text="Student"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +67,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Student_button"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintVertical_bias="0.783" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
