@@ -9,4 +9,10 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="sign_up">Sign-Up</string>
+    <string name="student_sign_up">Student Sign-up</string>
+    <string name="teacher_sign_up">Teacher Sign-up</string>
+    <string name="or">Or</string>
+    <string name="already_an_user_click_here_to_be_redirected_to_login_page">Already An User click here to be redirected to login page</string>
+    <string name="create_account">Create account</string>
 </resources>
