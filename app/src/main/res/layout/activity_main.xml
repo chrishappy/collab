@@ -23,10 +23,12 @@
         android:id="@+id/Im_a"
         android:layout_width="125dp"
         android:layout_height="51dp"
-        android:text="Im a ...."
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="46dp"
+        android:text="@string/user__signup__Im_a"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="128dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_name" />
 
     <Button
         android:id="@+id/teacher_button"

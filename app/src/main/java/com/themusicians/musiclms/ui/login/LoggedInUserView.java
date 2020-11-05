@@ -14,4 +14,6 @@ class LoggedInUserView {
     String getDisplayName() {
         return displayName;
     }
+
+
 }
