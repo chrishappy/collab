@@ -1,42 +1,71 @@
 {
   "project_info": {
-    "project_number": "368088769674",
-    "firebase_url": "https://test-e6458.firebaseio.com",
-    "project_id": "test-e6458",
-    "storage_bucket": "test-e6458.appspot.com"
+    "project_number": "471262600101",
+    "firebase_url": "https://musiclms---cmpt276.firebaseio.com",
+    "project_id": "musiclms---cmpt276",
+    "storage_bucket": "musiclms---cmpt276.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:368088769674:android:ac1c26d6f9e674ee6d7973",
+        "mobilesdk_app_id": "1:471262600101:android:5d301fb419ac32af58664c",
         "android_client_info": {
-          "package_name": "com.example.test"
+          "package_name": "com.cmpt276.musicLMS"
         }
       },
       "oauth_client": [
         {
-          "client_id": "368088769674-16fba5bgpmnqeuocp6gare6abv14trrn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.test",
-            "certificate_hash": "22b666f4da4cc55106bc4abd4f208dc478530699"
-          }
-        },
-        {
-          "client_id": "368088769674-apsjv5dkb80k6uin0dvvqbdg2ms6f0fa.apps.googleusercontent.com",
+          "client_id": "471262600101-032acg6uff0t7tr4i3ct4h0m9i4baajm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAsBlUiFvSwzFBHzR2oZ1W3UGmtPScAb-o"
+          "current_key": "AIzaSyCZ0NkZTWjphMrYa4FQNrV7GiomPH6S1K0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "368088769674-apsjv5dkb80k6uin0dvvqbdg2ms6f0fa.apps.googleusercontent.com",
+              "client_id": "471262600101-032acg6uff0t7tr4i3ct4h0m9i4baajm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471262600101:android:3feae2e716be6e3e58664c",
+        "android_client_info": {
+          "package_name": "com.themusicians.musiclms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471262600101-l4qcf72sl9ulv46klrlggjmulcn53dov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.themusicians.musiclms",
+            "certificate_hash": "22b666f4da4cc55106bc4abd4f208dc478530699"
+          }
+        },
+        {
+          "client_id": "471262600101-032acg6uff0t7tr4i3ct4h0m9i4baajm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ0NkZTWjphMrYa4FQNrV7GiomPH6S1K0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471262600101-032acg6uff0t7tr4i3ct4h0m9i4baajm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
