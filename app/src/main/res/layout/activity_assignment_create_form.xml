@@ -44,10 +44,9 @@
         tools:context=".nodeForms.AssignmentCreateFormActivity"
         tools:showIn="@layout/activity_assignment_create_form">
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -83,25 +82,39 @@
                     android:hint="@string/assignment__form__due_date" />
             </LinearLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/todoAddItem"
+                <TextView
+                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/assignment__form__add_todo_item"
-                    tools:ignore="ButtonStyle" />
+                    android:text="@string/assignment__form__add_todos" />
 
-                <Button
-                    android:id="@+id/todoReuseItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background=""
-                    android:text="@string/assignment__form__reuse_todo_item" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/todoAddItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/assignment__form__add_todo_item"
+                        style="?attr/materialButtonOutlinedStyle" />
+
+                    <Button
+                        android:id="@+id/todoReuseItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/assignment__form__reuse_todo_item" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -112,25 +125,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="right">
 
                 <Button
-                    android:id="@+id/formCancelAction"
+                    android:id="@+id/assignmentCancelAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background=""
-                    android:text="@string/form__cancel" />
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/assignment__form__cancel" />
 
                 <Button
-                    android:id="@+id/formSaveAction"
+                    android:id="@+id/assignmentSaveAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/form__save" />
+                    android:text="@string/assignment__form__save" />
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
 
     <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
 <!--        android:id="@+id/fab"-->

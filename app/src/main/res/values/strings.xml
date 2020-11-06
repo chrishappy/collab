@@ -25,6 +25,7 @@
     <string name="assignment__form__add_todo_item">Add ToDo Item</string>
     <string name="assignment__form__reuse_todo_item">Reuse Item</string>
     <string name="assignment__form__cancel_assignment">Cancel</string>
-    <string name="form__cancel">Cancel</string>
-    <string name="form__save">Save</string>
+    <string name="assignment__form__cancel">Cancel</string>
+    <string name="assignment__form__save">Save</string>
+    <string name="assignment__form__add_todos">Add Todo\'s</string>
 </resources>
