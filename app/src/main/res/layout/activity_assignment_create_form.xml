@@ -33,15 +33,113 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_scrolling" />
+<!--    <include layout="@layout/content_scrolling" />-->
+    <ScrollView
+        android:id="@+id/assignment_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/left_and_right_gutters"
+        android:paddingRight="@dimen/left_and_right_gutters"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".nodeForms.AssignmentCreateFormActivity"
+        tools:showIn="@layout/activity_assignment_create_form">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/assignment_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/assignment__form__assignment_name" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <MultiAutoCompleteTextView
+                    android:id="@+id/students_or_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:autofillHints="@string/app_name"
+                    android:hint="@string/assignment__form__user_class"/>
+
+                <EditText
+                    android:id="@+id/editDueDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:autofillHints=""
+                    android:hint="@string/assignment__form__due_date" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/todoAddItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/assignment__form__add_todo_item"
+                    tools:ignore="ButtonStyle" />
+
+                <Button
+                    android:id="@+id/todoReuseItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background=""
+                    android:text="@string/assignment__form__reuse_todo_item" />
+            </LinearLayout>
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/formCancelAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background=""
+                    android:text="@string/form__cancel" />
+
+                <Button
+                    android:id="@+id/formSaveAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form__save" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fab"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="@dimen/fab_margin"-->
+<!--        app:layout_anchor="@id/app_bar"-->
+<!--        app:layout_anchorGravity="bottom|end"-->
+<!--        app:srcCompat="@android:drawable/ic_dialog_email" />-->
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
