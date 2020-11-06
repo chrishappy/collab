@@ -34,44 +34,56 @@ public class signup extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         next = findViewById(R.id.signup_next);
 
+        //check if user is signed in
         if(fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), Assignments_Overview.class));
             finish();
         }
 
+        //when the next button is clicked
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = newEmail.getText().toString().trim();
                 String password = newPassword.getText().toString().trim();
 
+                //checks if email is empty
                 if(TextUtils.isEmpty(email)) {
                     newEmail.setError("Email is Required.");
                     return;
                 }
 
+                //checks if password is empty
                 if(TextUtils.isEmpty(password)) {
                     newPassword.setError("Password is Required");
                     return;
                 }
 
+                //checks for password minimum length
                 if(password.length() < 6){
                     newPassword.setError("Password must be more than 5 characters");
                     return;
                 }
 
+                //registers account to firebase and sends to next screen
                 fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), Assignments_Overview.class));
+                            setContentView(R.layout.signup_details);
                         }else {
                             Toast.makeText(signup.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
+
                     }
+
                 });
+
             }
+
         });
+
     }
+
 }
