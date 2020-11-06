@@ -5,6 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,11 @@ public class Assignment extends Node {
    */
   public Assignment(Map<String, Object> valueMap) {
     super(valueMap);
+
+    valueMap.put("entityType", "assignment");
+
+    setFields(valueMap);
+
   }
 
   /*** End fields ***/
@@ -88,7 +94,6 @@ public class Assignment extends Node {
     return null;
   }
 
-
   /**
    *
    * @return
@@ -106,7 +111,9 @@ public class Assignment extends Node {
    */
   public boolean save() {
 
-    this.writeNode(this);
+    writeAssignment();
+
+//    this.writeNode(this);
 
     return true;
   }
@@ -115,13 +122,13 @@ public class Assignment extends Node {
    *
    * @return
    */
-  private boolean writeNode( Assignment assignment ) {
+  private boolean writeAssignment() {
     nodeDatabase = FirebaseDatabase.getInstance().getReference("node__assignments");
 
-    // If a new Assignment
+    // If we're creating an Assignment
     if (true) {
       String assignmentID = nodeDatabase.push().getKey();
-      nodeDatabase.child(assignmentID).setValue(assignment);
+      nodeDatabase.child(assignmentID).setValue(this);
     }
 
     return true;

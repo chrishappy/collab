@@ -14,12 +14,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.ui.login.signin;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Temporary to test Assignment Page
+        Intent redirectToAssignment = new Intent(this, AssignmentCreateFormActivity.class);
+        startActivity(redirectToAssignment);
+
+
+
+
+
+
         setContentView(R.layout.activity_main);
 
         // Allows to go to login page ny clicking on text

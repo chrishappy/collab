@@ -38,13 +38,13 @@ public interface EntityInterface {
      *
      * @return
      */
-    int getCreatedTime();
+    long getCreatedTime();
 
     /**
      *
      * @return
      */
-    int getUpdatedTime();
+    long getUpdatedTime();
 
     /**
      *

@@ -61,9 +61,7 @@ public class Node extends Entity {
    * @return
    */
   public Node(Map<String, Object> valueMap) {
-    for (String key : valueMap.keySet()){
-      setField(key, valueMap.get(key));
-    }
+    super(valueMap);
   }
 
 
@@ -93,23 +91,6 @@ public class Node extends Entity {
    */
   private boolean writeNode() {
     return true;
-  }
-
-
-  /**
-   * Set a property of the object
-   *
-   * @param fieldName
-   * @param value
-   */
-  private void setField(String fieldName, Object value) {
-    Field field;
-    try {
-      field = getClass().getDeclaredField(fieldName);
-      field.set(this, value);
-    } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-      e.printStackTrace();
-    }
   }
 
 

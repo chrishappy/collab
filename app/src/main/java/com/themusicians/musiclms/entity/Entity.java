@@ -1,6 +1,12 @@
 package com.themusicians.musiclms.entity;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.lang.reflect.Field;
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +35,13 @@ public abstract class Entity implements EntityInterface {
 
     public String entityType;
 
-    public int created; // In UTC timestamp format
+    public long created; // In UTC timestamp format
 
-    public int updated; // In UTC format
+    public long updated; // In UTC format
 
     public boolean status;
 
-    public int uid; // User who the entity belongs to
+    public long uid; // User who the entity belongs to
 
     /**
      * Default constructor without arguments for Firebase
@@ -44,13 +50,22 @@ public abstract class Entity implements EntityInterface {
     }
 
     /**
+     * Constructor for loading
+     */
+    public Entity(String id) {
+    }
+
+    /**
      *
      * @param valueMap
      */
     public Entity(Map<String, Object> valueMap){
-        for (String key : valueMap.keySet()){
-            setField(key, valueMap.get(key));
-        }
+
+//        int userCreated = valueMap.get("created")
+//        if (userCreated <= 0) {
+//            created =  (int) Instant.now();
+//        }
+
     }
 
     /**
@@ -85,7 +100,7 @@ public abstract class Entity implements EntityInterface {
      * @return
      */
     @Override
-    public int getCreatedTime() {
+    public long getCreatedTime() {
         return this.created;
     }
 
@@ -94,7 +109,7 @@ public abstract class Entity implements EntityInterface {
      * @return
      */
     @Override
-    public int getUpdatedTime() {
+    public long getUpdatedTime() {
         return this.updated;
     }
 
@@ -145,6 +160,23 @@ public abstract class Entity implements EntityInterface {
     public boolean delete() {
         return true;
     }
+
+    /**
+     *
+     * @param valueMap
+     */
+    public void setFields(Map<String, Object> valueMap) {
+        for (String key : valueMap.keySet()){
+            setField(key, valueMap.get(key));
+        }
+    }
+
+    /**
+     *
+     */
+//    public Map<String, Object> getFields() {
+//
+//    }
 
     /**
      *

@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,7 +56,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
     // Get fields
     final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
     final EditText StudentOrClass = (EditText) findViewById(R.id.students_or_class);
-    final EditText AssignmentDate = (EditText) findViewById(R.id.edit_due_date);
+//    final EditText AssignmentDate = (EditText) findViewById(R.id.edit_due_date);
 //    final EditText jobDeet = (EditText) findViewById(R.id.job_dis);
 //    final EditText jobMch1 = (EditText) findViewById(R.id.first_machine);
 //    final EditText jobMch2 = (EditText) findViewById(R.id.second_machine);
@@ -68,19 +69,22 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
 
         // Map the fields
         Map<String, Object> fieldMap = new HashMap<>();
-        fieldMap.put("name", AssignmentName.toString());
+        fieldMap.put("name", AssignmentName.getText());
         fieldMap.put("assignees", dummyList);
         fieldMap.put("classId", -1);
         fieldMap.put("attachmentIds", dummyList);
+        fieldMap.put("created", System.currentTimeMillis() / 1000);
+        fieldMap.put("updated", System.currentTimeMillis() / 1000);
 
         // Create the assignment using the field map
         Assignment assignment = new Assignment(fieldMap);
+        assignment.save();
 
         // Get key if it doesn't already exist
-        String assignmentId = mDatabase.child("node__assignments").push().getKey();
+//        String assignmentId = mDatabase.child("node__assignments").push().getKey();
 
         // Save the data
-        mDatabase.child("node__assignments").child(assignmentId).setValue(assignment);
+//        mDatabase.child("node__assignments").child(assignmentId).setValue(assignment);
 
         //Display notification
         Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
