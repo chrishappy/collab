@@ -1,48 +1,48 @@
 package com.themusicians.musiclms;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.widget.EditText;
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+import com.themusicians.musiclms.ui.login.signin;
 
-/**
- *
- */
 public class MainActivity extends AppCompatActivity {
-
-    private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Initialize Firebase Authentication
-        mAuth = FirebaseAuth.getInstance();
-
-        // Redirect to Assignment Class
-
         setContentView(R.layout.activity_main);
-
-        Intent intent = new Intent(this, AssignmentCreateFormActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.editText);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-
+            // allows to go to login page ny clicking on text
+            TextView textview;
+            textview = (TextView)findViewById(R.id.Or_login);
+            textview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent nextPageLogin = new Intent(MainActivity.this, signin.class);
+                    startActivity(nextPageLogin);
+                }
+            });
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser); // There is an error
+    public void teacherSignup(View view) {
+        Intent nextPageT = new Intent(this, signup.class);
+        startActivity(nextPageT);
     }
+
+    public void studentSignup(View view) {
+        Intent nextPageS = new Intent(this, signup.class);
+        startActivity(nextPageS);
+    }
+
 
 }
