@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -59,9 +60,10 @@ public class Node extends Entity {
    *
    * @return
    */
-  @Override
-  public Node create(Map<String, Object> valueMap) {
-    return null;
+  public Node(Map<String, Object> valueMap) {
+    for (String key : valueMap.keySet()){
+      setField(key, valueMap.get(key));
+    }
   }
 
 
@@ -92,5 +94,23 @@ public class Node extends Entity {
   private boolean writeNode() {
     return true;
   }
+
+
+  /**
+   * Set a property of the object
+   *
+   * @param fieldName
+   * @param value
+   */
+  private void setField(String fieldName, Object value) {
+    Field field;
+    try {
+      field = getClass().getDeclaredField(fieldName);
+      field.set(this, value);
+    } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 }

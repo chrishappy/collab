@@ -48,6 +48,14 @@ public class Assignment extends Node {
 
   private Map<Map, Attachment> attachments;
 
+  /**
+   * @param valueMap The fields values for the Node
+   * @return
+   */
+  public Assignment(Map<String, Object> valueMap) {
+    super(valueMap);
+  }
+
   /*** End fields ***/
 
   /**
@@ -65,10 +73,10 @@ public class Assignment extends Node {
    *
    * @return
    */
-  @Override
-  public Assignment create(Map<String, Object> valueMap) {
-    return null;
-  }
+//  @Override
+//  public Assignment create(Map<String, Object> valueMap) {
+//    return null;
+//  }
 
 
   /**

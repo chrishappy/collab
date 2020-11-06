@@ -111,8 +111,8 @@ public abstract class Entity implements EntityInterface {
      *
      * @return
      */
-    @Override
-    public abstract Entity create(Map<String, Object> valueMap);
+//    @Override
+//    public abstract Entity create(Map<String, Object> valueMap);
 
     /**
      *

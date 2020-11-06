@@ -26,10 +26,10 @@ public class Attachment extends Entity {
     return null;
   }
 
-  @Override
-  public Entity create(Map<String, Object> valueMap) {
-    return null;
-  }
+//  @Override
+//  public Entity create(Map<String, Object> valueMap) {
+//    return null;
+//  }
 
   @Override
   public Entity load(int id) {

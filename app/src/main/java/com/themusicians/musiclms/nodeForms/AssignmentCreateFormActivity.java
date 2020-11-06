@@ -66,22 +66,24 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
       public void onClick(View view) {
         List<Integer> dummyList =  Arrays.asList(-12, -11);
 
-        Map<String, Object> fields = new HashMap<>();
-        fields.put("name", AssignmentName.toString());
-        fields.put("assignees", dummyList);
-        fields.put("classId", -1);
-        fields.put("attachmentIds", dummyList);
+        // Map the fields
+        Map<String, Object> fieldMap = new HashMap<>();
+        fieldMap.put("name", AssignmentName.toString());
+        fieldMap.put("assignees", dummyList);
+        fieldMap.put("classId", -1);
+        fieldMap.put("attachmentIds", dummyList);
 
-
-        Assignment assignment = new Assignment();
-        assignment.create(fields);
+        // Create the assignment using the field map
+        Assignment assignment = new Assignment(fieldMap);
 
         // Get key if it doesn't already exist
         String assignmentId = mDatabase.child("node__assignments").push().getKey();
 
+        // Save the data
         mDatabase.child("node__assignments").child(assignmentId).setValue(assignment);
 
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //Display notification
+        Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
       }
     });

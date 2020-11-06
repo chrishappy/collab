@@ -58,7 +58,7 @@ public interface EntityInterface {
      *
      * @return
      */
-    Entity create(Map<String, Object> valueMap );
+//    Entity create(Map<String, Object> valueMap );
 
     /**
      *

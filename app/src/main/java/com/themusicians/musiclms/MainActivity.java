@@ -21,16 +21,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-            // allows to go to login page ny clicking on text
-            TextView textview;
-            textview = (TextView)findViewById(R.id.Or_login);
-            textview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent nextPageLogin = new Intent(MainActivity.this, signin.class);
-                    startActivity(nextPageLogin);
-                }
-            });
+
+        // Allows to go to login page ny clicking on text
+        TextView textview;
+        textview = (TextView)findViewById(R.id.Or_login);
+        textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent nextPageLogin = new Intent(MainActivity.this, signin.class);
+                startActivity(nextPageLogin);
+            }
+        });
 
     }
 
@@ -43,6 +44,4 @@ public class MainActivity extends AppCompatActivity {
         Intent nextPageS = new Intent(this, signup.class);
         startActivity(nextPageS);
     }
-
-
 }
