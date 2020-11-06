@@ -55,18 +55,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.163"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintVertical_bias="0.773" />
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="492dp"
+        android:layout_marginTop="44dp"
         android:text="Piano"
         app:layout_constraintEnd_toStartOf="@+id/checkBox4"
-        app:layout_constraintHorizontal_bias="0.42"
+        app:layout_constraintHorizontal_bias="0.41"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <CheckBox
         android:id="@+id/checkBox2"
@@ -95,43 +97,43 @@
         android:id="@+id/checkBox4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="108dp"
+        android:layout_marginEnd="132dp"
         android:layout_marginBottom="44dp"
         android:text="Trumpet"
         app:layout_constraintBottom_toTopOf="@+id/checkBox5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.933" />
 
     <CheckBox
         android:id="@+id/checkBox5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="112dp"
+        android:layout_marginEnd="140dp"
         android:text="Flute"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="556dp" />
+        tools:layout_editor_absoluteY="549dp" />
 
     <CheckBox
         android:id="@+id/checkBox6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editTextTextPersonName2"
         app:layout_constraintTop_toBottomOf="@+id/checkBox5"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintVertical_bias="0.22" />
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
         android:layout_width="91dp"
         android:layout_height="42dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginEnd="80dp"
         android:ems="10"
         android:hint="Other"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox5"
-        app:layout_constraintVertical_bias="0.386" />
+        app:layout_constraintVertical_bias="0.24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

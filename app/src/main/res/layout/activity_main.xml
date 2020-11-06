@@ -23,14 +23,15 @@
         android:id="@+id/Im_a"
         android:layout_width="141dp"
         android:layout_height="43dp"
+        android:layout_marginBottom="28dp"
         android:text="I am a ...."
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/teacher_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/teacher_button"
@@ -43,20 +44,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_name"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/Student_button"
         android:layout_width="189dp"
         android:layout_height="85dp"
-        android:layout_marginBottom="192dp"
         android:onClick="studentSignup"
         android:text="Student"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.688" />
 
     <TextView
         android:id="@+id/Or_login"
