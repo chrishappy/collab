@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Assignments_Overview"></activity>
         <activity
             android:name=".nodeForms.AssignmentCreateFormActivity"
             android:label="@string/title_activity_assignment_create_form"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".signup" />
         <activity
             android:name=".ui.login.signin"

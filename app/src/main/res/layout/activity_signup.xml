@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.048" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/newEmail"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:ems="10"
@@ -36,7 +36,7 @@
         app:layout_constraintVertical_bias="0.163" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/newPassword"
         android:layout_width="300dp"
         android:layout_height="60dp"
         android:ems="10"
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintTop_toBottomOf="@+id/newEmail"
         app:layout_constraintVertical_bias="0.154" />
 
     <ImageView
@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.826"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/newPassword"
         app:layout_constraintVertical_bias="0.77" />
 
     <TextView
