@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.firebase.database.ServerValue;
+
 import java.lang.reflect.Field;
 import java.time.Instant;
 import java.util.HashMap;
@@ -201,6 +203,16 @@ public abstract class Entity implements EntityInterface {
      * @param valueMap
      */
     public Entity setFields(Map<String, Object> valueMap) {
+        // Set default created time
+        if ( isNew && (String) valueMap.get("created") == null) {
+            valueMap.put("created", ServerValue.TIMESTAMP);
+        }
+
+        // Set default updated time
+        if ( (String) valueMap.get("updated") == null) {
+            valueMap.put("updated", ServerValue.TIMESTAMP);
+        }
+
         for (String key : valueMap.keySet()){
             setField(key, valueMap.get(key));
         }

@@ -53,30 +53,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/assignment_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/assignment__form__assignment_name" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <MultiAutoCompleteTextView
-                    android:id="@+id/students_or_class"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:autofillHints="@string/app_name"
-                    android:hint="@string/assignment__form__user_class"/>
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/assignment_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/assignment__form__assignment_name" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <MultiAutoCompleteTextView
+                        android:id="@+id/students_or_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:autofillHints="@string/app_name"
+                        android:hint="@string/assignment__form__user_class"/>
+                </LinearLayout>
                 <!-- Replace with model:
                         https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
                         See section "Android Show DatePicker on EditText Click Example"
 
                  -->
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent" android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/editText1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginTop="150dp"
+                        android:ems="10"
+                        android:hint="Enter Date" />
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editText1"
+                        android:layout_marginLeft="100dp"
+                        android:text="Get Date" />
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button1"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        android:textSize="18dp"/>
+                </RelativeLayout>
                 <DatePicker
                     android:id="@+id/edit_due_date"
                     android:layout_width="wrap_content"

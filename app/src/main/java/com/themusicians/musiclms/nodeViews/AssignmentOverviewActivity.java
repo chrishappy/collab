@@ -26,6 +26,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
     CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
     toolBarLayout.setTitle(getTitle());
 
+
+
 //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 //        android.R.layout.simple_list_item_1, myStringArray);
 
