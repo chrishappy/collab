@@ -95,7 +95,7 @@ public abstract class Entity implements EntityInterface {
     /**
      * The constructor for creating an Entity
      *
-     * @param valueMap
+     * @param valueMap The fields values for the Entity
      */
     public Entity(Map<String, Object> valueMap){
         // If constructed, set value to true
@@ -157,8 +157,8 @@ public abstract class Entity implements EntityInterface {
     /**
      *
      * @param valueMap The fields values for the Entity
-     *
-     * @return
+     * Create a new entity with data in valueMap
+     * @return Entity
      */
 //    @Override
 //    public abstract Entity create(Map<String, Object> valueMap);
@@ -172,8 +172,8 @@ public abstract class Entity implements EntityInterface {
 //    public abstract Entity load( int id );
 
     /**
-     * @param id The
-     * @return The The List of the Entities
+     * @param id The fields for the default Entity
+     * @return The List of the Entities
      */
     @Override
     public abstract List<Entity> loadMultiple(int[] id);
