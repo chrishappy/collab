@@ -35,12 +35,12 @@ public abstract class Entity implements EntityInterface {
     public String id;
 
     /**
-     *
+     * Different types of entity: Assignments or Users profiles
      */
     public String type;
 
     /**
-     *
+     * Node or attachment
      */
     public String entityType;
 
@@ -50,17 +50,17 @@ public abstract class Entity implements EntityInterface {
     public long created; // In UTC timestamp format
 
     /**
-     *
+     *The time the Entity was updated in UTC format
      */
     public long updated; // In UTC format
 
     /**
-     *
+     * Set status to 0 if the entity is unpublished
      */
     public boolean status;
 
     /**
-     *
+     * Users' id number
      */
     public String uid; // User who the entity belongs to
 
