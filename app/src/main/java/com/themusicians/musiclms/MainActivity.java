@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Temporary to test Assignment Page
-        Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
-        startActivity(redirectToAssignment);
+       // Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+        //startActivity(redirectToAssignment);
 
 
 
