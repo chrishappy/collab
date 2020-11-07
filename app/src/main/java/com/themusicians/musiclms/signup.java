@@ -13,15 +13,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.UserProfile;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class signup extends AppCompatActivity {
-    EditText newEmail, newPassword;
+    EditText newEmail, newPassword, newName;
     Button next;
     FirebaseAuth fAuth;
 
@@ -80,15 +88,20 @@ public class signup extends AppCompatActivity {
                 });
             }
         });
-        //Sign up details next page
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setContentView(R.layout.signup_tech);
-            }
-        });
     }
-    //Sign up tech next page
+
+    public void signUpDetailsNext(View view){
+        newName = findViewById(R.id.newName);
+        String name = newName.getText().toString().trim();
+        if(TextUtils.isEmpty(name)) {
+            newName.setError("Name is Required");
+            return;
+        }
+
+        setContentView(R.layout.signup_tech);
+    }
+
+    //Sign up tech
     public void signUpFinish(View view) {
         Intent signupFinish = new Intent(this, AssignmentOverviewActivity.class);
         startActivity(signupFinish);
