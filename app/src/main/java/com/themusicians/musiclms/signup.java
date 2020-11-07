@@ -18,10 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 public class signup extends AppCompatActivity {
     EditText newEmail, newPassword;
-    Button next, p2next;
+    Button next;
     FirebaseAuth fAuth;
 
     @Override
@@ -36,7 +37,7 @@ public class signup extends AppCompatActivity {
 
         //check if user is signed in
         if(fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), Assignments_Overview.class));
+            startActivity(new Intent(getApplicationContext(), AssignmentOverviewActivity.class));
             finish();
         }
 
@@ -79,11 +80,17 @@ public class signup extends AppCompatActivity {
                 });
             }
         });
+        //Sign up details next page
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setContentView(R.layout.signup_tech);
             }
         });
+    }
+    //Sign up tech next page
+    public void signUpFinish(View view) {
+        Intent signupFinish = new Intent(this, AssignmentOverviewActivity.class);
+        startActivity(signupFinish);
     }
 }

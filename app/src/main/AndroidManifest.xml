@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Assignments_Overview"></activity>
         <activity
             android:name=".nodeViews.AssignmentOverviewActivity"
             android:label="@string/title_activity_assignment_overview"
