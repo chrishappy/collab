@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.themusicians.musiclms.R;
 
@@ -23,6 +25,12 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
     CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
     toolBarLayout.setTitle(getTitle());
+
+//    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//        android.R.layout.simple_list_item_1, myStringArray);
+
+//    ListView listView = (ListView) findViewById(R.id.assignment_overview);
+//    listView.setAdapter(adapter);
 
 
 
