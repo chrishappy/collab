@@ -65,7 +65,7 @@ public abstract class Entity implements EntityInterface {
     public String uid; // User who the entity belongs to
 
     /**
-     * The field map
+     * The field map: contains all the data (Probably gonna delete it)
      */
     protected Map<String, Object> fieldMap;
 
@@ -165,22 +165,22 @@ public abstract class Entity implements EntityInterface {
 
     /**
      * Can't load by id since it's a realtime database, they need to update it on the go
-     *
-     * @return
+     * Probably gonna delete it
+     * @return The Entity
      */
 //    @Override
 //    public abstract Entity load( int id );
 
     /**
-     *
-     * @return
+     * @param id The
+     * @return The The List of the Entities
      */
     @Override
     public abstract List<Entity> loadMultiple(int[] id);
 
     /**
      *
-     * @return
+     * @return True if the data is correctly saved
      */
     @Override
     public boolean save() {
@@ -189,7 +189,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return True if the data is correctly deleted
      */
     @Override
     public boolean delete() {
@@ -211,7 +211,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The fieldMap of the subject
      */
     @Override
     public Map<String, Object> getFields() {
