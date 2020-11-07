@@ -56,7 +56,7 @@ public interface EntityInterface {
      *
      * @param valueMap The fields values for the Entity
      *
-     * @return
+     * @return The label of the entity: Assignment 1 or 2, etc
      */
 //    Entity create(Map<String, Object> valueMap );
 
@@ -69,7 +69,7 @@ public interface EntityInterface {
 //    Entity load( int id);
 
     /**
-     *
+     * @param id The id array
      * @return The List of the Entities
      */
     List<Entity> loadMultiple(int[] id );
@@ -77,7 +77,7 @@ public interface EntityInterface {
     /**
      * Set a bunch of properties dynamically
      *
-     * @param valueMap
+     * @param valueMap The fields values for the Entity
      *
      * @return the Entity class
      */
@@ -89,7 +89,7 @@ public interface EntityInterface {
      * @param fieldName The name of the property
      * @param value The value to set it to.
      *
-     * @return
+     * @return The Entity with value
      *
      */
     Entity setField(String fieldName, Object value);

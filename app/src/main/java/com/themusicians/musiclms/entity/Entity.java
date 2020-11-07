@@ -228,8 +228,8 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @param fieldName
-     * @param value
+     * @param fieldName The name of the property
+     * @param value The value to set it to
      */
     public Entity setField(String fieldName, Object value) {
         Field field;
@@ -244,7 +244,7 @@ public abstract class Entity implements EntityInterface {
     }
 
     /**
-     * 
+     *
      */
     public Object getField(String fieldName) {
         Field field;
