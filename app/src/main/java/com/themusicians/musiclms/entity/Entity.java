@@ -37,12 +37,12 @@ public abstract class Entity implements EntityInterface {
     public String id;
 
     /**
-     *
+     * Different types of entity: Assignments or Users profiles, etc
      */
     public String type;
 
     /**
-     *
+     * Node or attachment
      */
     public String entityType;
 
@@ -52,22 +52,22 @@ public abstract class Entity implements EntityInterface {
     public long created; // In UTC timestamp format
 
     /**
-     *
+     *The time the Entity was last updated in UTC format
      */
     public long updated; // In UTC format
 
     /**
-     *
+     * Set status to 0 if the entity is unpublished
      */
     public boolean status;
 
     /**
-     *
+     * Users' id number
      */
     public String uid; // User who the entity belongs to
 
     /**
-     * The field map
+     * The field map: contains all the data (Probably gonna delete it)
      */
     protected Map<String, Object> fieldMap;
 
@@ -97,7 +97,7 @@ public abstract class Entity implements EntityInterface {
     /**
      * The constructor for creating an Entity
      *
-     * @param valueMap
+     * @param valueMap The fields values for the Entity
      */
     public Entity(Map<String, Object> valueMap){
         // If constructed, set value to true
@@ -106,7 +106,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The fields for the default Entity
      */
     @Override
     public String id() {
@@ -115,7 +115,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The type of the entity: Assignments or Users profiles, etc
      */
     @Override
     public String getType() {
@@ -133,7 +133,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The time that the Entity was created in UTC format
      */
     @Override
     public long getCreatedTime() {
@@ -142,7 +142,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The time that the Entity was last updated in UTC format
      */
     @Override
     public long getUpdatedTime() {
@@ -151,7 +151,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The label of the entity: Assignment 1 or 2, etc
      */
     @Override
     public abstract String getLabel();
@@ -159,30 +159,30 @@ public abstract class Entity implements EntityInterface {
     /**
      *
      * @param valueMap The fields values for the Entity
-     *
-     * @return
+     * Create a new entity with data in valueMap
+     * @return Entity
      */
 //    @Override
 //    public abstract Entity create(Map<String, Object> valueMap);
 
     /**
      * Can't load by id since it's a realtime database, they need to update it on the go
-     *
-     * @return
+     * Probably gonna delete it
+     * @return The Entity
      */
 //    @Override
 //    public abstract Entity load( int id );
 
     /**
-     *
-     * @return
+     * @param id The fields for the default Entity
+     * @return The List of the Entities
      */
     @Override
     public abstract List<Entity> loadMultiple(int[] id);
 
     /**
      *
-     * @return
+     * @return True if the data is correctly saved
      */
     @Override
     public boolean save() {
@@ -191,7 +191,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return True if the data is correctly deleted
      */
     @Override
     public boolean delete() {
@@ -223,7 +223,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The fieldMap of the subject
      */
     @Override
     public Map<String, Object> getFields() {
@@ -240,8 +240,8 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @param fieldName
-     * @param value
+     * @param fieldName The name of the property
+     * @param value The value to set it to
      */
     public Entity setField(String fieldName, Object value) {
         Field field;
@@ -256,7 +256,7 @@ public abstract class Entity implements EntityInterface {
     }
 
     /**
-     * 
+     *
      */
     public Object getField(String fieldName) {
         Field field;

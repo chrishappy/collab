@@ -24,31 +24,31 @@ public interface EntityInterface {
 
     /**
      *
-     * @return
+     * @return The type of the entity: Assignments or Users profiles, etc
      */
     String getType();
 
     /**
      *
-     * @return
+     * @return The Entity Type (e.g. Node, Attachment)
      */
     String getEntityType();
 
     /**
      *
-     * @return
+     * @return The time that the Entity was created in UTC format
      */
     long getCreatedTime();
 
     /**
      *
-     * @return
+     * @return The time that the Entity was last updated in UTC format
      */
     long getUpdatedTime();
 
     /**
      *
-     * @return
+     * @return The label of the entity: Assignment 1 or 2, etc
      */
     String getLabel();
 
@@ -56,7 +56,7 @@ public interface EntityInterface {
      *
      * @param valueMap The fields values for the Entity
      *
-     * @return
+     * @return The label of the entity: Assignment 1 or 2, etc
      */
 //    Entity create(Map<String, Object> valueMap );
 
@@ -64,20 +64,20 @@ public interface EntityInterface {
      *
      * @param id The id of the Entity to retrieve from the database
      *
-     * @return
+     * @return The Entity
      */
 //    Entity load( int id);
 
     /**
-     *
-     * @return
+     * @param id The id array
+     * @return The List of the Entities
      */
-    List<Entity> loadMultiple(int[] ids );
+    List<Entity> loadMultiple(int[] id );
 
     /**
      * Set a bunch of properties dynamically
      *
-     * @param valueMap
+     * @param valueMap The fields values for the Entity
      *
      * @return the Entity class
      */
@@ -89,7 +89,7 @@ public interface EntityInterface {
      * @param fieldName The name of the property
      * @param value The value to set it to.
      *
-     * @return
+     * @return The Entity with value
      *
      */
     Entity setField(String fieldName, Object value);
@@ -112,13 +112,13 @@ public interface EntityInterface {
 
     /**
      *
-     * @return
+     * @return True if the data is correctly saved
      */
     boolean save();
 
     /**
      *
-     * @return
+     * @return True if the data is correctly deleted
      */
     boolean delete();
 }
