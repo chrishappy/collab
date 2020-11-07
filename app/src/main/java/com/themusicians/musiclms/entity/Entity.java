@@ -35,7 +35,7 @@ public abstract class Entity implements EntityInterface {
     public String id;
 
     /**
-     * Different types of entity: Assignments or Users profiles
+     * Different types of entity: Assignments or Users profiles, etc
      */
     public String type;
 
@@ -50,7 +50,7 @@ public abstract class Entity implements EntityInterface {
     public long created; // In UTC timestamp format
 
     /**
-     *The time the Entity was updated in UTC format
+     *The time the Entity was last updated in UTC format
      */
     public long updated; // In UTC format
 
@@ -104,7 +104,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The fields for the default Entity
      */
     @Override
     public String id() {
@@ -113,7 +113,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The type of the entity: Assignments or Users profiles, etc
      */
     @Override
     public String getType() {
@@ -131,7 +131,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The time that the Entity was created in UTC format
      */
     @Override
     public long getCreatedTime() {
@@ -140,7 +140,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The time that the Entity was last updated in UTC format
      */
     @Override
     public long getUpdatedTime() {
@@ -149,7 +149,7 @@ public abstract class Entity implements EntityInterface {
 
     /**
      *
-     * @return
+     * @return The label of the entity: Assignment 1 or 2, etc
      */
     @Override
     public abstract String getLabel();
