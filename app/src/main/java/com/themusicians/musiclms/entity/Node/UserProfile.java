@@ -1,17 +1,9 @@
 package com.themusicians.musiclms.entity.Node;
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
-import com.themusicians.musiclms.entity.Entity;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,17 +21,17 @@ import java.util.Map;
  * @todo Create UI
  */
 
-public class Assignment extends Node {
+public class UserProfile extends Node {
 
   /**
    * Base table for saving the data
    */
-  public static String baseTable = "node__assignments";
+  public static String baseTable = "node__user_profile";
 
   /**
    * Firebase's Realtime Database
    */
-  private DatabaseReference nodeDatabase;
+  private DatabaseReference userDatabse;
 
   /**
    * The fields for the default Node
@@ -49,14 +41,14 @@ public class Assignment extends Node {
    */
   public String name;
 
-  public List<String> assignees;
-
-  public int classId;
+//  public List<String> assignees;
+//
+//  public int classId;
 
   /**
    * The default constructor for Firebase + loadMultiple
    */
-  public Assignment() {
+  public UserProfile() {
     super();
   }
 
@@ -93,7 +85,7 @@ public class Assignment extends Node {
    * @param valueMap The fields values for the Node
    * @return
    */
-  public Assignment(Map<String, Object> valueMap) {
+  public UserProfile(Map<String, Object> valueMap) {
     super(valueMap);
 
     valueMap.put("entityType", "assignment");
@@ -125,19 +117,20 @@ public class Assignment extends Node {
   }
 
   /**
+   * Rename file
    *
    * @return
    */
   private boolean writeAssignment() {
-    nodeDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
+    userDatabse = FirebaseDatabase.getInstance().getReference(baseTable);
 
     // If we're creating an Assignment
     if (isNew) {
-      String assignmentID = nodeDatabase.push().getKey();
-      nodeDatabase.child(assignmentID).setValue(this);
+      String assignmentID = userDatabse.push().getKey();
+      userDatabse.child(assignmentID).setValue(this);
     }
     else {
-      nodeDatabase.child( id() ).setValue(this);
+      userDatabse.child( id() ).setValue(this);
     }
 
     return true;
