@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -10,9 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,6 +27,7 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +67,44 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
 //    final EditText jobMch1 = (EditText) findViewById(R.id.first_machine);
 //    final EditText jobMch2 = (EditText) findViewById(R.id.second_machine);
 
+    /**
+     *
+     */
+    EditText eText;
+    Button btnGet;
+    TextView tvw;
+    tvw=(TextView)findViewById(R.id.textView1);
+    eText=(EditText) findViewById(R.id.editText1);
+    eText.setInputType(InputType.TYPE_NULL);
+    eText.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        final Calendar cldr = Calendar.getInstance();
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+        // date picker dialog
+        DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
+            new DatePickerDialog.OnDateSetListener() {
+              @Override
+              public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                eText.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+              }
+            }, year, month, day);
+        picker.show();
+      }
+    });
+    btnGet=(Button)findViewById(R.id.button1);
+    btnGet.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        tvw.setText("Selected Date: "+ eText.getText());
+      }
+    });
+
+    /**
+     * Save the Assignment
+     */
     Button assignmentSave = findViewById(R.id.assignmentSaveAction);
     assignmentSave.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -79,12 +123,6 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
         // Create the assignment using the field map
         Assignment assignment = new Assignment(fieldMap);
         assignment.save();
-
-        // Get key if it doesn't already exist
-//        String assignmentId = mDatabase.child("node__assignments").push().getKey();
-
-        // Save the data
-//        mDatabase.child("node__assignments").child(assignmentId).setValue(assignment);
 
         //Display notification
         Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)

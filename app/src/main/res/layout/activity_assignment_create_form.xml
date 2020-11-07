@@ -81,7 +81,7 @@
                         See section "Android Show DatePicker on EditText Click Example"
 
                  -->
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent" android:layout_height="match_parent">
                     <EditText
                         android:id="@+id/editText1"
@@ -107,16 +107,16 @@
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
                         android:textSize="18dp"/>
-                </RelativeLayout>
-                <DatePicker
-                    android:id="@+id/edit_due_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:autofillHints=""
-                    android:hint="@string/assignment__form__due_date"
-                    android:datePickerMode="spinner"
-                    android:calendarViewShown="false" />
+                </LinearLayout>
+<!--                <DatePicker-->
+<!--                    android:id="@+id/edit_due_date"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="date"-->
+<!--                    android:autofillHints=""-->
+<!--                    android:hint="@string/assignment__form__due_date"-->
+<!--                    android:datePickerMode="spinner"-->
+<!--                    android:calendarViewShown="false" />-->
             </LinearLayout>
 
             <Space
