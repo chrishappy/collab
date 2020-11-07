@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class signup extends AppCompatActivity {
     EditText newEmail, newPassword;
-    Button next;
+    Button next, p2next;
     FirebaseAuth fAuth;
 
     @Override
@@ -75,15 +75,15 @@ public class signup extends AppCompatActivity {
                         }else {
                             Toast.makeText(signup.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-
                     }
-
                 });
-
             }
-
         });
-
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.signup_tech);
+            }
+        });
     }
-
 }
