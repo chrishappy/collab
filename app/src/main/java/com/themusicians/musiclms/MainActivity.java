@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.login.signin;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,9 +24,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Temporary to test Assignment Page
-        Intent redirectToAssignment = new Intent(this, AssignmentCreateFormActivity.class);
+        Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
         startActivity(redirectToAssignment);
-
 
 
 

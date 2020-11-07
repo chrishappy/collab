@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kotlinx.coroutines.ObsoleteCoroutinesApi;
+
 /**
  * @file
  * Entity.java
@@ -22,29 +24,63 @@ import java.util.Map;
  */
 public abstract class Entity implements EntityInterface {
 
-
-//    private String baseTable = "node";
-//    private String dataTable = "node_field_data";
+    /**
+     * Base table for saving the data
+     */
+    protected String baseTable;
 
     /**
      * The fields for the default Entity
      */
     public String id;
 
+    /**
+     *
+     */
     public String type;
 
+    /**
+     *
+     */
     public String entityType;
 
+    /**
+     * The time the Entity was created in UTC format
+     */
     public long created; // In UTC timestamp format
 
+    /**
+     *
+     */
     public long updated; // In UTC format
 
+    /**
+     *
+     */
     public boolean status;
 
-    public long uid; // User who the entity belongs to
+    /**
+     *
+     */
+    public String uid; // User who the entity belongs to
 
     /**
-     * Default constructor without arguments for Firebase
+     * The field map
+     */
+    protected Map<String, Object> fieldMap;
+
+    /**
+     * Whether we could create a new database record for the entity when saving
+     */
+    protected boolean isNew = false;
+
+    /**
+     * Tags for Log
+     */
+    final protected String DATABASE_TAG = "FirefoxDatabase";
+
+    /**
+     * Default constructor without arguments for Firebase and ::loadMultiple
      */
     public Entity() {
     }
@@ -53,19 +89,17 @@ public abstract class Entity implements EntityInterface {
      * Constructor for loading
      */
     public Entity(String id) {
+
     }
 
     /**
+     * The constructor for creating an Entity
      *
      * @param valueMap
      */
     public Entity(Map<String, Object> valueMap){
-
-//        int userCreated = valueMap.get("created")
-//        if (userCreated <= 0) {
-//            created =  (int) Instant.now();
-//        }
-
+        // If constructed, set value to true
+        isNew = true;
     }
 
     /**
@@ -130,11 +164,12 @@ public abstract class Entity implements EntityInterface {
 //    public abstract Entity create(Map<String, Object> valueMap);
 
     /**
+     * Can't load by id since it's a realtime database, they need to update it on the go
      *
      * @return
      */
-    @Override
-    public abstract Entity load( int id );
+//    @Override
+//    public abstract Entity load( int id );
 
     /**
      *
@@ -165,25 +200,38 @@ public abstract class Entity implements EntityInterface {
      *
      * @param valueMap
      */
-    public void setFields(Map<String, Object> valueMap) {
+    public Entity setFields(Map<String, Object> valueMap) {
         for (String key : valueMap.keySet()){
             setField(key, valueMap.get(key));
         }
+
+        // Allow chaining
+        return this;
     }
 
     /**
      *
+     * @return
      */
-//    public Map<String, Object> getFields() {
-//
-//    }
+    @Override
+    public Map<String, Object> getFields() {
+        fieldMap.put("id", id);
+        fieldMap.put("type", type);
+        fieldMap.put("entityType", entityType);
+        fieldMap.put("created", created);
+        fieldMap.put("updated", updated);
+        fieldMap.put("status", status);
+        fieldMap.put("uid", uid);
+
+        return fieldMap;
+    }
 
     /**
      *
      * @param fieldName
      * @param value
      */
-    private void setField(String fieldName, Object value) {
+    public Entity setField(String fieldName, Object value) {
         Field field;
         try {
             field = getClass().getDeclaredField(fieldName);
@@ -191,5 +239,24 @@ public abstract class Entity implements EntityInterface {
         } catch (SecurityException | NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
         }
+
+        return this;
+    }
+
+    /**
+     * 
+     */
+    public Object getField(String fieldName) {
+        Field field;
+        Object value = null;
+        
+        try {
+            field = getClass().getDeclaredField(fieldName);
+            value = field.get(this);
+        } catch (SecurityException | NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        
+        return value;
     }
 }

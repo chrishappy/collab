@@ -25,6 +25,7 @@ import java.util.Map;
 public class Node extends Entity {
 
   /**
+  /**
    * Firebase's Realtime Database
    */
   private DatabaseReference mDatabase;
@@ -37,7 +38,7 @@ public class Node extends Entity {
    */
   public String name;
 
-  public List<Integer> attachmentIds;
+  public List<String> attachmentIds;
 
   public String[] allowedAttachments;
 
@@ -55,6 +56,22 @@ public class Node extends Entity {
   }
 
   /**
+   * Default constructor for Firebase
+   */
+  public Node() {
+    super();
+  }
+
+  /**
+   * Load constructor by id
+   *
+   * @param id the Node id
+   */
+//  public Node(String id) {
+//    super(id);
+//  }
+
+  /**
    *
    * @param valueMap The fields values for the Node
    *
@@ -64,17 +81,6 @@ public class Node extends Entity {
     super(valueMap);
   }
 
-
-  /**
-   *
-   * @return
-   */
-  @Override
-  public Node load(int id) {
-    return null;
-  }
-
-
   /**
    *
    * @return
@@ -82,6 +88,22 @@ public class Node extends Entity {
   @Override
   public List<Entity> loadMultiple(int[] id) {
     return null;
+  }
+
+  /**
+   *
+   * @return
+   */
+  @Override
+  public Map<String, Object> getFields() {
+    super.getFields();
+
+    fieldMap.put("name", name);
+    fieldMap.put("attachmentIds", attachmentIds);
+    fieldMap.put("allowedAttachments", allowedAttachments);
+    fieldMap.put("attachments", attachments);
+
+    return fieldMap;
   }
 
 

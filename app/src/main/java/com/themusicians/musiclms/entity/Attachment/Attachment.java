@@ -31,10 +31,10 @@ public class Attachment extends Entity {
 //    return null;
 //  }
 
-  @Override
-  public Entity load(int id) {
-    return null;
-  }
+//  @Override
+//  public Entity load(int id) {
+//    return null;
+//  }
 
   @Override
   public List<Entity> loadMultiple(int[] id) {
