@@ -1,10 +1,16 @@
 package com.themusicians.musiclms.entity.Node;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +32,11 @@ import java.util.Map;
 public class Assignment extends Node {
 
   /**
+   * Base table for saving the data
+   */
+  public static String baseTable = "node__assignments";
+
+  /**
    * Firebase's Realtime Database
    */
   private DatabaseReference nodeDatabase;
@@ -38,7 +49,7 @@ public class Assignment extends Node {
    */
   public String name;
 
-  public List<Integer> assignees;
+  public List<String> assignees;
 
   public int classId;
 
@@ -49,11 +60,51 @@ public class Assignment extends Node {
   private Map<Map, Attachment> attachments;
 
   /**
+   * The default constructor for Firebase + loadMultiple
+   */
+  public Assignment() {
+    super();
+  }
+
+  /**
+   * The load constructor: the model doesn't work with RealTime model
+   *
+   * @param id
+   */
+//  public Assignment(String id) {
+////    super(id);
+//
+//    nodeDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
+//
+//    ValueEventListener nodeListener = new ValueEventListener() {
+//      @Override
+//      public void onDataChange(DataSnapshot dataSnapshot) {
+//        // Get node object and use the values to update the UI
+//        Node node = dataSnapshot.getValue(Node.class);
+//
+//        isNew = false;
+//        fieldMap = node.getFields();
+//      }
+//
+//      @Override
+//      public void onCancelled(DatabaseError databaseError) {
+//        Log.w(DATABASE_TAG, "loadPost:onCancelled", databaseError.toException());
+//      }
+//    };
+//
+//    nodeDatabase.addListenerForSingleValueEvent(nodeListener);
+//  }
+
+  /**
    * @param valueMap The fields values for the Node
    * @return
    */
   public Assignment(Map<String, Object> valueMap) {
     super(valueMap);
+
+    valueMap.put("entityType", "assignment");
+
+    setFields(valueMap);
   }
 
   /*** End fields ***/
@@ -68,45 +119,13 @@ public class Assignment extends Node {
   }
 
   /**
-   *
-   * @param valueMap The fields values for the Node
-   *
-   * @return
-   */
-//  @Override
-//  public Assignment create(Map<String, Object> valueMap) {
-//    return null;
-//  }
-
-
-  /**
-   *
-   * @return
-   */
-  @Override
-  public Assignment load(int id) {
-    return null;
-  }
-
-
-  /**
-   *
-   * @return
-   */
-  @Override
-  public List<Entity> loadMultiple(int[] id) {
-    return null;
-  }
-
-
-  /**
    * Save the Node to the Database
    *
    * @return whether it was successful or not
    */
   public boolean save() {
 
-    this.writeNode(this);
+    writeAssignment();
 
     return true;
   }
@@ -115,13 +134,16 @@ public class Assignment extends Node {
    *
    * @return
    */
-  private boolean writeNode( Assignment assignment ) {
-    nodeDatabase = FirebaseDatabase.getInstance().getReference("node__assignments");
+  private boolean writeAssignment() {
+    nodeDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
 
-    // If a new Assignment
-    if (true) {
+    // If we're creating an Assignment
+    if (isNew) {
       String assignmentID = nodeDatabase.push().getKey();
-      nodeDatabase.child(assignmentID).setValue(assignment);
+      nodeDatabase.child(assignmentID).setValue(this);
+    }
+    else {
+      nodeDatabase.child( id() ).setValue(this);
     }
 
     return true;

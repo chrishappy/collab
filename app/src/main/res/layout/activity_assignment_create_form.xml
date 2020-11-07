@@ -72,14 +72,20 @@
                     android:autofillHints="@string/app_name"
                     android:hint="@string/assignment__form__user_class"/>
 
-                <EditText
+                <!-- Replace with model:
+                        https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
+                        See section "Android Show DatePicker on EditText Click Example"
+
+                 -->
+                <DatePicker
                     android:id="@+id/edit_due_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:inputType="date"
                     android:autofillHints=""
-                    android:hint="@string/assignment__form__due_date" />
+                    android:hint="@string/assignment__form__due_date"
+                    android:datePickerMode="spinner"
+                    android:calendarViewShown="false" />
             </LinearLayout>
 
             <Space

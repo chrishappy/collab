@@ -8,23 +8,29 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.EditText;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.login.signin;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Temporary to test Assignment Page
+        Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+        startActivity(redirectToAssignment);
+
+
+
+
+
         setContentView(R.layout.activity_main);
 
         // Allows to go to login page ny clicking on text

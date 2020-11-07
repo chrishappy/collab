@@ -38,13 +38,13 @@ public interface EntityInterface {
      *
      * @return
      */
-    int getCreatedTime();
+    long getCreatedTime();
 
     /**
      *
      * @return
      */
-    int getUpdatedTime();
+    long getUpdatedTime();
 
     /**
      *
@@ -66,13 +66,49 @@ public interface EntityInterface {
      *
      * @return
      */
-    Entity load( int id);
+//    Entity load( int id);
 
     /**
      *
      * @return
      */
     List<Entity> loadMultiple(int[] ids );
+
+    /**
+     * Set a bunch of properties dynamically
+     *
+     * @param valueMap
+     *
+     * @return the Entity class
+     */
+    Entity setFields(Map<String, Object> valueMap);
+
+    /**
+     * Set a property dynamically
+     *
+     * @param fieldName The name of the property
+     * @param value The value to set it to.
+     *
+     * @return
+     *
+     */
+    Entity setField(String fieldName, Object value);
+
+    /**
+     * Get all properties dynamically
+     *
+     * @return a map of the the fields
+     */
+    Map<String, Object> getFields();
+
+    /**
+     * Get a property dynamically
+     *
+     * @param fieldName
+     *
+     * @return the value of the property
+     */
+//    Object getField(String fieldName);
 
     /**
      *

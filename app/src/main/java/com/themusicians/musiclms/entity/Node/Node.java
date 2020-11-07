@@ -25,6 +25,7 @@ import java.util.Map;
 public class Node extends Entity {
 
   /**
+  /**
    * Firebase's Realtime Database
    */
   private DatabaseReference mDatabase;
@@ -37,7 +38,7 @@ public class Node extends Entity {
    */
   public String name;
 
-  public List<Integer> attachmentIds;
+  public List<String> attachmentIds;
 
   public String[] allowedAttachments;
 
@@ -55,27 +56,30 @@ public class Node extends Entity {
   }
 
   /**
+   * Default constructor for Firebase
+   */
+  public Node() {
+    super();
+  }
+
+  /**
+   * Load constructor by id
+   *
+   * @param id the Node id
+   */
+//  public Node(String id) {
+//    super(id);
+//  }
+
+  /**
    *
    * @param valueMap The fields values for the Node
    *
    * @return
    */
   public Node(Map<String, Object> valueMap) {
-    for (String key : valueMap.keySet()){
-      setField(key, valueMap.get(key));
-    }
+    super(valueMap);
   }
-
-
-  /**
-   *
-   * @return
-   */
-  @Override
-  public Node load(int id) {
-    return null;
-  }
-
 
   /**
    *
@@ -86,6 +90,22 @@ public class Node extends Entity {
     return null;
   }
 
+  /**
+   *
+   * @return
+   */
+  @Override
+  public Map<String, Object> getFields() {
+    super.getFields();
+
+    fieldMap.put("name", name);
+    fieldMap.put("attachmentIds", attachmentIds);
+    fieldMap.put("allowedAttachments", allowedAttachments);
+    fieldMap.put("attachments", attachments);
+
+    return fieldMap;
+  }
+
 
   /**
    *
@@ -93,23 +113,6 @@ public class Node extends Entity {
    */
   private boolean writeNode() {
     return true;
-  }
-
-
-  /**
-   * Set a property of the object
-   *
-   * @param fieldName
-   * @param value
-   */
-  private void setField(String fieldName, Object value) {
-    Field field;
-    try {
-      field = getClass().getDeclaredField(fieldName);
-      field.set(this, value);
-    } catch (SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
-      e.printStackTrace();
-    }
   }
 
 
