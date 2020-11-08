@@ -38,13 +38,13 @@ public interface EntityInterface {
      *
      * @return The time that the Entity was created in UTC format
      */
-    long getCreatedTime();
+    Object getCreated();
 
     /**
      *
      * @return The time that the Entity was last updated in UTC format
      */
-    long getUpdatedTime();
+    Object getUpdated();
 
     /**
      *
@@ -99,7 +99,7 @@ public interface EntityInterface {
      *
      * @return a map of the the fields
      */
-    Map<String, Object> getFields();
+//    Map<String, Object> getFields();
 
     /**
      * Get a property dynamically

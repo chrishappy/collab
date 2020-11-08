@@ -3,14 +3,9 @@ package com.themusicians.musiclms.nodeForms;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.text.InputType;
 import android.view.View;
@@ -24,15 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class AssignmentCreateFormActivity extends AppCompatActivity {
 
@@ -54,10 +48,10 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
     mDatabase = FirebaseDatabase.getInstance().getReference();
 
     setContentView(R.layout.activity_assignment_create_form);
-    Toolbar toolbar = findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
-    toolBarLayout.setTitle(getTitle());
+//    Toolbar toolbar = findViewById(R.id.toolbar);
+//    setSupportActionBar(toolbar);
+//    CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
+//    toolBarLayout.setTitle(getTitle());
 
     // Get fields
     final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
@@ -68,18 +62,16 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
 //    final EditText jobMch2 = (EditText) findViewById(R.id.second_machine);
 
     /**
-     *
+     * Due Date Popup
      */
-    EditText eText;
-    Button btnGet;
-    TextView tvw;
-    tvw=(TextView)findViewById(R.id.textView1);
-    eText=(EditText) findViewById(R.id.editText1);
-    eText.setInputType(InputType.TYPE_NULL);
-    eText.setOnClickListener(new View.OnClickListener() {
+    EditText dueDate = findViewById(R.id.dueDate);
+    dueDate.setInputType(InputType.TYPE_NULL);
+
+    Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
+    final Calendar cldr = cal.getInstance();
+    dueDate.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        final Calendar cldr = Calendar.getInstance();
         int day = cldr.get(Calendar.DAY_OF_MONTH);
         int month = cldr.get(Calendar.MONTH);
         int year = cldr.get(Calendar.YEAR);
@@ -87,18 +79,12 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
         DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
             new DatePickerDialog.OnDateSetListener() {
               @Override
-              public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                eText.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+              public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                cldr.set(year, monthOfYear, dayOfMonth);
               }
             }, year, month, day);
         picker.show();
-      }
-    });
-    btnGet=(Button)findViewById(R.id.button1);
-    btnGet.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        tvw.setText("Selected Date: "+ eText.getText());
       }
     });
 
@@ -109,16 +95,23 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
     assignmentSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        List<Integer> dummyList =  Arrays.asList(-12, -11);
+        //Display notification
+        Snackbar.make(view, "Assignment about to be Saved", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show();
+
+        List<String> dummyList =  Arrays.asList("afewfae", "fesfaee");
+
+        // Due Date timestamp
+        long dueDateTimestamp;
+        dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
 
         // Map the fields
         Map<String, Object> fieldMap = new HashMap<>();
         fieldMap.put("name", AssignmentName.getText());
         fieldMap.put("assignees", dummyList);
         fieldMap.put("classId", -1);
+        fieldMap.put("dueDate", dueDateTimestamp);
         fieldMap.put("attachmentIds", dummyList);
-        fieldMap.put("created", System.currentTimeMillis() / 1000);
-        fieldMap.put("updated", System.currentTimeMillis() / 1000);
 
         // Create the assignment using the field map
         Assignment assignment = new Assignment(fieldMap);

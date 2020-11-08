@@ -30,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        button = (Button) findViewById(R.id.assignment_overview_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openActivity_assignment_create_form();
-            }
-        });
+//        button = (Button) findViewById(R.id.assignment_overview_button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openActivity_assignment_create_form();
+//            }
+//        });
 
         // Temporary to test Assignment Page
         Intent redirectToAssignment = new Intent(this, AssignmentCreateFormActivity.class);

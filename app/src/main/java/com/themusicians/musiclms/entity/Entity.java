@@ -1,18 +1,8 @@
 package com.themusicians.musiclms.entity;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.google.firebase.database.ServerValue;
-
 import java.lang.reflect.Field;
-import java.time.Instant;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import kotlinx.coroutines.ObsoleteCoroutinesApi;
 
 /**
  * @file
@@ -48,13 +38,15 @@ public abstract class Entity implements EntityInterface {
 
     /**
      * The time the Entity was created in UTC format
+     * The type is Object in order to save ServerValue.TIMESTAMP. after loading.
      */
-    public long created; // In UTC timestamp format
+    public Object created;
 
     /**
-     *The time the Entity was last updated in UTC format
+     * The time the Entity was last updated in UTC format
+     * The type is Object in order to save ServerValue.TIMESTAMP. Cast to long after loading.
      */
-    public long updated; // In UTC format
+    public Object updated;
 
     /**
      * Set status to 0 if the entity is unpublished
@@ -136,7 +128,7 @@ public abstract class Entity implements EntityInterface {
      * @return The time that the Entity was created in UTC format
      */
     @Override
-    public long getCreatedTime() {
+    public Object getCreated() {
         return this.created;
     }
 
@@ -145,7 +137,7 @@ public abstract class Entity implements EntityInterface {
      * @return The time that the Entity was last updated in UTC format
      */
     @Override
-    public long getUpdatedTime() {
+    public Object getUpdated() {
         return this.updated;
     }
 
@@ -164,14 +156,6 @@ public abstract class Entity implements EntityInterface {
      */
 //    @Override
 //    public abstract Entity create(Map<String, Object> valueMap);
-
-    /**
-     * Can't load by id since it's a realtime database, they need to update it on the go
-     * Probably gonna delete it
-     * @return The Entity
-     */
-//    @Override
-//    public abstract Entity load( int id );
 
     /**
      * @param id The fields for the default Entity
@@ -203,16 +187,6 @@ public abstract class Entity implements EntityInterface {
      * @param valueMap
      */
     public Entity setFields(Map<String, Object> valueMap) {
-        // Set default created time
-        if ( isNew && (String) valueMap.get("created") == null) {
-            valueMap.put("created", ServerValue.TIMESTAMP);
-        }
-
-        // Set default updated time
-        if ( (String) valueMap.get("updated") == null) {
-            valueMap.put("updated", ServerValue.TIMESTAMP);
-        }
-
         for (String key : valueMap.keySet()){
             setField(key, valueMap.get(key));
         }
@@ -225,18 +199,18 @@ public abstract class Entity implements EntityInterface {
      *
      * @return The fieldMap of the subject
      */
-    @Override
-    public Map<String, Object> getFields() {
-        fieldMap.put("id", id);
-        fieldMap.put("type", type);
-        fieldMap.put("entityType", entityType);
-        fieldMap.put("created", created);
-        fieldMap.put("updated", updated);
-        fieldMap.put("status", status);
-        fieldMap.put("uid", uid);
-
-        return fieldMap;
-    }
+//    @Override
+//    public Map<String, Object> getFields() {
+//        fieldMap.put("id", id);
+//        fieldMap.put("type", type);
+//        fieldMap.put("entityType", entityType);
+//        fieldMap.put("created", created);
+//        fieldMap.put("updated", updated);
+//        fieldMap.put("status", status);
+//        fieldMap.put("uid", uid);
+//
+//        return fieldMap;
+//    }
 
     /**
      *
@@ -246,7 +220,7 @@ public abstract class Entity implements EntityInterface {
     public Entity setField(String fieldName, Object value) {
         Field field;
         try {
-            field = getClass().getDeclaredField(fieldName);
+            field = getClass().getField(fieldName); // Can't get getDeclaredField because not recursive
             field.set(this, value);
         } catch (SecurityException | NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
@@ -261,14 +235,15 @@ public abstract class Entity implements EntityInterface {
     public Object getField(String fieldName) {
         Field field;
         Object value = null;
-        
+
         try {
             field = getClass().getDeclaredField(fieldName);
-            value = field.get(this);
+            field.setAccessible(true);
+            value = field.get(null);
         } catch (SecurityException | NoSuchFieldException | IllegalAccessException | IllegalArgumentException e) {
             e.printStackTrace();
         }
-        
+
         return value;
     }
 }

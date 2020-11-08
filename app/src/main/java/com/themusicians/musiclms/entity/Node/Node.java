@@ -94,17 +94,17 @@ public class Node extends Entity {
    *
    * @return
    */
-  @Override
-  public Map<String, Object> getFields() {
-    super.getFields();
-
-    fieldMap.put("name", name);
-    fieldMap.put("attachmentIds", attachmentIds);
-    fieldMap.put("allowedAttachments", allowedAttachments);
-    fieldMap.put("attachments", attachments);
-
-    return fieldMap;
-  }
+//  @Override
+//  public Map<String, Object> getFields() {
+//    super.getFields();
+//
+//    fieldMap.put("name", name);
+//    fieldMap.put("attachmentIds", attachmentIds);
+//    fieldMap.put("allowedAttachments", allowedAttachments);
+//    fieldMap.put("attachments", attachments);
+//
+//    return fieldMap;
+//  }
 
 
   /**
@@ -115,5 +115,34 @@ public class Node extends Entity {
     return true;
   }
 
+  /**
+   * Setters and Getters
+   */
+  /*
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<String> getAttachmentIds() {
+    return attachmentIds;
+  }
+
+  public void setAttachmentIds(List<String> attachmentIds) {
+    this.attachmentIds = attachmentIds;
+  }
+
+  public String[] getAllowedAttachments() {
+    return allowedAttachments;
+  }
+
+  public void setAllowedAttachments(String[] allowedAttachments) {
+    this.allowedAttachments = allowedAttachments;
+  }
+  /**/
 
 }
