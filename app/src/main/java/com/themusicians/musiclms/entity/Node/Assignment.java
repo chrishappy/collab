@@ -64,7 +64,6 @@ public class Assignment extends Node {
 
   /**
    * @param valueMap The fields values for the Node
-   * @return
    */
   public Assignment(Map<String, Object> valueMap) {
     super(valueMap);
@@ -78,7 +77,7 @@ public class Assignment extends Node {
 
   /**
    *
-   * @return
+   * @return The label of the entity: Assignment 1 or 2, etc
    */
   @Override
   public String getLabel() {
@@ -99,7 +98,7 @@ public class Assignment extends Node {
 
   /**
    *
-   * @return
+   * @return Boolean
    */
   private boolean writeAssignment() {
     nodeDatabase = FirebaseDatabase.getInstance().getReference(BASE_TABLE);

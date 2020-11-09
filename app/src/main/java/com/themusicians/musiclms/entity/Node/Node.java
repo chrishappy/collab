@@ -48,7 +48,7 @@ public class Node extends Entity {
 
   /**
    *
-   * @return
+   * @return The label of the entity: Assignment 1 or 2, etc
    */
   @Override
   public String getLabel() {
@@ -72,18 +72,17 @@ public class Node extends Entity {
 //  }
 
   /**
-   *
+   * Constructor by field valueMap
    * @param valueMap The fields values for the Node
    *
-   * @return
    */
   public Node(Map<String, Object> valueMap) {
     super(valueMap);
   }
 
   /**
-   *
-   * @return
+   * @param id The fields for the default Entity
+   * @return The List of the Entities
    */
   @Override
   public List<Entity> loadMultiple(int[] id) {
@@ -92,7 +91,7 @@ public class Node extends Entity {
 
   /**
    *
-   * @return
+   * @return The fieldMap of the subject
    */
 //  @Override
 //  public Map<String, Object> getFields() {
@@ -109,7 +108,7 @@ public class Node extends Entity {
 
   /**
    *
-   * @return
+   * @return Boolean
    */
   private boolean writeNode() {
     return true;
