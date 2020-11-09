@@ -14,45 +14,60 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-import com.themusicians.musiclms.ui.login.signin;
+
+/**
+ *
+ * ....
+ *
+ * Contributors: Jerome Lau, Harveer Khangura
+ * Created by Jerome Lau on 2020-11-02
+ *
+ * --------------------------------
+ *
+ * @todo Open main activity
+ * @todo Prompt user for sign in status (teacher/student/login)
+ */
 
 public class MainActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  FirebaseAuth fAuth;
 
-        // Temporary to test Assignment Page
-       // Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
-        //startActivity(redirectToAssignment);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-
-
-
-
-        setContentView(R.layout.activity_main);
-
-        // Allows to go to login page ny clicking on text
-        TextView textview;
-        textview = (TextView)findViewById(R.id.Or_login);
-        textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent nextPageLogin = new Intent(MainActivity.this, signin.class);
-                startActivity(nextPageLogin);
-            }
-        });
-
+    //checks if user is signed in
+    fAuth = FirebaseAuth.getInstance();
+    if(fAuth.getCurrentUser() != null) {
+      startActivity(new Intent(getApplicationContext(), Placeholder.class));
+      finish();
     }
 
-    public void teacherSignup(View view) {
-        Intent nextPageT = new Intent(this, signup.class);
-        startActivity(nextPageT);
-    }
+    setContentView(R.layout.activity_main);
 
-    public void studentSignup(View view) {
-        Intent nextPageS = new Intent(this, signup.class);
-        startActivity(nextPageS);
-    }
+    // Allows to go to login page ny clicking on text
+    TextView textview;
+    textview = (TextView)findViewById(R.id.Or_login);
+    textview.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent nextPageLogin = new Intent(MainActivity.this, myLogin.class);
+        startActivity(nextPageLogin);
+      }
+    });
+  }
+
+  //Redirects to teacher signup
+  public void teacherSignup(View view) {
+    Intent nextPageT = new Intent(this, signup.class);
+    startActivity(nextPageT);
+  }
+
+  //Redirects to student signup
+  public void studentSignup(View view) {
+    Intent nextPageS = new Intent(this, signup.class);
+    startActivity(nextPageS);
+  }
 }

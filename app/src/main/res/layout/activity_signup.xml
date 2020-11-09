@@ -71,16 +71,18 @@
         app:layout_constraintTop_toBottomOf="@+id/newPassword"
         app:layout_constraintVertical_bias="0.77" />
 
-    <TextView
-        android:id="@+id/singup_back"
-        android:layout_width="82dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="52dp"
-        android:clickable="true"
+    <Button
+        android:id="@+id/signup_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="signUpBack"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/signup_next"
-        app:layout_constraintHorizontal_bias="0.945"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPassword"
+        app:layout_constraintVertical_bias="0.761" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

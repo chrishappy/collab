@@ -20,7 +20,6 @@ import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.ui.login.signin;
 
 public class AssignmentOverviewActivity extends AppCompatActivity {
   FirebaseAuth fAuth;
@@ -29,6 +28,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_assignment_overview);
+    /*
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
@@ -49,26 +49,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
       }
-    });
+    });*/
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.dropdown_menu, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    fAuth = FirebaseAuth.getInstance();
-    switch(item.getItemId()) {
-      case R.id.item1:
-        fAuth.signOut();
-        Intent nextPageLogin = new Intent(AssignmentOverviewActivity.this, signin.class);
-        startActivity(nextPageLogin);
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
-  }
 }

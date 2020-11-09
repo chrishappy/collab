@@ -28,82 +28,106 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * ....
+ *
+ * Contributors: Jerome Lau
+ * Created by Jerome Lau on 2020-11-03
+ *
+ * --------------------------------
+ *
+ * @todo Authenticate users via Firebase
+ * @todo Store miscellaneous user info in Firebase
+ * @todo Proceed through sign up layouts
+ */
+
 public class signup extends AppCompatActivity {
-    EditText newEmail, newPassword, newName;
-    Button next;
-    FirebaseAuth fAuth;
+  EditText newEmail, newPassword, newName;
+  Button next;
+  FirebaseAuth fAuth;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_signup);
 
-        newEmail = findViewById(R.id.newEmail);
-        newPassword = findViewById(R.id.newPassword);
-        fAuth = FirebaseAuth.getInstance();
-        next = findViewById(R.id.signup_next);
+    newEmail = findViewById(R.id.newEmail);
+    newPassword = findViewById(R.id.newPassword);
+    fAuth = FirebaseAuth.getInstance();
+    next = findViewById(R.id.signup_next);
 
-        //check if user is signed in
-        if(fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(), AssignmentOverviewActivity.class));
-            finish();
+    //Sign up page
+    next.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String email = newEmail.getText().toString().trim();
+        String password = newPassword.getText().toString().trim();
+
+        //checks if email is empty
+        if(TextUtils.isEmpty(email)) {
+          newEmail.setError("Email is Required.");
+          return;
         }
 
-        //when the next button is clicked
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = newEmail.getText().toString().trim();
-                String password = newPassword.getText().toString().trim();
+        //checks if password is empty
+        if(TextUtils.isEmpty(password)) {
+          newPassword.setError("Password is Required");
+          return;
+        }
 
-                //checks if email is empty
-                if(TextUtils.isEmpty(email)) {
-                    newEmail.setError("Email is Required.");
-                    return;
-                }
+        //checks for password minimum length
+        if(password.length() < 6){
+          newPassword.setError("Password must be more than 5 characters");
+          return;
+        }
 
-                //checks if password is empty
-                if(TextUtils.isEmpty(password)) {
-                    newPassword.setError("Password is Required");
-                    return;
-                }
-
-                //checks for password minimum length
-                if(password.length() < 6){
-                    newPassword.setError("Password must be more than 5 characters");
-                    return;
-                }
-
-                //registers account to firebase and sends to next screen
-                fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
-                            setContentView(R.layout.signup_details);
-                        }else {
-                            Toast.makeText(signup.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        //registers account to firebase and sends to next screen
+        fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+          @Override
+          public void onComplete(@NonNull Task<AuthResult> task) {
+            if(task.isSuccessful()) {
+              Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
+              setContentView(R.layout.signup_details);
+            }else {
+              Toast.makeText(signup.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
+          }
         });
+      }
+    });
+  }
+
+  //Sign up details page
+  public void signUpDetailsNext(View view){
+    newName = findViewById(R.id.newName);
+    String name = newName.getText().toString().trim();
+    if(TextUtils.isEmpty(name)) {
+      newName.setError("Name is Required");
+      return;
     }
 
-    public void signUpDetailsNext(View view){
-        newName = findViewById(R.id.newName);
-        String name = newName.getText().toString().trim();
-        if(TextUtils.isEmpty(name)) {
-            newName.setError("Name is Required");
-            return;
-        }
+    setContentView(R.layout.signup_tech);
+  }
 
-        setContentView(R.layout.signup_tech);
-    }
+  //Sign up tech page
+  public void signUpFinish(View view) {
+    Intent signupFinish = new Intent(this, Placeholder.class);
+    startActivity(signupFinish);
+  }
 
-    //Sign up tech
-    public void signUpFinish(View view) {
-        Intent signupFinish = new Intent(this, AssignmentOverviewActivity.class);
-        startActivity(signupFinish);
-    }
+  //All back button functions
+  public void signUpBack(View view) {
+    Intent signupBack = new Intent(this, MainActivity.class);
+    startActivity(signupBack);
+  }
+
+  public void signUpDetailsBack(View view) {
+    setContentView(R.layout.activity_signup);
+  }
+
+  public void signUpTechBack(View view) {
+    setContentView(R.layout.signup_details);
+  }
+
 }
