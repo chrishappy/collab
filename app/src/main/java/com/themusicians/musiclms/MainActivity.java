@@ -17,6 +17,19 @@ import android.widget.Toast;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.login.signin;
+/**
+ * @file Assignment.java
+ *
+ * ....
+ *
+ * Contributors: Harveer Khangura, Jerome Lau
+ * Created by Nathan Tsai on 2020-11-02
+ *
+ * --------------------------------
+ *
+ * @todo Create Edit Form
+ * @todo Create UI
+ */
 
 public class MainActivity extends AppCompatActivity {
     @Override
