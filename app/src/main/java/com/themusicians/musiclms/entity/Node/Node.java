@@ -30,6 +30,8 @@ public class Node extends Entity {
    */
   private DatabaseReference mDatabase;
 
+  public String entityType = "node";
+
   /**
    * The fields for the default Node
    *
@@ -48,7 +50,7 @@ public class Node extends Entity {
 
   /**
    *
-   * @return
+   * @return The label of the entity: Assignment 1 or 2, etc
    */
   @Override
   public String getLabel() {
@@ -72,18 +74,17 @@ public class Node extends Entity {
 //  }
 
   /**
-   *
+   * Constructor by field valueMap
    * @param valueMap The fields values for the Node
    *
-   * @return
    */
   public Node(Map<String, Object> valueMap) {
     super(valueMap);
   }
 
   /**
-   *
-   * @return
+   * @param id The fields for the default Entity
+   * @return The List of the Entities
    */
   @Override
   public List<Entity> loadMultiple(int[] id) {
@@ -92,28 +93,57 @@ public class Node extends Entity {
 
   /**
    *
-   * @return
+   * @return The fieldMap of the subject
    */
-  @Override
-  public Map<String, Object> getFields() {
-    super.getFields();
-
-    fieldMap.put("name", name);
-    fieldMap.put("attachmentIds", attachmentIds);
-    fieldMap.put("allowedAttachments", allowedAttachments);
-    fieldMap.put("attachments", attachments);
-
-    return fieldMap;
-  }
+//  @Override
+//  public Map<String, Object> getFields() {
+//    super.getFields();
+//
+//    fieldMap.put("name", name);
+//    fieldMap.put("attachmentIds", attachmentIds);
+//    fieldMap.put("allowedAttachments", allowedAttachments);
+//    fieldMap.put("attachments", attachments);
+//
+//    return fieldMap;
+//  }
 
 
   /**
    *
-   * @return
+   * @return Boolean
    */
   private boolean writeNode() {
     return true;
   }
 
+  /**
+   * Setters and Getters
+   */
+  /* */
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<String> getAttachmentIds() {
+    return attachmentIds;
+  }
+
+  public void setAttachmentIds(List<String> attachmentIds) {
+    this.attachmentIds = attachmentIds;
+  }
+
+  public String[] getAllowedAttachments() {
+    return allowedAttachments;
+  }
+
+  public void setAllowedAttachments(String[] allowedAttachments) {
+    this.allowedAttachments = allowedAttachments;
+  }
+  /**/
 
 }
