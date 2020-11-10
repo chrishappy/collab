@@ -8,12 +8,16 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
+import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
 import java.util.Calendar;
@@ -25,7 +29,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class AssignmentCreateFormActivity extends AppCompatActivity {
+public class AssignmentCreateFormActivity extends AppCompatActivity
+                                          implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
   /** The Firebase Database Instance */
   private DatabaseReference mDatabase;
@@ -86,7 +91,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
           }
         });
 
-    /** Save the Assignment */
+    /** Cancel the Assignment */
     final Button assignmentCancel = findViewById(R.id.assignmentCancelAction);
     assignmentCancel.setOnClickListener(
         new View.OnClickListener() {
@@ -98,6 +103,8 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
           }
         });
 
+
+    /** Save the Assignment */
     final Button assignmentSave = findViewById(R.id.assignmentSaveAction1);
     assignmentSave.setOnClickListener(
         new View.OnClickListener() {
@@ -130,5 +137,39 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
                 .show();
           }
         });
+
+    /**
+     * This section will be added to all Nodes. Please use variables to allow us
+     * to quickly move these functions into a separate class
+     */
+
+
+    /** Add a Comment */
+    final Button addCommentButton = findViewById(R.id.addCommentButton);
+    addCommentButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            String dialogTag = "addComment";
+            DialogFragment newAddCommentDialog = new AddCommentDialogFragment();
+            newAddCommentDialog.show(getSupportFragmentManager(), "addComment");
+          }
+        });
+
+  }
+
+  @Override
+  public void onDialogPositiveClick(DialogFragment dialog) {
+    Snackbar.make(findViewById(R.id.createAssignmentLayout), "Comment Positive clicked", Snackbar.LENGTH_LONG)
+        .setAction("Action", null)
+        .show();
+  }
+
+  @Override
+  public void onDialogNegativeClick(DialogFragment dialog) {
+    Snackbar.make(findViewById(R.id.createAssignmentLayout), "Comment Negative clicked", Snackbar.LENGTH_LONG)
+        .setAction("Action", null)
+        .show();
+
   }
 }

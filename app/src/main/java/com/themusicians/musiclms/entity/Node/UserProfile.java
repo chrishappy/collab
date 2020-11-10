@@ -55,14 +55,14 @@ public class UserProfile extends Node {
    * @return
    */
   private boolean writeAssignment() {
-    DatabaseReference userDatabse = FirebaseDatabase.getInstance().getReference(baseTable);
+    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
 
     // If we're creating an Assignment
     if (isNew) {
-      String assignmentID = userDatabse.push().getKey();
-      userDatabse.child(assignmentID).setValue(this);
+      String assignmentID = userDatabase.push().getKey();
+      userDatabase.child(assignmentID).setValue(this);
     } else {
-      userDatabse.child( getId()).setValue(this);
+      userDatabase.child( getId()).setValue(this);
     }
 
     return true;
