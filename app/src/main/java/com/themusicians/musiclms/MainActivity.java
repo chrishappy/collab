@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
     //            }
     //        });
 
-    // Temporary to test Assignment Page
-    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
-    startActivity(redirectToAssignment);
+        // Temporary to test Assignment Page
+//        Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+//        startActivity(redirectToAssignment);
 
     setContentView(R.layout.activity_main);
 
