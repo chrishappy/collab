@@ -14,9 +14,15 @@
         android:theme="@style/AppTheme">
 
 
+        <!-- User Activities -->
+        <activity android:name=".signup" />
         <activity android:name=".userProfile"></activity>
         <activity android:name=".Placeholder" />
-        <activity android:name=".myLogin" />
+        <activity
+            android:name=".myLogin"
+            android:label="@string/title_activity_signin" />
+
+        <!-- Assignment -->
         <activity
             android:name=".nodeViews.AssignmentOverviewActivity"
             android:label="@string/title_activity_assignment_overview"/>
@@ -38,14 +44,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".nodeViews.AssignmentOverviewActivity" />
         </activity>
-        <activity android:name=".signup" />
-        <activity
-            android:name=".ui.login.signin"
-            android:label="@string/title_activity_signin" />
+
+        <!-- Main Activity -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

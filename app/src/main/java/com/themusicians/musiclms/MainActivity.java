@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-import com.themusicians.musiclms.ui.login.signin;
+import com.themusicians.musiclms.myLogin;
 
 import java.sql.BatchUpdateException;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent nextPageLogin = new Intent(MainActivity.this, signin.class);
+                Intent nextPageLogin = new Intent(MainActivity.this, myLogin.class);
                 startActivity(nextPageLogin);
             }
         });

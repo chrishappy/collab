@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -93,18 +94,10 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
       public void onClick(View view) {
         Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
-      }
-    });
 
-    final Button assignmentSave = findViewById(R.id.assignmentSaveAction);
-    assignmentSave.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        //Display notification
-        Snackbar.make(view, "Assignment about to be Saved", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
-
-        List<String> dummyList =  Arrays.asList("afewfae", "fesfaee");
+        List<String> dummyList =  new LinkedList<>();
+        dummyList.add("This is an element");
+        dummyList.add("This is another element");
 
         // Due Date timestamp
         long dueDateTimestamp;
@@ -120,6 +113,36 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
 
         String assignId = mDatabase.push().getKey();
         mDatabase.child(assignId).setValue( fieldMap );
+//
+//        // Create the assignment using the field map
+        Assignment assignment = new Assignment(fieldMap);
+        assignment.save();
+      }
+    });
+
+    final Button assignmentSave = findViewById(R.id.assignmentSaveAction);
+    assignmentSave.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        //Display notification
+        Snackbar.make(view, "Assignment about to be Saved", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show();
+
+        List<String> dummyList =  new LinkedList<>();
+        dummyList.add("This is an element");
+        dummyList.add("This is another element");
+
+        // Due Date timestamp
+        long dueDateTimestamp;
+        dueDateTimestamp = 1234; //TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
+
+        // Map the fields
+        Map<String, Object> fieldMap = new HashMap<>();
+        fieldMap.put("name", AssignmentName.getText());
+//        fieldMap.put("assignees", dummyList);
+        fieldMap.put("classId", -1);
+        fieldMap.put("dueDate", dueDateTimestamp);
+//        fieldMap.put("attachmentIds", dummyList);
 //
 //        // Create the assignment using the field map
         Assignment assignment = new Assignment(fieldMap);
