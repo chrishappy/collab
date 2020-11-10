@@ -12,6 +12,7 @@ import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +87,10 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
                 .setAction("Action", null)
                 .show();
 
-            List<String> dummyList = Arrays.asList("afewfae", "fesfaee");
+//            List<String> dummyList = Arrays.asList("afewfae", "fesfaee");
+        List<String> dummyList =  new LinkedList<>();
+        dummyList.add("This is an element");
+        dummyList.add("This is another element");
 
             // Due Date timestamp
             long dueDateTimestamp;
@@ -95,10 +99,10 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
             // Map the fields
             Map<String, Object> fieldMap = new HashMap<>();
             fieldMap.put("name", AssignmentName.getText());
-            fieldMap.put("assignees", dummyList);
+//            fieldMap.put("assignees", dummyList);
             fieldMap.put("classId", -1);
             fieldMap.put("dueDate", dueDateTimestamp);
-            fieldMap.put("attachmentIds", dummyList);
+//            fieldMap.put("attachmentIds", dummyList);
 
             String assignId = mDatabase.push().getKey();
             mDatabase.child(assignId).setValue(fieldMap);
