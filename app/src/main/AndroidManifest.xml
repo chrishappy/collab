@@ -38,9 +38,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".nodeViews.AssignmentOverviewActivity" />
         </activity>
-        <activity
-            android:name=".components.MainNavigation"
-            android:label="@string/title_activity_assignment_overview" />
         <activity android:name=".signup" />
         <activity
             android:name=".ui.login.signin"
