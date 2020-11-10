@@ -1,8 +1,5 @@
 package com.themusicians.musiclms.nodeViews;
 
-
-
-
 public class person {
   // Variable to store data corresponding
   // to firstname keyword in database
