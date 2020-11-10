@@ -37,8 +37,10 @@ public class Assignment extends Node {
    */
   private DatabaseReference nodeDatabase;
 
+  public String type = "assignment";
+
   /**
-   * The fields for the default Node
+   * The fields for the Assignment
    *
    * Public properties will be automatically saved by Firebase
    * Private will not
@@ -67,8 +69,6 @@ public class Assignment extends Node {
    */
   public Assignment(Map<String, Object> valueMap) {
     super(valueMap);
-
-    valueMap.put("entityType", "assignment");
 
     setFields(valueMap);
   }
@@ -157,7 +157,7 @@ public class Assignment extends Node {
   /**
    * Settings and Getters
    */
-  /*
+  /**/
 
   public List<String> getAssignees() {
     return assignees;

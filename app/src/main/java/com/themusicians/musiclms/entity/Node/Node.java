@@ -30,6 +30,8 @@ public class Node extends Entity {
    */
   private DatabaseReference mDatabase;
 
+  public String entityType = "node";
+
   /**
    * The fields for the default Node
    *
@@ -117,7 +119,7 @@ public class Node extends Entity {
   /**
    * Setters and Getters
    */
-  /*
+  /* */
 
   public String getName() {
     return name;

@@ -56,42 +56,47 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
     // Get fields
     final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
     final EditText StudentOrClass = (EditText) findViewById(R.id.students_or_class);
-//    final EditText AssignmentDate = (EditText) findViewById(R.id.edit_due_date);
-//    final EditText jobDeet = (EditText) findViewById(R.id.job_dis);
-//    final EditText jobMch1 = (EditText) findViewById(R.id.first_machine);
-//    final EditText jobMch2 = (EditText) findViewById(R.id.second_machine);
 
     /**
      * Due Date Popup
      */
     EditText dueDate = findViewById(R.id.dueDate);
-    dueDate.setInputType(InputType.TYPE_NULL);
-
-    Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
-    final Calendar cldr = cal.getInstance();
-    dueDate.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
-        // date picker dialog
-        DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
-            new DatePickerDialog.OnDateSetListener() {
-              @Override
-              public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                cldr.set(year, monthOfYear, dayOfMonth);
-              }
-            }, year, month, day);
-        picker.show();
-      }
-    });
+//    dueDate.setInputType(InputType.TYPE_NULL);
+//
+//    Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
+//    final Calendar cldr = cal.getInstance();
+//    dueDate.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        int day = cldr.get(Calendar.DAY_OF_MONTH);
+//        int month = cldr.get(Calendar.MONTH);
+//        int year = cldr.get(Calendar.YEAR);
+//        // date picker dialog
+//        DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
+//            new DatePickerDialog.OnDateSetListener() {
+//              @Override
+//              public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+//                cldr.set(year, monthOfYear, dayOfMonth);
+//              }
+//            }, year, month, day);
+//        picker.show();
+//      }
+//    });
 
     /**
      * Save the Assignment
      */
-    Button assignmentSave = findViewById(R.id.assignmentSaveAction);
+    final Button assignmentCancel = findViewById(R.id.assignmentCancelAction);
+    assignmentCancel.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show();
+      }
+    });
+
+    final Button assignmentSave = findViewById(R.id.assignmentSaveAction);
     assignmentSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -103,7 +108,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
 
         // Due Date timestamp
         long dueDateTimestamp;
-        dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
+        dueDateTimestamp = 1234; //TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
 
         // Map the fields
         Map<String, Object> fieldMap = new HashMap<>();
@@ -113,11 +118,14 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
         fieldMap.put("dueDate", dueDateTimestamp);
         fieldMap.put("attachmentIds", dummyList);
 
-        // Create the assignment using the field map
+        String assignId = mDatabase.push().getKey();
+        mDatabase.child(assignId).setValue( fieldMap );
+//
+//        // Create the assignment using the field map
         Assignment assignment = new Assignment(fieldMap);
         assignment.save();
-
-        //Display notification
+//
+//        //Display notification
         Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
       }

@@ -81,7 +81,7 @@ public interface EntityInterface {
      *
      * @return the Entity class
      */
-    Entity setFields(Map<String, Object> valueMap);
+//    Entity setFields(Map<String, Object> valueMap);
 
     /**
      * Set a property dynamically
@@ -92,7 +92,7 @@ public interface EntityInterface {
      * @return The Entity with value
      *
      */
-    Entity setField(String fieldName, Object value);
+//    Entity setField(String fieldName, Object value);
 
     /**
      * Get all properties dynamically

@@ -71,6 +71,21 @@ public class AssignmentInstrumentedTest {
 
   /**
    *
+   * Test Database
+   *
+   */
+  @Test
+  public void testFirebaseDatabaseSave() throws Exception {
+
+    DatabaseReference nodeDatabase = FirebaseDatabase.getInstance().getReference(Assignment.BASE_TABLE);
+    String id = nodeDatabase.push().getKey();
+    nodeDatabase.child(id).setValue( fieldMap );
+
+    nodeDatabase.child(id).removeValue();
+  }
+
+  /**
+   *
    * Method: save()
    *
    */
@@ -82,6 +97,7 @@ public class AssignmentInstrumentedTest {
     assertTrue(assignment.save());
 
     DatabaseReference nodeDatabase = FirebaseDatabase.getInstance().getReference(assignment.BASE_TABLE);
+
 
     ValueEventListener nodeListener = new ValueEventListener() {
       @Override

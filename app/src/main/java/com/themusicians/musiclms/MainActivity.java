@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         // Temporary to test Assignment Page
-        Intent redirectToAssignment = new Intent(this, AssignmentCreateFormActivity.class);
+        Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
         startActivity(redirectToAssignment);
 
 
