@@ -1,28 +1,23 @@
 package com.themusicians.musiclms;
 
-import android.content.Context;
+
+import static org.junit.Assert.*;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.Assignment;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -47,7 +42,7 @@ public class AssignmentInstrumentedTest {
     fieldMap.put("dueDate", 123);
 
     // Set Lists Fields
-    List<String> dummyList =  new LinkedList<>();
+    List<String> dummyList = new LinkedList<>();
     dummyList.add("fewsfj32");
     dummyList.add("wfef");
     fieldMap.put("assignees", dummyList);
@@ -56,62 +51,51 @@ public class AssignmentInstrumentedTest {
   }
 
   @After
-  public void after() throws Exception {
-  }
+  public void after() throws Exception {}
 
-  /**
-   *
-   * Constructor: Assignment(String id)
-   *
-   */
+  /** Constructor: Assignment(String id) */
   @Test
   public void testAssignmentConstructor_loadById() throws Exception {
-//    Assignment loadAssignment = new Assignment(fieldMap);
+    //    Assignment loadAssignment = new Assignment(fieldMap);
   }
 
-  /**
-   *
-   * Test Database
-   *
-   */
+  /** Test Database */
   @Test
   public void testFirebaseDatabaseSave() throws Exception {
 
-    DatabaseReference nodeDatabase = FirebaseDatabase.getInstance().getReference(Assignment.BASE_TABLE);
+    DatabaseReference nodeDatabase =
+        FirebaseDatabase.getInstance().getReference(Assignment.BASE_TABLE);
     String id = nodeDatabase.push().getKey();
-    nodeDatabase.child(id).setValue( fieldMap );
+    nodeDatabase.child(id).setValue(fieldMap);
 
     nodeDatabase.child(id).removeValue();
   }
 
-  /**
-   *
-   * Method: save()
-   *
-   */
+  /** Method: save() */
   @Test
   public void testSave() throws Exception {
     // Save the data
-    assignment = new Assignment( fieldMap );
+    assignment = new Assignment(fieldMap);
     assignment.setField("name", otherAssignmentName);
     assertTrue(assignment.save());
 
-    DatabaseReference nodeDatabase = FirebaseDatabase.getInstance().getReference(assignment.BASE_TABLE);
+    DatabaseReference nodeDatabase =
+        FirebaseDatabase.getInstance().getReference(assignment.BASE_TABLE);
 
+    ValueEventListener nodeListener =
+        new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            // Get node object and use the values to update the UI
+            loadAssignment = dataSnapshot.getValue(Assignment.class);
+            assertEquals(loadAssignment.getLabel(), otherAssignmentName);
+          }
 
-    ValueEventListener nodeListener = new ValueEventListener() {
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-        // Get node object and use the values to update the UI
-        loadAssignment = dataSnapshot.getValue(Assignment.class);
-        assertEquals(loadAssignment.getLabel(), otherAssignmentName);
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-        assertTrue("Loading failed", false);
-      }
-    };
-    nodeDatabase.child( assignment.id() ).addListenerForSingleValueEvent(nodeListener);
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+            assertTrue("Loading failed", false);
+          }
+        };
+    nodeDatabase.child(assignment.id()).addListenerForSingleValueEvent(nodeListener);
   }
 }
