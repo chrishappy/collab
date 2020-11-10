@@ -3,30 +3,20 @@ package com.themusicians.musiclms.entity.Node;
 import com.google.firebase.database.DatabaseReference;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
-
 import java.util.List;
 import java.util.Map;
 
 /**
  * @file Node.java
- *
- * ....
- *
- * Contributors: Nathan Tsai
- * Created by Nathan Tsai on 2020-11-02
- *
- * --------------------------------
- *
+ *     <p>....
+ *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
+ *     <p>--------------------------------
  * @todo Create Class
  * @todo Create UI
  */
-
 public class Node extends Entity {
 
-  /**
-  /**
-   * Firebase's Realtime Database
-   */
+  /** /** Firebase's Realtime Database */
   private DatabaseReference mDatabase;
 
   public String entityType = "node";
@@ -34,8 +24,7 @@ public class Node extends Entity {
   /**
    * The fields for the default Node
    *
-   * Public properties will be automatically saved by Firebase
-   * Private will not
+   * <p>Public properties will be automatically saved by Firebase Private will not
    */
   public String name;
 
@@ -47,18 +36,13 @@ public class Node extends Entity {
 
   /*** End fields ***/
 
-  /**
-   *
-   * @return The label of the entity: Assignment 1 or 2, etc
-   */
+  /** @return The label of the entity: Assignment 1 or 2, etc */
   @Override
   public String getLabel() {
     return this.name;
   }
 
-  /**
-   * Default constructor for Firebase
-   */
+  /** Default constructor for Firebase */
   public Node() {
     super();
   }
@@ -68,14 +52,14 @@ public class Node extends Entity {
    *
    * @param id the Node id
    */
-//  public Node(String id) {
-//    super(id);
-//  }
+  //  public Node(String id) {
+  //    super(id);
+  //  }
 
   /**
    * Constructor by field valueMap
-   * @param valueMap The fields values for the Node
    *
+   * @param valueMap The fields values for the Node
    */
   public Node(Map<String, Object> valueMap) {
     super(valueMap);
@@ -90,34 +74,25 @@ public class Node extends Entity {
     return null;
   }
 
-  /**
-   *
-   * @return The fieldMap of the subject
-   */
-//  @Override
-//  public Map<String, Object> getFields() {
-//    super.getFields();
-//
-//    fieldMap.put("name", name);
-//    fieldMap.put("attachmentIds", attachmentIds);
-//    fieldMap.put("allowedAttachments", allowedAttachments);
-//    fieldMap.put("attachments", attachments);
-//
-//    return fieldMap;
-//  }
+  /** @return The fieldMap of the subject */
+  //  @Override
+  //  public Map<String, Object> getFields() {
+  //    super.getFields();
+  //
+  //    fieldMap.put("name", name);
+  //    fieldMap.put("attachmentIds", attachmentIds);
+  //    fieldMap.put("allowedAttachments", allowedAttachments);
+  //    fieldMap.put("attachments", attachments);
+  //
+  //    return fieldMap;
+  //  }
 
-
-  /**
-   *
-   * @return Boolean
-   */
+  /** @return Boolean */
   private boolean writeNode() {
     return true;
   }
 
-  /**
-   * Setters and Getters
-   */
+  /** Setters and Getters */
   /* */
 
   public String getName() {

@@ -1,30 +1,24 @@
 package com.themusicians.musiclms;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
- *
  * ....
  *
- * Contributors: Jerome Lau
- * Created by Jerome Lau on 2020-11-04
+ * <p>Contributors: Jerome Lau Created by Jerome Lau on 2020-11-04
  *
- * --------------------------------
+ * <p>--------------------------------
  *
  * @todo Act as placeholder for main activity page
  */
-
 public class Placeholder extends AppCompatActivity {
 
   FirebaseAuth fAuth;
@@ -45,7 +39,7 @@ public class Placeholder extends AppCompatActivity {
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     fAuth = FirebaseAuth.getInstance();
-    switch(item.getItemId()) {
+    switch (item.getItemId()) {
       case R.id.logout:
         fAuth.signOut();
         Intent logout = new Intent(Placeholder.this, myLogin.class);
@@ -56,7 +50,8 @@ public class Placeholder extends AppCompatActivity {
         startActivity(toUserProfile);
         return true;
       case R.id.createassignment:
-        Intent toCreateAssignment = new Intent(Placeholder.this, AssignmentCreateFormActivity.class);
+        Intent toCreateAssignment =
+            new Intent(Placeholder.this, AssignmentCreateFormActivity.class);
         startActivity(toCreateAssignment);
         return true;
     }

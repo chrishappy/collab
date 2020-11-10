@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 public class addAttachmentsViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+  private MutableLiveData<String> mText;
 
-    public addAttachmentsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
+  public addAttachmentsViewModel() {
+    mText = new MutableLiveData<>();
+    mText.setValue("This is home fragment");
+  }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
+  public LiveData<String> getText() {
+    return mText;
+  }
 }

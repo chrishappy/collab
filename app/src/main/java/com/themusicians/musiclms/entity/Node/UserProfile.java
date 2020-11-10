@@ -2,52 +2,36 @@ package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.themusicians.musiclms.entity.Attachment.Attachment;
-
-import java.util.List;
 import java.util.Map;
 
 /**
  * @file Assignment.java
- *
- * ....
- *
- * Contributors: Nathan Tsai
- * Created by Nathan Tsai on 2020-11-02
- *
- * --------------------------------
- *
+ *     <p>....
+ *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
+ *     <p>--------------------------------
  * @todo Create Edit Form
  * @todo Create UI
  */
-
 public class UserProfile extends Node {
 
-  /**
-   * Base table for saving the data
-   */
+  /** Base table for saving the data */
   public static String baseTable = "node__user_profile";
 
-  /**
-   * Firebase's Realtime Database
-   */
+  /** Firebase's Realtime Database */
   private DatabaseReference userDatabse;
 
   /**
    * The fields for the default Node
    *
-   * Public properties will be automatically saved by Firebase
-   * Private will not
+   * <p>Public properties will be automatically saved by Firebase Private will not
    */
   public String name;
 
-//  public List<String> assignees;
-//
-//  public int classId;
+  //  public List<String> assignees;
+  //
+  //  public int classId;
 
-  /**
-   * The default constructor for Firebase + loadMultiple
-   */
+  /** The default constructor for Firebase + loadMultiple */
   public UserProfile() {
     super();
   }
@@ -57,29 +41,29 @@ public class UserProfile extends Node {
    *
    * @param id
    */
-//  public Assignment(String id) {
-////    super(id);
-//
-//    nodeDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
-//
-//    ValueEventListener nodeListener = new ValueEventListener() {
-//      @Override
-//      public void onDataChange(DataSnapshot dataSnapshot) {
-//        // Get node object and use the values to update the UI
-//        Node node = dataSnapshot.getValue(Node.class);
-//
-//        isNew = false;
-//        fieldMap = node.getFields();
-//      }
-//
-//      @Override
-//      public void onCancelled(DatabaseError databaseError) {
-//        Log.w(DATABASE_TAG, "loadPost:onCancelled", databaseError.toException());
-//      }
-//    };
-//
-//    nodeDatabase.addListenerForSingleValueEvent(nodeListener);
-//  }
+  //  public Assignment(String id) {
+  ////    super(id);
+  //
+  //    nodeDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
+  //
+  //    ValueEventListener nodeListener = new ValueEventListener() {
+  //      @Override
+  //      public void onDataChange(DataSnapshot dataSnapshot) {
+  //        // Get node object and use the values to update the UI
+  //        Node node = dataSnapshot.getValue(Node.class);
+  //
+  //        isNew = false;
+  //        fieldMap = node.getFields();
+  //      }
+  //
+  //      @Override
+  //      public void onCancelled(DatabaseError databaseError) {
+  //        Log.w(DATABASE_TAG, "loadPost:onCancelled", databaseError.toException());
+  //      }
+  //    };
+  //
+  //    nodeDatabase.addListenerForSingleValueEvent(nodeListener);
+  //  }
 
   /**
    * @param valueMap The fields values for the Node
@@ -93,12 +77,9 @@ public class UserProfile extends Node {
     setFields(valueMap);
   }
 
-  /*** End fields ***/
+  /** * End fields ** */
 
-  /**
-   *
-   * @return
-   */
+  /** @return */
   @Override
   public String getLabel() {
     return this.name;
@@ -128,12 +109,10 @@ public class UserProfile extends Node {
     if (isNew) {
       String assignmentID = userDatabse.push().getKey();
       userDatabse.child(assignmentID).setValue(this);
-    }
-    else {
-      userDatabse.child( id() ).setValue(this);
+    } else {
+      userDatabse.child(id()).setValue(this);
     }
 
     return true;
   }
-
 }
