@@ -94,33 +94,10 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
       public void onClick(View view) {
         Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
-
-        List<String> dummyList =  new LinkedList<>();
-        dummyList.add("This is an element");
-        dummyList.add("This is another element");
-
-        // Due Date timestamp
-        long dueDateTimestamp;
-        dueDateTimestamp = 1234; //TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
-
-        // Map the fields
-        Map<String, Object> fieldMap = new HashMap<>();
-        fieldMap.put("name", AssignmentName.getText());
-        fieldMap.put("assignees", dummyList);
-        fieldMap.put("classId", -1);
-        fieldMap.put("dueDate", dueDateTimestamp);
-        fieldMap.put("attachmentIds", dummyList);
-
-        String assignId = mDatabase.push().getKey();
-        mDatabase.child(assignId).setValue( fieldMap );
-//
-//        // Create the assignment using the field map
-        Assignment assignment = new Assignment(fieldMap);
-        assignment.save();
       }
     });
 
-    final Button assignmentSave = findViewById(R.id.assignmentSaveAction);
+    final Button assignmentSave = findViewById(R.id.assignmentSaveAction1);
     assignmentSave.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {

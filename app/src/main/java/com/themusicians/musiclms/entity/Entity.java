@@ -71,7 +71,7 @@ public abstract class Entity implements EntityInterface {
     /**
      * Tags for Log
      */
-    final protected String DATABASE_TAG = "FirefoxDatabase";
+    final protected String DATABASE_TAG = "FirebaseDatabase";
 
     /**
      * Default constructor without arguments for Firebase and ::loadMultiple

@@ -4,7 +4,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public class Node extends Entity {
 
   public List<String> attachmentIds;
 
-  public String[] allowedAttachments;
+  public List<String> allowedAttachments;
 
   private Map<Map, Attachment> attachments;
 
@@ -137,11 +136,11 @@ public class Node extends Entity {
     this.attachmentIds = attachmentIds;
   }
 
-  public String[] getAllowedAttachments() {
+  public List<String> getAllowedAttachments() {
     return allowedAttachments;
   }
 
-  public void setAllowedAttachments(String[] allowedAttachments) {
+  public void setAllowedAttachments(List<String> allowedAttachments) {
     this.allowedAttachments = allowedAttachments;
   }
   /**/
