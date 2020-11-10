@@ -172,7 +172,7 @@
                     android:text="@string/assignment__form__cancel" />
 
                 <Button
-                    android:id="@+id/assignmentSaveAction"
+                    android:id="@+id/assignmentSaveAction1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?attr/materialButtonOutlinedStyle"

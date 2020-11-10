@@ -40,7 +40,7 @@ public class Assignment extends Node {
 
   public List<String> attachmentIds;
 
-  public String[] allowedAttachments;
+  public List<String> allowedAttachments;
 
   private Map<Map, Attachment> attachments;
 
@@ -167,11 +167,11 @@ public class Assignment extends Node {
     this.dueDate = dueDate;
   }
 
-  public String[] getAllowedAttachments() {
+  public List<String> getAllowedAttachments() {
     return allowedAttachments;
   }
 
-  public void setAllowedAttachments(String[] allowedAttachments) {
+  public void setAllowedAttachments(List<String> allowedAttachments) {
     this.allowedAttachments = allowedAttachments;
   }
   /**/
