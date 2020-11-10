@@ -7,6 +7,19 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/signup_tech_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="signUpTechBack"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signup_finish"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/upload_youtube"
+        app:layout_constraintVertical_bias="0.551" />
+
+    <Button
         android:id="@+id/signup_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,10 +28,10 @@
         android:text="Finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.916"
+        app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newPassword"
-        app:layout_constraintVertical_bias="0.77" />
+        app:layout_constraintTop_toBottomOf="@+id/upload_youtube"
+        app:layout_constraintVertical_bias="0.952" />
 
     <TextView
         android:id="@+id/signuptech1"

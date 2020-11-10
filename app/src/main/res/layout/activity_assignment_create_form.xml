@@ -7,31 +7,31 @@
     android:fitsSystemWindows="true"
     tools:context=".nodeForms.AssignmentCreateFormActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/app_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/app_bar_height"-->
+<!--        android:fitsSystemWindows="true"-->
+<!--        android:theme="@style/AppTheme.AppBarOverlay">-->
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+<!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--            android:id="@+id/toolbar_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:fitsSystemWindows="true"-->
+<!--            app:contentScrim="?attr/colorPrimary"-->
+<!--            app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
+<!--            app:toolbarId="@+id/toolbar">-->
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                app:layout_collapseMode="pin"-->
+<!--                app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+<!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
 <!--    <include layout="@layout/content_scrolling" />-->
     <ScrollView
@@ -46,46 +46,52 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/assignment_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/assignment__form__assignment_name" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <MultiAutoCompleteTextView
-                    android:id="@+id/students_or_class"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:autofillHints="@string/app_name"
-                    android:hint="@string/assignment__form__user_class"/>
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/assignment_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/assignment__form__assignment_name" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <MultiAutoCompleteTextView
+                        android:id="@+id/students_or_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:autofillHints="@string/app_name"
+                        android:hint="@string/assignment__form__user_class"/>
+                </LinearLayout>
                 <!-- Replace with model:
                         https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
                         See section "Android Show DatePicker on EditText Click Example"
 
                  -->
-                <DatePicker
-                    android:id="@+id/edit_due_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:autofillHints=""
-                    android:hint="@string/assignment__form__due_date"
-                    android:datePickerMode="spinner"
-                    android:calendarViewShown="false" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/dueDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/assignment__form__due_date" />
+                </LinearLayout>
             </LinearLayout>
 
             <Space
@@ -101,7 +107,9 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/assignment__form__add_todos" />
+                    android:text="@string/assignment__form__add_todos"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -113,16 +121,38 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/assignment__form__add_todo_item"
-                        style="?attr/materialButtonOutlinedStyle" />
+                        style="?attr/materialButtonOutlinedStyle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
+                    <!-- Temporarily disable
                     <Button
                         android:id="@+id/todoReuseItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/assignment__form__reuse_todo_item" />
+                        android:text="@string/assignment__form__reuse_todo_item"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" /> -->
                 </LinearLayout>
             </LinearLayout>
 
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                style="borderTop: 1px solid #000"/>
+
+
+
+            <fragment
+                android:id="@+id/addAttachments"
+                android:name="com.themusicians.musiclms.nodeForms.addAttachments.addAttachmentsFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <Space
                 android:layout_width="match_parent"
@@ -132,7 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:gravity="right">
+                android:gravity="end">
 
                 <Button
                     android:id="@+id/assignmentCancelAction"
@@ -145,6 +175,7 @@
                     android:id="@+id/assignmentSaveAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 
