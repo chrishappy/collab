@@ -19,11 +19,8 @@ import java.util.Map;
  */
 public class Assignment extends Node {
 
-  /** Base table for saving the data */
-  public static final String BASE_TABLE = "node__assignments";
-
   /** Firebase's Realtime Database */
-  private DatabaseReference nodeDatabase;
+  private DatabaseReference entityDatabase;
 
   public String type = "assignment";
 
@@ -34,7 +31,7 @@ public class Assignment extends Node {
    */
   public List<String> assignees;
 
-  public int classId;
+  public String classId;
 
   public long dueDate;
 
@@ -49,21 +46,6 @@ public class Assignment extends Node {
     super();
   }
 
-  /** @param valueMap The fields values for the Node */
-  public Assignment(Map<String, Object> valueMap) {
-    super(valueMap);
-
-    setFields(valueMap);
-  }
-
-  /** * End fields ** */
-
-  /** @return The label of the entity: Assignment 1 or 2, etc */
-  @Override
-  public String getLabel() {
-    return this.name;
-  }
-
   /**
    * Save the Node to the Database
    *
@@ -71,77 +53,59 @@ public class Assignment extends Node {
    */
   public boolean save() {
 
-    writeAssignment();
+    writeEntity();
 
     return true;
   }
 
   /** @return Boolean */
-  private boolean writeAssignment() {
-    nodeDatabase = FirebaseDatabase.getInstance().getReference(BASE_TABLE);
+  private boolean writeEntity() {
+    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
 
-    final boolean[] result = {false};
 
     // Set default created time
-    if (isNew && getField("created") == null) {
-      setField("created", ServerValue.TIMESTAMP);
+    if (isNew && getCreated() == null) {
+      setCreated(ServerValue.TIMESTAMP);
     }
 
     // Set default updated time
-    if (getField("updated") == null) {
-      setField("updated", ServerValue.TIMESTAMP);
+    if (getUpdated() == null) {
+      setUpdated(ServerValue.TIMESTAMP);
     }
 
     // If we're creating an Assignment
-    if (id() == null) {
-      Log.println(Log.INFO, "assignment", "Create new Assignment");
+    if (getId() == null) {
+      Log.println(Log.INFO, getEntityType() + "__" + getType(), "Create new entity");
 
-      String assignmentID = nodeDatabase.push().getKey();
-      nodeDatabase
-          .child(assignmentID)
-          .setValue(
-              this,
-              new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(
-                    DatabaseError databaseError, DatabaseReference databaseReference) {
-                  if (databaseError != null) {
-                    result[0] = false;
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                  } else {
-                    result[0] = true;
-                    System.out.println("Data saved successfully.");
-                  }
-                }
-              });
-      setField("id", assignmentID);
+      setId( entityDatabase.push().getKey() );
     } else {
-      Log.println(Log.INFO, "assignment", "Update Assignment");
-
-      nodeDatabase
-          .child(id())
-          .setValue(
-              this,
-              new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(
-                    DatabaseError databaseError, DatabaseReference databaseReference) {
-                  if (databaseError != null) {
-                    result[0] = false;
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                  } else {
-                    result[0] = true;
-                    System.out.println("Data saved successfully.");
-                  }
-                }
-              });
+      Log.println(Log.INFO, getEntityType() + "__" + getType(), "Update Entity: " + getId());
     }
+
+    final boolean[] result = {false};
+    entityDatabase
+        .child( getId() )
+        .setValue(
+            this,
+            new DatabaseReference.CompletionListener() {
+              @Override
+              public void onComplete(
+                  DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                  result[0] = false;
+                  System.out.println("Data could not be saved " + databaseError.getMessage());
+                } else {
+                  result[0] = true;
+                  System.out.println("Data saved successfully.");
+                }
+              }
+            });
+
 
     return result[0];
   }
 
   /** Settings and Getters */
-  /**/
 
   public List<String> getAssignees() {
     return assignees;
@@ -151,11 +115,11 @@ public class Assignment extends Node {
     this.assignees = assignees;
   }
 
-  public int getClassId() {
+  public String getClassId() {
     return classId;
   }
 
-  public void setClassId(int classId) {
+  public void setClassId(String classId) {
     this.classId = classId;
   }
 
@@ -169,10 +133,6 @@ public class Assignment extends Node {
 
   public List<String> getAllowedAttachments() {
     return allowedAttachments;
-  }
-
-  public void setAllowedAttachments(List<String> allowedAttachments) {
-    this.allowedAttachments = allowedAttachments;
   }
   /**/
 }

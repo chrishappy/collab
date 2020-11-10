@@ -14,12 +14,6 @@ import java.util.Map;
  */
 public class UserProfile extends Node {
 
-  /** Base table for saving the data */
-  public static String baseTable = "node__user_profile";
-
-  /** Firebase's Realtime Database */
-  private DatabaseReference userDatabse;
-
   /**
    * The fields for the default Node
    *
@@ -36,48 +30,6 @@ public class UserProfile extends Node {
     super();
   }
 
-  /**
-   * The load constructor: the model doesn't work with RealTime model
-   *
-   * @param id
-   */
-  //  public Assignment(String id) {
-  ////    super(id);
-  //
-  //    nodeDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
-  //
-  //    ValueEventListener nodeListener = new ValueEventListener() {
-  //      @Override
-  //      public void onDataChange(DataSnapshot dataSnapshot) {
-  //        // Get node object and use the values to update the UI
-  //        Node node = dataSnapshot.getValue(Node.class);
-  //
-  //        isNew = false;
-  //        fieldMap = node.getFields();
-  //      }
-  //
-  //      @Override
-  //      public void onCancelled(DatabaseError databaseError) {
-  //        Log.w(DATABASE_TAG, "loadPost:onCancelled", databaseError.toException());
-  //      }
-  //    };
-  //
-  //    nodeDatabase.addListenerForSingleValueEvent(nodeListener);
-  //  }
-
-  /**
-   * @param valueMap The fields values for the Node
-   * @return
-   */
-  public UserProfile(Map<String, Object> valueMap) {
-    super(valueMap);
-
-    valueMap.put("entityType", "assignment");
-
-    setFields(valueMap);
-  }
-
-  /** * End fields ** */
 
   /** @return */
   @Override
@@ -103,14 +55,14 @@ public class UserProfile extends Node {
    * @return
    */
   private boolean writeAssignment() {
-    userDatabse = FirebaseDatabase.getInstance().getReference(baseTable);
+    DatabaseReference userDatabse = FirebaseDatabase.getInstance().getReference(baseTable);
 
     // If we're creating an Assignment
     if (isNew) {
       String assignmentID = userDatabse.push().getKey();
       userDatabse.child(assignmentID).setValue(this);
     } else {
-      userDatabse.child(id()).setValue(this);
+      userDatabse.child( getId()).setValue(this);
     }
 
     return true;

@@ -11,7 +11,7 @@ import java.util.List;
 public interface EntityInterface {
 
   /** @return the entity id */
-  String id();
+  String getId();
 
   /** @return The type of the entity: Assignments or Users profiles, etc */
   String getType();

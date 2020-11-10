@@ -1,32 +1,54 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class AssignmentCreateFormActivity extends AppCompatActivity {
 
-  /** The Firebase Instance */
+  /** The Firebase Database Instance */
   private DatabaseReference mDatabase;
+
+  /** The Firebase Auth Instance */
+  private FirebaseUser currentUser;
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    // Check if user is signed in (non-null) and update UI accordingly.
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+  }
 
   /** @param savedInstanceState */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Firebase instance
-    mDatabase = FirebaseDatabase.getInstance().getReference();
+    // Firebase get Database instance
+//    mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
 
     setContentView(R.layout.activity_assignment_create_form);
     //    Toolbar toolbar = findViewById(R.id.toolbar);
@@ -38,31 +60,31 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
     final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
     final EditText StudentOrClass = (EditText) findViewById(R.id.students_or_class);
 
-    /** Due Date Popup */
+    // Due Date Popup
     EditText dueDate = findViewById(R.id.dueDate);
-    //    dueDate.setInputType(InputType.TYPE_NULL);
-    //
-    //    Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
-    //    final Calendar cldr = cal.getInstance();
-    //    dueDate.setOnClickListener(new View.OnClickListener() {
-    //      @Override
-    //      public void onClick(View v) {
-    //        int day = cldr.get(Calendar.DAY_OF_MONTH);
-    //        int month = cldr.get(Calendar.MONTH);
-    //        int year = cldr.get(Calendar.YEAR);
-    //        // date picker dialog
-    //        DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
-    //            new DatePickerDialog.OnDateSetListener() {
-    //              @Override
-    //              public void onDateSet(DatePicker view, int year, int monthOfYear, int
-    // dayOfMonth) {
-    //                dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-    //                cldr.set(year, monthOfYear, dayOfMonth);
-    //              }
-    //            }, year, month, day);
-    //        picker.show();
-    //      }
-    //    });
+        dueDate.setInputType(InputType.TYPE_NULL);
+
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
+        final Calendar cldr = cal.getInstance();
+        dueDate.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            int day = cldr.get(Calendar.DAY_OF_MONTH);
+            int month = cldr.get(Calendar.MONTH);
+            int year = cldr.get(Calendar.YEAR);
+            // date picker dialog
+            DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                  @Override
+                  public void onDateSet(DatePicker view, int year, int monthOfYear, int
+     dayOfMonth) {
+                    dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                    cldr.set(year, monthOfYear, dayOfMonth);
+                  }
+                }, year, month, day);
+            picker.show();
+          }
+        });
 
     /** Save the Assignment */
     final Button assignmentCancel = findViewById(R.id.assignmentCancelAction);
@@ -91,22 +113,18 @@ public class AssignmentCreateFormActivity extends AppCompatActivity {
             dummyList.add("This is another element");
 
             // Due Date timestamp
-            long dueDateTimestamp;
-            dueDateTimestamp = 1234; // TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
+            long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
 
-            // Map the fields
-            Map<String, Object> fieldMap = new HashMap<>();
-            fieldMap.put("name", AssignmentName.getText());
-            //        fieldMap.put("assignees", dummyList);
-            fieldMap.put("classId", -1);
-            fieldMap.put("dueDate", dueDateTimestamp);
-            //        fieldMap.put("attachmentIds", dummyList);
-            //
-            //        // Create the assignment using the field map
-            Assignment assignment = new Assignment(fieldMap);
+            Assignment assignment = new Assignment();
+            assignment.setName( AssignmentName.getText().toString() );
+            assignment.setClassId( StudentOrClass.getText().toString() );
+            assignment.setDueDate( dueDateTimestamp );
+            assignment.setStatus( true );
+            assignment.setUid( currentUser.getUid() );
+//            assignment.setAttachmentIds( null );
             assignment.save();
-            //
-            //        //Display notification
+
+           //Display notification
             Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show();
