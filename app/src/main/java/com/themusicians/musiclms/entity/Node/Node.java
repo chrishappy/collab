@@ -39,16 +39,6 @@ public abstract class Node extends Entity {
 
   /*** End fields ***/
 
-  /**
-   * Implements getLabel()
-   *
-   *  @return The name of the node: Assignment 1 or 2, etc
-   */
-  @Override
-  public String getLabel() {
-    return this.name;
-  }
-
   /** Default constructor for Firebase */
   public Node() {
     super();

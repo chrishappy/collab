@@ -2,7 +2,12 @@ package com.themusicians.musiclms.nodeViews;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,8 +16,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.themusicians.musiclms.Placeholder;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.myLogin;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+import com.themusicians.musiclms.userProfile;
 
 /**
  * Displays the assignments
@@ -28,7 +37,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
-  personAdapter adapter; // Create Object of the Adapter class
+  AssignmentOverviewAdapter adapter; // Create Object of the Adapter class
   DatabaseReference mbase; // Create object of the
   // Firebase Realtime Database
 
@@ -48,11 +57,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
 
     // It is a class provide by the FirebaseUI to make a
     // query in the database to fetch appropriate data
-    FirebaseRecyclerOptions<person> options =
-        new FirebaseRecyclerOptions.Builder<person>().setQuery(mbase, person.class).build();
+    FirebaseRecyclerOptions<Assignment> options =
+        new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(mbase, Assignment.class).build();
     // Connecting object of required Adapter class to
     // the Adapter class itself
-    adapter = new personAdapter(options);
+    adapter = new AssignmentOverviewAdapter(options);
     // Connecting Adapter class with the Recycler view*/
     recyclerView.setAdapter(adapter);
 
@@ -87,5 +96,34 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
   protected void onStop() {
     super.onStop();
     adapter.stopListening();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.main_menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    fAuth = FirebaseAuth.getInstance();
+    switch (item.getItemId()) {
+      case R.id.logout:
+        fAuth.signOut();
+        Intent logout = new Intent(AssignmentOverviewActivity.this, myLogin.class);
+        startActivity(logout);
+        return true;
+      case R.id.userprofile:
+        Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, userProfile.class);
+        startActivity(toUserProfile);
+        return true;
+      case R.id.createassignment:
+        Intent toCreateAssignment =
+            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+        startActivity(toCreateAssignment);
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 }

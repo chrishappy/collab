@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
@@ -26,6 +27,11 @@ public class Placeholder extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Redirect to Assignment Overview Activity
+    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+    startActivity(redirectToAssignment);
+
     setContentView(R.layout.activity_placeholder);
   }
 

@@ -20,11 +20,6 @@ public abstract class Attachment extends Entity {
   /** Set the Node Type */
   protected String entityType = "attachment";
 
-  @Override
-  public String getLabel() {
-    return null;
-  }
-
   /** The default constructor for Firebase + loadMultiple */
   public Attachment() {
     super();

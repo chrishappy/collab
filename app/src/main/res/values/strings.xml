@@ -133,4 +133,8 @@
     <string name="attachment_dialog__add__comment">Add a comment</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="placeholder">PLACEHOLDER</string>
+    <string name="assignment__overview__author_label">Author:</string>
+    <string name="assignments__overview__name_label">Assignment Name</string>
+    <string name="date_format__month_day">MMM d</string>
 </resources>

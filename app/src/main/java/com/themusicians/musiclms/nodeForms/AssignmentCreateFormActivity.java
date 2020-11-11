@@ -51,16 +51,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Firebase get Database instance
-//    mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-
     setContentView(R.layout.activity_assignment_create_form);
-    //    Toolbar toolbar = findViewById(R.id.toolbar);
-    //    setSupportActionBar(toolbar);
-    //    CollapsingToolbarLayout toolBarLayout = findViewById(R.id.toolbar_layout);
-    //    toolBarLayout.setTitle(getTitle());
 
     // Get fields
     final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);

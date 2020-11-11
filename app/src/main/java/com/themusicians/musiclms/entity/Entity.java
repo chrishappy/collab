@@ -1,6 +1,9 @@
 package com.themusicians.musiclms.entity;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.IgnoreExtraProperties;
+import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.List;
 import java.util.Map;
@@ -11,6 +14,7 @@ import java.util.Map;
  *     <p>Contributors: Nathan Tsai
  *     <p>Created by Nathan Tsai on 2020-11-02
  */
+@IgnoreExtraProperties
 public abstract class Entity implements EntityInterface {
 
   /** Firebase's Realtime Database */
@@ -73,7 +77,6 @@ public abstract class Entity implements EntityInterface {
   public String getBaseTable() {
     return getEntityType() + "__" + getType();
   }
-
 
   /**
    * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
@@ -164,13 +167,13 @@ public abstract class Entity implements EntityInterface {
     this.uid = uid;
   }
 
-
   /**
-   * Get the label (name, title, etc.) of the entity
-   *
-   * @return The label of the entity
+   * Need to save user information first
    */
-  @Override
-  public abstract String getLabel();
+//  public User getAuthor() {
+//    User author = new User;
+//
+//    return author;
+//  }
 
 }

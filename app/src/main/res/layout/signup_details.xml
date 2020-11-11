@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.288"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/authorNameLabel" />
 
     <TextView
         android:id="@+id/textView2"
@@ -130,7 +130,7 @@
         app:layout_constraintVertical_bias="0.04" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/authorNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hi, I am ..."

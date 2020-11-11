@@ -12,7 +12,7 @@ import java.util.Map;
  * @todo Create Edit Form
  * @todo Create UI
  */
-public class UserProfile extends Node {
+public class User extends Node {
 
   /**
    * The fields for the default Node
@@ -26,16 +26,10 @@ public class UserProfile extends Node {
   //  public int classId;
 
   /** The default constructor for Firebase + loadMultiple */
-  public UserProfile() {
+  public User() {
     super();
   }
 
-
-  /** @return */
-  @Override
-  public String getLabel() {
-    return this.name;
-  }
 
   /**
    * Save the Node to the Database
