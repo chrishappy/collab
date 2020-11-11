@@ -50,12 +50,20 @@ public class UserProfile extends Node {
   }
 
   /**
+   * Get the database table to save the entity
+   * @return
+   */
+  public String getBaseTable() {
+    return entityType + "__" + type;
+  }
+
+  /**
    * Rename file
    *
    * @return
    */
   private boolean writeAssignment() {
-    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference(baseTable);
+    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable());
 
     // If we're creating an Assignment
     if (isNew) {

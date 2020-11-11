@@ -19,7 +19,7 @@ import java.util.Map;
  * @todo Create Class
  * @todo Create UI
  */
-public class Node extends Entity {
+public abstract class Node extends Entity {
 
   /** Firebase's Realtime Database */
   protected String entityType = "node";

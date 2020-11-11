@@ -66,6 +66,14 @@ public abstract class Entity implements EntityInterface {
   }
 
   /**
+   * Get the database table
+   *
+   * @return the database table id
+   */
+  public abstract String getBaseTable();
+
+
+  /**
    * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
    * @return Entity
    */
@@ -92,8 +100,6 @@ public abstract class Entity implements EntityInterface {
   public boolean delete() {
     return true;
   }
-
-
 
   /**
    * Get the id of the entity
@@ -138,14 +144,6 @@ public abstract class Entity implements EntityInterface {
 
   public void setUpdated(Object updated) {
     this.updated = updated;
-  }
-
-  /**
-   * Get the database table to save the entity
-   * @return
-   */
-  public String getBaseTable() {
-    return entityType + "__" + type;
   }
 
   public boolean isStatus() {

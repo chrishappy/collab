@@ -4,6 +4,7 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @todo Create Edit Form
  * @todo Create UI
  */
+@IgnoreExtraProperties
 public class Assignment extends Node {
 
   protected String type = "assignment";
@@ -37,6 +39,14 @@ public class Assignment extends Node {
   protected List<String> allowedAttachments;
 
   protected Map<Map, Attachment> attachments;
+
+  /**
+   * Get the database table to save the entity
+   * @return
+   */
+  public String getBaseTable() {
+    return entityType + "__" + type;
+  }
 
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {

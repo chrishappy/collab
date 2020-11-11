@@ -31,6 +31,13 @@ public class Attachment extends Entity {
   }
 
   /**
+   * Get the database table to save the entity
+   * @return
+   */
+  public String getBaseTable() {
+    return entityType + "__" + type;
+  }
+  /**
    * Save the Node to the Database
    *
    * @return whether it was successful or not
