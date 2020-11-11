@@ -29,8 +29,8 @@ public class Placeholder extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     // Redirect to Assignment Overview Activity
-    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
-    startActivity(redirectToAssignment);
+//    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+//    startActivity(redirectToAssignment);
 
     setContentView(R.layout.activity_placeholder);
   }
