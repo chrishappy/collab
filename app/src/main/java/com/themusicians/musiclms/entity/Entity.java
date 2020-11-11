@@ -68,9 +68,11 @@ public abstract class Entity implements EntityInterface {
   /**
    * Get the database table
    *
-   * @return the database table id
+   * @return String the database table id
    */
-  public abstract String getBaseTable();
+  public String getBaseTable() {
+    return getEntityType() + "__" + getType();
+  }
 
 
   /**

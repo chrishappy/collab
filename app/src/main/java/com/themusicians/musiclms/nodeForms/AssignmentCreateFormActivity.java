@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
+import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
 import java.util.Calendar;
@@ -141,6 +142,9 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
     /**
      * This section will be added to all Nodes. Please use variables to allow us
      * to quickly move these functions into a separate class
+     *
+     * @todo Save Comment into database
+     * @todo Create "Add File Button" -> use the same functions
      */
 
 
@@ -152,17 +156,20 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
           public void onClick(View view) {
             String dialogTag = "addComment";
             DialogFragment newAddCommentDialog = new AddCommentDialogFragment();
-            newAddCommentDialog.show(getSupportFragmentManager(), "addComment");
+            newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
           }
         });
-
   }
 
   @Override
   public void onDialogPositiveClick(DialogFragment dialog) {
-    Snackbar.make(findViewById(R.id.createAssignmentLayout), "Comment Positive clicked", Snackbar.LENGTH_LONG)
-        .setAction("Action", null)
-        .show();
+    // Get field from dialog
+    final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
+
+    Comment newComment = new Comment();
+    newComment.setComment( AssignmentName.getText().toString() );
+    newComment.save();
+
   }
 
   @Override

@@ -15,10 +15,10 @@ import java.util.List;
  * @author Nathan Tsai
  * @since Nov 2, 2020
  */
-public class Attachment extends Entity {
+public abstract class Attachment extends Entity {
 
   /** Set the Node Type */
-  protected String entityType = "Attachment";
+  protected String entityType = "attachment";
 
   @Override
   public String getLabel() {
@@ -28,14 +28,6 @@ public class Attachment extends Entity {
   /** The default constructor for Firebase + loadMultiple */
   public Attachment() {
     super();
-  }
-
-  /**
-   * Get the database table to save the entity
-   * @return
-   */
-  public String getBaseTable() {
-    return entityType + "__" + type;
   }
   /**
    * Save the Node to the Database

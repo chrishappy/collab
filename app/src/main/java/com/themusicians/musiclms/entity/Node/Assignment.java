@@ -40,14 +40,6 @@ public class Assignment extends Node {
 
   protected Map<Map, Attachment> attachments;
 
-  /**
-   * Get the database table to save the entity
-   * @return
-   */
-  public String getBaseTable() {
-    return entityType + "__" + type;
-  }
-
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {
     super();
