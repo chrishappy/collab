@@ -19,91 +19,30 @@ import java.util.Map;
  */
 public class Assignment extends Node {
 
-  /** Firebase's Realtime Database */
-  private DatabaseReference entityDatabase;
-
-  public String type = "assignment";
+  protected String type = "assignment";
 
   /**
    * The fields for the Assignment
    *
    * <p>Public properties will be automatically saved by Firebase Private will not
    */
-  public List<String> assignees;
+  protected List<String> assignees;
 
-  public String classId;
+  protected String classId;
 
-  public long dueDate;
+  protected long dueDate;
 
-  public List<String> attachmentIds;
+  protected List<String> attachmentIds;
 
-  public List<String> allowedAttachments;
+  protected List<String> allowedAttachments;
 
-  private Map<Map, Attachment> attachments;
+  protected Map<Map, Attachment> attachments;
 
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {
     super();
   }
 
-  /**
-   * Save the Node to the Database
-   *
-   * @return whether it was successful or not
-   */
-  public boolean save() {
-
-    writeEntity();
-
-    return true;
-  }
-
-  /** @return Boolean */
-  private boolean writeEntity() {
-    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
-
-
-    // Set default created time
-    if (isNew && getCreated() == null) {
-      setCreated(ServerValue.TIMESTAMP);
-    }
-
-    // Set default updated time
-    if (getUpdated() == null) {
-      setUpdated(ServerValue.TIMESTAMP);
-    }
-
-    // If we're creating an Assignment
-    if (getId() == null) {
-      Log.println(Log.INFO, getEntityType() + "__" + getType(), "Create new entity");
-
-      setId( entityDatabase.push().getKey() );
-    } else {
-      Log.println(Log.INFO, getEntityType() + "__" + getType(), "Update Entity: " + getId());
-    }
-
-    final boolean[] result = {false};
-    entityDatabase
-        .child( getId() )
-        .setValue(
-            this,
-            new DatabaseReference.CompletionListener() {
-              @Override
-              public void onComplete(
-                  DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                  result[0] = false;
-                  System.out.println("Data could not be saved " + databaseError.getMessage());
-                } else {
-                  result[0] = true;
-                  System.out.println("Data saved successfully.");
-                }
-              }
-            });
-
-
-    return result[0];
-  }
 
   /** Settings and Getters */
 

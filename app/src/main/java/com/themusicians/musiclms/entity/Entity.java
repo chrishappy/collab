@@ -1,5 +1,7 @@
 package com.themusicians.musiclms.entity;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +13,8 @@ import java.util.Map;
  */
 public abstract class Entity implements EntityInterface {
 
-  /** Base table for saving the data */
-  protected String baseTable;
+  /** Firebase's Realtime Database */
+  protected DatabaseReference entityDatabase;
 
   /** The fields for the default Entity */
   protected String id;
@@ -79,9 +81,7 @@ public abstract class Entity implements EntityInterface {
 
   /** @return True if the data is correctly saved */
   @Override
-  public boolean save() {
-    return true;
-  }
+  public abstract boolean save();
 
   /**
    * Implements delete()
