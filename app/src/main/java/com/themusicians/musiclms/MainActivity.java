@@ -33,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
     TextView textview;
     textview = (TextView) findViewById(R.id.Or_login);
     textview.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Intent nextPageLogin = new Intent(MainActivity.this, myLogin.class);
-            startActivity(nextPageLogin);
-          }
-        });
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                Intent nextPageLogin = new Intent(MainActivity.this, myLogin.class);
+                startActivity(nextPageLogin);
+              }
+            });
   }
 
   public void openActivity_assignment_create_form() {
@@ -56,4 +56,10 @@ public class MainActivity extends AppCompatActivity {
     Intent nextPageS = new Intent(this, signup.class);
     startActivity(nextPageS);
   }
+
+  public void goChat(View view) {
+    Intent Chatpage = new Intent(this, Chat.class);
+    startActivity(Chatpage);
+  }
+
 }

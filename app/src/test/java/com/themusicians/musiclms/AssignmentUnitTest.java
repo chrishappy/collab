@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Assignment Tester.
@@ -31,7 +31,7 @@ public class AssignmentUnitTest {
   protected String assignmentName = "Assignment Name";
   private String otherAssignmentName = "Other Assignment Name";
 
-  @Before
+  @BeforeEach
   public void before() throws Exception {
     // Map the fields
     fieldMap = new HashMap<>();
@@ -51,11 +51,11 @@ public class AssignmentUnitTest {
     assignment = new Assignment();
   }
 
-  @After
+  @AfterEach
   public void after() throws Exception {}
 
   /** Method: getLabel() */
-  @Test
+  @org.junit.jupiter.api.Test
   public void testGetLabel() throws Exception {
     assignment.setField("name", assignmentName);
     String testedAssignmentName = assignment.getLabel();
@@ -82,7 +82,7 @@ public class AssignmentUnitTest {
   }
 
   /** Method: testSetFields() */
-  @Test
+  @org.junit.jupiter.api.Test
   public void testSetFields() throws Exception {
     assertNotNull(assignment.setFields(fieldMap));
     /*
@@ -98,7 +98,7 @@ public class AssignmentUnitTest {
   }
 
   /** Method: writeAssignment() */
-  @Test
+  @org.junit.jupiter.api.Test
   public void testWriteAssignment() throws Exception {
     // TODO: Test goes here...
     /*
