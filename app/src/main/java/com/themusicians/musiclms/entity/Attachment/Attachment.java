@@ -51,11 +51,11 @@ public abstract class Attachment extends Entity {
 
     // If we're creating an Assignment
     if (getId() == null) {
-      Log.println(Log.INFO, getEntityType() + "__" + getType(), "Create new entity");
+      Log.println(Log.INFO, getBaseTable(), "Create new entity");
 
       setId( entityDatabase.push().getKey() );
     } else {
-      Log.println(Log.INFO, getEntityType() + "__" + getType(), "Update Entity: " + getId());
+      Log.println(Log.INFO, getBaseTable(), "Update Entity: " + getId());
     }
 
     final boolean[] result = {false};
