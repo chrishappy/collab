@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,6 +27,9 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -54,6 +58,7 @@ public class signup extends AppCompatActivity {
 
     newEmail = findViewById(R.id.newEmail);
     newPassword = findViewById(R.id.newPassword);
+    newName = findViewById(R.id.newName);
     fAuth = FirebaseAuth.getInstance();
     next = findViewById(R.id.signup_next);
 
@@ -107,6 +112,11 @@ public class signup extends AppCompatActivity {
       return;
     }
 
+    Map<String, Object> fieldMap = new HashMap<>();
+    fieldMap.put("name", newName.getText());
+    UserProfile userProfile = new UserProfile(fieldMap);
+    userProfile.save();
+
     setContentView(R.layout.signup_tech);
   }
 
@@ -129,5 +139,4 @@ public class signup extends AppCompatActivity {
   public void signUpTechBack(View view) {
     setContentView(R.layout.signup_details);
   }
-
 }
