@@ -23,7 +23,6 @@ public class User extends Node {
    *
    * <p>Public properties will be automatically saved by Firebase Private will not
    */
-  public String name;
 
   //  public List<String> assignees;
   //
@@ -38,35 +37,4 @@ public class User extends Node {
     super( id );
   }
 
-
-  /**
-   * Save the Node to the Database
-   *
-   * @return whether it was successful or not
-   */
-  public boolean save() {
-
-    writeAssignment();
-
-    return true;
-  }
-
-  /**
-   * Rename file
-   *
-   * @return
-   */
-  private boolean writeAssignment() {
-    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable());
-
-    // If we're creating an Assignment
-    if (isNew) {
-      String assignmentID = userDatabase.push().getKey();
-      userDatabase.child(assignmentID).setValue(this);
-    } else {
-      userDatabase.child( getId()).setValue(this);
-    }
-
-    return true;
-  }
 }

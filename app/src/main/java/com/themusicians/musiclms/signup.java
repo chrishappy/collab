@@ -31,7 +31,12 @@ public class signup extends AppCompatActivity {
   protected EditText newEmail, newPassword, newName;
   protected Button next;
   protected FirebaseAuth fAuth;
+
+  /**
+   * Save User Date
+   */
   protected FirebaseUser currentUser;
+  protected User newUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +86,7 @@ public class signup extends AppCompatActivity {
                           // Get current user
                           currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                          User newUser = new User();
+                          newUser = new User();
                           newUser.setId( currentUser.getUid() );
                           newUser.save();
 
@@ -108,6 +113,9 @@ public class signup extends AppCompatActivity {
       newName.setError("Name is Required");
       return;
     }
+
+    // Save user name
+    newUser.setName(name);
 
     setContentView(R.layout.signup_tech);
   }
