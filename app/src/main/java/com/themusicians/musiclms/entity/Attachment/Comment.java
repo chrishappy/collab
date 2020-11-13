@@ -9,7 +9,13 @@ package com.themusicians.musiclms.entity.Attachment;
 public class Comment extends Attachment {
 
   protected String type = "comment";
-  
+
+  protected String comment;
+
+  /**
+   *
+   * @return
+   */
   public String getComment() {
     return comment;
   }
@@ -18,7 +24,19 @@ public class Comment extends Attachment {
     this.comment = comment;
   }
 
-  protected String comment;
+  /**
+   *
+   * @return
+   */
+  @Override
+  public String getBaseTable() {
+    return "node__comment";
+  }
+
+  /**
+   *
+   */
+
 
   public Comment() {
     super();
