@@ -44,6 +44,11 @@ public abstract class Node extends Entity {
     super();
   }
 
+  /** Constructor for an existing Node */
+  public Node( String id ) {
+    super(id);
+  }
+
   /**
    * @param id The fields for the default Entity
    * @return The List of the Entities

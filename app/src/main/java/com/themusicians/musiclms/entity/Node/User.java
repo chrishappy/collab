@@ -13,6 +13,10 @@ import java.util.Map;
  * @todo Create UI
  */
 public class User extends Node {
+  /**
+   * Set the type of Node
+   */
+  protected final String type = "user";
 
   /**
    * The fields for the default Node
@@ -30,6 +34,10 @@ public class User extends Node {
     super();
   }
 
+  public User( String id ) {
+    super( id );
+  }
+
 
   /**
    * Save the Node to the Database
@@ -41,14 +49,6 @@ public class User extends Node {
     writeAssignment();
 
     return true;
-  }
-
-  /**
-   * Get the database table to save the entity
-   * @return
-   */
-  public String getBaseTable() {
-    return entityType + "__" + type;
   }
 
   /**

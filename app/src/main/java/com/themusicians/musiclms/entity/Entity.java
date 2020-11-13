@@ -54,19 +54,14 @@ public abstract class Entity implements EntityInterface {
   protected final String LOG_TAG_DATABASE = "FirebaseDatabase";
 
   /** Default constructor without arguments for Firebase and ::loadMultiple */
-  public Entity() {}
+  public Entity() {
+    isNew = true;
+  }
 
   /** Constructor for loading */
-  public Entity(String id) {}
-
-  /**
-   * The constructor for creating an Entity
-   *
-   * @param valueMap The fields values for the Entity
-   */
-  public Entity(Map<String, Object> valueMap) {
-    // If constructed, set value to true
-    isNew = true;
+  public Entity(String id) {
+    isNew = false;
+    setId(id);
   }
 
   /**
@@ -151,6 +146,12 @@ public abstract class Entity implements EntityInterface {
     this.updated = updated;
   }
 
+  /**
+   * Allow entities to be unpublished, aka exist in database, but not
+   * visible to everyone.
+   *
+   * @return bool true if entity is published
+   */
   public boolean isStatus() {
     return status;
   }
@@ -159,12 +160,33 @@ public abstract class Entity implements EntityInterface {
     this.status = status;
   }
 
+  /**
+   * Get the authour id
+   *
+   * @return String the Firebase user id
+   */
   public String getUid() {
     return uid;
   }
 
   public void setUid(String uid) {
     this.uid = uid;
+  }
+
+  /**
+   * Force the entity to be saved again in the database
+   */
+  public void enforceNew() {
+    isNew = true;
+  }
+
+  /**
+   * Conditionally enfore the entity to be saved again in the database
+   *
+   * @param inputIsNew true if the entity should be resaved.
+   */
+  public void enforceNew(boolean inputIsNew) {
+    isNew = inputIsNew;
   }
 
   /**

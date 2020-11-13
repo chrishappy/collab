@@ -13,6 +13,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.themusicians.musiclms.entity.Node.User;
 
 /**
  * ....
@@ -26,9 +28,10 @@ import com.google.firebase.auth.FirebaseAuth;
  * @todo Proceed through sign up layouts
  */
 public class signup extends AppCompatActivity {
-  EditText newEmail, newPassword, newName;
-  Button next;
-  FirebaseAuth fAuth;
+  protected EditText newEmail, newPassword, newName;
+  protected Button next;
+  protected FirebaseAuth fAuth;
+  protected FirebaseUser currentUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,14 @@ public class signup extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                          // Get current user
+                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                          User newUser = new User();
+                          newUser.setId( currentUser.getUid() );
+                          newUser.save();
+
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
                           setContentView(R.layout.signup_details);
                         } else {
