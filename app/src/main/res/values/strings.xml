@@ -137,4 +137,5 @@
     <string name="assignment__overview__author_label">Author:</string>
     <string name="assignments__overview__name_label">Assignment Name</string>
     <string name="date_format__month_day">MMM d</string>
+    <string name="attachment__add__file">Add file</string>
 </resources>
