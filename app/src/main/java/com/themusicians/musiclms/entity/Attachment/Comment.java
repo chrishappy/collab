@@ -8,6 +8,8 @@ package com.themusicians.musiclms.entity.Attachment;
  */
 public class Comment extends Attachment {
 
+  protected final String type = "comment";
+  
   public String getComment() {
     return comment;
   }
@@ -20,7 +22,5 @@ public class Comment extends Attachment {
 
   public Comment() {
     super();
-
-    type = "comment";
   }
 }
