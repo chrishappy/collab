@@ -16,11 +16,5 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-
-       /* public void ReturnMain(View view) {
-            Intent MainPage = new Intent(this, MainActivity.class);
-           startActivity(MainPage);
-       }*/
-
     }
 }
