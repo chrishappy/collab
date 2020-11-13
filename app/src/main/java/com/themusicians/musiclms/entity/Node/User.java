@@ -22,9 +22,23 @@ public class User extends Node {
    */
   protected String type = "user";
 
+  /**
+   * Decide on how to store the tech experience
+   */
   protected String techExperience;
-
   protected List<String> techExperienceList;
+
+  /**
+   * The user's email
+   * @todo implement later
+   */
+  protected String email;
+
+  /**
+   * Whether the user is a teacher, student
+   * @todo add parent
+   */
+  protected String role;
 
   /**
    * The fields for the default Node
@@ -43,6 +57,15 @@ public class User extends Node {
 
   public User( String id ) {
     super( id );
+  }
+
+  /**
+   * Implement getBaseTable()
+   * @return the database table to store the entity
+   */
+  @Override
+  public String getBaseTable() {
+    return "node__user";
   }
 
   /**

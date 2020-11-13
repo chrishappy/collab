@@ -46,6 +46,15 @@ public class Assignment extends Node {
   }
 
 
+  /**
+   * Implement getBaseTable()
+   * @return the database table to store the entity
+   */
+  @Override
+  public String getBaseTable() {
+    return "node__assignment";
+  }
+
   /** Settings and Getters */
 
   public List<String> getAssignees() {

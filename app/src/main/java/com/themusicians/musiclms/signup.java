@@ -91,6 +91,7 @@ public class signup extends AppCompatActivity {
                           currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
                           newUser = new User( currentUser.getUid() );
+                          newUser.setStatus(true);
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -119,6 +120,7 @@ public class signup extends AppCompatActivity {
 
     // Save user name
     newUser.setName(name);
+    newUser.enforceNew(false);
     newUser.save();
 
     setContentView(R.layout.signup_tech);

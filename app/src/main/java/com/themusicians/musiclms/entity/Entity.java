@@ -41,7 +41,7 @@ public abstract class Entity implements EntityInterface {
    */
   protected Object updated;
 
-  /** Set status to 0 if the entity is unpublished */
+  /** Set status to false if the entity is unpublished */
   protected boolean status;
 
   /** Users' id number */
@@ -129,7 +129,7 @@ public abstract class Entity implements EntityInterface {
   /** @return The time that the Entity was created in UTC format */
   @Override
   public Object getCreated() {
-    return (Long) this.created;
+    return this.created;
   }
 
   public void setCreated(Object created) {

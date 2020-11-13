@@ -76,7 +76,7 @@ public abstract class Node extends Entity {
 
 
     // Set default created time
-    if (isNew && getCreated() == null) {
+    if (!isNew && getCreated() == null) {
       setCreated(ServerValue.TIMESTAMP);
     }
 
