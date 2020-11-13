@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
+import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
@@ -150,7 +151,20 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
             newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
           }
         });
+
+      /** Add a File */
+      final Button addFileButton = findViewById(R.id.addFileButton);
+      addFileButton.setOnClickListener(
+              new View.OnClickListener() {
+                  @Override
+                  public void onClick(View view) {
+                      String dialogTag = "addFile";
+                      DialogFragment newAddFileDialog = new AddFileDialogFragment();
+                      newAddFileDialog.show(getSupportFragmentManager(), dialogTag);
+                  }
+              });
   }
+
 
   @Override
   public void onDialogPositiveClick(DialogFragment dialog) {
