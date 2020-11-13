@@ -15,16 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.themusicians.musiclms.entity.Node.Assignment;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import java.util.HashMap;
-import java.util.Map;
 import com.themusicians.musiclms.entity.Node.User;
 
 /**
@@ -57,6 +47,8 @@ public class signup extends AppCompatActivity {
     newEmail = findViewById(R.id.newEmail);
     newPassword = findViewById(R.id.newPassword);
     newName = findViewById(R.id.newName);
+
+    // Store user
     fAuth = FirebaseAuth.getInstance();
     next = findViewById(R.id.signup_next);
 
@@ -98,8 +90,7 @@ public class signup extends AppCompatActivity {
                           // Get current user
                           currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                          newUser = new User();
-                          newUser.setId( currentUser.getUid() );
+                          newUser = new User( currentUser.getUid() );
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -128,6 +119,7 @@ public class signup extends AppCompatActivity {
 
     // Save user name
     newUser.setName(name);
+    newUser.save();
 
     setContentView(R.layout.signup_tech);
   }

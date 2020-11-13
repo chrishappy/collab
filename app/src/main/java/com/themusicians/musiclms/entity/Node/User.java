@@ -2,12 +2,16 @@ package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.List;
 import java.util.Map;
 
 /**
  * @file Assignment.java
- *     <p>....
- *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
+ *
+ * @contributor Jerome Lau
+ * @author Nathan Tsai
+ * @since Nov 2, 2020
  *     <p>--------------------------------
  * @todo Create Edit Form
  * @todo Create UI
@@ -16,7 +20,11 @@ public class User extends Node {
   /**
    * Set the type of Node
    */
-  protected final String type = "user";
+  protected String type = "user";
+
+  protected String techExperience;
+
+  protected List<String> techExperienceList;
 
   /**
    * The fields for the default Node
@@ -35,6 +43,25 @@ public class User extends Node {
 
   public User( String id ) {
     super( id );
+  }
+
+  /**
+   *
+   */
+  public String getTechExperience() {
+    return techExperience;
+  }
+
+  public void setTechExperience(String techExperience) {
+    this.techExperience = techExperience;
+  }
+
+  public List<String> getTechExperienceList() {
+    return techExperienceList;
+  }
+
+  public void setTechExperienceList(List<String> techExperienceList) {
+    this.techExperienceList = techExperienceList;
   }
 
 }
