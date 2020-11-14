@@ -138,4 +138,7 @@
     <string name="assignments__overview__name_label">Assignment Name</string>
     <string name="date_format__month_day">MMM d</string>
     <string name="attachment__add__file">Add file</string>
+    <string name="title_activity_to_do_item_create_form">Create ToDo Item</string>
+    <string name="to_do_item__form__name">Name</string>
+    <string name="to_do_item__form__require_recording">Require Recording</string>
 </resources>

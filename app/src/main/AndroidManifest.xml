@@ -45,6 +45,16 @@
                 android:value=".nodeViews.AssignmentOverviewActivity" />
         </activity>
 
+        <activity
+            android:name=".nodeForms.ToDoTaskCreateFormActivity"
+            android:label="@string/title_activity_to_do_item_create_form"
+            android:parentActivityName=".nodeForms.AssignmentCreateFormActivity">
+            <!-- Support 4.0 and below -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".nodeForms.AssignmentCreateFormActivity" />
+        </activity>
+
         <!-- Main Activity -->
         <activity android:name=".MainActivity">
             <intent-filter>

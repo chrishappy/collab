@@ -47,8 +47,7 @@ public class Assignment extends Node {
   public Assignment(String id) {
     super(id);
   }
-
-
+  
   /**
    * Implement getBaseTable()
    * @return the database table to store the entity

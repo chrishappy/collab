@@ -6,40 +6,39 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
-//import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class AssignmentCreateFormActivity extends AppCompatActivity
+//import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
+
+public class ToDoTaskCreateFormActivity extends AppCompatActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
 
-  /** The request code for retrieving todo items  */
+  /** The request code for retrieving to do items  */
   static final int REQUEST_TODO_ENTITY = 1;
 
   @Override
@@ -54,46 +53,11 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_assignment_create_form);
+    setContentView(R.layout.activity_to_do_item_create_form);
 
     // Get fields
-    final EditText AssignmentName   = findViewById(R.id.assignment_name);
-    final EditText StudentOrClass   = findViewById(R.id.students_or_class);
-    final EditText dueDate          = findViewById(R.id.dueDate);
-
-    // Due Date Popup
-    dueDate.setInputType(InputType.TYPE_NULL);
-    Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
-    final Calendar cldr = cal.getInstance();
-    dueDate.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
-        // date picker dialog
-        DatePickerDialog picker = new DatePickerDialog(AssignmentCreateFormActivity.this,
-            new DatePickerDialog.OnDateSetListener() {
-              @Override
-              public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                cldr.set(year, monthOfYear, dayOfMonth);
-              }
-            }, year, month, day);
-        picker.show();
-      }
-    });
-
-    // Add a task
-    final Button addTask = findViewById(R.id.todoAddItem);
-    addTask.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Intent intent = new Intent();
-            startActivityForResult(intent, REQUEST_TODO_ENTITY);
-          }
-        });
+    final EditText ToDoItemName   = findViewById(R.id.to_do_item_name);
+    final CheckBox RequireRecording   = findViewById(R.id.require_recording);
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.assignmentCancelAction);
@@ -125,12 +89,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
             dummyList.add("This is another element");
 
             // Due Date timestamp
-            long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
-
             Assignment assignment = new Assignment();
-            assignment.setName( AssignmentName.getText().toString() );
-            assignment.setClassId( StudentOrClass.getText().toString() );
-            assignment.setDueDate( dueDateTimestamp );
             assignment.setStatus( true );
             assignment.setUid( currentUser.getUid() );
 //            assignment.setAttachmentIds( null );
@@ -195,15 +154,5 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
         .setAction("Action", null)
         .show();
 
-  }
-
-  // End section to be generalized
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == REQUEST_TODO_ENTITY && resultCode == RESULT_OK) {
-
-    }
   }
 }
