@@ -42,6 +42,11 @@ public abstract class Node extends Entity {
     super();
   }
 
+  /** Constructor for an existing Node */
+  public Node( String id ) {
+    super(id);
+  }
+
   /**
    * @param id The fields for the default Entity
    * @return The List of the Entities
@@ -69,7 +74,7 @@ public abstract class Node extends Entity {
 
 
     // Set default created time
-    if (isNew && getCreated() == null) {
+    if (!isNew && getCreated() == null) {
       setCreated(ServerValue.TIMESTAMP);
     }
 

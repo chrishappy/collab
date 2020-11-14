@@ -2,24 +2,49 @@ package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.List;
 import java.util.Map;
 
 /**
  * @file Assignment.java
- *     <p>....
- *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
+ *
+ * @contributor Jerome Lau
+ * @author Nathan Tsai
+ * @since Nov 2, 2020
  *     <p>--------------------------------
  * @todo Create Edit Form
  * @todo Create UI
  */
 public class User extends Node {
+  /**
+   * Set the type of Node
+   */
+  protected String type = "user";
+
+  /**
+   * Decide on how to store the tech experience
+   */
+  protected String techExperience;
+  protected List<String> techExperienceList;
+
+  /**
+   * The user's email
+   * @todo implement later
+   */
+  protected String email;
+
+  /**
+   * Whether the user is a teacher, student
+   * @todo add parent
+   */
+  protected String role;
 
   /**
    * The fields for the default Node
    *
    * <p>Public properties will be automatically saved by Firebase Private will not
    */
-  public String name;
 
   //  public List<String> assignees;
   //
@@ -30,43 +55,36 @@ public class User extends Node {
     super();
   }
 
-
-  /**
-   * Save the Node to the Database
-   *
-   * @return whether it was successful or not
-   */
-  public boolean save() {
-
-    writeAssignment();
-
-    return true;
+  public User( String id ) {
+    super( id );
   }
 
   /**
-   * Get the database table to save the entity
-   * @return
+   * Implement getBaseTable()
+   * @return the database table to store the entity
    */
+  @Override
   public String getBaseTable() {
-    return entityType + "__" + type;
+    return "node__user";
   }
 
   /**
-   * Rename file
    *
-   * @return
    */
-  private boolean writeAssignment() {
-    DatabaseReference userDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable());
-
-    // If we're creating an Assignment
-    if (isNew) {
-      String assignmentID = userDatabase.push().getKey();
-      userDatabase.child(assignmentID).setValue(this);
-    } else {
-      userDatabase.child( getId()).setValue(this);
-    }
-
-    return true;
+  public String getTechExperience() {
+    return techExperience;
   }
+
+  public void setTechExperience(String techExperience) {
+    this.techExperience = techExperience;
+  }
+
+  public List<String> getTechExperienceList() {
+    return techExperienceList;
+  }
+
+  public void setTechExperienceList(List<String> techExperienceList) {
+    this.techExperienceList = techExperienceList;
+  }
+
 }

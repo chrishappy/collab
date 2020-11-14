@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.themusicians.musiclms.entity.Node.User;
 
 /**
  * ....
@@ -26,9 +29,15 @@ import com.google.firebase.auth.FirebaseAuth;
  * @todo Proceed through sign up layouts
  */
 public class signup extends AppCompatActivity {
-  EditText newEmail, newPassword, newName;
-  Button next;
-  FirebaseAuth fAuth;
+  protected EditText newEmail, newPassword, newName;
+  protected Button next;
+  protected FirebaseAuth fAuth;
+
+  /**
+   * Save User Date
+   */
+  protected FirebaseUser currentUser;
+  protected User newUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,9 @@ public class signup extends AppCompatActivity {
 
     newEmail = findViewById(R.id.newEmail);
     newPassword = findViewById(R.id.newPassword);
+    newName = findViewById(R.id.newName);
+
+    // Store user
     fAuth = FirebaseAuth.getInstance();
     next = findViewById(R.id.signup_next);
 
@@ -74,6 +86,14 @@ public class signup extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                          // Get current user
+                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                          newUser = new User( currentUser.getUid() );
+                          newUser.setStatus(true);
+                          newUser.save();
+
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
                           setContentView(R.layout.signup_details);
                         } else {
@@ -97,6 +117,11 @@ public class signup extends AppCompatActivity {
       newName.setError("Name is Required");
       return;
     }
+
+    // Save user name
+    newUser.setName(name);
+    newUser.enforceNew(false);
+    newUser.save();
 
     setContentView(R.layout.signup_tech);
   }
