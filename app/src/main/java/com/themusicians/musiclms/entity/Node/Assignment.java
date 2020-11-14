@@ -12,11 +12,10 @@ import java.util.Map;
 
 /**
  * @file Assignment.java
- *     <p>....
- *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
- *     <p>--------------------------------
- * @todo Create Edit Form
- * @todo Create UI
+ *
+ * @contributor
+ * @author Nathan Tsai
+ * @since Nov 2, 2020
  */
 @IgnoreExtraProperties
 public class Assignment extends Node {
@@ -43,6 +42,10 @@ public class Assignment extends Node {
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {
     super();
+  }
+
+  public Assignment(String id) {
+    super(id);
   }
 
 

@@ -11,8 +11,11 @@ import java.util.Map;
 /**
  * @file Entity.java
  *     <p>Contains the default class to be extended by Attachments and Nodes
- *     <p>Contributors: Nathan Tsai
- *     <p>Created by Nathan Tsai on 2020-11-02
+ *
+ * @todo Remove getEntityType and getType from entities
+ *
+ * @author Nathan Tsai
+ * @since 2020-11-02
  */
 @IgnoreExtraProperties
 public abstract class Entity implements EntityInterface {

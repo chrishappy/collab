@@ -13,11 +13,9 @@ import java.util.Map;
 
 /**
  * @file Node.java
- *     <p>....
- *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
- *     <p>--------------------------------
- * @todo Create Class
- * @todo Create UI
+ *
+ * @author Nathan Tsai
+ * @since 2020-11-02
  */
 public abstract class Node extends Entity {
 

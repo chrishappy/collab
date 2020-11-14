@@ -34,9 +34,6 @@ import java.util.concurrent.TimeUnit;
 public class AssignmentCreateFormActivity extends AppCompatActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
-  /** The Firebase Database Instance */
-  private DatabaseReference mDatabase;
-
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
 
