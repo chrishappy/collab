@@ -66,7 +66,6 @@ public class signup extends AppCompatActivity {
           public void onClick(View v) {
             String email = newEmail.getText().toString().trim();
             String password = newPassword.getText().toString().trim();
-
             // checks if email is empty
             if (TextUtils.isEmpty(email)) {
               newEmail.setError("Email is Required.");
@@ -99,6 +98,7 @@ public class signup extends AppCompatActivity {
 
                           newUser = new User( currentUser.getUid() );
                           newUser.setStatus(true);
+                          newUser.setEmail(email);
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -129,6 +129,8 @@ public class signup extends AppCompatActivity {
     newUser.setName(name);
     newUser.enforceNew(false);
     newUser.save();
+
+
 
     setContentView(R.layout.signup_tech);
   }

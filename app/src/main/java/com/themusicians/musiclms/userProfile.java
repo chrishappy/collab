@@ -57,7 +57,7 @@ public class userProfile extends AppCompatActivity {
 
         String email = snapshot.child("email").getValue().toString();
 
-        //myName.setText(email);
+        myEmail.setText(email);
       }
 
       @Override

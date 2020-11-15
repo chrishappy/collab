@@ -65,13 +65,16 @@ public class User extends Node {
   /**
    *
    */
-
   protected String sendText;
   protected String makeCall;
   protected String joinZoom;
   protected String scheduleZoom;
   protected String watchYoutube;
   protected String uploadYoutube;
+
+  public String getEmail() { return email; }
+
+  public void setEmail(String email) { this.email = email;}
 
   public String getSendText() {
     return sendText;
