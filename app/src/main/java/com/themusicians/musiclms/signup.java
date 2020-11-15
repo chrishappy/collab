@@ -129,7 +129,7 @@ public class signup extends AppCompatActivity {
 
   // Sign up tech page
   public void signUpFinish(View view) {
-    Intent signupFinish = new Intent(this, AssignmentOverviewActivity.class);
+    Intent signupFinish = new Intent(this, Placeholder.class);
     startActivity(signupFinish);
   }
 
