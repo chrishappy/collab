@@ -23,12 +23,6 @@ public class User extends Node {
   protected String type = "user";
 
   /**
-   * Decide on how to store the tech experience
-   */
-  protected String techExperience;
-  protected List<String> techExperienceList;
-
-  /**
    * The user's email
    * @todo implement later
    */
@@ -71,20 +65,60 @@ public class User extends Node {
   /**
    *
    */
-  public String getTechExperience() {
-    return techExperience;
+
+  protected String sendText;
+  protected String makeCall;
+  protected String joinZoom;
+  protected String scheduleZoom;
+  protected String watchYoutube;
+  protected String uploadYoutube;
+
+  public String getSendText() {
+    return sendText;
   }
 
-  public void setTechExperience(String techExperience) {
-    this.techExperience = techExperience;
+  public void setSendText(String sendText) {
+    this.sendText = sendText;
   }
 
-  public List<String> getTechExperienceList() {
-    return techExperienceList;
+  public String getMakeCall() {
+    return makeCall;
   }
 
-  public void setTechExperienceList(List<String> techExperienceList) {
-    this.techExperienceList = techExperienceList;
+  public void setMakeCall(String makeCall) {
+    this.makeCall = makeCall;
+  }
+
+  public String getJoinZoom() {
+    return joinZoom;
+  }
+
+  public void setJoinZoom(String joinZoom) {
+    this.joinZoom = joinZoom;
+  }
+
+  public String getScheduleZoom() {
+    return scheduleZoom;
+  }
+
+  public void setScheduleZoom(String scheduleZoom) {
+    this.scheduleZoom = scheduleZoom;
+  }
+
+  public String getWatchYoutube() {
+    return watchYoutube;
+  }
+
+  public void setWatchYoutube(String watchYoutube) {
+    this.watchYoutube = watchYoutube;
+  }
+
+  public String getUploadYoutube() {
+    return uploadYoutube;
+  }
+
+  public void setUploadYoutube(String uploadYoutube) {
+    this.uploadYoutube = uploadYoutube;
   }
 
 }

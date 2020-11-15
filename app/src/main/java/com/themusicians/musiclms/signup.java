@@ -15,8 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
@@ -33,6 +37,8 @@ public class signup extends AppCompatActivity {
   protected EditText newEmail, newPassword, newName;
   protected Button next;
   protected FirebaseAuth fAuth;
+  protected CheckBox sendText, makeCall, joinZoom, scheduleZoom, watchYoutube, uploadYoutube;
+  DatabaseReference reference;
 
   /**
    * Save User Date
@@ -129,6 +135,71 @@ public class signup extends AppCompatActivity {
 
   // Sign up tech page
   public void signUpFinish(View view) {
+
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("Tech Experience");
+
+    final int[] i = {0};
+
+    sendText = findViewById(R.id.sendText);
+    makeCall = findViewById(R.id.makeCall);
+    joinZoom = findViewById(R.id.joinZoom);
+    scheduleZoom = findViewById(R.id.scheduleZoom);
+    watchYoutube = findViewById(R.id.watchYoutube);
+    uploadYoutube = findViewById(R.id.uploadYoutube);
+
+    String sT = "Can send Text";
+    String mC = "Can make Call";
+    String jZ = "Can join Zoom";
+    String sZ = "Can schedule Zoom";
+    String wY = "Can watch Youtube";
+    String uY = "Can upload Youtube";
+
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if (snapshot.exists()){
+          i[0] = (int)snapshot.getChildrenCount();
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
+    if(sendText.isChecked()){
+      newUser.setSendText(sT);
+      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+    }
+
+    if(makeCall.isChecked()){
+      newUser.setMakeCall(mC);
+      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+    }
+
+    if(joinZoom.isChecked()){
+      newUser.setJoinZoom(jZ);
+      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+    }
+
+    if(scheduleZoom.isChecked()){
+      newUser.setScheduleZoom(sZ);
+      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+    }
+
+    if(watchYoutube.isChecked()){
+      newUser.setWatchYoutube(wY);
+      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+    }
+
+    if(uploadYoutube.isChecked()){
+      newUser.setUploadYoutube(uY);
+      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+    }
+
     Intent signupFinish = new Intent(this, Placeholder.class);
     startActivity(signupFinish);
   }
