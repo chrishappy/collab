@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
@@ -70,7 +71,7 @@ public class myLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                           Toast.makeText(myLogin.this, "Login Successful", Toast.LENGTH_SHORT)
                               .show();
-                          startActivity(new Intent(getApplicationContext(), Placeholder.class));
+                          startActivity(new Intent(getApplicationContext(), AssignmentOverviewActivity.class));
                         } else {
                           Toast.makeText(
                                   myLogin.this,
