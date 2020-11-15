@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_main);
 
-    // Allows to go to login page ny clicking on text
+    // Allows to go to login page by clicking on text
     TextView textview;
     textview = (TextView) findViewById(R.id.Or_login);
     textview.setOnClickListener(
