@@ -138,7 +138,7 @@ public class signup extends AppCompatActivity {
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("Tech Experience");
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid());
 
     final int[] i = {0};
 
@@ -156,48 +156,34 @@ public class signup extends AppCompatActivity {
     String wY = "Can watch Youtube";
     String uY = "Can upload Youtube";
 
-    reference.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        if (snapshot.exists()){
-          i[0] = (int)snapshot.getChildrenCount();
-        }
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
-
     if(sendText.isChecked()){
       newUser.setSendText(sT);
-      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+      newUser.save();
     }
 
     if(makeCall.isChecked()){
       newUser.setMakeCall(mC);
-      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+      newUser.save();
     }
 
     if(joinZoom.isChecked()){
       newUser.setJoinZoom(jZ);
-      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+      newUser.save();
     }
 
     if(scheduleZoom.isChecked()){
       newUser.setScheduleZoom(sZ);
-      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+      newUser.save();
     }
 
     if(watchYoutube.isChecked()){
       newUser.setWatchYoutube(wY);
-      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+      newUser.save();
     }
 
     if(uploadYoutube.isChecked()){
       newUser.setUploadYoutube(uY);
-      reference.child(String.valueOf(i[0] +1)).setValue(newUser);
+      newUser.save();
     }
 
     Intent signupFinish = new Intent(this, Placeholder.class);
