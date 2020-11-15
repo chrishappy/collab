@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
+
 public class AssignmentCreateFormActivity extends AppCompatActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
@@ -42,11 +45,16 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   /** The request code for retrieving todo items  */
   static final int REQUEST_TODO_ENTITY = 1;
 
+  protected Assignment assignment;
+
   @Override
   public void onStart() {
     super.onStart();
     // Check if user is signed in (non-null) and update UI accordingly.
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    // Initialize Assignment
+    assignment = new Assignment();
   }
 
   /** @param savedInstanceState */
@@ -85,12 +93,13 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
     });
 
     // Add a task
+    // From: https://stackoverflow.com/questions/10407159
     final Button addTask = findViewById(R.id.todoAddItem);
     addTask.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
             startActivityForResult(intent, REQUEST_TODO_ENTITY);
           }
         });
@@ -127,7 +136,6 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
             // Due Date timestamp
             long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
 
-            Assignment assignment = new Assignment();
             assignment.setName( AssignmentName.getText().toString() );
             assignment.setClassId( StudentOrClass.getText().toString() );
             assignment.setDueDate( dueDateTimestamp );
@@ -202,8 +210,22 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == REQUEST_TODO_ENTITY && resultCode == RESULT_OK) {
 
-    }
+      if (requestCode == REQUEST_TODO_ENTITY) {
+        if(resultCode == Activity.RESULT_OK){
+          String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
+
+          assignment.addToDoId(toDoId);
+          assignment.save();
+
+          //Display notification
+          Snackbar.make(findViewById(R.id.createAssignmentLayout), "To Do Item Saved", Snackbar.LENGTH_LONG)
+              .setAction("Edit", null)
+              .show();
+        }
+        if (resultCode == Activity.RESULT_CANCELED) {
+          //Write your code if there's no result
+        }
+      }
   }
 }

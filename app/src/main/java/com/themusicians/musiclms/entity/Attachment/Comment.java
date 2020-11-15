@@ -8,7 +8,7 @@ package com.themusicians.musiclms.entity.Attachment;
  */
 public class Comment extends Attachment {
 
-  protected String type = "comment";
+  final protected String type = "comment";
 
   protected String comment;
 
@@ -30,15 +30,18 @@ public class Comment extends Attachment {
    */
   @Override
   public String getBaseTable() {
-    return "node__comment";
+    return getEntityType() + "__" + getType();
   }
 
   /**
    *
    */
-
-
   public Comment() {
     super();
+  }
+
+  @Override
+  public String getType() {
+    return type;
   }
 }

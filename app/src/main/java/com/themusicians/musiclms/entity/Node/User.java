@@ -65,9 +65,17 @@ public class User extends Node {
    */
   @Override
   public String getBaseTable() {
-    return "node__user";
+    return getEntityType() + "__" + getType();
   }
 
+  /**
+   * Implement getType()
+   * @return the type of entity
+   */
+  @Override
+  public String getType() {
+    return type;
+  }
   /**
    *
    */
@@ -86,5 +94,4 @@ public class User extends Node {
   public void setTechExperienceList(List<String> techExperienceList) {
     this.techExperienceList = techExperienceList;
   }
-
 }

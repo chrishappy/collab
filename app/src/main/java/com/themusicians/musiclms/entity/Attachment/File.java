@@ -24,6 +24,24 @@ public class File extends Attachment {
   }
 
   /**
+   * Implement getBaseTable()
+   * @return the database table to save files to
+   */
+  @Override
+  public String getBaseTable() {
+    return getEntityType() + "__" + getType();
+  }
+
+  /**
+   * Implement getType()
+   * @return the type of attachment
+   */
+  @Override
+  public String getType() {
+    return type;
+  }
+
+  /**
    * Save the file to database + save the file to FireStore
    * @return Whether the entity was saved or not
    */

@@ -46,7 +46,7 @@ public class ToDoItem extends Node {
    */
   @Override
   public String getBaseTable() {
-    return "node__assignment";
+    return getEntityType() + "__" + getType();
   }
 
   /** Settings and Getters */
@@ -80,5 +80,10 @@ public class ToDoItem extends Node {
 
   public void setTimeCompleted(Object timeCompleted) {
     TimeCompleted = timeCompleted;
+  }
+
+  @Override
+  public String getType() {
+    return type;
   }
 }

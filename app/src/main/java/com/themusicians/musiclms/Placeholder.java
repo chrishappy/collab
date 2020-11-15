@@ -14,9 +14,9 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 /**
  * ....
  *
- * <p>Contributors: Jerome Lau Created by Jerome Lau on 2020-11-04
- *
- * <p>--------------------------------
+ * @contributor Nathan Tsai
+ * @author Jerome Lau
+ * @since Nov 4, 2020
  *
  * @todo Act as placeholder for main activity page
  */
@@ -29,10 +29,10 @@ public class Placeholder extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     // Redirect to Assignment Overview Activity
-//    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
-//    startActivity(redirectToAssignment);
+    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+    startActivity(redirectToAssignment);
 
-    setContentView(R.layout.activity_placeholder);
+//    setContentView(R.layout.activity_placeholder);
   }
 
   @Override

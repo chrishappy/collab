@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,16 +22,7 @@ import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
-import com.themusicians.musiclms.entity.Node.Assignment;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
-//import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
+import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 public class ToDoTaskCreateFormActivity extends AppCompatActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
@@ -40,6 +32,7 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
 
   /** The request code for retrieving to do items  */
   static final int REQUEST_TODO_ENTITY = 1;
+  static final String RETURN_INTENT_TODO_ID = "TODO_ID_KEY";
 
   @Override
   public void onStart() {
@@ -65,9 +58,11 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
+            Snackbar.make(view, "To Do Item cancelled", Snackbar.LENGTH_LONG)
                 .show();
+
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
             finish();
           }
         });
@@ -79,26 +74,18 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            // Display notification
-            Snackbar.make(view, "Assignment about to be Saved", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
-
-            List<String> dummyList = new LinkedList<>();
-            dummyList.add("This is an element");
-            dummyList.add("This is another element");
-
             // Due Date timestamp
-            Assignment assignment = new Assignment();
-            assignment.setStatus( true );
-            assignment.setUid( currentUser.getUid() );
-//            assignment.setAttachmentIds( null );
-            assignment.save();
+            ToDoItem toDoItem = new ToDoItem();
+            toDoItem.setStatus( true );
+            toDoItem.setUid( currentUser.getUid() );
+            toDoItem.setRequireRecording( RequireRecording.isChecked() ? 1 : 0 );
+            toDoItem.save();
 
-           //Display notification
-            Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
+            // Return To Do Item
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(RETURN_INTENT_TODO_ID, toDoItem.getId());
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
           }
         });
 

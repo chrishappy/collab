@@ -84,4 +84,13 @@ public abstract class Attachment extends Entity {
   public List<Entity> loadMultiple(int[] id) {
     return null;
   }
+
+  /**
+   * Implement get entity type
+   * @return
+   */
+  @Override
+  public String getEntityType() {
+    return entityType;
+  }
 }

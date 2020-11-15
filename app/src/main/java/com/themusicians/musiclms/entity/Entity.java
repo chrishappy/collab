@@ -72,9 +72,7 @@ public abstract class Entity implements EntityInterface {
    *
    * @return String the database table id
    */
-  public String getBaseTable() {
-    return getEntityType() + "__" + getType();
-  }
+  public abstract String getBaseTable();
 
   /**
    * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
@@ -115,18 +113,6 @@ public abstract class Entity implements EntityInterface {
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  /** @return The type of the entity: Assignments or Users profiles, etc */
-  @Override
-  public String getType() {
-    return this.type;
-  }
-
-  /** @return The Entity Type (e.g. Node, Attachment) */
-  @Override
-  public String getEntityType() {
-    return this.entityType;
   }
 
   /** @return The time that the Entity was created in UTC format */

@@ -7,6 +7,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +36,12 @@ public class Assignment extends Node {
 
   protected long dueDate;
 
-  protected List<String> attachmentIds;
+  protected List<String> toDoIds;
 
-  protected List<String> allowedAttachments;
+  protected List<String> allowedAttachments = new LinkedList<String>(){{
+    add("comment");
+    add("file");
+  }};
 
   protected Map<Map, Attachment> attachments;
 
@@ -44,8 +50,19 @@ public class Assignment extends Node {
     super();
   }
 
+  /** The constructor used to update an existing or to set an id */
   public Assignment(String id) {
     super(id);
+  }
+
+
+  /**
+   * Implement getType()
+   * @return the type of node
+   */
+  @Override
+  public String getType() {
+    return type;
   }
   
   /**
@@ -54,7 +71,7 @@ public class Assignment extends Node {
    */
   @Override
   public String getBaseTable() {
-    return "node__assignment";
+    return getEntityType() + "__" + getType();
   }
 
   /** Settings and Getters */
@@ -81,6 +98,24 @@ public class Assignment extends Node {
 
   public void setDueDate(long dueDate) {
     this.dueDate = dueDate;
+  }
+
+  public List<String> getToDoIds() {
+    if (toDoIds == null) {
+      toDoIds = new LinkedList<String>();
+    }
+    return toDoIds;
+  }
+
+  public void addToDoId(String toDoId) {
+    if (toDoIds == null) {
+      toDoIds = new LinkedList<String>();
+    }
+    toDoIds.add(toDoId);
+  }
+
+  public void setToDoIds(List<String> toDoIds) {
+    this.toDoIds = toDoIds;
   }
 
   public List<String> getAllowedAttachments() {

@@ -35,7 +35,9 @@ public class AssignmentOverviewAdapter
       @NonNull AssignmentsViewholder holder, int position, @NonNull Assignment assignment) {
 
     holder.assignmentName.setText(assignment.getName());
-    holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
+    if (assignment.getUid() != null) {
+      holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
+    }
 
     Date date = new Date(assignment.getDueDate());
     DateFormat dateFormat = new SimpleDateFormat( String.valueOf(R.string.date_format__month_day) );

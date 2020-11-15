@@ -57,13 +57,24 @@ public abstract class Node extends Entity {
   }
 
   /**
+   * Implement get entity type
+   * @return
+   */
+  @Override
+  public String getEntityType() {
+    return entityType;
+  }
+  /**
    * Save the Node to the Database
    *
    * @return whether it was successful or not
    */
   public boolean save() {
-
+    // Save the entity
     writeEntity();
+
+    // the entity is no longer new
+    enforceNew(false);
 
     return true;
   }
