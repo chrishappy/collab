@@ -34,47 +34,8 @@ import java.util.List;
 
 public class userProfile extends AppCompatActivity {
 
-  ListView lsview;
-  ArrayAdapter<String> adapter;
-  FirebaseUser user;
-
-  List<String> itemList;
-
-  String uid;
-
-  @Override
-  protected void onCreate(final Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_user_profile);
-    lsview =(ListView)findViewById(R.id.list_view);
-    user = FirebaseAuth.getInstance().getCurrentUser();
-    uid = user.getUid();
-    itemList = new ArrayList<>();
-
-    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(user.getUid());
-    reference.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-        itemList.clear();
-
-        String name = datasnapshot.child(uid).child("name").getValue(String.class);
-        String email = datasnapshot.child(uid).child("email").getValue(String.class);
-
-        itemList.add(name);
-        itemList.add(email);
-        //adapter = new ArrayAdapter<>(userProfile.this,android.R.layout.simple_list_item_1,lsview.setAdapter(adapter)
-        //);
-
-      }
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-      }
-  });
-
-
-
-  /*
   protected TextView myName;
+  protected TextView myEmail;
   protected FirebaseUser currentUser;
 
   @Override
@@ -82,7 +43,8 @@ public class userProfile extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_user_profile);
 
-    myName = findViewById(R.id.myName);
+    myName = findViewById(R.id.user_name);
+    myEmail = findViewById(R.id.user_email);
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -93,6 +55,9 @@ public class userProfile extends AppCompatActivity {
         String name = snapshot.child("name").getValue().toString();
 
         myName.setText(name);
+        String email = snapshot.child("email").getValue().toString();
+
+        myName.setText(email);
       }
 
       @Override
@@ -101,6 +66,4 @@ public class userProfile extends AppCompatActivity {
       }
     });
   }
-*/
-}
 }
