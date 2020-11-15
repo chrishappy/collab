@@ -53,11 +53,11 @@ public class userProfile extends AppCompatActivity {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         String name = snapshot.child("name").getValue().toString();
-
         myName.setText(name);
+
         String email = snapshot.child("email").getValue().toString();
 
-        myName.setText(email);
+        //myName.setText(email);
       }
 
       @Override
