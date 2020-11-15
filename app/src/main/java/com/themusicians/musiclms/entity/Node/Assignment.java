@@ -1,11 +1,14 @@
 package com.themusicians.musiclms.entity.Node;
 
 import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 import java.util.Arrays;
@@ -38,11 +41,6 @@ public class Assignment extends Node {
 
   protected List<String> toDoIds;
 
-  protected List<String> allowedAttachments = new LinkedList<String>(){{
-    add("comment");
-    add("file");
-  }};
-
   protected Map<Map, Attachment> attachments;
 
   /** The default constructor for Firebase + loadMultiple */
@@ -55,6 +53,35 @@ public class Assignment extends Node {
     super(id);
   }
 
+  /**
+   * Load an assignment from the database
+   */
+  /*
+  public Assignment load(String entityId) {
+    final String LOAD_ASSIGNMNET_TAG = "Load Assignment";
+    final Assignment[] loadAssignment = new Assignment[1];
+    entityDatabase.child( entityId )
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            loadAssignment[0] = dataSnapshot.getValue(Assignment.class);
+            Log.w(LOAD_ASSIGNMNET_TAG, "loadAssignment:onDataChange");
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w(LOAD_ASSIGNMNET_TAG, "loadAssignment:onCancelled", databaseError.toException());
+            // ...
+          }
+        });
+
+    // Set Assignment to not load
+    loadAssignment[0].enforceNew(false);
+
+    return loadAssignment[0];
+  }
+  /**/
 
   /**
    * Implement getType()
@@ -63,6 +90,18 @@ public class Assignment extends Node {
   @Override
   public String getType() {
     return type;
+  }
+
+  /**
+   * Return the attachments that can be added to an assignment
+   * @return a list of attachment ids
+   */
+  @Override
+  public List<String> getAllowedAttachments() {
+      return new LinkedList<String>(){{
+        add("comment");
+        add("file");
+      }};
   }
   
   /**
@@ -116,10 +155,6 @@ public class Assignment extends Node {
 
   public void setToDoIds(List<String> toDoIds) {
     this.toDoIds = toDoIds;
-  }
-
-  public List<String> getAllowedAttachments() {
-    return allowedAttachments;
   }
   /**/
 }

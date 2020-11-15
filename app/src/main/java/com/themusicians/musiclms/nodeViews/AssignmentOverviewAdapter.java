@@ -3,6 +3,7 @@ package com.themusicians.musiclms.nodeViews;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ import java.util.Date;
 public class AssignmentOverviewAdapter
     extends FirebaseRecyclerAdapter<Assignment, AssignmentOverviewAdapter.AssignmentsViewholder> {
 
+  private ItemClickListener itemClickListener;
+
   public AssignmentOverviewAdapter(@NonNull FirebaseRecyclerOptions<Assignment> options) {
     super(options);
   }
@@ -35,6 +38,7 @@ public class AssignmentOverviewAdapter
       @NonNull AssignmentsViewholder holder, int position, @NonNull Assignment assignment) {
 
     holder.assignmentName.setText(assignment.getName());
+
     if (assignment.getUid() != null) {
       holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
     }
@@ -42,6 +46,16 @@ public class AssignmentOverviewAdapter
     Date date = new Date(assignment.getDueDate());
     DateFormat dateFormat = new SimpleDateFormat( String.valueOf(R.string.date_format__month_day) );
     holder.dueDate.setText(dateFormat.format(date));
+
+    holder.editAssignment.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            if (itemClickListener != null) {
+              itemClickListener.onEditButtonClick( assignment.getId() );
+            }
+          }
+        });
   }
 
   // Function to tell the class about the Card view (here
@@ -60,6 +74,7 @@ public class AssignmentOverviewAdapter
   // view (here "person.xml")
   class AssignmentsViewholder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate;
+    Button editAssignment;
 
     public AssignmentsViewholder(@NonNull View itemView) {
       super(itemView);
@@ -67,6 +82,20 @@ public class AssignmentOverviewAdapter
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
       dueDate = itemView.findViewById(R.id.dueDate);
+      editAssignment = itemView.findViewById(R.id.edit_button);
     }
+  }
+
+  /**
+   * Allow users to click the edit button
+   *
+   * From: https://stackoverflow.com/questions/39551313/
+   */
+  public interface ItemClickListener {
+    void onEditButtonClick(String entityId );
+  }
+
+  public void addItemClickListener(ItemClickListener listener) {
+    itemClickListener = listener;
   }
 }

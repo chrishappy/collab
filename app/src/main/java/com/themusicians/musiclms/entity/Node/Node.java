@@ -81,11 +81,9 @@ public abstract class Node extends Entity {
 
   /** @return Boolean */
   private boolean writeEntity() {
-    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
-
 
     // Set default created time
-    if (!isNew && getCreated() == null) {
+    if (isNew && getCreated() == null) {
       setCreated(ServerValue.TIMESTAMP);
     }
 
@@ -114,10 +112,10 @@ public abstract class Node extends Entity {
                   DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {
                   result[0] = false;
-                  System.out.println("Data could not be saved " + databaseError.getMessage());
+                  System.out.println("Entity data could not be saved " + databaseError.getMessage());
                 } else {
                   result[0] = true;
-                  System.out.println("Data saved successfully.");
+                  System.out.println("Entity data saved successfully.");
                 }
               }
             });

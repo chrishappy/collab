@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,9 @@ public class Placeholder extends AppCompatActivity {
     // Redirect to Assignment Overview Activity
     Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
     startActivity(redirectToAssignment);
+
+    Toast.makeText(Placeholder.this, "Using Placeholder class", Toast.LENGTH_SHORT)
+        .show();
 
 //    setContentView(R.layout.activity_placeholder);
   }

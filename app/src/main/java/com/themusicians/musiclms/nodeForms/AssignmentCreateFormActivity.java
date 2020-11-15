@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,8 +16,11 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
@@ -34,6 +38,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import kotlin.text.UStringsKt;
+
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
 
 public class AssignmentCreateFormActivity extends AppCompatActivity
@@ -42,8 +48,19 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
 
-  /** The request code for retrieving todo items  */
-  static final int REQUEST_TODO_ENTITY = 1;
+  /** The request code for retrieving to do items  */
+  public static final int REQUEST_TODO_ENTITY = 1;
+
+  /** The request code for retrieving to do items  */
+  public static final String ACCEPT_ENTITY_ID = "ENTITY_ID_FOR_EDIT";
+
+  /** The entity id to edit */
+  protected String editEntityId;
+
+  /** Log tag for editing */
+  public static final String LOAD_ASSIGNMENT_TAG = "Load Assignment To Edit";
+
+  protected boolean inEditMode = false;
 
   protected Assignment assignment;
 
@@ -52,15 +69,22 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
     super.onStart();
     // Check if user is signed in (non-null) and update UI accordingly.
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-    // Initialize Assignment
-    assignment = new Assignment();
   }
 
   /** @param savedInstanceState */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Get id to edit
+    Intent intent = getIntent();
+    editEntityId = intent.getStringExtra(ACCEPT_ENTITY_ID);
+
+    assignment = new Assignment();
+
+    if (editEntityId != null) {
+      inEditMode = true;
+    }
 
     setContentView(R.layout.activity_assignment_create_form);
 
@@ -91,6 +115,28 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
         picker.show();
       }
     });
+
+    // If we are editing an assignment
+    if (inEditMode) {
+      assignment.getEntityDatabase().child( editEntityId )
+          .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              assignment = dataSnapshot.getValue(Assignment.class);
+              AssignmentName.setText( assignment.getName() );
+              StudentOrClass.setText( assignment.getClassId() );
+
+              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onDataChange");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+              // Getting Post failed, log a message
+              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onCancelled", databaseError.toException());
+              // ...
+            }
+          });
+    }
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159

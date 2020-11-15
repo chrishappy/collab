@@ -2,6 +2,7 @@ package com.themusicians.musiclms.entity;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.themusicians.musiclms.entity.Node.User;
 
@@ -58,11 +59,13 @@ public abstract class Entity implements EntityInterface {
 
   /** Default constructor without arguments for Firebase and ::loadMultiple */
   public Entity() {
+    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
     isNew = true;
   }
 
   /** Constructor for loading */
   public Entity(String id) {
+    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
     isNew = false;
     setId(id);
   }
@@ -178,6 +181,12 @@ public abstract class Entity implements EntityInterface {
     isNew = inputIsNew;
   }
 
+  /**
+   * Get the relevant database
+   */
+  public DatabaseReference getEntityDatabase() {
+    return entityDatabase;
+  }
   /**
    * Need to save user information first
    */

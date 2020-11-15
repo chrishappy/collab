@@ -28,6 +28,8 @@ import com.themusicians.musiclms.userProfile;
 
 import org.jetbrains.annotations.NotNull;
 
+import static com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity.ACCEPT_ENTITY_ID;
+
 /**
  * Displays the assignments
  *
@@ -38,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Nathan Tsai
  * @since Nov 7, 2020
  */
-public class AssignmentOverviewActivity extends AppCompatActivity {
+public class AssignmentOverviewActivity extends AppCompatActivity implements AssignmentOverviewAdapter.ItemClickListener {
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
@@ -101,6 +103,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
 
     // Create new Adapter
     adapter = new AssignmentOverviewAdapter(options);
+    adapter.addItemClickListener(this);
     recyclerView.setAdapter(adapter);
 
 
@@ -158,11 +161,21 @@ public class AssignmentOverviewActivity extends AppCompatActivity {
         startActivity(toUserProfile);
         return true;
       case R.id.createassignment:
-        Intent toCreateAssignment =
-            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+        Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
         startActivity(toCreateAssignment);
         return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  /**
+   * Run this function when clicking the edit button
+   * @param entityId
+   */
+  @Override
+  public void onEditButtonClick(String entityId) {
+    Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+    toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
+    startActivity(toCreateAssignment);
   }
 }
