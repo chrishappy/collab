@@ -54,6 +54,12 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   /** The request code for retrieving to do items  */
   public static final String ACCEPT_ENTITY_ID = "ENTITY_ID_FOR_EDIT";
 
+  /**
+   * Used to restore entity id after instance is saved
+   * See: https://stackoverflow.com/q/26359130
+   */
+  static final String SAVED_ENTITY_ID = "SAVED_ENTITY_ID";
+
   /** The entity id to edit */
   protected String editEntityId;
 
@@ -69,6 +75,30 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
     super.onStart();
     // Check if user is signed in (non-null) and update UI accordingly.
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    // If we are editing an assignment
+    final EditText AssignmentName   = findViewById(R.id.assignment_name);
+    final EditText StudentOrClass   = findViewById(R.id.students_or_class);
+    if (inEditMode) {
+      assignment.getEntityDatabase().child( editEntityId )
+          .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              assignment = dataSnapshot.getValue(Assignment.class);
+              AssignmentName.setText( assignment.getName() );
+              StudentOrClass.setText( assignment.getClassId() );
+
+              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onDataChange");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+              // Getting Post failed, log a message
+              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onCancelled", databaseError.toException());
+              // ...
+            }
+          });
+    }
   }
 
   /** @param savedInstanceState */
@@ -115,28 +145,6 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
         picker.show();
       }
     });
-
-    // If we are editing an assignment
-    if (inEditMode) {
-      assignment.getEntityDatabase().child( editEntityId )
-          .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-              assignment = dataSnapshot.getValue(Assignment.class);
-              AssignmentName.setText( assignment.getName() );
-              StudentOrClass.setText( assignment.getClassId() );
-
-              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onDataChange");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-              // Getting Post failed, log a message
-              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onCancelled", databaseError.toException());
-              // ...
-            }
-          });
-    }
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
@@ -251,7 +259,29 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
 
   }
 
-  // End section to be generalized
+  // ---- End section to be generalized-----
+
+  @Override
+  public void onSaveInstanceState(Bundle savedInstanceState) {
+    assignment.save();
+
+    // Save the user's current game state
+    savedInstanceState.putString(SAVED_ENTITY_ID, assignment.getId());
+
+    // Always call the superclass so it can save the view hierarchy state
+    super.onSaveInstanceState(savedInstanceState);
+  }
+
+  /*
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+    // Always call the superclass so it can restore the view hierarchy
+    super.onRestoreInstanceState(savedInstanceState);
+
+    // Restore state members from saved instance
+    editEntityId = savedInstanceState.getString(SAVED_ENTITY_ID);
+  }
+  /**/
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
