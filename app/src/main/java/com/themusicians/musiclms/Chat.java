@@ -62,6 +62,7 @@ public class Chat extends AppCompatActivity {
                 // of com.themusicians.musiclms.com.themusicians.musiclms.ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
                         .getReference()
+                        .child("chats")
                         .push()
                         .setValue(new ChatMessage(input.getText().toString(),
                                 FirebaseAuth.getInstance()
@@ -78,10 +79,13 @@ public class Chat extends AppCompatActivity {
 
     private void displayChatMessages() {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
-        Query query = FirebaseDatabase.getInstance().getReference();
+        Query query = FirebaseDatabase.getInstance().getReference().child("chats");
+        //Create FirebaseListOptions
         FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
+                .setLayout(R.layout.message)
                 .build();
+        //Finally you pass them to the constructor here:
         adapter = new FirebaseListAdapter<ChatMessage>(options) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
