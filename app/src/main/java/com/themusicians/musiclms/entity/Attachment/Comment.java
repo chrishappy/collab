@@ -8,7 +8,7 @@ package com.themusicians.musiclms.entity.Attachment;
  */
 public class Comment extends Attachment {
 
-  final protected String type = "comment";
+  protected final String type = "comment";
 
   protected String comment;
 

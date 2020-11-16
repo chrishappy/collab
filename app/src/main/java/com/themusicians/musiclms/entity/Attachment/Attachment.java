@@ -17,8 +17,8 @@ import java.util.List;
  */
 public abstract class Attachment extends Entity {
 
-  /** Set the Node Type */
-  protected String entityType = "attachment";
+  /** Set the Node Type. Must be final */
+  protected final String entityType = "attachment";
 
   /** The default constructor for Firebase + loadMultiple */
   public Attachment() {

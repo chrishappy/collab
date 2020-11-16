@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
@@ -26,7 +27,8 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Assignment extends Node {
 
-  protected String type = "assignment";
+  /** The type of node. Must be final */
+  protected final String type = "assignment";
 
   /**
    * The fields for the Assignment
@@ -46,11 +48,15 @@ public class Assignment extends Node {
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {
     super();
+
+    System.out.println("The Assignment base table is: " + getBaseTable());
   }
 
   /** The constructor used to update an existing or to set an id */
   public Assignment(String id) {
     super(id);
+
+    System.out.println("The Assignment2 base table is: " + getBaseTable());
   }
 
   /**
@@ -97,6 +103,7 @@ public class Assignment extends Node {
    * @return a list of attachment ids
    */
   @Override
+  @Exclude
   public List<String> getAllowedAttachments() {
       return new LinkedList<String>(){{
         add("comment");

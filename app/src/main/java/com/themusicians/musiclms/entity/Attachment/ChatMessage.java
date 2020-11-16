@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ChatMessage extends Attachment {
 
-  protected String type = "chat_message";
+  protected final String type = "chat_message";
 
   protected String messageText;
   protected String messageUser;
@@ -22,6 +22,24 @@ public class ChatMessage extends Attachment {
 
   public ChatMessage() {
     super();
+  }
+
+  /**
+   * Implement getBaseTable()
+   * @return the database to save chat messages
+   */
+  @Override
+  public String getBaseTable() {
+    return getEntityType() + "__" + getType();
+  }
+
+  /**
+   * Implement getType()
+   * @return the type of attachment
+   */
+  @Override
+  public String getType() {
+    return type;
   }
 
   public String getMessageText() {
@@ -47,4 +65,5 @@ public class ChatMessage extends Attachment {
   public void setMessageTime(long messageTime) {
     this.messageTime = messageTime;
   }
+
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class ToDoItem extends Node {
 
-  protected String type = "to_do_item";
+  protected final String type = "to_do_item";
 
   /**
    * The fields for the To Do Item

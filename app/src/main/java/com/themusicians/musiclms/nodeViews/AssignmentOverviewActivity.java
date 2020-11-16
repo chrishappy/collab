@@ -59,7 +59,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
 
     // Create a instance of the database and get
     // its reference
-    mbase = FirebaseDatabase.getInstance().getReference("person");
+    Assignment temp = new Assignment();
+    mbase = FirebaseDatabase.getInstance().getReference(temp.getBaseTable());
 
     recyclerView = findViewById(R.id.recycler1);
 

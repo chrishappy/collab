@@ -19,8 +19,8 @@ import java.util.Map;
  */
 public abstract class Node extends Entity {
 
-  /** Firebase's Realtime Database */
-  protected String entityType = "node";
+  /** The entity type. Must be final */
+  protected final String entityType = "node";
 
   /**
    * The fields for the default Node
@@ -122,6 +122,7 @@ public abstract class Node extends Entity {
               }
             });
 
+    enforceNew(false);
 
     return result[0];
   }

@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class User extends Node {
   /**
-   * Set the type of Node
+   * Set the type of Node. Must be final
    */
-  protected String type = "user";
+  protected final String type = "user";
 
   /**
    * The user's email

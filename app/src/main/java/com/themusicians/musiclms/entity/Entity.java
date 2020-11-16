@@ -2,6 +2,7 @@ package com.themusicians.musiclms.entity;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.themusicians.musiclms.entity.Node.User;
@@ -60,12 +61,18 @@ public abstract class Entity implements EntityInterface {
   /** Default constructor without arguments for Firebase and ::loadMultiple */
   public Entity() {
     entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
+
+    System.out.println("The Entity base table is: " + getBaseTable());
+
     isNew = true;
   }
 
   /** Constructor for loading */
   public Entity(String id) {
     entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
+
+    System.out.println("The Entity2 base table is: " + getBaseTable());
+
     isNew = false;
     setId(id);
   }
@@ -76,6 +83,13 @@ public abstract class Entity implements EntityInterface {
    * @return String the database table id
    */
   public abstract String getBaseTable();
+
+  /**
+   * Implement get entity type
+   * @return the type of entity
+   */
+  @Override
+  public abstract String getEntityType();
 
   /**
    * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
@@ -184,6 +198,7 @@ public abstract class Entity implements EntityInterface {
   /**
    * Get the relevant database
    */
+  @Exclude
   public DatabaseReference getEntityDatabase() {
     return entityDatabase;
   }

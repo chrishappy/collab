@@ -9,7 +9,7 @@ package com.themusicians.musiclms.entity.Attachment;
  */
 public class File extends Attachment {
 
-  protected String type = "file";
+  protected final String type = "file";
 
   /**
    * Where the file is stored
