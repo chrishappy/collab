@@ -63,7 +63,6 @@ public class Chat extends AppCompatActivity {
                 FirebaseDatabase.getInstance()
                         .getReference()
                         .child("chats")
-                        .push()
                         .setValue(new ChatMessage(input.getText().toString(),
                                 FirebaseAuth.getInstance()
                                         .getCurrentUser()
@@ -79,14 +78,10 @@ public class Chat extends AppCompatActivity {
 
     private void displayChatMessages() {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
-        //Suppose you want to retrieve "chats" in your Firebase DB:
-        Query query = FirebaseDatabase.getInstance().getReference().child("chats");
-        //The error said the constructor expected FirebaseListOptions - here you create them:
+        Query query = FirebaseDatabase.getInstance().getReference();
         FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
-                .setLayout(R.layout.message)
                 .build();
-        //Finally you pass them to the constructor here:
         adapter = new FirebaseListAdapter<ChatMessage>(options) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
