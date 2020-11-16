@@ -130,8 +130,6 @@ public class signup extends AppCompatActivity {
     newUser.enforceNew(false);
     newUser.save();
 
-
-
     setContentView(R.layout.signup_tech);
   }
 
@@ -139,17 +137,14 @@ public class signup extends AppCompatActivity {
   public void signUpFinish(View view) {
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid());
-
-    final int[] i = {0};
-
     sendText = findViewById(R.id.sendText);
     makeCall = findViewById(R.id.makeCall);
     joinZoom = findViewById(R.id.joinZoom);
     scheduleZoom = findViewById(R.id.scheduleZoom);
     watchYoutube = findViewById(R.id.watchYoutube);
     uploadYoutube = findViewById(R.id.uploadYoutube);
+
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid());
 
     String sT = "Can send Text";
     String mC = "Can make Call";
