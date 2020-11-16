@@ -81,17 +81,17 @@ public class Chat extends AppCompatActivity {
             .setQuery(query, ChatMessage.class)
             .setLayout(android.R.layout.message)
             .build();
-//Finally you pass them to the constructor here:
+    //Finally you pass them to the constructor here:
     adapter = new FirebaseListAdapter<ChatMessage>(options){
         @Override
         protected void populateView(View v, ChatMessage model, int position) {
-// Get references to the views of message.xml
+            // Get references to the views of message.xml
             TextView messageText = (TextView)v.findViewById(R.id.message_text);
             TextView messageTime = (TextView)v.findViewById(R.id.message_time);
 
-// Set their text
+            // Set their text
             messageText.setText(model.getMessageBody());
-// Format the date before showing it
+            // Format the date before showing it
             messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
         };
 
