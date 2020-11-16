@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 /**
  *
@@ -72,27 +74,25 @@ public class Chat extends AppCompatActivity {
 
     }
     private void displayChatMessages() {}
-      /*  ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
+    //Suppose you want to retrieve "chats" in your Firebase DB:
+    Query query = FirebaseDatabase.getInstance().getReference().child("chats");
+    //The error said the constructor expected FirebaseListOptions - here you create them:
+    FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatmMessage>()
+            .setQuery(query, ChatMessage.class)
+            .setLayout(android.R.layout.message)
+            .build();
+//Finally you pass them to the constructor here:
+    adapter = new FirebaseListAdapter<ChatMessage>(options){
+        @Override
+        protected void populateView(View v, ChatMessage model, int position) {
+// Get references to the views of message.xml
+            TextView messageText = (TextView)v.findViewById(R.id.message_text);
+            TextView messageTime = (TextView)v.findViewById(R.id.message_time);
 
-        adapter = new FirebaseListAdapter<com.themusicians.musiclms.ChatMessage>(this, com.themusicians.musiclms.ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
-            @Override
-            protected void populateView(View v, com.themusicians.musiclms.ChatMessage model, int position) {
-                // Get references to the views of message.xml
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-
-                // Set their text
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-
-                // Format the date before showing it
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                        model.getMessageTime()));
-            }
+// Set their text
+            messageText.setText(model.getMessageBody());
+// Format the date before showing it
+            messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
         };
 
-        listOfMessages.setAdapter(adapter);
-    }*/
 }
