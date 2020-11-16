@@ -12,17 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
+        <activity android:name=".Chat"/>
         <!-- User Activities -->
         <activity android:name=".signup" />
-        <activity android:name=".userProfile"></activity>
+        <activity android:name=".userProfile" />
         <activity android:name=".Placeholder" />
         <activity
             android:name=".myLogin"
-            android:label="@string/title_activity_signin" />
-
-        <!-- Assignment -->
+            android:label="@string/title_activity_signin" /> <!-- Assignment -->
         <activity
             android:name=".nodeViews.AssignmentOverviewActivity"
             android:label="@string/title_activity_assignment_overview"/>
@@ -33,12 +30,13 @@
 
         <!--
         For back button
-        https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar-->
-
+        https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar
+        -->
         <activity
             android:name=".nodeForms.AssignmentCreateFormActivity"
             android:label="@string/title_activity_assignment_create_form"
             android:parentActivityName=".nodeViews.AssignmentOverviewActivity">
+
             <!-- Support 4.0 and below -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

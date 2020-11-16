@@ -155,4 +155,12 @@ public class userProfile extends AppCompatActivity {
     Intent reload = new Intent(this, userProfile.class);
     startActivity(reload);
   }
+
+  /**
+   * Shifan's code
+   */
+  public void goChat(View view) {
+    Intent Chatpage = new Intent(this, Chat.class);
+    startActivity(Chatpage);
+  }
 }
