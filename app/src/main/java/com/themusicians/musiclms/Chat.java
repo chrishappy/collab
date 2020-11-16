@@ -75,6 +75,7 @@ public class Chat extends AppCompatActivity {
     }
 
     private void displayChatMessages() {
+        ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
         //Suppose you want to retrieve "chats" in your Firebase DB:
         Query query = FirebaseDatabase.getInstance().getReference().child("chats");
         //The error said the constructor expected FirebaseListOptions - here you create them:
@@ -96,6 +97,7 @@ public class Chat extends AppCompatActivity {
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
             }
         };
+        listOfMessages.setAdapter(adapter);
 
     }
 }
