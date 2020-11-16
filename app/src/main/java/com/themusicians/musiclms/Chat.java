@@ -49,12 +49,12 @@ public class Chat extends AppCompatActivity {
 
 
         FloatingActionButton fab =
-                (FloatingActionButton)findViewById(R.id.fab);
+                (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText input = (EditText)findViewById(R.id.input);
+                EditText input = (EditText) findViewById(R.id.input);
 
                 // Read the input field and push a new instance
                 // of com.themusicians.musiclms.com.themusicians.musiclms.ChatMessage to the Firebase database
@@ -73,7 +73,10 @@ public class Chat extends AppCompatActivity {
         });
 
     }
-    private void displayChatMessages() {}
+
+    private void displayChatMessages() {
+    }
+
     //Suppose you want to retrieve "chats" in your Firebase DB:
     Query query = FirebaseDatabase.getInstance().getReference().child("chats");
     //The error said the constructor expected FirebaseListOptions - here you create them:
@@ -82,17 +85,21 @@ public class Chat extends AppCompatActivity {
             .setLayout(android.R.layout.message)
             .build();
     //Finally you pass them to the constructor here:
-    adapter = new FirebaseListAdapter<ChatMessage>(options){
+    adapter =new FirebaseListAdapter<ChatMessage>(options)
+
+    {
         @Override
-        protected void populateView(View v, ChatMessage model, int position) {
-            // Get references to the views of message.xml
-            TextView messageText = (TextView)v.findViewById(R.id.message_text);
-            TextView messageTime = (TextView)v.findViewById(R.id.message_time);
+        protected void populateView (View v, ChatMessage model,int position){
+        // Get references to the views of message.xml
+        TextView messageText = (TextView) v.findViewById(R.id.message_text);
+        TextView messageTime = (TextView) v.findViewById(R.id.message_time);
 
-            // Set their text
-            messageText.setText(model.getMessageBody());
-            // Format the date before showing it
-            messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
-        };
+        // Set their text
+        messageText.setText(model.getMessageText());
+        // Format the date before showing it
+        messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
+    }
+        ;
 
+    }
 }
