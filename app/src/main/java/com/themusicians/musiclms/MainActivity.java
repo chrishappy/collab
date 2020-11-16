@@ -6,14 +6,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
   private Button button;
+  private FirebaseAuth fAuth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    fAuth = FirebaseAuth.getInstance();
+
+    FirebaseUser mFirebaseUser = fAuth.getCurrentUser();
+    if(mFirebaseUser != null){
+      Intent redirectOverview = new Intent(this, Placeholder.class);
+      startActivity(redirectOverview);
+    }
 
     //        button = (Button) findViewById(R.id.assignment_overview_button);
     //        button.setOnClickListener(new View.OnClickListener() {
@@ -29,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_main);
 
-    // Allows to go to login page ny clicking on text
+    // Allows to go to login page by clicking on text
     TextView textview;
     textview = (TextView) findViewById(R.id.Or_login);
     textview.setOnClickListener(

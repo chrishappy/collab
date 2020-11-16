@@ -23,12 +23,6 @@ public class User extends Node {
   protected String type = "user";
 
   /**
-   * Decide on how to store the tech experience
-   */
-  protected String techExperience;
-  protected List<String> techExperienceList;
-
-  /**
    * The user's email
    * @todo implement later
    */
@@ -39,6 +33,23 @@ public class User extends Node {
    * @todo add parent
    */
   protected String role;
+
+  /**
+   * Tech Experience
+   *
+   * Create a list:
+   *   List<String> techExperience = new LinkedList<String>();
+   *   techExperience.add("makePhoneCall");
+   *   techExperience.add("ZoomCall");
+   *   user.setTechExperience( techExperience );
+   *   user.save();
+   */
+  protected List<String> techExperience;
+
+  /**
+   * Instruments
+   */
+  protected List<String> instruments;
 
   /**
    * The fields for the default Node
@@ -76,22 +87,85 @@ public class User extends Node {
   public String getType() {
     return type;
   }
+
   /**
-   *
+   * Fields setters and getters
    */
-  public String getTechExperience() {
+  public List<String> getTechExperience() {
     return techExperience;
   }
 
-  public void setTechExperience(String techExperience) {
+  public void setTechExperience(List<String> techExperience) {
     this.techExperience = techExperience;
   }
 
-  public List<String> getTechExperienceList() {
-    return techExperienceList;
+  public List<String> getInstruments() {
+    return instruments;
   }
 
-  public void setTechExperienceList(List<String> techExperienceList) {
-    this.techExperienceList = techExperienceList;
+  public void setInstruments(List<String> instruments) {
+    this.instruments = instruments;
+  }
+
+  /**
+   *
+   */
+  protected String sendText;
+  protected String makeCall;
+  protected String joinZoom;
+  protected String scheduleZoom;
+  protected String watchYoutube;
+  protected String uploadYoutube;
+
+  public String getEmail() { return email; }
+
+  public void setEmail(String email) { this.email = email;}
+
+  public String getSendText() {
+    return sendText;
+  }
+
+  public void setSendText(String sendText) {
+    this.sendText = sendText;
+  }
+
+  public String getMakeCall() {
+    return makeCall;
+  }
+
+  public void setMakeCall(String makeCall) {
+    this.makeCall = makeCall;
+  }
+
+  public String getJoinZoom() {
+    return joinZoom;
+  }
+
+  public void setJoinZoom(String joinZoom) {
+    this.joinZoom = joinZoom;
+  }
+
+  public String getScheduleZoom() {
+    return scheduleZoom;
+  }
+
+  public void setScheduleZoom(String scheduleZoom) {
+    this.scheduleZoom = scheduleZoom;
+  }
+
+  public String getWatchYoutube() {
+    return watchYoutube;
+  }
+
+  public void setWatchYoutube(String watchYoutube) {
+    this.watchYoutube = watchYoutube;
+  }
+
+  public String getUploadYoutube() {
+    return uploadYoutube;
+  }
+
+  public void setUploadYoutube(String uploadYoutube) {
+    this.uploadYoutube = uploadYoutube;
   }
 }

@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toStartOf="@+id/signup_finish"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upload_youtube"
+        app:layout_constraintTop_toBottomOf="@+id/uploadYoutube"
         app:layout_constraintVertical_bias="0.544" />
 
     <Button
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upload_youtube"
+        app:layout_constraintTop_toBottomOf="@+id/uploadYoutube"
         app:layout_constraintVertical_bias="0.952" />
 
     <TextView
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="0.162" />
 
     <CheckBox
-        android:id="@+id/Text_message"
+        android:id="@+id/sendText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sending a text message"
@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.393" />
 
     <CheckBox
-        android:id="@+id/phone_call"
+        android:id="@+id/makeCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Making a Phone call"
@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.47" />
 
     <CheckBox
-        android:id="@+id/Join_zoom"
+        android:id="@+id/joinZoom"
         android:layout_width="201dp"
         android:layout_height="37dp"
         android:text="Joining a Zoom call"
@@ -83,19 +83,19 @@
         app:layout_constraintVertical_bias="0.556" />
 
     <CheckBox
-        android:id="@+id/sch_zoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scheduling a Zoom call"
+        android:id="@+id/scheduleZoom"
+        android:layout_width="201dp"
+        android:layout_height="37dp"
+        android:text="Schedule a Zoom call"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.635" />
+        app:layout_constraintVertical_bias="0.642" />
 
     <CheckBox
-        android:id="@+id/Watch_youtube"
+        android:id="@+id/watchYoutube"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Watching a YouTube video"
@@ -107,7 +107,7 @@
         app:layout_constraintVertical_bias="0.715" />
 
     <CheckBox
-        android:id="@+id/upload_youtube"
+        android:id="@+id/uploadYoutube"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Uploading a YouTube video"

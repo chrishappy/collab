@@ -15,8 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
@@ -33,6 +37,8 @@ public class signup extends AppCompatActivity {
   protected EditText newEmail, newPassword, newName;
   protected Button next;
   protected FirebaseAuth fAuth;
+  protected CheckBox sendText, makeCall, joinZoom, scheduleZoom, watchYoutube, uploadYoutube;
+  DatabaseReference reference;
 
   /**
    * Save User Date
@@ -60,7 +66,6 @@ public class signup extends AppCompatActivity {
           public void onClick(View v) {
             String email = newEmail.getText().toString().trim();
             String password = newPassword.getText().toString().trim();
-
             // checks if email is empty
             if (TextUtils.isEmpty(email)) {
               newEmail.setError("Email is Required.");
@@ -93,6 +98,7 @@ public class signup extends AppCompatActivity {
 
                           newUser = new User( currentUser.getUid() );
                           newUser.setStatus(true);
+                          newUser.setEmail(email);
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -129,7 +135,55 @@ public class signup extends AppCompatActivity {
 
   // Sign up tech page
   public void signUpFinish(View view) {
-    Intent signupFinish = new Intent(this, AssignmentOverviewActivity.class);
+
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    sendText = findViewById(R.id.sendText);
+    makeCall = findViewById(R.id.makeCall);
+    joinZoom = findViewById(R.id.joinZoom);
+    scheduleZoom = findViewById(R.id.scheduleZoom);
+    watchYoutube = findViewById(R.id.watchYoutube);
+    uploadYoutube = findViewById(R.id.uploadYoutube);
+
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid());
+
+    String sT = "Can send Text";
+    String mC = "Can make Call";
+    String jZ = "Can join Zoom";
+    String sZ = "Can schedule Zoom";
+    String wY = "Can watch Youtube";
+    String uY = "Can upload Youtube";
+
+    if(sendText.isChecked()){
+      newUser.setSendText(sT);
+      newUser.save();
+    }
+
+    if(makeCall.isChecked()){
+      newUser.setMakeCall(mC);
+      newUser.save();
+    }
+
+    if(joinZoom.isChecked()){
+      newUser.setJoinZoom(jZ);
+      newUser.save();
+    }
+
+    if(scheduleZoom.isChecked()){
+      newUser.setScheduleZoom(sZ);
+      newUser.save();
+    }
+
+    if(watchYoutube.isChecked()){
+      newUser.setWatchYoutube(wY);
+      newUser.save();
+    }
+
+    if(uploadYoutube.isChecked()){
+      newUser.setUploadYoutube(uY);
+      newUser.save();
+    }
+
+    Intent signupFinish = new Intent(this, Placeholder.class);
     startActivity(signupFinish);
   }
 
