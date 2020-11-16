@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.Objects;
+
 /**
  *
  * <p>Contributors: Shifan He Created by Shifan He on 2020-11-12
@@ -28,7 +30,6 @@ import com.google.firebase.database.Query;
  */
 
 public class Chat extends AppCompatActivity {
-    private FirebaseListAdapter<ChatMessage> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class Chat extends AppCompatActivity {
         // User is already signed in. Therefore, display
         // a welcome Toast
         Toast.makeText(this,
-                "Welcome " + FirebaseAuth.getInstance()
-                        .getCurrentUser()
+                "Welcome " + Objects.requireNonNull(FirebaseAuth.getInstance()
+                        .getCurrentUser())
                         .getDisplayName(),
                 Toast.LENGTH_LONG)
                 .show();
@@ -84,7 +85,10 @@ public class Chat extends AppCompatActivity {
                 .setLayout(R.layout.message)
                 .build();
         //Finally you pass them to the constructor here:
-        adapter = new FirebaseListAdapter<ChatMessage>(options) {
+        // Get references to the views of message.xml
+        // Set their text
+        // Format the date before showing it
+        FirebaseListAdapter<ChatMessage> adapter = new FirebaseListAdapter<ChatMessage>(options) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 // Get references to the views of message.xml
