@@ -35,6 +35,23 @@ public class User extends Node {
   protected String role;
 
   /**
+   * Tech Experience
+   *
+   * Create a list:
+   *   List<String> techExperience = new LinkedList<String>();
+   *   techExperience.add("makePhoneCall");
+   *   techExperience.add("ZoomCall");
+   *   user.setTechExperience( techExperience );
+   *   user.save();
+   */
+  protected List<String> techExperience;
+
+  /**
+   * Instruments
+   */
+  protected List<String> instruments;
+
+  /**
    * The fields for the default Node
    *
    * <p>Public properties will be automatically saved by Firebase Private will not
@@ -60,6 +77,26 @@ public class User extends Node {
   @Override
   public String getBaseTable() {
     return "node__user";
+  }
+
+
+  /**
+   * Fields setters and getters
+   */
+  public List<String> getTechExperience() {
+    return techExperience;
+  }
+
+  public void setTechExperience(List<String> techExperience) {
+    this.techExperience = techExperience;
+  }
+
+  public List<String> getInstruments() {
+    return instruments;
+  }
+
+  public void setInstruments(List<String> instruments) {
+    this.instruments = instruments;
   }
 
   /**
