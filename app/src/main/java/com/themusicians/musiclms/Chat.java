@@ -62,6 +62,7 @@ public class Chat extends AppCompatActivity {
                 // of com.themusicians.musiclms.com.themusicians.musiclms.ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
                         .getReference()
+                        .child("chats")
                         .push()
                         .setValue(new ChatMessage(input.getText().toString(),
                                 FirebaseAuth.getInstance()
