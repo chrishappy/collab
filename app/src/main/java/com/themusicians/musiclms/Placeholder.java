@@ -5,18 +5,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
  *
- * <p>Contributors: Jerome Lau Created by Jerome Lau on 2020-11-04
- *
- * <p>--------------------------------
- *
+ * @contributor Nathan Tsai
+ * @author Jerome Lau
+ * @since Nov 4, 2020
  * @todo Act as placeholder for main activity page
  */
 public class Placeholder extends AppCompatActivity {
@@ -26,7 +27,14 @@ public class Placeholder extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_placeholder);
+
+    // Redirect to Assignment Overview Activity
+    Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
+    startActivity(redirectToAssignment);
+
+    Toast.makeText(Placeholder.this, "Using Placeholder class", Toast.LENGTH_SHORT).show();
+
+    //    setContentView(R.layout.activity_placeholder);
   }
 
   @Override

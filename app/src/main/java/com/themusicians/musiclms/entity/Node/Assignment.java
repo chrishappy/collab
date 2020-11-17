@@ -1,148 +1,118 @@
 package com.themusicians.musiclms.entity.Node;
 
-import android.util.Log;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @file Assignment.java
- *     <p>....
- *     <p>Contributors: Nathan Tsai Created by Nathan Tsai on 2020-11-02
- *     <p>--------------------------------
- * @todo Create Edit Form
- * @todo Create UI
+ * @contributor
+ * @author Nathan Tsai
+ * @since Nov 2, 2020
  */
+@IgnoreExtraProperties
 public class Assignment extends Node {
 
-  /** Base table for saving the data */
-  public static final String BASE_TABLE = "node__assignments";
-
-  /** Firebase's Realtime Database */
-  private DatabaseReference nodeDatabase;
-
-  public String type = "assignment";
+  /** The type of node. Must be final */
+  protected final String type = "assignment";
 
   /**
    * The fields for the Assignment
    *
    * <p>Public properties will be automatically saved by Firebase Private will not
    */
-  public List<String> assignees;
+  protected List<String> assignees;
 
-  public int classId;
+  protected String classId;
 
-  public long dueDate;
+  protected long dueDate;
 
-  public List<String> attachmentIds;
+  protected List<String> toDoIds;
 
-  public String[] allowedAttachments;
-
-  private Map<Map, Attachment> attachments;
+  protected Map<Map, Attachment> attachments;
 
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {
     super();
+
+    System.out.println("The Assignment base table is: " + getBaseTable());
   }
 
-  /** @param valueMap The fields values for the Node */
-  public Assignment(Map<String, Object> valueMap) {
-    super(valueMap);
+  /** The constructor used to update an existing or to set an id */
+  public Assignment(String id) {
+    super(id);
 
-    setFields(valueMap);
+    System.out.println("The Assignment2 base table is: " + getBaseTable());
   }
 
-  /** * End fields ** */
+  /** Load an assignment from the database */
+  /*
+  public Assignment load(String entityId) {
+    final String LOAD_ASSIGNMNET_TAG = "Load Assignment";
+    final Assignment[] loadAssignment = new Assignment[1];
+    entityDatabase.child( entityId )
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            loadAssignment[0] = dataSnapshot.getValue(Assignment.class);
+            Log.w(LOAD_ASSIGNMNET_TAG, "loadAssignment:onDataChange");
+          }
 
-  /** @return The label of the entity: Assignment 1 or 2, etc */
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w(LOAD_ASSIGNMNET_TAG, "loadAssignment:onCancelled", databaseError.toException());
+            // ...
+          }
+        });
+
+    // Set Assignment to not load
+    loadAssignment[0].enforceNew(false);
+
+    return loadAssignment[0];
+  }
+  /**/
+
+  /**
+   * Implement getType()
+   *
+   * @return the type of node
+   */
   @Override
-  public String getLabel() {
-    return this.name;
+  public String getType() {
+    return type;
   }
 
   /**
-   * Save the Node to the Database
+   * Return the attachments that can be added to an assignment
    *
-   * @return whether it was successful or not
+   * @return a list of attachment ids
    */
-  public boolean save() {
-
-    writeAssignment();
-
-    return true;
+  @Override
+  @Exclude
+  public List<String> getAllowedAttachments() {
+    return new LinkedList<String>() {
+      {
+        add("comment");
+        add("file");
+      }
+    };
   }
 
-  /** @return Boolean */
-  private boolean writeAssignment() {
-    nodeDatabase = FirebaseDatabase.getInstance().getReference(BASE_TABLE);
-
-    final boolean[] result = {false};
-
-    // Set default created time
-    if (isNew && getField("created") == null) {
-      setField("created", ServerValue.TIMESTAMP);
-    }
-
-    // Set default updated time
-    if (getField("updated") == null) {
-      setField("updated", ServerValue.TIMESTAMP);
-    }
-
-    // If we're creating an Assignment
-    if (id() == null) {
-      Log.println(Log.INFO, "assignment", "Create new Assignment");
-
-      String assignmentID = nodeDatabase.push().getKey();
-      nodeDatabase
-          .child(assignmentID)
-          .setValue(
-              this,
-              new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(
-                    DatabaseError databaseError, DatabaseReference databaseReference) {
-                  if (databaseError != null) {
-                    result[0] = false;
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                  } else {
-                    result[0] = true;
-                    System.out.println("Data saved successfully.");
-                  }
-                }
-              });
-      setField("id", assignmentID);
-    } else {
-      Log.println(Log.INFO, "assignment", "Update Assignment");
-
-      nodeDatabase
-          .child(id())
-          .setValue(
-              this,
-              new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(
-                    DatabaseError databaseError, DatabaseReference databaseReference) {
-                  if (databaseError != null) {
-                    result[0] = false;
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                  } else {
-                    result[0] = true;
-                    System.out.println("Data saved successfully.");
-                  }
-                }
-              });
-    }
-
-    return result[0];
+  /**
+   * Implement getBaseTable()
+   *
+   * @return the database table to store the entity
+   */
+  @Override
+  public String getBaseTable() {
+    return getEntityType() + "__" + getType();
   }
 
   /** Settings and Getters */
-  /**/
-
   public List<String> getAssignees() {
     return assignees;
   }
@@ -151,11 +121,11 @@ public class Assignment extends Node {
     this.assignees = assignees;
   }
 
-  public int getClassId() {
+  public String getClassId() {
     return classId;
   }
 
-  public void setClassId(int classId) {
+  public void setClassId(String classId) {
     this.classId = classId;
   }
 
@@ -167,12 +137,22 @@ public class Assignment extends Node {
     this.dueDate = dueDate;
   }
 
-  public String[] getAllowedAttachments() {
-    return allowedAttachments;
+  public List<String> getToDoIds() {
+    if (toDoIds == null) {
+      toDoIds = new LinkedList<String>();
+    }
+    return toDoIds;
   }
 
-  public void setAllowedAttachments(String[] allowedAttachments) {
-    this.allowedAttachments = allowedAttachments;
+  public void addToDoId(String toDoId) {
+    if (toDoIds == null) {
+      toDoIds = new LinkedList<String>();
+    }
+    toDoIds.add(toDoId);
+  }
+
+  public void setToDoIds(List<String> toDoIds) {
+    this.toDoIds = toDoIds;
   }
   /**/
 }

@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -32,7 +32,7 @@ public class AssignmentInstrumentedTest {
   protected String assignmentName = "Assignment Name";
   private String otherAssignmentName = "Other Assignment Name";
 
-  @Before
+  @BeforeEach
   public void before() throws Exception {
     // Map the fields
     fieldMap = new HashMap<>();
@@ -49,7 +49,7 @@ public class AssignmentInstrumentedTest {
     fieldMap.put("attachmentIds", dummyList);
   }
 
-  @After
+  @AfterEach
   public void after() throws Exception {}
 
   /** Constructor: Assignment(String id) */
