@@ -95,8 +95,6 @@ public class userProfile extends AppCompatActivity {
                 Toast.makeText(userProfile.this, "Name updated", Toast.LENGTH_SHORT).show();
               }
             });
-
-    // make prompt that says it worked or smth
   }
 
   public void changeEmail(View view) {
