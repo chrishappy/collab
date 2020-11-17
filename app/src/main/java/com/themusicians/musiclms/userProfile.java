@@ -173,8 +173,10 @@ public class userProfile extends AppCompatActivity {
   }
 
   /** Shifan's code */
+
   public void goChat(View view) {
     Intent Chatpage = new Intent(this, Chat.class);
     startActivity(Chatpage);
   }
+
 }
