@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.entity.Node;
 
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
