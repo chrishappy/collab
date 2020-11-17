@@ -83,7 +83,7 @@ public class signup extends AppCompatActivity {
               return;
             }
 
-            //checks if name is empty
+            // checks if name is empty
             if (TextUtils.isEmpty(name)) {
               newName.setError("Name is Required");
               return;
@@ -123,68 +123,68 @@ public class signup extends AppCompatActivity {
 
     // Sign up page student button
     student.setOnClickListener(
-      new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          String email = newEmail.getText().toString().trim();
-          String password = newPassword.getText().toString().trim();
-          String name = newName.getText().toString().trim();
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            String email = newEmail.getText().toString().trim();
+            String password = newPassword.getText().toString().trim();
+            String name = newName.getText().toString().trim();
 
-          // checks if email is empty
-          if (TextUtils.isEmpty(email)) {
-            newEmail.setError("Email is Required.");
-            return;
+            // checks if email is empty
+            if (TextUtils.isEmpty(email)) {
+              newEmail.setError("Email is Required.");
+              return;
+            }
+
+            // checks if password is empty
+            if (TextUtils.isEmpty(password)) {
+              newPassword.setError("Password is Required");
+              return;
+            }
+
+            // checks for password minimum length
+            if (password.length() < 6) {
+              newPassword.setError("Password must be more than 5 characters");
+              return;
+            }
+
+            // checks if name is empty
+            if (TextUtils.isEmpty(name)) {
+              newName.setError("Name is Required");
+              return;
+            }
+
+            // registers account to firebase and sends to next screen
+            fAuth
+                .createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                    new OnCompleteListener<AuthResult>() {
+                      @Override
+                      public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                          // Get current user
+                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                          newUser = new User(currentUser.getUid());
+                          newUser.setStatus(true);
+                          newUser.setEmail(email);
+                          newUser.setName(name);
+                          newUser.save();
+
+                          Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
+                          setContentView(R.layout.user_signup_tech);
+                        } else {
+                          Toast.makeText(
+                                  signup.this,
+                                  "Error" + task.getException().getMessage(),
+                                  Toast.LENGTH_SHORT)
+                              .show();
+                        }
+                      }
+                    });
           }
-
-          // checks if password is empty
-          if (TextUtils.isEmpty(password)) {
-            newPassword.setError("Password is Required");
-            return;
-          }
-
-          // checks for password minimum length
-          if (password.length() < 6) {
-            newPassword.setError("Password must be more than 5 characters");
-            return;
-          }
-
-          //checks if name is empty
-          if (TextUtils.isEmpty(name)) {
-            newName.setError("Name is Required");
-            return;
-          }
-
-          // registers account to firebase and sends to next screen
-          fAuth
-            .createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(
-              new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                  if (task.isSuccessful()) {
-
-                    // Get current user
-                    currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                    newUser = new User(currentUser.getUid());
-                    newUser.setStatus(true);
-                    newUser.setEmail(email);
-                    newUser.setName(name);
-                    newUser.save();
-
-                    Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
-                    setContentView(R.layout.user_signup_tech);
-                  } else {
-                    Toast.makeText(
-                      signup.this,
-                      "Error" + task.getException().getMessage(),
-                      Toast.LENGTH_SHORT)
-                      .show();
-                  }
-                }
-              });
-        }
-      });
+        });
   }
 
   // Sign up tech page
