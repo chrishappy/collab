@@ -64,11 +64,15 @@ public class userProfile extends AppCompatActivity {
     reference.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        String name = snapshot.child("name").getValue().toString();
-        myName.setText(name);
+        Object name = snapshot.child("name").getValue();
+        if (name != null) {
+          myName.setText(name.toString());
+        }
 
-        String email = snapshot.child("email").getValue().toString();
-        myEmail.setText(email);
+        Object email = snapshot.child("email").getValue();
+        if (email != null) {
+          myEmail.setText(email.toString());
+        }
       }
 
       @Override
