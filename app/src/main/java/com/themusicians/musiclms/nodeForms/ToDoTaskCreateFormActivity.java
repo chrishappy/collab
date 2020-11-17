@@ -1,14 +1,11 @@
 package com.themusicians.musiclms.nodeForms;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -111,7 +108,7 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
         });
 
       // Add a File
-      final Button addFileButton = findViewById(R.id.addFileButton);
+      final Button addFileButton = findViewById(R.id.selectFile);
       addFileButton.setOnClickListener(
               new View.OnClickListener() {
                   @Override

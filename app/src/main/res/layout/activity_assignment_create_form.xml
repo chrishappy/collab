@@ -156,6 +156,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" /> -->
 
+            <!-- End "AddAttachments" Fragment -->
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -167,28 +169,36 @@
                     android:id="@+id/addCommentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="54dp"
                     android:text="@string/attachment__add__comment"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.781"
-                    app:layout_constraintStart_toEndOf="@+id/addFileButton"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <Button
-                    android:id="@+id/addFileButton"
-                    android:layout_width="86dp"
+                    android:id="@+id/selectFile"
+                    android:layout_width="114dp"
                     android:layout_height="47dp"
-                    android:layout_marginEnd="68dp"
                     android:text="@string/attachment__add__file"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/addCommentButton"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <!-- End "AddAttachments" Fragment -->
+
+            <TextView
+                android:id="@+id/notification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_file_is_selected" />
+
+            <Button
+                android:id="@+id/upload"
+                android:layout_width="114dp"
+                android:layout_height="wrap_content"
+                android:text="@string/upload" />
 
             <Space
                 android:layout_width="match_parent"
