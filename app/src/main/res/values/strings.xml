@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Music LMS</string>
-    <string name="title_activity_signin">Sgn In</string>
+    <string name="title_activity_signin">Sign In</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -128,4 +128,18 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="attachment__add__comment">Add Comment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="attachment_dialog__add__comment">Add a comment</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="placeholder">PLACEHOLDER</string>
+    <string name="assignment__overview__author_label">Author:</string>
+    <string name="assignments__overview__name_label">Assignment Name</string>
+    <string name="date_format__month_day">MMM d</string>
+    <string name="attachment__add__file">Add file</string>
+    <string name="title_activity_to_do_item_create_form">Create ToDo Item</string>
+    <string name="to_do_item__form__name">Name</string>
+    <string name="to_do_item__form__require_recording">Require Recording</string>
+    <string name="form__edit_button">Edit</string>
 </resources>

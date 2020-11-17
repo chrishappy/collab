@@ -1,5 +1,7 @@
 package com.themusicians.musiclms.entity;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ import java.util.List;
 public interface EntityInterface {
 
   /** @return the entity id */
-  String id();
+  String getId();
 
   /** @return The type of the entity: Assignments or Users profiles, etc */
   String getType();
@@ -24,9 +26,6 @@ public interface EntityInterface {
 
   /** @return The time that the Entity was last updated in UTC format */
   Object getUpdated();
-
-  /** @return The label of the entity: Assignment 1 or 2, etc */
-  String getLabel();
 
   /**
    * @param valueMap The fields values for the Entity
