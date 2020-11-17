@@ -32,7 +32,7 @@ import com.themusicians.musiclms.entity.Node.User;
  */
 public class signup extends AppCompatActivity {
   protected EditText newEmail, newPassword, newName;
-  protected Button next;
+  protected Button teacher, student;
   protected FirebaseAuth fAuth;
   protected CheckBox sendText, makeCall, joinZoom, scheduleZoom, watchYoutube, uploadYoutube;
   DatabaseReference reference;
@@ -45,7 +45,7 @@ public class signup extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_signup);
+    setContentView(R.layout.user_signup_main);
 
     newEmail = findViewById(R.id.newEmail);
     newPassword = findViewById(R.id.newPassword);
@@ -53,15 +53,18 @@ public class signup extends AppCompatActivity {
 
     // Store user
     fAuth = FirebaseAuth.getInstance();
-    next = findViewById(R.id.signup_next);
+    teacher = findViewById(R.id.signup_teacher);
+    student = findViewById(R.id.signup_student);
 
-    // Sign up page
-    next.setOnClickListener(
+    // Sign up page teacher button
+    teacher.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
             String email = newEmail.getText().toString().trim();
             String password = newPassword.getText().toString().trim();
+            String name = newName.getText().toString().trim();
+
             // checks if email is empty
             if (TextUtils.isEmpty(email)) {
               newEmail.setError("Email is Required.");
@@ -80,6 +83,12 @@ public class signup extends AppCompatActivity {
               return;
             }
 
+            //checks if name is empty
+            if (TextUtils.isEmpty(name)) {
+              newName.setError("Name is Required");
+              return;
+            }
+
             // registers account to firebase and sends to next screen
             fAuth
                 .createUserWithEmailAndPassword(email, password)
@@ -95,10 +104,11 @@ public class signup extends AppCompatActivity {
                           newUser = new User(currentUser.getUid());
                           newUser.setStatus(true);
                           newUser.setEmail(email);
+                          newUser.setName(name);
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
-                          setContentView(R.layout.signup_details);
+                          setContentView(R.layout.user_signup_tech);
                         } else {
                           Toast.makeText(
                                   signup.this,
@@ -110,23 +120,71 @@ public class signup extends AppCompatActivity {
                     });
           }
         });
-  }
 
-  // Sign up details page
-  public void signUpDetailsNext(View view) {
-    newName = findViewById(R.id.newName);
-    String name = newName.getText().toString().trim();
-    if (TextUtils.isEmpty(name)) {
-      newName.setError("Name is Required");
-      return;
-    }
+    // Sign up page student button
+    student.setOnClickListener(
+      new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          String email = newEmail.getText().toString().trim();
+          String password = newPassword.getText().toString().trim();
+          String name = newName.getText().toString().trim();
 
-    // Save user name
-    newUser.setName(name);
-    newUser.enforceNew(false);
-    newUser.save();
+          // checks if email is empty
+          if (TextUtils.isEmpty(email)) {
+            newEmail.setError("Email is Required.");
+            return;
+          }
 
-    setContentView(R.layout.signup_tech);
+          // checks if password is empty
+          if (TextUtils.isEmpty(password)) {
+            newPassword.setError("Password is Required");
+            return;
+          }
+
+          // checks for password minimum length
+          if (password.length() < 6) {
+            newPassword.setError("Password must be more than 5 characters");
+            return;
+          }
+
+          //checks if name is empty
+          if (TextUtils.isEmpty(name)) {
+            newName.setError("Name is Required");
+            return;
+          }
+
+          // registers account to firebase and sends to next screen
+          fAuth
+            .createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(
+              new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                  if (task.isSuccessful()) {
+
+                    // Get current user
+                    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                    newUser = new User(currentUser.getUid());
+                    newUser.setStatus(true);
+                    newUser.setEmail(email);
+                    newUser.setName(name);
+                    newUser.save();
+
+                    Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
+                    setContentView(R.layout.user_signup_tech);
+                  } else {
+                    Toast.makeText(
+                      signup.this,
+                      "Error" + task.getException().getMessage(),
+                      Toast.LENGTH_SHORT)
+                      .show();
+                  }
+                }
+              });
+        }
+      });
   }
 
   // Sign up tech page
@@ -187,17 +245,7 @@ public class signup extends AppCompatActivity {
     startActivity(signupFinish);
   }
 
-  // All back button functions
-  public void signUpBack(View view) {
-    Intent signupBack = new Intent(this, MainActivity.class);
-    startActivity(signupBack);
-  }
-
-  public void signUpDetailsBack(View view) {
-    setContentView(R.layout.activity_signup);
-  }
-
   public void signUpTechBack(View view) {
-    setContentView(R.layout.signup_details);
+    setContentView(R.layout.user_signup_main);
   }
 }

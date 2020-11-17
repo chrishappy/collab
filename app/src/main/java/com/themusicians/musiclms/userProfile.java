@@ -41,7 +41,7 @@ public class userProfile extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_user_profile);
+    setContentView(R.layout.user_profile_main);
 
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
@@ -74,7 +74,7 @@ public class userProfile extends AppCompatActivity {
   }
 
   public void toEditData(View view) {
-    setContentView(R.layout.edit_data);
+    setContentView(R.layout.user_profile_edit_data);
   }
 
   public void changeName(View view) {
