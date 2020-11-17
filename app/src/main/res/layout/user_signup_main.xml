@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/common_google_signin_btn_text_dark_disabled"
     android:clickable="false"
-    tools:context=".signup">
+    tools:context=".SignUp">
 
     <EditText
         android:id="@+id/newName"

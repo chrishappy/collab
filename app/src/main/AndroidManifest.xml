@@ -14,8 +14,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Chat"></activity>
         <!-- User Activities -->
-        <activity android:name=".signup" />
-        <activity android:name=".userProfile" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".UserProfile" />
         <activity android:name=".Placeholder" />
         <activity
             android:name=".myLogin"

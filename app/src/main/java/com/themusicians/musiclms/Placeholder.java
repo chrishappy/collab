@@ -54,7 +54,7 @@ public class Placeholder extends AppCompatActivity {
         startActivity(logout);
         return true;
       case R.id.userprofile:
-        Intent toUserProfile = new Intent(Placeholder.this, userProfile.class);
+        Intent toUserProfile = new Intent(Placeholder.this, UserProfile.class);
         startActivity(toUserProfile);
         return true;
       case R.id.createassignment:

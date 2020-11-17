@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
       Intent redirectOverview = new Intent(this, Placeholder.class);
       startActivity(redirectOverview);
     } else {
-      Intent redirectSignUp = new Intent(this, signup.class);
+      Intent redirectSignUp = new Intent(this, SignUp.class);
       startActivity(redirectSignUp);
     }
     setContentView(R.layout.activity_main);
