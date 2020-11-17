@@ -161,12 +161,14 @@ public class UserProfile extends AppCompatActivity {
               public void onSuccess(Void aVoid) {
                 Toast.makeText(UserProfile.this, "Email updated", Toast.LENGTH_SHORT).show();
               }
-            }).addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        Toast.makeText(UserProfile.this, "Email update Failed", Toast.LENGTH_SHORT).show();
-      }
-    });
+            })
+        .addOnFailureListener(
+            new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UserProfile.this, "Email update Failed", Toast.LENGTH_SHORT).show();
+              }
+            });
   }
 
   public void changePassword(View view) {
