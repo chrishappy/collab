@@ -5,15 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,7 +41,7 @@ public class AssignmentOverviewAdapter
     }
 
     Date date = new Date(assignment.getDueDate());
-    DateFormat dateFormat = new SimpleDateFormat( String.valueOf(R.string.date_format__month_day) );
+    DateFormat dateFormat = new SimpleDateFormat(String.valueOf(R.string.date_format__month_day));
     holder.dueDate.setText(dateFormat.format(date));
 
     holder.editAssignment.setOnClickListener(
@@ -52,7 +49,7 @@ public class AssignmentOverviewAdapter
           @Override
           public void onClick(View view) {
             if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick( assignment.getId() );
+              itemClickListener.onEditButtonClick(assignment.getId());
             }
           }
         });
@@ -89,10 +86,10 @@ public class AssignmentOverviewAdapter
   /**
    * Allow users to click the edit button
    *
-   * From: https://stackoverflow.com/questions/39551313/
+   * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
-    void onEditButtonClick(String entityId );
+    void onEditButtonClick(String entityId);
   }
 
   public void addItemClickListener(ItemClickListener listener) {

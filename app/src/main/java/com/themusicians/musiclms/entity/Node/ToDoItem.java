@@ -1,14 +1,10 @@
 package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.themusicians.musiclms.entity.Attachment.Attachment;
-
 import java.util.List;
-import java.util.Map;
 
 /**
  * @file Assignment.java
- *
  * @contributor
  * @author Nathan Tsai
  * @since Nov 13, 2020
@@ -39,9 +35,10 @@ public class ToDoItem extends Node {
   public ToDoItem(String id) {
     super(id);
   }
-  
+
   /**
    * Implement getBaseTable()
+   *
    * @return the database table to store the entity
    */
   @Override

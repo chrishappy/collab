@@ -1,14 +1,12 @@
 package com.themusicians.musiclms.entity.Node;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Assignment Tester.
@@ -16,10 +14,10 @@ import static org.junit.Assert.*;
  * @author Nathan Tsai
  * @since Nov 13, 2020
  */
-
 public class AssignmentUnitTest {
 
-  protected Assignment assignment;;
+  protected Assignment assignment;
+  ;
 
   protected String assignmentName = "Assignment Name";
   protected String otherAssignmentName = "Other Assignment Name";
@@ -37,8 +35,7 @@ public class AssignmentUnitTest {
   }
 
   @After
-  public void tearDown() throws Exception {
-  }
+  public void tearDown() throws Exception {}
 
   @Test
   public void getBaseTable() {
@@ -48,30 +45,23 @@ public class AssignmentUnitTest {
   }
 
   @Test
-  public void getAssignees() {
-  }
+  public void getAssignees() {}
 
   @Test
-  public void setAssignees() {
-  }
+  public void setAssignees() {}
 
   @Test
-  public void getClassId() {
-  }
+  public void getClassId() {}
 
   @Test
-  public void setClassId() {
-  }
+  public void setClassId() {}
 
   @Test
-  public void getDueDate() {
-  }
+  public void getDueDate() {}
 
   @Test
-  public void setDueDate() {
-  }
+  public void setDueDate() {}
 
   @Test
-  public void getAllowedAttachments() {
-  }
+  public void getAllowedAttachments() {}
 }

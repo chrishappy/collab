@@ -6,13 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
   private Button button;
@@ -25,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     fAuth = FirebaseAuth.getInstance();
 
     FirebaseUser mFirebaseUser = fAuth.getCurrentUser();
-    if(mFirebaseUser != null){
+    if (mFirebaseUser != null) {
       Intent redirectOverview = new Intent(this, Placeholder.class);
       startActivity(redirectOverview);
     }
@@ -48,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
     TextView textview;
     textview = (TextView) findViewById(R.id.Or_login);
     textview.setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                Intent nextPageLogin = new Intent(MainActivity.this, myLogin.class);
-                startActivity(nextPageLogin);
-              }
-            });
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            Intent nextPageLogin = new Intent(MainActivity.this, myLogin.class);
+            startActivity(nextPageLogin);
+          }
+        });
   }
 
   public void openActivity_assignment_create_form() {
@@ -71,5 +67,4 @@ public class MainActivity extends AppCompatActivity {
     Intent nextPageS = new Intent(this, signup.class);
     startActivity(nextPageS);
   }
-
 }

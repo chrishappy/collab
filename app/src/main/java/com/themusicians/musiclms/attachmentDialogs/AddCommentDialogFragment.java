@@ -1,23 +1,15 @@
 package com.themusicians.musiclms.attachmentDialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
-
 import com.themusicians.musiclms.R;
 
 /**
- * A simple {@link AddAttachmentDialogFragment} subclass.
- * Use the {@link AddCommentDialogFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link AddAttachmentDialogFragment} subclass. Use the {@link
+ * AddCommentDialogFragment#newInstance} factory method to create an instance of this fragment.
  */
 public class AddCommentDialogFragment extends AddAttachmentDialogFragment {
 
@@ -26,8 +18,8 @@ public class AddCommentDialogFragment extends AddAttachmentDialogFragment {
   }
 
   /**
-   * Use this factory method to create a new instance of
-   * this fragment using the provided parameters.
+   * Use this factory method to create a new instance of this fragment using the provided
+   * parameters.
    *
    * @param in_entityToUpdateId The entity the comment will be added to
    * @return A new instance of fragment DialogAddCommentFragment.
@@ -53,21 +45,24 @@ public class AddCommentDialogFragment extends AddAttachmentDialogFragment {
 
     // Inflate and set the layout for the dialog
     // Pass null as the parent view because its going in the dialog layout
-    builder.setView(inflater.inflate(R.layout.fragment_add_comment_dialog, null))
+    builder
+        .setView(inflater.inflate(R.layout.fragment_add_comment_dialog, null))
         // Add action buttons
-        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int id) {
-            listener.onDialogPositiveClick(AddCommentDialogFragment.this);
-          }
-        })
-        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int id) {
-            listener.onDialogNegativeClick(AddCommentDialogFragment.this);
-          }
-        });
+        .setPositiveButton(
+            R.string.ok,
+            new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int id) {
+                listener.onDialogPositiveClick(AddCommentDialogFragment.this);
+              }
+            })
+        .setNegativeButton(
+            R.string.cancel,
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                listener.onDialogNegativeClick(AddCommentDialogFragment.this);
+              }
+            });
     return builder.create();
   }
-
-
 }

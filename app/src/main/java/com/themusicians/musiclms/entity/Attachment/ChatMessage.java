@@ -1,16 +1,12 @@
 package com.themusicians.musiclms.entity.Attachment;
 
-import com.themusicians.musiclms.entity.Entity;
 
-import java.util.List;
 
 /**
  * @file Attachment.java
- *
  * @contributor Shifan He
  * @author Nathan Tsai
  * @since Nov 12, 2020
- *
  */
 public class ChatMessage extends Attachment {
 
@@ -26,6 +22,7 @@ public class ChatMessage extends Attachment {
 
   /**
    * Implement getBaseTable()
+   *
    * @return the database to save chat messages
    */
   @Override
@@ -35,6 +32,7 @@ public class ChatMessage extends Attachment {
 
   /**
    * Implement getType()
+   *
    * @return the type of attachment
    */
   @Override
@@ -65,5 +63,4 @@ public class ChatMessage extends Attachment {
   public void setMessageTime(long messageTime) {
     this.messageTime = messageTime;
   }
-
 }

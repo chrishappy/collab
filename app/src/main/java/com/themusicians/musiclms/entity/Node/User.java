@@ -1,14 +1,10 @@
 package com.themusicians.musiclms.entity.Node;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @file Assignment.java
- *
  * @contributor Jerome Lau
  * @author Nathan Tsai
  * @since Nov 2, 2020
@@ -17,19 +13,19 @@ import java.util.Map;
  * @todo Create UI
  */
 public class User extends Node {
-  /**
-   * Set the type of Node. Must be final
-   */
+  /** Set the type of Node. Must be final */
   protected final String type = "user";
 
   /**
    * The user's email
+   *
    * @todo implement later
    */
   protected String email;
 
   /**
    * Whether the user is a teacher, student
+   *
    * @todo add parent
    */
   protected String role;
@@ -37,18 +33,13 @@ public class User extends Node {
   /**
    * Tech Experience
    *
-   * Create a list:
-   *   List<String> techExperience = new LinkedList<String>();
-   *   techExperience.add("makePhoneCall");
-   *   techExperience.add("ZoomCall");
-   *   user.setTechExperience( techExperience );
-   *   user.save();
+   * <p>Create a list: List<String> techExperience = new LinkedList<String>();
+   * techExperience.add("makePhoneCall"); techExperience.add("ZoomCall"); user.setTechExperience(
+   * techExperience ); user.save();
    */
   protected List<String> techExperience;
 
-  /**
-   * Instruments
-   */
+  /** Instruments */
   protected List<String> instruments;
 
   /**
@@ -66,12 +57,13 @@ public class User extends Node {
     super();
   }
 
-  public User( String id ) {
-    super( id );
+  public User(String id) {
+    super(id);
   }
 
   /**
    * Implement getBaseTable()
+   *
    * @return the database table to store the entity
    */
   @Override
@@ -81,6 +73,7 @@ public class User extends Node {
 
   /**
    * Implement getType()
+   *
    * @return the type of entity
    */
   @Override
@@ -88,9 +81,7 @@ public class User extends Node {
     return type;
   }
 
-  /**
-   * Fields setters and getters
-   */
+  /** Fields setters and getters */
   public List<String> getTechExperience() {
     return techExperience;
   }
@@ -107,19 +98,22 @@ public class User extends Node {
     this.instruments = instruments;
   }
 
-  /**
-   *
-   */
+  /** */
   protected String sendText;
+
   protected String makeCall;
   protected String joinZoom;
   protected String scheduleZoom;
   protected String watchYoutube;
   protected String uploadYoutube;
 
-  public String getEmail() { return email; }
+  public String getEmail() {
+    return email;
+  }
 
-  public void setEmail(String email) { this.email = email;}
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
   public String getSendText() {
     return sendText;

@@ -12,10 +12,7 @@ public class Comment extends Attachment {
 
   protected String comment;
 
-  /**
-   *
-   * @return
-   */
+  /** @return */
   public String getComment() {
     return comment;
   }
@@ -24,18 +21,13 @@ public class Comment extends Attachment {
     this.comment = comment;
   }
 
-  /**
-   *
-   * @return
-   */
+  /** @return */
   @Override
   public String getBaseTable() {
     return getEntityType() + "__" + getType();
   }
 
-  /**
-   *
-   */
+  /** */
   public Comment() {
     super();
   }

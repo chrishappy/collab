@@ -1,25 +1,15 @@
 package com.themusicians.musiclms.entity.Node;
 
-import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
-
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @file Assignment.java
- *
  * @contributor
  * @author Nathan Tsai
  * @since Nov 2, 2020
@@ -59,9 +49,7 @@ public class Assignment extends Node {
     System.out.println("The Assignment2 base table is: " + getBaseTable());
   }
 
-  /**
-   * Load an assignment from the database
-   */
+  /** Load an assignment from the database */
   /*
   public Assignment load(String entityId) {
     final String LOAD_ASSIGNMNET_TAG = "Load Assignment";
@@ -91,6 +79,7 @@ public class Assignment extends Node {
 
   /**
    * Implement getType()
+   *
    * @return the type of node
    */
   @Override
@@ -100,19 +89,23 @@ public class Assignment extends Node {
 
   /**
    * Return the attachments that can be added to an assignment
+   *
    * @return a list of attachment ids
    */
   @Override
   @Exclude
   public List<String> getAllowedAttachments() {
-      return new LinkedList<String>(){{
+    return new LinkedList<String>() {
+      {
         add("comment");
         add("file");
-      }};
+      }
+    };
   }
-  
+
   /**
    * Implement getBaseTable()
+   *
    * @return the database table to store the entity
    */
   @Override
@@ -121,7 +114,6 @@ public class Assignment extends Node {
   }
 
   /** Settings and Getters */
-
   public List<String> getAssignees() {
     return assignees;
   }
