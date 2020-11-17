@@ -22,9 +22,6 @@ public abstract class Entity implements EntityInterface {
   /** The fields for the default Entity */
   protected String id;
 
-  /** Different types of entity: Assignments or Users profiles, etc */
-  protected String type;
-
   /**
    * The time the Entity was created in UTC format The type is Object in order to save
    * ServerValue.TIMESTAMP. after loading.
