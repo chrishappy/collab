@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.entity.Node.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +110,10 @@ public class SignUp extends AppCompatActivity {
                           newUser.setRole("teacher");
                           newUser.save();
 
-                          reference = FirebaseDatabase.getInstance().getReference().child("node__isTeacher");
+                          reference =
+                              FirebaseDatabase.getInstance()
+                                  .getReference()
+                                  .child("node__isTeacher");
                           reference.child(String.valueOf(currentUser.getUid())).setValue(true);
 
                           Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -206,7 +208,7 @@ public class SignUp extends AppCompatActivity {
     watchYoutube = findViewById(R.id.watchYoutube);
     uploadYoutube = findViewById(R.id.uploadYoutube);
 
-    List <String> TechExp = new ArrayList<String>();
+    List<String> TechExp = new ArrayList<String>();
 
     String sT = "Can send Text";
     String mC = "Can make Call";
@@ -253,7 +255,6 @@ public class SignUp extends AppCompatActivity {
 
     Intent signUpFinish = new Intent(this, Placeholder.class);
     startActivity(signUpFinish);
-
   }
 
   public void signUpTechBack(View view) {
