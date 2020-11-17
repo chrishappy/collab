@@ -105,6 +105,7 @@ public class signup extends AppCompatActivity {
                           newUser.setStatus(true);
                           newUser.setEmail(email);
                           newUser.setName(name);
+                          newUser.setRoleTeacher(true);
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -170,6 +171,7 @@ public class signup extends AppCompatActivity {
                           newUser.setStatus(true);
                           newUser.setEmail(email);
                           newUser.setName(name);
+                          newUser.setRoleTeacher(false);
                           newUser.save();
 
                           Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
