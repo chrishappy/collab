@@ -10,16 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
@@ -28,22 +32,23 @@ import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.ToDoItem;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-
-import kotlin.text.UStringsKt;
 
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
 
 public class AssignmentCreateFormActivity extends AppCompatActivity
-                                          implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
+                                          implements AddAttachmentDialogFragment.AddAttachmentDialogListener, ToDoAssignmentFormAdapter.ItemClickListener {
 
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
@@ -69,6 +74,12 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   protected boolean inEditMode = false;
 
   protected Assignment assignment;
+
+  /** Create recycler view for to do items */
+  private RecyclerView toDoItemsRecyclerView;
+
+  /** Create adapter for to do items */
+  ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
 
   @Override
   public void onStart() {
@@ -146,6 +157,51 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
       }
     });
 
+    // Load the to do tasks
+    toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
+    toDoItemsRecyclerView.setLayoutManager(new GridLayoutManager( AssignmentCreateFormActivity.this, 1));
+
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+      @Override
+      public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        return false;
+      }
+
+      @Override
+      public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+//        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder swipedAssignment = (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
+
+        switch(swipeDir) {
+          case ItemTouchHelper.LEFT:
+            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+            break;
+
+          case ItemTouchHelper.RIGHT:
+            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+            break;
+        }
+
+        // Remove item from backing list here
+        toDoItemsAdapter.notifyDataSetChanged();
+      }
+    });
+    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+
+    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
+    ToDoItem tempToDoItem = new ToDoItem();
+    FirebaseRecyclerOptions<ToDoItem> options =
+        new FirebaseRecyclerOptions.Builder<ToDoItem>().setQuery(tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
+
+    // Create new Adapter
+    toDoItemsAdapter = new ToDoAssignmentFormAdapter(options);
+    toDoItemsAdapter.addItemClickListener(this);
+    toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
+
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
     final Button addTask = findViewById(R.id.todoAddItem);
@@ -199,7 +255,8 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
             assignment.save();
 
            //Display notification
-            Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
+            String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
+            Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show();
           }
@@ -291,17 +348,41 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
         if(resultCode == Activity.RESULT_OK){
           String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
-          assignment.addToDoId(toDoId);
-          assignment.save();
+          if (assignment.getToDoIds().indexOf(toDoId) > 0) {
+            assignment.addToDoId(toDoId);
+            assignment.save();
 
-          //Display notification
-          Snackbar.make(findViewById(R.id.createAssignmentLayout), "To Do Item Saved", Snackbar.LENGTH_LONG)
-              .setAction("Edit", null)
-              .show();
+            //Display notification
+            Snackbar.make(findViewById(R.id.createAssignmentLayout), "To Do Item Saved", Snackbar.LENGTH_LONG)
+                .setAction("Edit", null)
+                .show();
+          }
+          else {
+            //Display notification
+            Snackbar.make(findViewById(R.id.createAssignmentLayout), "To Do Item Updated", Snackbar.LENGTH_LONG)
+                .setAction("Edit", null)
+                .show();
+          }
+
         }
         if (resultCode == Activity.RESULT_CANCELED) {
           //Write your code if there's no result
         }
       }
+  }
+
+  /**
+   * Implement onEditButtonClick()
+   * @param entityId the entity we are editing
+   */
+  @Override
+  public void onEditButtonClick(String type, String entityId) {
+    switch (type) {
+      case "editToDoAssignmentForm":
+        Intent toEditToDoItem = new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
+        toEditToDoItem.putExtra(ACCEPT_ENTITY_ID, entityId);
+        startActivityForResult(toEditToDoItem, REQUEST_TODO_ENTITY);
+        break;
+    }
   }
 }

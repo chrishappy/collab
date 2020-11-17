@@ -113,6 +113,11 @@
                     android:textAllCaps="true"
                     android:textStyle="bold" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todoItemsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

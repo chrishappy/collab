@@ -1,20 +1,14 @@
 package com.themusicians.musiclms.entity;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * @file Entity.java
- *     <p>Contains the default class to be extended by Attachments and Nodes
- *
- * @todo Remove getEntityType and getType from entities
+ * Contains the default class to be extended by Attachments and Nodes
  *
  * @author Nathan Tsai
  * @since 2020-11-02
@@ -30,9 +24,6 @@ public abstract class Entity implements EntityInterface {
 
   /** Different types of entity: Assignments or Users profiles, etc */
   protected String type;
-
-  /** Node or attachment */
-  protected String entityType;
 
   /**
    * The time the Entity was created in UTC format The type is Object in order to save
@@ -90,13 +81,6 @@ public abstract class Entity implements EntityInterface {
    */
   @Override
   public abstract String getEntityType();
-
-  /**
-   * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
-   * @return Entity
-   */
-  //    @Override
-  //    public abstract Entity create(Map<String, Object> valueMap);
 
   /**
    * @param id The fields for the default Entity
@@ -158,7 +142,7 @@ public abstract class Entity implements EntityInterface {
    *
    * @return bool true if entity is published
    */
-  public boolean isStatus() {
+  public boolean getStatus() {
     return status;
   }
 
@@ -180,18 +164,11 @@ public abstract class Entity implements EntityInterface {
   }
 
   /**
-   * Force the entity to be saved again in the database
-   */
-  public void enforceNew() {
-    isNew = true;
-  }
-
-  /**
    * Conditionally enfore the entity to be saved again in the database
    *
    * @param inputIsNew true if the entity should be resaved.
    */
-  public void enforceNew(boolean inputIsNew) {
+  public void setIsNew(boolean inputIsNew) {
     isNew = inputIsNew;
   }
 

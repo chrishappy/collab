@@ -59,9 +59,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
 
     // Create a instance of the database and get
     // its reference
-    Assignment temp = new Assignment();
-    mbase = FirebaseDatabase.getInstance().getReference(temp.getBaseTable());
-
+    Assignment tempAssignment = new Assignment();
+    mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
     recyclerView = findViewById(R.id.recycler1);
 
     // To display the Recycler view using grid layout for slide functionality
@@ -76,7 +75,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
       @Override
       public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-        AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment = (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
+//        AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment = (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
 
         switch(swipeDir) {
           case ItemTouchHelper.LEFT:
@@ -174,9 +173,13 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
    * @param entityId
    */
   @Override
-  public void onEditButtonClick(String entityId) {
-    Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-    toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
-    startActivity(toCreateAssignment);
+  public void onEditButtonClick(String type, String entityId) {
+    switch(type) {
+      case "editAssignment":
+        Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+        toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
+        startActivity(toCreateAssignment);
+        break;
+    }
   }
 }

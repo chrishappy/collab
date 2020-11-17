@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
@@ -76,7 +75,7 @@ public abstract class Node extends Entity {
     writeEntity();
 
     // the entity is no longer new
-    enforceNew(false);
+    setIsNew(false);
 
     return true;
   }
@@ -122,7 +121,7 @@ public abstract class Node extends Entity {
               }
             });
 
-    enforceNew(false);
+    setIsNew(false);
 
     return result[0];
   }
