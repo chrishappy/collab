@@ -27,7 +27,15 @@ public class User extends Node {
    *
    * @todo add parent
    */
-  protected String role;
+  protected Boolean roleTeacher;
+
+  public Boolean getRoleTeacher() {
+    return roleTeacher;
+  }
+
+  public void setRoleTeacher(Boolean roleTeacher) {
+    this.roleTeacher = roleTeacher;
+  }
 
   /**
    * Tech Experience
