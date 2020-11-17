@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
  *
  * @todo View user info
  */
-public class userProfile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity {
 
   protected TextView myName;
   protected TextView myEmail;
@@ -92,7 +92,7 @@ public class userProfile extends AppCompatActivity {
             new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void aVoid) {
-                Toast.makeText(userProfile.this, "Name updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfile.this, "Name updated", Toast.LENGTH_SHORT).show();
               }
             });
   }
@@ -108,7 +108,7 @@ public class userProfile extends AppCompatActivity {
             new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void aVoid) {
-                Toast.makeText(userProfile.this, "Email updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfile.this, "Email updated", Toast.LENGTH_SHORT).show();
               }
             });
   }
@@ -137,7 +137,7 @@ public class userProfile extends AppCompatActivity {
                       @Override
                       public void onSuccess(Void aVoid) {
                         Toast.makeText(
-                                userProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
+                                UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
                             .show();
                       }
                     })
@@ -146,7 +146,7 @@ public class userProfile extends AppCompatActivity {
                       @Override
                       public void onFailure(@NonNull Exception e) {
                         Toast.makeText(
-                                userProfile.this,
+                                UserProfile.this,
                                 "Error! Reset link not sent" + e.getMessage(),
                                 Toast.LENGTH_SHORT)
                             .show();
@@ -166,7 +166,7 @@ public class userProfile extends AppCompatActivity {
   }
 
   public void editDataBack(View view) {
-    Intent reload = new Intent(this, userProfile.class);
+    Intent reload = new Intent(this, UserProfile.class);
     startActivity(reload);
   }
 

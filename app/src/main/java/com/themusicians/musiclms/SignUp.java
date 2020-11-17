@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.entity.Node.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ....
  *
@@ -30,7 +33,7 @@ import com.themusicians.musiclms.entity.Node.User;
  * @todo Store miscellaneous user info in Firebase
  * @todo Proceed through sign up layouts
  */
-public class signup extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
   protected EditText newEmail, newPassword, newName;
   protected Button teacher, student;
   protected FirebaseAuth fAuth;
@@ -105,14 +108,17 @@ public class signup extends AppCompatActivity {
                           newUser.setStatus(true);
                           newUser.setEmail(email);
                           newUser.setName(name);
-                          newUser.setRoleTeacher(true);
+                          newUser.setRole("teacher");
                           newUser.save();
 
-                          Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
+                          reference = FirebaseDatabase.getInstance().getReference().child("node__isTeacher");
+                          reference.child(String.valueOf(currentUser.getUid())).setValue(true);
+
+                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
                           setContentView(R.layout.user_signup_tech);
                         } else {
                           Toast.makeText(
-                                  signup.this,
+                                  SignUp.this,
                                   "Error" + task.getException().getMessage(),
                                   Toast.LENGTH_SHORT)
                               .show();
@@ -171,14 +177,14 @@ public class signup extends AppCompatActivity {
                           newUser.setStatus(true);
                           newUser.setEmail(email);
                           newUser.setName(name);
-                          newUser.setRoleTeacher(false);
+                          newUser.setRole("student");
                           newUser.save();
 
-                          Toast.makeText(signup.this, "User Created", Toast.LENGTH_SHORT).show();
+                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
                           setContentView(R.layout.user_signup_tech);
                         } else {
                           Toast.makeText(
-                                  signup.this,
+                                  SignUp.this,
                                   "Error" + task.getException().getMessage(),
                                   Toast.LENGTH_SHORT)
                               .show();
@@ -200,11 +206,7 @@ public class signup extends AppCompatActivity {
     watchYoutube = findViewById(R.id.watchYoutube);
     uploadYoutube = findViewById(R.id.uploadYoutube);
 
-    reference =
-        FirebaseDatabase.getInstance()
-            .getReference()
-            .child("node__user")
-            .child(currentUser.getUid());
+    List <String> TechExp = new ArrayList<String>();
 
     String sT = "Can send Text";
     String mC = "Can make Call";
@@ -214,40 +216,48 @@ public class signup extends AppCompatActivity {
     String uY = "Can upload Youtube";
 
     if (sendText.isChecked()) {
-      newUser.setSendText(sT);
+      TechExp.add(sT);
+      newUser.setTechExperience(TechExp);
       newUser.save();
     }
 
     if (makeCall.isChecked()) {
-      newUser.setMakeCall(mC);
+      TechExp.add(mC);
+      newUser.setTechExperience(TechExp);
       newUser.save();
     }
 
     if (joinZoom.isChecked()) {
-      newUser.setJoinZoom(jZ);
+      TechExp.add(jZ);
+      newUser.setTechExperience(TechExp);
       newUser.save();
     }
 
     if (scheduleZoom.isChecked()) {
-      newUser.setScheduleZoom(sZ);
+      TechExp.add(sZ);
+      newUser.setTechExperience(TechExp);
       newUser.save();
     }
 
     if (watchYoutube.isChecked()) {
-      newUser.setWatchYoutube(wY);
+      TechExp.add(wY);
+      newUser.setTechExperience(TechExp);
       newUser.save();
     }
 
     if (uploadYoutube.isChecked()) {
-      newUser.setUploadYoutube(uY);
+      TechExp.add(uY);
+      newUser.setTechExperience(TechExp);
       newUser.save();
     }
 
-    Intent signupFinish = new Intent(this, Placeholder.class);
-    startActivity(signupFinish);
+    Intent signUpFinish = new Intent(this, Placeholder.class);
+    startActivity(signUpFinish);
+
   }
 
   public void signUpTechBack(View view) {
+    currentUser.delete();
     setContentView(R.layout.user_signup_main);
   }
 }

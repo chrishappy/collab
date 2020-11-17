@@ -23,7 +23,7 @@ import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.myLogin;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
-import com.themusicians.musiclms.userProfile;
+import com.themusicians.musiclms.UserProfile;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -163,7 +163,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
         startActivity(logout);
         return true;
       case R.id.userprofile:
-        Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, userProfile.class);
+        Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
         startActivity(toUserProfile);
         return true;
       case R.id.createassignment:
