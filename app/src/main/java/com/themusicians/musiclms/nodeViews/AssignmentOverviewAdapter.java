@@ -30,7 +30,7 @@ import java.util.Locale;
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
 public class AssignmentOverviewAdapter
-    extends FirebaseRecyclerAdapter<Assignment, AssignmentOverviewAdapter.AssignmentsViewholder> {
+    extends FirebaseRecyclerAdapter<Assignment, AssignmentOverviewAdapter.AssignmentsViewHolder> {
 
   private ItemClickListener itemClickListener;
 
@@ -43,7 +43,7 @@ public class AssignmentOverviewAdapter
   // assignment class(here "person.class")
   @Override
   protected void onBindViewHolder(
-      @NonNull AssignmentsViewholder holder, int position, @NonNull Assignment assignment) {
+      @NonNull AssignmentsViewHolder holder, int position, @NonNull Assignment assignment) {
 
     holder.assignmentName.setText(assignment.getName());
 
@@ -74,11 +74,11 @@ public class AssignmentOverviewAdapter
   // which the data will be shown
   @NonNull
   @Override
-  public AssignmentsViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public AssignmentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext())
             .inflate(R.layout.viewholder_assignment_overview, parent, false);
-    return new AssignmentOverviewAdapter.AssignmentsViewholder(view);
+    return new AssignmentsViewHolder(view);
   }
 
   /**
@@ -86,16 +86,19 @@ public class AssignmentOverviewAdapter
    * @param position
    */
   public void deleteAssignment(int position) {
-
+//    mRecentlyDeletedItem = mListItems.get(position);
+//    mRecentlyDeletedItemPosition = position;
+//    items.remove(position);
+    notifyItemRemoved(position);
   }
 
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
-  class AssignmentsViewholder extends RecyclerView.ViewHolder {
+  class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate;
     Button editAssignment;
 
-    public AssignmentsViewholder(@NonNull View itemView) {
+    public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
 
       assignmentName = itemView.findViewById(R.id.assignmentName);

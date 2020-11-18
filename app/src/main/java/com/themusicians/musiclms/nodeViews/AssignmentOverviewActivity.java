@@ -1,6 +1,9 @@
 package com.themusicians.musiclms.nodeViews;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +12,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +73,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
         return false;
       }
 
+      /**
+       * To Delete on swipe: https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
+       * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
+       * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+       */
       @Override
       public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
