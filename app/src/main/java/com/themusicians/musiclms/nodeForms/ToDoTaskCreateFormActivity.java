@@ -29,9 +29,6 @@ import com.themusicians.musiclms.entity.Node.ToDoItem;
 public class ToDoTaskCreateFormActivity extends CreateFormActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
-  /** The Firebase Auth Instance */
-  private FirebaseUser currentUser;
-
   /** The request code for retrieving to do items  */
   static final int REQUEST_TODO_ENTITY = 1;
 

@@ -67,7 +67,7 @@ public abstract class CreateFormActivity extends AppCompatActivity {
   /**
    * The Firebase Auth Instance
    */
-  private FirebaseUser currentUser;
+  protected FirebaseUser currentUser;
 
   /**
    * The request code for retrieving to do items

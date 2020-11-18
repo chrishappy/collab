@@ -70,10 +70,6 @@ import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RET
 
 public class AssignmentCreateFormActivity extends CreateFormActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener, ToDoAssignmentFormAdapter.ItemClickListener {
-
-  /** The Firebase Auth Instance */
-  private FirebaseUser currentUser;
-
   /** The entity to be saved */
   protected Assignment assignment;
 
