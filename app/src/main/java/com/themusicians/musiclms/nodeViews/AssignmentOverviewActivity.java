@@ -41,9 +41,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
-  AssignmentOverviewAdapter adapter; // Create Object of the Adapter class
-  DatabaseReference mbase; // Create object of the
-  // Firebase Realtime Database
+  AssignmentOverviewAdapter assignmentOverviewAdapter; // Create Object of the Adapter class
+  DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   /**
    * To Group elements, see this tutorial:
@@ -58,10 +57,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // Create a instance of the database and get
     // its reference
-    Assignment temp = new Assignment();
-    mbase = FirebaseDatabase.getInstance().getReference(temp.getBaseTable());
-
-    recyclerView = findViewById(R.id.recycler1);
+    Assignment tempAssignment = new Assignment();
+    mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
+    recyclerView = findViewById(R.id.assignmentOverviewRecycler);
 
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
@@ -77,17 +75,27 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                 return false;
               }
 
+              /**
+               * To Delete on swipe:
+               * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
+               *
+               * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
+               * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+               */
               @Override
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment =
-                    (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
+                //        AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment =
+                // (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:
                     Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show();
+
+                    int position = viewHolder.getAdapterPosition();
+                    assignmentOverviewAdapter.deleteAssignment(position);
                     break;
 
                   case ItemTouchHelper.RIGHT:
@@ -98,7 +106,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                 }
 
                 // Remove item from backing list here
-                adapter.notifyDataSetChanged();
+                assignmentOverviewAdapter.notifyDataSetChanged();
               }
             });
     itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -109,9 +117,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity
         new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(mbase, Assignment.class).build();
 
     // Create new Adapter
-    adapter = new AssignmentOverviewAdapter(options);
-    adapter.addItemClickListener(this);
-    recyclerView.setAdapter(adapter);
+    assignmentOverviewAdapter = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapter.addItemClickListener(this);
+    recyclerView.setAdapter(assignmentOverviewAdapter);
 
     /** Set the action button to add a new assignment */
     FloatingActionButton fab = findViewById(R.id.createAssignment);
@@ -135,7 +143,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   @Override
   protected void onStart() {
     super.onStart();
-    adapter.startListening();
+    assignmentOverviewAdapter.startListening();
   }
 
   // Function to tell the app to stop getting
@@ -143,7 +151,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   @Override
   protected void onStop() {
     super.onStop();
-    adapter.stopListening();
+    assignmentOverviewAdapter.stopListening();
   }
 
   @Override
@@ -181,10 +189,14 @@ public class AssignmentOverviewActivity extends AppCompatActivity
    * @param entityId
    */
   @Override
-  public void onEditButtonClick(String entityId) {
-    Intent toCreateAssignment =
-        new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-    toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
-    startActivity(toCreateAssignment);
+  public void onEditButtonClick(String type, String entityId) {
+    switch (type) {
+      case "editAssignment":
+        Intent toCreateAssignment =
+            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+        toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
+        startActivity(toCreateAssignment);
+        break;
+    }
   }
 }

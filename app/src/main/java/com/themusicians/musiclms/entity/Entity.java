@@ -7,8 +7,10 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.List;
 
 /**
- * @file Entity.java
- *     <p>Contains the default class to be extended by Attachments and Nodes
+ * Entity.java
+ *
+ * <p>Contains the default class to be extended by Attachments and Nodes
+ *
  * @todo Remove getEntityType and getType from entities
  * @author Nathan Tsai
  * @since 2020-11-02
@@ -87,13 +89,6 @@ public abstract class Entity implements EntityInterface {
   public abstract String getEntityType();
 
   /**
-   * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
-   * @return Entity
-   */
-  //    @Override
-  //    public abstract Entity create(Map<String, Object> valueMap);
-
-  /**
    * @param id The fields for the default Entity
    * @return The List of the Entities
    */
@@ -153,7 +148,7 @@ public abstract class Entity implements EntityInterface {
    *
    * @return bool true if entity is published
    */
-  public boolean isStatus() {
+  public boolean getStatus() {
     return status;
   }
 
@@ -184,7 +179,7 @@ public abstract class Entity implements EntityInterface {
    *
    * @param inputIsNew true if the entity should be resaved.
    */
-  public void enforceNew(boolean inputIsNew) {
+  public void setIsNew(boolean inputIsNew) {
     isNew = inputIsNew;
   }
 
