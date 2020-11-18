@@ -76,15 +76,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.98" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="70dp"
-        tools:layout_editor_absoluteY="58dp">
-
-    </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
         android:layout_width="237dp"
