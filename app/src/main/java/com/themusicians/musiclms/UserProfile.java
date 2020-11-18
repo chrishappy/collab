@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 /**
@@ -83,37 +82,44 @@ public class UserProfile extends AppCompatActivity {
           public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-    add.setOnClickListener((v) ->{
-        String instrumentName = edit.getText().toString();
-        if(instrumentName.isEmpty()){
+    add.setOnClickListener(
+        (v) -> {
+          String instrumentName = edit.getText().toString();
+          if (instrumentName.isEmpty()) {
             Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            FirebaseDatabase.getInstance().getReference().child("node__user").child("user_instruments").setValue(instrumentName);
-        }
-    });
+          } else {
+            FirebaseDatabase.getInstance()
+                .getReference()
+                .child("node__user")
+                .child("user_instruments")
+                .setValue(instrumentName);
+          }
+        });
 
-      final ArrayList<String> list = new ArrayList<>();
-      final ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.user_profile_main, list);
-      listView.setAdapter(adapter);
+    final ArrayList<String> list = new ArrayList<>();
+    final ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.user_profile_main, list);
+    listView.setAdapter(adapter);
 
-      DatabaseReference instrumentReference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("user_instruments");
-      reference.addValueEventListener(new ValueEventListener() {
+    DatabaseReference instrumentReference =
+        FirebaseDatabase.getInstance()
+            .getReference()
+            .child("node__user")
+            .child(currentUser.getUid())
+            .child("user_instruments");
+    reference.addValueEventListener(
+        new ValueEventListener() {
           @Override
           public void onDataChange(@NonNull DataSnapshot inSnapshot) {
-              list.clear();
-              for(DataSnapshot instrumentSnapshot: inSnapshot.getChildren()) {
-                  list.add(instrumentSnapshot.getValue().toString());
-              }
-              adapter.notifyDataSetChanged();
-
+            list.clear();
+            for (DataSnapshot instrumentSnapshot : inSnapshot.getChildren()) {
+              list.add(instrumentSnapshot.getValue().toString());
+            }
+            adapter.notifyDataSetChanged();
           }
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-
-          }
-      });
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
   }
 
   public void toEditData(View view) {
