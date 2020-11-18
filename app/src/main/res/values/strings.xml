@@ -142,4 +142,6 @@
     <string name="to_do_item__form__name">Name</string>
     <string name="to_do_item__form__require_recording">Require Recording</string>
     <string name="form__edit_button">Edit</string>
+    <string name="no_file_is_selected">no file is selected</string>
+    <string name="upload">upload</string>
 </resources>
