@@ -1,7 +1,6 @@
 package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.List;
 
 /**

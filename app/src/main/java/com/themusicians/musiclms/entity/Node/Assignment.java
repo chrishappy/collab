@@ -4,7 +4,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -119,9 +118,7 @@ public class Assignment extends Node {
     return getEntityType() + "__" + getType();
   }
 
-  /**
-   * Get To Do Items location
-   */
+  /** Get To Do Items location */
   @Exclude
   public DatabaseReference getToDoItemsKeyQuery() {
     return getEntityDatabase().child(toDoIdsName);

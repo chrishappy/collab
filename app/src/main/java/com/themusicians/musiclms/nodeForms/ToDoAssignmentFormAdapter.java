@@ -5,15 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 /**
@@ -26,7 +23,8 @@ import com.themusicians.musiclms.entity.Node.ToDoItem;
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
 public class ToDoAssignmentFormAdapter
-    extends FirebaseRecyclerAdapter<ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
+    extends FirebaseRecyclerAdapter<
+        ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
 
   private ItemClickListener itemClickListener;
 
@@ -45,18 +43,17 @@ public class ToDoAssignmentFormAdapter
     holder.toDoName.setText(toDoItem.getName());
 
     // Set the on click listener
-    View.OnClickListener editToDoItemListener = new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if (itemClickListener != null) {
-          itemClickListener.onEditButtonClick( "editToDoAssignmentForm", toDoItem.getId() );
-        }
-      }
-    };
+    View.OnClickListener editToDoItemListener =
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            if (itemClickListener != null) {
+              itemClickListener.onEditButtonClick("editToDoAssignmentForm", toDoItem.getId());
+            }
+          }
+        };
     holder.toDoName.setOnClickListener(editToDoItemListener);
     holder.editButton.setOnClickListener(editToDoItemListener);
-
-
   }
 
   // Function to tell the class about the Card view (here
@@ -90,7 +87,7 @@ public class ToDoAssignmentFormAdapter
   /**
    * Allow users to click the edit button
    *
-   * From: https://stackoverflow.com/questions/39551313/
+   * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
     void onEditButtonClick(String type, String entityId);

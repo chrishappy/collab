@@ -5,15 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,8 +50,9 @@ public class AssignmentOverviewAdapter
 
     if (assignment.getDueDate() != 0) {
       Date date = new Date(assignment.getDueDate());
-//      DateFormat dateFormat = new SimpleDateFormat( getText(R.string.date_format__month_day), Locale.CANADA);
-      DateFormat dateFormat = new SimpleDateFormat( "MMM d", Locale.CANADA);
+      //      DateFormat dateFormat = new SimpleDateFormat(
+      // getText(R.string.date_format__month_day), Locale.CANADA);
+      DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
 
@@ -63,7 +61,7 @@ public class AssignmentOverviewAdapter
           @Override
           public void onClick(View view) {
             if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick( "editAssignment", assignment.getId() );
+              itemClickListener.onEditButtonClick("editAssignment", assignment.getId());
             }
           }
         });
@@ -83,12 +81,13 @@ public class AssignmentOverviewAdapter
 
   /**
    * Archive the assignment on swipe
+   *
    * @param position
    */
   public void deleteAssignment(int position) {
-//    mRecentlyDeletedItem = mListItems.get(position);
-//    mRecentlyDeletedItemPosition = position;
-//    items.remove(position);
+    //    mRecentlyDeletedItem = mListItems.get(position);
+    //    mRecentlyDeletedItemPosition = position;
+    //    items.remove(position);
     notifyItemRemoved(position);
   }
 
@@ -111,7 +110,7 @@ public class AssignmentOverviewAdapter
   /**
    * Allow users to click the edit button
    *
-   * From: https://stackoverflow.com/questions/39551313/
+   * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
     void onEditButtonClick(String type, String entityId);

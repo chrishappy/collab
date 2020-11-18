@@ -120,9 +120,9 @@ public class SignUp extends AppCompatActivity {
                           setContentView(R.layout.user_signup_tech);
                         } else {
                           Toast.makeText(
-                              SignUp.this,
-                              "Error" + task.getException().getMessage(),
-                              Toast.LENGTH_SHORT)
+                                  SignUp.this,
+                                  "Error" + task.getException().getMessage(),
+                                  Toast.LENGTH_SHORT)
                               .show();
                         }
                       }
@@ -186,9 +186,9 @@ public class SignUp extends AppCompatActivity {
                           setContentView(R.layout.user_signup_tech);
                         } else {
                           Toast.makeText(
-                              SignUp.this,
-                              "Error" + task.getException().getMessage(),
-                              Toast.LENGTH_SHORT)
+                                  SignUp.this,
+                                  "Error" + task.getException().getMessage(),
+                                  Toast.LENGTH_SHORT)
                               .show();
                         }
                       }

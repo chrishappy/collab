@@ -4,15 +4,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.List;
 
 /**
  * Entity.java
- *     <p>Contains the default class to be extended by Attachments and Nodes
+ *
+ * <p>Contains the default class to be extended by Attachments and Nodes
  *
  * @todo Remove getEntityType and getType from entities
- *
  * @author Nathan Tsai
  * @since 2020-11-02
  */
