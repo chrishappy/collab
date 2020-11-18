@@ -50,6 +50,7 @@ import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 //import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
+import com.themusicians.musiclms.entity.Attachment.File;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
@@ -350,7 +351,8 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
       final String fileName=System.currentTimeMillis()+"";
       StorageReference storageReference=storage.getReference();
 
-      storageReference.child("Uploads").child(fileName).putFile(pdfUri)
+      File tempFile = new File();
+      storageReference.child( tempFile.getBaseTable() ).child(fileName).putFile(pdfUri)
               .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                   @Override
                   public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -449,17 +451,6 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     super.onSaveInstanceState(savedInstanceState);
   }
 
-  /*
-  @Override
-  public void onRestoreInstanceState(Bundle savedInstanceState) {
-    // Always call the superclass so it can restore the view hierarchy
-    super.onRestoreInstanceState(savedInstanceState);
-
-    // Restore state members from saved instance
-    editEntityId = savedInstanceState.getString(SAVED_ENTITY_ID);
-  }
-  /**/
-
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -468,7 +459,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
         if(resultCode == Activity.RESULT_OK){
           String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
-          if (assignment.getToDoIds().get(toDoId) != null) {
+          if (assignment.getToDoIds().get(toDoId) == null) {
             assignment.addToDoId(toDoId);
             assignment.save();
 
