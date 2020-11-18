@@ -32,7 +32,7 @@ import java.util.List;
  * @todo Store miscellaneous user info in Firebase
  * @todo Proceed through sign up layouts
  */
-//c
+// c
 public class SignUp extends AppCompatActivity {
   protected EditText newEmail, newPassword, newName;
   protected Button teacher, student;
