@@ -1,10 +1,15 @@
 package com.themusicians.musiclms.nodeForms;
 
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -12,52 +17,67 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 // import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
-import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
+import com.themusicians.musiclms.entity.Attachment.File;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.ToDoItem;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import org.jetbrains.annotations.NotNull;
 
-public class AssignmentCreateFormActivity extends AppCompatActivity
-    implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
-
-  /** The Firebase Auth Instance */
-  private FirebaseUser currentUser;
-
-  /** The request code for retrieving to do items */
-  public static final int REQUEST_TODO_ENTITY = 1;
-
-  /** The request code for retrieving to do items */
-  public static final String ACCEPT_ENTITY_ID = "ENTITY_ID_FOR_EDIT";
-
-  /** Used to restore entity id after instance is saved See: https://stackoverflow.com/q/26359130 */
-  static final String SAVED_ENTITY_ID = "SAVED_ENTITY_ID";
-
-  /** The entity id to edit */
-  protected String editEntityId;
-
-  /** Log tag for editing */
-  public static final String LOAD_ASSIGNMENT_TAG = "Load Assignment To Edit";
-
-  protected boolean inEditMode = false;
-
+public class AssignmentCreateFormActivity extends CreateFormActivity
+    implements AddAttachmentDialogFragment.AddAttachmentDialogListener,
+        ToDoAssignmentFormAdapter.ItemClickListener {
+  /** The entity to be saved */
   protected Assignment assignment;
+
+  /** Code for file */
+  Button selectFile, upload;
+
+  TextView notification;
+  Uri pdfUri;
+
+  FirebaseStorage storage; // used for upload files
+  FirebaseDatabase database; // used to store URLs of uploaded files
+  ProgressDialog progressDialog;
+
+  /** Create recycler view for to do items */
+  private RecyclerView toDoItemsRecyclerView;
+
+  /** Create adapter for to do items */
+  ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
 
   @Override
   public void onStart() {
@@ -80,20 +100,30 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
                   AssignmentName.setText(assignment.getName());
                   StudentOrClass.setText(assignment.getClassId());
 
-                  Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onDataChange");
+                  Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                   // Getting Post failed, log a message
                   Log.w(
-                      LOAD_ASSIGNMENT_TAG,
+                      LOAD_ENTITY_DATABASE_TAG,
                       "loadAssignment:onCancelled",
                       databaseError.toException());
                   // ...
                 }
               });
     }
+
+    toDoItemsAdapter.startListening();
+  }
+
+  // Function to tell the app to stop getting
+  // data from database on stoping of the activity
+  @Override
+  protected void onStop() {
+    super.onStop();
+    toDoItemsAdapter.stopListening();
   }
 
   /** @param savedInstanceState */
@@ -101,15 +131,8 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Get id to edit
-    Intent intent = getIntent();
-    editEntityId = intent.getStringExtra(ACCEPT_ENTITY_ID);
-
+    // Initiate the entity
     assignment = new Assignment();
-
-    if (editEntityId != null) {
-      inEditMode = true;
-    }
 
     setContentView(R.layout.activity_assignment_create_form);
 
@@ -148,6 +171,9 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
           }
         });
 
+    // Load the to do tasks
+    initToDoItemsList();
+
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
     final Button addTask = findViewById(R.id.todoAddItem);
@@ -185,9 +211,9 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
                 .setAction("Action", null)
                 .show();
 
-            List<String> dummyList = new LinkedList<>();
-            dummyList.add("This is an element");
-            dummyList.add("This is another element");
+            //            List<String> dummyList = new LinkedList<>();
+            //            dummyList.add("This is an element");
+            //            dummyList.add("This is another element");
 
             // Due Date timestamp
             long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds(cldr.getTimeInMillis());
@@ -200,10 +226,13 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
             //            assignment.setAttachmentIds( null );
             assignment.save();
 
+            Intent toAssignmentOverview =
+                new Intent(AssignmentCreateFormActivity.this, AssignmentOverviewActivity.class);
+            startActivity(toAssignmentOverview);
+
             // Display notification
-            Snackbar.make(view, "Assignment Saved", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
+            String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
+            Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
           }
         });
 
@@ -227,17 +256,199 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
           }
         });
 
-    // Add a File
-    final Button addFileButton = findViewById(R.id.addFileButton);
-    addFileButton.setOnClickListener(
+    storage = FirebaseStorage.getInstance();
+    database = FirebaseDatabase.getInstance();
+
+    selectFile = findViewById(R.id.selectFile);
+    upload = findViewById(R.id.upload);
+    notification = findViewById(R.id.notification);
+
+    selectFile.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            String dialogTag = "addFile";
-            DialogFragment newAddFileDialog = new AddFileDialogFragment();
-            newAddFileDialog.show(getSupportFragmentManager(), dialogTag);
+            if (ContextCompat.checkSelfPermission(
+                    AssignmentCreateFormActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+              selectPdf();
+            } else
+              ActivityCompat.requestPermissions(
+                  AssignmentCreateFormActivity.this,
+                  new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                  9);
           }
         });
+
+    upload.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+
+            if (pdfUri != null) uploadFile(pdfUri);
+            else
+              Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT)
+                  .show();
+          }
+        });
+  }
+
+  /** Create the to do items list */
+  private void initToDoItemsList() {
+    toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
+    toDoItemsRecyclerView.setLayoutManager(
+        new GridLayoutManager(AssignmentCreateFormActivity.this, 1));
+    ItemTouchHelper itemTouchHelper =
+        new ItemTouchHelper(
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+              @Override
+              public boolean onMove(
+                  @NonNull RecyclerView recyclerView,
+                  @NonNull RecyclerView.ViewHolder viewHolder,
+                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+              }
+
+              @Override
+              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+                //        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder swipedAssignment =
+                // (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
+
+                switch (swipeDir) {
+                  case ItemTouchHelper.LEFT:
+                    Snackbar.make(
+                            toDoItemsRecyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .show();
+                    break;
+
+                  case ItemTouchHelper.RIGHT:
+                    Snackbar.make(
+                            toDoItemsRecyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .show();
+                    break;
+                }
+
+                // Remove item from backing list here
+                toDoItemsAdapter.notifyDataSetChanged();
+              }
+            });
+    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+
+    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
+    // data
+    ToDoItem tempToDoItem = new ToDoItem();
+    FirebaseRecyclerOptions<ToDoItem> toDoOptionsQuery =
+        new FirebaseRecyclerOptions.Builder<ToDoItem>()
+            .setIndexedQuery(
+                assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class)
+            .build();
+
+    // Create new Adapter
+    toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
+    toDoItemsAdapter.addItemClickListener(this);
+    toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
+  }
+
+  private void uploadFile(Uri pdfUri) {
+
+    progressDialog = new ProgressDialog(this);
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    progressDialog.setTitle("Uploading file...");
+    progressDialog.setProgress(0);
+    progressDialog.show();
+
+    final String fileName = System.currentTimeMillis() + "";
+    StorageReference storageReference = storage.getReference();
+
+    File tempFile = new File();
+    storageReference
+        .child(tempFile.getBaseTable())
+        .child(fileName)
+        .putFile(pdfUri)
+        .addOnSuccessListener(
+            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+              @Override
+              public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                task.addOnSuccessListener(
+                    new OnSuccessListener<Uri>() {
+                      @Override
+                      public void onSuccess(Uri uri) {
+                        String url = uri.toString();
+
+                        DatabaseReference reference = database.getReference();
+
+                        reference
+                            .child(fileName)
+                            .setValue(url)
+                            .addOnCompleteListener(
+                                new OnCompleteListener<Void>() {
+                                  @Override
+                                  public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful())
+                                      Toast.makeText(
+                                              AssignmentCreateFormActivity.this,
+                                              "File successfully uploaded",
+                                              Toast.LENGTH_SHORT)
+                                          .show();
+                                    else
+                                      Toast.makeText(
+                                              AssignmentCreateFormActivity.this,
+                                              "File not successfully uploaded",
+                                              Toast.LENGTH_SHORT)
+                                          .show();
+                                  }
+                                });
+                      }
+                    });
+              }
+            })
+        .addOnFailureListener(
+            new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(
+                        AssignmentCreateFormActivity.this,
+                        "File not successfully uploaded",
+                        Toast.LENGTH_SHORT)
+                    .show();
+              }
+            })
+        .addOnProgressListener(
+            new OnProgressListener<UploadTask.TaskSnapshot>() {
+              @Override
+              public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                int currentProgress =
+                    (int)
+                        (100
+                            * taskSnapshot.getBytesTransferred()
+                            / taskSnapshot.getTotalByteCount());
+                progressDialog.setProgress(currentProgress);
+              }
+            });
+  }
+
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) selectPdf();
+    else
+      Toast.makeText(
+              AssignmentCreateFormActivity.this, "please provide permission..", Toast.LENGTH_SHORT)
+          .show();
+  }
+
+  private void selectPdf() {
+
+    Intent intent = new Intent();
+    intent.setType("application/pdf");
+    intent.setAction(Intent.ACTION_GET_CONTENT);
+    startActivityForResult(intent, 86);
   }
 
   @Override
@@ -262,6 +473,12 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
 
   // ---- End section to be generalized-----
 
+  /**
+   * When creating a new task, we want to save the assignment to ensure the data (name, due date,
+   * etc) are saved with the to do items
+   *
+   * @param savedInstanceState
+   */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
     assignment.save();
@@ -273,17 +490,6 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
     super.onSaveInstanceState(savedInstanceState);
   }
 
-  /*
-  @Override
-  public void onRestoreInstanceState(Bundle savedInstanceState) {
-    // Always call the superclass so it can restore the view hierarchy
-    super.onRestoreInstanceState(savedInstanceState);
-
-    // Restore state members from saved instance
-    editEntityId = savedInstanceState.getString(SAVED_ENTITY_ID);
-  }
-  /**/
-
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -292,18 +498,56 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
       if (resultCode == Activity.RESULT_OK) {
         String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
-        assignment.addToDoId(toDoId);
-        assignment.save();
+        if (assignment.getToDoIds().get(toDoId) == null) {
+          assignment.addToDoId(toDoId);
+          assignment.save();
 
-        // Display notification
-        Snackbar.make(
-                findViewById(R.id.createAssignmentLayout), "To Do Item Saved", Snackbar.LENGTH_LONG)
-            .setAction("Edit", null)
-            .show();
+          // Display notification
+          Snackbar.make(
+                  findViewById(R.id.createAssignmentLayout),
+                  "To Do Item Saved",
+                  Snackbar.LENGTH_LONG)
+              .setAction("Edit", null)
+              .show();
+        } else {
+          // Display notification
+          Snackbar.make(
+                  findViewById(R.id.createAssignmentLayout),
+                  "To Do Item Updated",
+                  Snackbar.LENGTH_LONG)
+              .setAction("Edit", null)
+              .show();
+        }
       }
       if (resultCode == Activity.RESULT_CANCELED) {
         // Write your code if there's no result
       }
+    } else {
+      if (requestCode == 86 && resultCode == RESULT_OK && data != null) {
+        pdfUri = data.getData();
+        notification.setText("A file is selected : " + data.getData().getLastPathSegment());
+      } else {
+        Toast.makeText(
+                AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
+            .show();
+      }
+    }
+  }
+
+  /**
+   * Implement onEditButtonClick()
+   *
+   * @param entityId the entity we are editing
+   */
+  @Override
+  public void onEditButtonClick(String type, String entityId) {
+    switch (type) {
+      case "editToDoAssignmentForm":
+        Intent toEditToDoItem =
+            new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
+        toEditToDoItem.putExtra(ACCEPT_ENTITY_ID, entityId);
+        startActivityForResult(toEditToDoItem, REQUEST_TODO_ENTITY);
+        break;
     }
   }
 }

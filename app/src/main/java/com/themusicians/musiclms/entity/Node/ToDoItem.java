@@ -4,7 +4,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.List;
 
 /**
- * @file Assignment.java
+ * Assignment.java
+ *
  * @contributor
  * @author Nathan Tsai
  * @since Nov 13, 2020
@@ -19,7 +20,7 @@ public class ToDoItem extends Node {
    *
    * <p>Public properties will be automatically saved by Firebase Private will not
    */
-  protected long requireRecording;
+  protected boolean requireRecording;
 
   protected long toDoState;
 
@@ -47,11 +48,11 @@ public class ToDoItem extends Node {
   }
 
   /** Settings and Getters */
-  public long getRequireRecording() {
+  public boolean getRequireRecording() {
     return requireRecording;
   }
 
-  public void setRequireRecording(long requireRecording) {
+  public void setRequireRecording(boolean requireRecording) {
     this.requireRecording = requireRecording;
   }
 
