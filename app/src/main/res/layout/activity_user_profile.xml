@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".userProfile">
 
-    <Button
-        android:id="@+id/chatButton"
-        android:layout_width="95dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="496dp"
-        android:onClick="goChat"
-        android:text="Chat"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/Student_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,6 +51,19 @@
             android:onClick="toEditData"
             android:text="Edit Data"/>
 
+        <Button
+            android:id="@+id/chatButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="goChat"
+            android:text="@string/user_profile_chat"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/Student_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.785"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.032" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,8 +26,6 @@ public abstract class Node extends Entity {
    */
   protected String name;
 
-  protected String email;
-
   protected List<String> attachmentIds;
 
   protected List<String> allowedAttachments;
@@ -74,7 +72,7 @@ public abstract class Node extends Entity {
     writeEntity();
 
     // the entity is no longer new
-    enforceNew(false);
+    setIsNew(false);
 
     return true;
   }
@@ -121,7 +119,7 @@ public abstract class Node extends Entity {
               }
             });
 
-    enforceNew(false);
+    setIsNew(false);
 
     return result[0];
   }

@@ -123,7 +123,7 @@ public class signup extends AppCompatActivity {
 
     // Save user name
     newUser.setName(name);
-    newUser.enforceNew(false);
+    newUser.setIsNew(false);
     newUser.save();
 
     setContentView(R.layout.signup_tech);

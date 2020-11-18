@@ -1,4 +1,4 @@
-package com.themusicians.musiclms.nodeViews;
+package com.themusicians.musiclms.nodeForms;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,33 +7,30 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 /**
  * The adapter for the Assignment Form pages
  *
  * @author Nathan Tsai
- * @since Nov 16, 2020
+ * @since Nov 10, 2020
  */
-
 // FirebaseRecyclerAdapter is a class provided by
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
-public class AssignmentOverviewAdapter
-    extends FirebaseRecyclerAdapter<Assignment, AssignmentOverviewAdapter.AssignmentsViewholder> {
+public class ToDoAssignmentFormAdapter
+    extends FirebaseRecyclerAdapter<ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
 
   private ItemClickListener itemClickListener;
 
-  public AssignmentOverviewAdapter(@NonNull FirebaseRecyclerOptions<Assignment> options) {
+  public ToDoAssignmentFormAdapter(@NonNull FirebaseRecyclerOptions<ToDoItem> options) {
     super(options);
   }
 
@@ -42,24 +39,16 @@ public class AssignmentOverviewAdapter
   // assignment class(here "person.class")
   @Override
   protected void onBindViewHolder(
-      @NonNull AssignmentsViewholder holder, int position, @NonNull Assignment assignment) {
+      @NonNull ToDoAssignmentFormViewholder holder, int position, @NonNull ToDoItem toDoItem) {
 
-    holder.assignmentName.setText(assignment.getName());
+    holder.toDoName.setText(toDoItem.getName());
 
-    if (assignment.getUid() != null) {
-      holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
-    }
-
-    Date date = new Date(assignment.getDueDate());
-    DateFormat dateFormat = new SimpleDateFormat( String.valueOf(R.string.date_format__month_day) );
-    holder.dueDate.setText(dateFormat.format(date));
-
-    holder.editAssignment.setOnClickListener(
+    holder.toDoWrapper.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
             if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick( "editAssignment", assignment.getId() );
+              itemClickListener.onEditButtonClick( "editToDoAssignmentForm", toDoItem.getId() );
             }
           }
         });
@@ -70,26 +59,24 @@ public class AssignmentOverviewAdapter
   // which the data will be shown
   @NonNull
   @Override
-  public AssignmentsViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public ToDoAssignmentFormViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.viewholder_assignment_overview, parent, false);
-    return new AssignmentOverviewAdapter.AssignmentsViewholder(view);
+            .inflate(R.layout.viewholder_to_do_assignment_form_overview, parent, false);
+    return new ToDoAssignmentFormViewholder(view);
   }
 
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
-  class AssignmentsViewholder extends RecyclerView.ViewHolder {
-    TextView assignmentName, authorName, dueDate;
-    Button editAssignment;
+  class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
+    TextView toDoName;
+    ConstraintLayout toDoWrapper;
 
-    public AssignmentsViewholder(@NonNull View itemView) {
+    public ToDoAssignmentFormViewholder(@NonNull View itemView) {
       super(itemView);
 
-      assignmentName = itemView.findViewById(R.id.assignmentName);
-      authorName = itemView.findViewById(R.id.authorName);
-      dueDate = itemView.findViewById(R.id.dueDate);
-      editAssignment = itemView.findViewById(R.id.edit_button);
+      toDoName = itemView.findViewById(R.id.toDoName);
+      toDoWrapper = itemView.findViewById(R.id.toDoAssignmentFormWrapper);
     }
   }
 

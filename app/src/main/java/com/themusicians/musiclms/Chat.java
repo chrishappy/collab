@@ -17,8 +17,10 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.themusicians.musiclms.entity.Node.PrivateChat;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,10 +34,24 @@ import org.jetbrains.annotations.NotNull;
 public class Chat extends AppCompatActivity {
     private FirebaseListAdapter<ChatMessage> adapter;
 
+
+    /** The Firebase Auth Instance */
+    private FirebaseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        // Get current user
+//        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Create new user chat
+//        PrivateChat newPrivateChat = new PrivateChat();
+//        newPrivateChat.setName("Testing");
+//        newPrivateChat.setUid( currentUser.getUid() );
+//        newPrivateChat.setOtherUid( "l5v7F0UpK2fioFBFZ0NoXhs98aU2" );
+//        newPrivateChat.save();
 
         // User is already signed in. Therefore, display
         // a welcome Toast

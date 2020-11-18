@@ -4,12 +4,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
 /**
- * @file Entity.java
- *     <p>Contains the default class to be extended by Attachments and Nodes
- * @todo Remove getEntityType and getType from entities
+ * Contains the default class to be extended by Attachments and Nodes
+ *
  * @author Nathan Tsai
  * @since 2020-11-02
  */
@@ -21,12 +21,6 @@ public abstract class Entity implements EntityInterface {
 
   /** The fields for the default Entity */
   protected String id;
-
-  /** Different types of entity: Assignments or Users profiles, etc */
-  protected String type;
-
-  /** Node or attachment */
-  protected String entityType;
 
   /**
    * The time the Entity was created in UTC format The type is Object in order to save
@@ -54,7 +48,7 @@ public abstract class Entity implements EntityInterface {
 
   /** Default constructor without arguments for Firebase and ::loadMultiple */
   public Entity() {
-    entityDatabase = FirebaseDatabase.getInstance().getReference(getBaseTable());
+    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
 
     System.out.println("The Entity base table is: " + getBaseTable());
 
@@ -63,7 +57,7 @@ public abstract class Entity implements EntityInterface {
 
   /** Constructor for loading */
   public Entity(String id) {
-    entityDatabase = FirebaseDatabase.getInstance().getReference(getBaseTable());
+    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
 
     System.out.println("The Entity2 base table is: " + getBaseTable());
 
@@ -80,18 +74,10 @@ public abstract class Entity implements EntityInterface {
 
   /**
    * Implement get entity type
-   *
    * @return the type of entity
    */
   @Override
   public abstract String getEntityType();
-
-  /**
-   * @param valueMap The fields values for the Entity Create a new entity with data in valueMap
-   * @return Entity
-   */
-  //    @Override
-  //    public abstract Entity create(Map<String, Object> valueMap);
 
   /**
    * @param id The fields for the default Entity
@@ -105,10 +91,10 @@ public abstract class Entity implements EntityInterface {
   public abstract boolean save();
 
   /**
-   * Implements delete() Deletes the entity
+   * Implements delete()
+   * Deletes the entity
    *
-   * @return True if the data is correctly deleted
-   */
+   * @return True if the data is correctly deleted */
   @Override
   public boolean delete() {
     return true;
@@ -117,8 +103,7 @@ public abstract class Entity implements EntityInterface {
   /**
    * Get the id of the entity
    *
-   * @return The fields for the default Entity
-   */
+   * @return The fields for the default Entity */
   @Override
   public String getId() {
     return this.id;
@@ -149,11 +134,12 @@ public abstract class Entity implements EntityInterface {
   }
 
   /**
-   * Allow entities to be unpublished, aka exist in database, but not visible to everyone.
+   * Allow entities to be unpublished, aka exist in database, but not
+   * visible to everyone.
    *
    * @return bool true if entity is published
    */
-  public boolean isStatus() {
+  public boolean getStatus() {
     return status;
   }
 
@@ -174,30 +160,29 @@ public abstract class Entity implements EntityInterface {
     this.uid = uid;
   }
 
-  /** Force the entity to be saved again in the database */
-  public void enforceNew() {
-    isNew = true;
-  }
-
   /**
    * Conditionally enfore the entity to be saved again in the database
    *
    * @param inputIsNew true if the entity should be resaved.
    */
-  public void enforceNew(boolean inputIsNew) {
+  public void setIsNew(boolean inputIsNew) {
     isNew = inputIsNew;
   }
 
-  /** Get the relevant database */
+  /**
+   * Get the relevant database
+   */
   @Exclude
   public DatabaseReference getEntityDatabase() {
     return entityDatabase;
   }
-  /** Need to save user information first */
-  //  public User getAuthor() {
-  //    User author = new User;
-  //
-  //    return author;
-  //  }
+  /**
+   * Need to save user information first
+   */
+//  public User getAuthor() {
+//    User author = new User;
+//
+//    return author;
+//  }
 
 }
