@@ -49,6 +49,7 @@ public class Chat extends AppCompatActivity {
         // Load chat room contents
         displayChatMessages();
 
+        displayChatMessages();
 
         FloatingActionButton fab =
                 (FloatingActionButton) findViewById(R.id.fab);
@@ -74,25 +75,21 @@ public class Chat extends AppCompatActivity {
                 input.setText("");
             }
         });
-
     }
 
     private void displayChatMessages() {
-        ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
+        ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
         Query query = FirebaseDatabase.getInstance().getReference().child("chats");
-        //Create FirebaseListOptions
         FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
-                .setLayout(R.layout.message)
                 .build();
-        //Finally you pass them to the constructor here:
         adapter = new FirebaseListAdapter<ChatMessage>(options) {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 // Get references to the views of message.xml
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
+                TextView messageText = (TextView) v.findViewById(R.id.message_text);
+                TextView messageUser = (TextView) v.findViewById(R.id.message_user);
+                TextView messageTime = (TextView) v.findViewById(R.id.message_time);
 
                 // Set their text
                 messageText.setText(model.getMessageText());
@@ -103,6 +100,5 @@ public class Chat extends AppCompatActivity {
             }
         };
         listOfMessages.setAdapter(adapter);
-
     }
 }
