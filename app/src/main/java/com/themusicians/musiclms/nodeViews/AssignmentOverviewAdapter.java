@@ -5,18 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * The adapter for the Assignment Form pages
@@ -29,7 +27,7 @@ import java.util.Date;
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
 public class AssignmentOverviewAdapter
-    extends FirebaseRecyclerAdapter<Assignment, AssignmentOverviewAdapter.AssignmentsViewholder> {
+    extends FirebaseRecyclerAdapter<Assignment, AssignmentOverviewAdapter.AssignmentsViewHolder> {
 
   private ItemClickListener itemClickListener;
 
@@ -42,7 +40,7 @@ public class AssignmentOverviewAdapter
   // assignment class(here "person.class")
   @Override
   protected void onBindViewHolder(
-      @NonNull AssignmentsViewholder holder, int position, @NonNull Assignment assignment) {
+      @NonNull AssignmentsViewHolder holder, int position, @NonNull Assignment assignment) {
 
     holder.assignmentName.setText(assignment.getName());
 
@@ -50,16 +48,20 @@ public class AssignmentOverviewAdapter
       holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
     }
 
-    Date date = new Date(assignment.getDueDate());
-    DateFormat dateFormat = new SimpleDateFormat( String.valueOf(R.string.date_format__month_day) );
-    holder.dueDate.setText(dateFormat.format(date));
+    if (assignment.getDueDate() != 0) {
+      Date date = new Date(assignment.getDueDate());
+      //      DateFormat dateFormat = new SimpleDateFormat(
+      // getText(R.string.date_format__month_day), Locale.CANADA);
+      DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
+      holder.dueDate.setText(dateFormat.format(date));
+    }
 
     holder.editAssignment.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
             if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick( "editAssignment", assignment.getId() );
+              itemClickListener.onEditButtonClick("editAssignment", assignment.getId());
             }
           }
         });
@@ -70,20 +72,32 @@ public class AssignmentOverviewAdapter
   // which the data will be shown
   @NonNull
   @Override
-  public AssignmentsViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+  public AssignmentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext())
             .inflate(R.layout.viewholder_assignment_overview, parent, false);
-    return new AssignmentOverviewAdapter.AssignmentsViewholder(view);
+    return new AssignmentsViewHolder(view);
+  }
+
+  /**
+   * Archive the assignment on swipe
+   *
+   * @param position
+   */
+  public void deleteAssignment(int position) {
+    //    mRecentlyDeletedItem = mListItems.get(position);
+    //    mRecentlyDeletedItemPosition = position;
+    //    items.remove(position);
+    notifyItemRemoved(position);
   }
 
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
-  class AssignmentsViewholder extends RecyclerView.ViewHolder {
+  class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate;
     Button editAssignment;
 
-    public AssignmentsViewholder(@NonNull View itemView) {
+    public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
 
       assignmentName = itemView.findViewById(R.id.assignmentName);
@@ -96,7 +110,7 @@ public class AssignmentOverviewAdapter
   /**
    * Allow users to click the edit button
    *
-   * From: https://stackoverflow.com/questions/39551313/
+   * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
     void onEditButtonClick(String type, String entityId);

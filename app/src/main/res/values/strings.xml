@@ -143,4 +143,6 @@
     <string name="to_do_item__form__require_recording">Require Recording</string>
     <string name="form__edit_button">Edit</string>
     <string name="user_profile_chat">Chat</string>
+    <string name="no_file_is_selected">no file is selected</string>
+    <string name="upload">upload</string>
 </resources>

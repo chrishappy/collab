@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.entity.Node;
 
-
 import java.util.List;
 
 /**
@@ -22,6 +21,22 @@ public class User extends Node {
    * @todo implement later
    */
   protected String email;
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
 
   /**
    * Whether the user is a teacher, student
@@ -99,67 +114,4 @@ public class User extends Node {
   }
 
   /** */
-  protected String sendText;
-
-  protected String makeCall;
-  protected String joinZoom;
-  protected String scheduleZoom;
-  protected String watchYoutube;
-  protected String uploadYoutube;
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getSendText() {
-    return sendText;
-  }
-
-  public void setSendText(String sendText) {
-    this.sendText = sendText;
-  }
-
-  public String getMakeCall() {
-    return makeCall;
-  }
-
-  public void setMakeCall(String makeCall) {
-    this.makeCall = makeCall;
-  }
-
-  public String getJoinZoom() {
-    return joinZoom;
-  }
-
-  public void setJoinZoom(String joinZoom) {
-    this.joinZoom = joinZoom;
-  }
-
-  public String getScheduleZoom() {
-    return scheduleZoom;
-  }
-
-  public void setScheduleZoom(String scheduleZoom) {
-    this.scheduleZoom = scheduleZoom;
-  }
-
-  public String getWatchYoutube() {
-    return watchYoutube;
-  }
-
-  public void setWatchYoutube(String watchYoutube) {
-    this.watchYoutube = watchYoutube;
-  }
-
-  public String getUploadYoutube() {
-    return uploadYoutube;
-  }
-
-  public void setUploadYoutube(String uploadYoutube) {
-    this.uploadYoutube = uploadYoutube;
-  }
 }
