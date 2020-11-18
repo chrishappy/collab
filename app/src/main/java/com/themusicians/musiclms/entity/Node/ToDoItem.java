@@ -5,7 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.List;
 
 /**
- * @file Assignment.java
+ * Assignment.java
  *
  * @contributor
  * @author Nathan Tsai
@@ -37,9 +37,10 @@ public class ToDoItem extends Node {
   public ToDoItem(String id) {
     super(id);
   }
-  
+
   /**
    * Implement getBaseTable()
+   *
    * @return the database table to store the entity
    */
   @Override

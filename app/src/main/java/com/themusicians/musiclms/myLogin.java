@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
@@ -34,7 +33,7 @@ public class myLogin extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_signin);
+    setContentView(R.layout.user_signin);
 
     myEmail = findViewById(R.id.myEmail);
     myPassword = findViewById(R.id.myPassword);

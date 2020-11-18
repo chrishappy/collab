@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +18,6 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
  * @contributor Nathan Tsai
  * @author Jerome Lau
  * @since Nov 4, 2020
- *
  * @todo Act as placeholder for main activity page
  */
 public class Placeholder extends AppCompatActivity {
@@ -34,10 +32,9 @@ public class Placeholder extends AppCompatActivity {
     Intent redirectToAssignment = new Intent(this, AssignmentOverviewActivity.class);
     startActivity(redirectToAssignment);
 
-    Toast.makeText(Placeholder.this, "Using Placeholder class", Toast.LENGTH_SHORT)
-        .show();
+    Toast.makeText(Placeholder.this, "Using Placeholder class", Toast.LENGTH_SHORT).show();
 
-//    setContentView(R.layout.activity_placeholder);
+    //    setContentView(R.layout.activity_placeholder);
   }
 
   @Override
@@ -57,7 +54,7 @@ public class Placeholder extends AppCompatActivity {
         startActivity(logout);
         return true;
       case R.id.userprofile:
-        Intent toUserProfile = new Intent(Placeholder.this, userProfile.class);
+        Intent toUserProfile = new Intent(Placeholder.this, UserProfile.class);
         startActivity(toUserProfile);
         return true;
       case R.id.createassignment:

@@ -1,7 +1,6 @@
 package com.themusicians.musiclms.entity.Attachment;
 
 import android.util.Log;
-
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -11,7 +10,6 @@ import java.util.List;
 
 /**
  * @file Attachment.java
- *
  * @author Nathan Tsai
  * @since Nov 2, 2020
  */
@@ -37,7 +35,7 @@ public abstract class Attachment extends Entity {
 
   /** @return Boolean */
   protected boolean writeEntity() {
-    entityDatabase = FirebaseDatabase.getInstance().getReference( getBaseTable() );
+    entityDatabase = FirebaseDatabase.getInstance().getReference(getBaseTable());
 
     // Set default created time
     if (isNew && getCreated() == null) {
@@ -53,14 +51,14 @@ public abstract class Attachment extends Entity {
     if (getId() == null) {
       Log.println(Log.INFO, getBaseTable(), "Create new entity");
 
-      setId( entityDatabase.push().getKey() );
+      setId(entityDatabase.push().getKey());
     } else {
       Log.println(Log.INFO, getBaseTable(), "Update Entity: " + getId());
     }
 
     final boolean[] result = {false};
     entityDatabase
-        .child( getId() )
+        .child(getId())
         .setValue(
             this,
             new DatabaseReference.CompletionListener() {
@@ -87,6 +85,7 @@ public abstract class Attachment extends Entity {
 
   /**
    * Implement get entity type
+   *
    * @return
    */
   @Override

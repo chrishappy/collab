@@ -1,7 +1,6 @@
 package com.themusicians.musiclms.entity.Node;
 
 import android.util.Log;
-
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
@@ -12,7 +11,6 @@ import java.util.Map;
 
 /**
  * @file Node.java
- *
  * @author Nathan Tsai
  * @since 2020-11-02
  */
@@ -44,7 +42,7 @@ public abstract class Node extends Entity {
   }
 
   /** Constructor for an existing Node */
-  public Node( String id ) {
+  public Node(String id) {
     super(id);
   }
 
@@ -59,6 +57,7 @@ public abstract class Node extends Entity {
 
   /**
    * Implement get entity type
+   *
    * @return
    */
   @Override
@@ -97,14 +96,14 @@ public abstract class Node extends Entity {
     if (getId() == null) {
       Log.println(Log.INFO, getEntityType() + "__" + getType(), "Create new entity");
 
-      setId( entityDatabase.push().getKey() );
+      setId(entityDatabase.push().getKey());
     } else {
       Log.println(Log.INFO, getEntityType() + "__" + getType(), "Update Entity: " + getId());
     }
 
     final boolean[] result = {false};
     entityDatabase
-        .child( getId() )
+        .child(getId())
         .setValue(
             this,
             new DatabaseReference.CompletionListener() {
@@ -113,7 +112,8 @@ public abstract class Node extends Entity {
                   DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {
                   result[0] = false;
-                  System.out.println("Entity data could not be saved " + databaseError.getMessage());
+                  System.out.println(
+                      "Entity data could not be saved " + databaseError.getMessage());
                 } else {
                   result[0] = true;
                   System.out.println("Entity data saved successfully.");

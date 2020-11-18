@@ -11,20 +11,17 @@ public class File extends Attachment {
 
   protected final String type = "file";
 
-  /**
-   * Where the file is stored
-   */
+  /** Where the file is stored */
   protected String fileId;
 
-  /**
-   * Default constructor
-   */
+  /** Default constructor */
   public File() {
     super();
   }
 
   /**
    * Implement getBaseTable()
+   *
    * @return the database table to save files to
    */
   @Override
@@ -34,6 +31,7 @@ public class File extends Attachment {
 
   /**
    * Implement getType()
+   *
    * @return the type of attachment
    */
   @Override
@@ -43,6 +41,7 @@ public class File extends Attachment {
 
   /**
    * Save the file to database + save the file to FireStore
+   *
    * @return Whether the entity was saved or not
    */
   @Override
@@ -53,9 +52,7 @@ public class File extends Attachment {
     return true;
   }
 
-  /**
-   * The setters and getters for where the file is stored
-   */
+  /** The setters and getters for where the file is stored */
   public String getFileId() {
     return fileId;
   }

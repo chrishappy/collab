@@ -1,27 +1,17 @@
 package com.themusicians.musiclms.attachmentDialogs;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
-import com.themusicians.musiclms.R;
-
-/**
- * A simple {@link DialogFragment} subclass
- */
+/** A simple {@link DialogFragment} subclass */
 public abstract class AddAttachmentDialogFragment extends DialogFragment {
 
-  /**
-   * To be implemented in activities related
-   */
+  /** To be implemented in activities related */
   public interface AddAttachmentDialogListener {
     void onDialogPositiveClick(DialogFragment dialog);
+
     void onDialogNegativeClick(DialogFragment dialog);
   }
   // Use this instance of the interface to deliver action events
@@ -46,11 +36,9 @@ public abstract class AddAttachmentDialogFragment extends DialogFragment {
   }
 
   @Override
-  abstract public Dialog onCreateDialog(Bundle savedInstanceState);
+  public abstract Dialog onCreateDialog(Bundle savedInstanceState);
 
-  /**
-   * Override the Fragment.onAttach() method to instantiate the AddAttachmentDialogListener
-   */
+  /** Override the Fragment.onAttach() method to instantiate the AddAttachmentDialogListener */
   @Override
   public void onAttach(Context context) throws ClassCastException {
     super.onAttach(context);
@@ -58,13 +46,10 @@ public abstract class AddAttachmentDialogFragment extends DialogFragment {
     try {
       // Instantiate the NoticeDialogListener so we can send events to the host
       listener = (AddAttachmentDialogListener) context;
-    } catch (ClassCastException e){
+    } catch (ClassCastException e) {
       // The activity doesn't implement the interface, throw exception
       // @todo Replace with actual activity name
-      throw new ClassCastException("activity.toString()"
-          + " must implement NoticeDialogListener");
+      throw new ClassCastException("activity.toString()" + " must implement NoticeDialogListener");
     }
   }
-
-
 }
