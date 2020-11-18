@@ -43,7 +43,6 @@ public class UserProfile extends AppCompatActivity {
   protected FirebaseUser currentUser;
   protected FirebaseAuth fAuth;
   protected Button add;
-  protected EditText edit;
   protected List<String> Instruments;
   protected User currUser;
 
@@ -54,10 +53,12 @@ public class UserProfile extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_profile_main);
 
+    final EditText newInstrument;
+
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
     // list view for user_profile_main page
-    edit = findViewById(R.id.enterInstruments);
+    newInstrument = findViewById(R.id.enterInstruments);
     add = findViewById(R.id.addButton);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     Instruments = new ArrayList<String>();
@@ -89,17 +90,29 @@ public class UserProfile extends AppCompatActivity {
           public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-    add.setOnClickListener(
-        (v) -> {
-          String instrumentName = edit.getText().toString().trim();
-          if (instrumentName.isEmpty()) {
-            Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
-          } else {
-            Instruments.add(instrumentName);
-            currUser.setInstruments(Instruments);
-            currUser.save();
-          }
-        });
+    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        currUser = snapshot.getValue(User.class);
+        add.setOnClickListener(
+          (v) -> {
+            String instrumentName = newInstrument.getText().toString().trim();
+            if (instrumentName.isEmpty()) {
+              Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
+            } else {
+              Instruments.add(instrumentName);
+              currUser.setInstruments(Instruments);
+              currUser.save();
+            }
+          });
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
   }
 
   public void toEditData(View view) {
