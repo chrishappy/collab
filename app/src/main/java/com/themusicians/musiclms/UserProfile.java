@@ -22,7 +22,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.entity.Node.User;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ....
@@ -39,9 +42,10 @@ public class UserProfile extends AppCompatActivity {
   protected TextView myEmail;
   protected FirebaseUser currentUser;
   protected FirebaseAuth fAuth;
-  protected ListView listView;
   protected Button add;
   protected EditText edit;
+  protected List<String> Instruments;
+  protected User currUser;
 
   protected TextView newName, newEmail;
 
@@ -53,10 +57,13 @@ public class UserProfile extends AppCompatActivity {
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
     // list view for user_profile_main page
-    listView = findViewById(R.id.instrument_list);
     edit = findViewById(R.id.enterInstruments);
     add = findViewById(R.id.addButton);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    Instruments = new ArrayList<String>();
+
+    currUser = new User(currentUser.getUid());
+    currUser.setStatus(true);
 
     DatabaseReference reference =
         FirebaseDatabase.getInstance()
@@ -84,41 +91,14 @@ public class UserProfile extends AppCompatActivity {
 
     add.setOnClickListener(
         (v) -> {
-          String instrumentName = edit.getText().toString();
+          String instrumentName = edit.getText().toString().trim();
           if (instrumentName.isEmpty()) {
             Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
           } else {
-            FirebaseDatabase.getInstance()
-                .getReference()
-                .child("node__user")
-                .child("user_instruments")
-                .setValue(instrumentName);
+            Instruments.add(instrumentName);
+            currUser.setInstruments(Instruments);
+            currUser.save();
           }
-        });
-
-    final ArrayList<String> list = new ArrayList<>();
-    final ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.user_profile_main, list);
-    listView.setAdapter(adapter);
-
-    DatabaseReference instrumentReference =
-        FirebaseDatabase.getInstance()
-            .getReference()
-            .child("node__user")
-            .child(currentUser.getUid())
-            .child("user_instruments");
-    reference.addValueEventListener(
-        new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot inSnapshot) {
-            list.clear();
-            for (DataSnapshot instrumentSnapshot : inSnapshot.getChildren()) {
-              list.add(instrumentSnapshot.getValue().toString());
-            }
-            adapter.notifyDataSetChanged();
-          }
-
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {}
         });
   }
 
