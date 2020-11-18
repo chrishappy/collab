@@ -35,7 +35,9 @@ public class Chat extends AppCompatActivity {
     private FirebaseListAdapter<ChatMessage> adapter;
 
 
-    /** The Firebase Auth Instance */
+    /**
+     * The Firebase Auth Instance
+     */
     private FirebaseUser currentUser;
 
     @Override
