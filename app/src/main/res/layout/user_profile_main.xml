@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/chatButton"
-        android:layout_width="87dp"
-        android:layout_height="44dp"
+        android:layout_width="90dp"
+        android:layout_height="47dp"
         android:layout_marginTop="620dp"
         android:onClick="goChat"
         android:text="Chat"
@@ -69,8 +69,12 @@
         android:layout_height="wrap_content"
         android:onClick="toEditData"
         android:text="Edit Data"
-        tools:layout_editor_absoluteX="318dp"
-        tools:layout_editor_absoluteY="671dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.98" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -83,8 +87,8 @@
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
-        android:layout_width="234dp"
-        android:layout_height="36dp"
+        android:layout_width="237dp"
+        android:layout_height="46dp"
         android:hint="Enter instruments here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +107,7 @@
         app:layout_constraintHorizontal_bias="0.811"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintVertical_bias="0.091" />
 
     <TextView
         android:id="@+id/user_name"
