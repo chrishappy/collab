@@ -4,8 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -42,6 +44,7 @@ public class UserProfile extends AppCompatActivity {
   protected Button add;
   protected List<String> Instruments;
   protected User currUser;
+  private ListView InstrumentList;
 
   protected TextView newName, newEmail;
 
@@ -54,11 +57,11 @@ public class UserProfile extends AppCompatActivity {
 
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
-    // list view for user_profile_main page
     newInstrument = findViewById(R.id.enterInstruments);
     add = findViewById(R.id.addButton);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     Instruments = new ArrayList<String>();
+    InstrumentList = findViewById(R.id.instrumentList);
 
     currUser = new User(currentUser.getUid());
     currUser.setStatus(true);
@@ -109,7 +112,6 @@ public class UserProfile extends AppCompatActivity {
 
       }
     });
-
   }
 
   public void toEditData(View view) {
