@@ -86,7 +86,7 @@ public class UserProfile extends AppCompatActivity {
     add.setOnClickListener((v) ->{
         String instrumentName = edit.getText().toString();
         if(instrumentName.isEmpty()){
-            Toast.makeText(userProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
         }
         else{
             FirebaseDatabase.getInstance().getReference().child("node__user").child("user_instruments").setValue(instrumentName);
