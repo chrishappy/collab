@@ -165,7 +165,7 @@ public class UserProfile extends AppCompatActivity {
                       @Override
                       public void onSuccess(Void aVoid) {
                         Toast.makeText(
-                                UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
+                            UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
                             .show();
                       }
                     })
@@ -174,9 +174,9 @@ public class UserProfile extends AppCompatActivity {
                       @Override
                       public void onFailure(@NonNull Exception e) {
                         Toast.makeText(
-                                UserProfile.this,
-                                "Error! Reset link not sent" + e.getMessage(),
-                                Toast.LENGTH_SHORT)
+                            UserProfile.this,
+                            "Error! Reset link not sent" + e.getMessage(),
+                            Toast.LENGTH_SHORT)
                             .show();
                       }
                     });
