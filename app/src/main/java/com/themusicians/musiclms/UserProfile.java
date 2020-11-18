@@ -87,29 +87,32 @@ public class UserProfile extends AppCompatActivity {
           public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        currUser = snapshot.getValue(User.class);
-        add.setOnClickListener(
-          (v) -> {
-            String instrumentName = newInstrument.getText().toString().trim();
-            if (instrumentName.isEmpty()) {
-              Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
-            } else {
-              Instruments.add(instrumentName);
-              currUser.setInstruments(Instruments);
-              currUser.save();
-            }
-          });
-      }
+    currUser
+        .getEntityDatabase()
+        .child(currentUser.getUid())
+        .addListenerForSingleValueEvent(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currUser = snapshot.getValue(User.class);
+                add.setOnClickListener(
+                    (v) -> {
+                      String instrumentName = newInstrument.getText().toString().trim();
+                      if (instrumentName.isEmpty()) {
+                        Toast.makeText(
+                                UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT)
+                            .show();
+                      } else {
+                        Instruments.add(instrumentName);
+                        currUser.setInstruments(Instruments);
+                        currUser.save();
+                      }
+                    });
+              }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
-
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {}
+            });
   }
 
   public void toEditData(View view) {
