@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.themusicians.musiclms.Placeholder;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.myLogin;
@@ -44,9 +42,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
-  AssignmentOverviewAdapter adapter; // Create Object of the Adapter class
-  DatabaseReference mbase; // Create object of the
-  // Firebase Realtime Database
+  AssignmentOverviewAdapter assignmentOverviewAdapter; // Create Object of the Adapter class
+  DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   /**
    * To Group elements, see this tutorial: https://stackoverflow.com/questions/34848401/divide-elements-on-groups-in-recyclerview
@@ -61,7 +58,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
     // its reference
     Assignment tempAssignment = new Assignment();
     mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
-    recyclerView = findViewById(R.id.recycler1);
+    recyclerView = findViewById(R.id.assignmentOverviewRecycler);
 
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager( AssignmentOverviewActivity.this, 1));
@@ -82,6 +79,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
             Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show();
+
+            int position = viewHolder.getAdapterPosition();
+            assignmentOverviewAdapter.deleteAssignment(position);
             break;
 
           case ItemTouchHelper.RIGHT:
@@ -92,7 +92,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
         }
 
         // Remove item from backing list here
-        adapter.notifyDataSetChanged();
+        assignmentOverviewAdapter.notifyDataSetChanged();
       }
     });
     itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -102,9 +102,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
         new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(mbase, Assignment.class).build();
 
     // Create new Adapter
-    adapter = new AssignmentOverviewAdapter(options);
-    adapter.addItemClickListener(this);
-    recyclerView.setAdapter(adapter);
+    assignmentOverviewAdapter = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapter.addItemClickListener(this);
+    recyclerView.setAdapter(assignmentOverviewAdapter);
 
 
     /** Set the action button to add a new assignment */
@@ -129,7 +129,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
   @Override
   protected void onStart() {
     super.onStart();
-    adapter.startListening();
+    assignmentOverviewAdapter.startListening();
   }
 
   // Function to tell the app to stop getting
@@ -137,7 +137,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
   @Override
   protected void onStop() {
     super.onStop();
-    adapter.stopListening();
+    assignmentOverviewAdapter.stopListening();
   }
 
   @Override

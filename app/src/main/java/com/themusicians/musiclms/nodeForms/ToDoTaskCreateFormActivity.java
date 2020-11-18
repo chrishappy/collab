@@ -3,6 +3,7 @@ package com.themusicians.musiclms.nodeForms;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,14 +15,18 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
+import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
-public class ToDoTaskCreateFormActivity extends AppCompatActivity
+public class ToDoTaskCreateFormActivity extends CreateFormActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
   /** The Firebase Auth Instance */
@@ -29,13 +34,43 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
 
   /** The request code for retrieving to do items  */
   static final int REQUEST_TODO_ENTITY = 1;
+
+  /** The request code for retrieving to do items  */
   static final String RETURN_INTENT_TODO_ID = "TODO_ID_KEY";
+
+  /** The To Do Item object */
+  ToDoItem toDoItem;
 
   @Override
   public void onStart() {
     super.onStart();
     // Check if user is signed in (non-null) and update UI accordingly.
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    if (inEditMode) {
+      // If we are editing an to do item
+      final EditText ToDoItemName       = findViewById(R.id.to_do_item_name);
+      final CheckBox RequireRecording   = findViewById(R.id.require_recording);
+
+      toDoItem.getEntityDatabase().child( editEntityId )
+          .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              toDoItem = dataSnapshot.getValue(ToDoItem.class);
+              ToDoItemName.setText( toDoItem.getName() );
+              RequireRecording.setChecked( toDoItem.getRequireRecording() ) ;
+
+              Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+              // Getting Post failed, log a message
+              Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onCancelled", databaseError.toException());
+              // ...
+            }
+          });
+    }
   }
 
   /** @param savedInstanceState */
@@ -46,7 +81,7 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
     setContentView(R.layout.activity_to_do_item_create_form);
 
     // Get fields
-    final EditText ToDoItemName   = findViewById(R.id.to_do_item_name);
+    final EditText ToDoItemName       = findViewById(R.id.to_do_item_name);
     final CheckBox RequireRecording   = findViewById(R.id.require_recording);
 
     // Cancel the Assignment
@@ -73,9 +108,10 @@ public class ToDoTaskCreateFormActivity extends AppCompatActivity
           public void onClick(View view) {
             // Due Date timestamp
             ToDoItem toDoItem = new ToDoItem();
+            toDoItem.setName( ToDoItemName.getText().toString() );
             toDoItem.setStatus( true );
             toDoItem.setUid( currentUser.getUid() );
-            toDoItem.setRequireRecording( RequireRecording.isChecked() ? 1 : 0 );
+            toDoItem.setRequireRecording( RequireRecording.isChecked() );
             toDoItem.save();
 
             // Return To Do Item

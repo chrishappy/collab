@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -63,36 +64,19 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
 
-public class AssignmentCreateFormActivity extends AppCompatActivity
+public class AssignmentCreateFormActivity extends CreateFormActivity
                                           implements AddAttachmentDialogFragment.AddAttachmentDialogListener, ToDoAssignmentFormAdapter.ItemClickListener {
 
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
 
-  /** The request code for retrieving to do items  */
-  public static final int REQUEST_TODO_ENTITY = 1;
-
-  /** The request code for retrieving to do items  */
-  public static final String ACCEPT_ENTITY_ID = "ENTITY_ID_FOR_EDIT";
-
-  /**
-   * Used to restore entity id after instance is saved
-   * See: https://stackoverflow.com/q/26359130
-   */
-  static final String SAVED_ENTITY_ID = "SAVED_ENTITY_ID";
-
-  /** The entity id to edit */
-  protected String editEntityId;
-
-  /** Log tag for editing */
-  public static final String LOAD_ASSIGNMENT_TAG = "Load Assignment To Edit";
-
-  protected boolean inEditMode = false;
-
+  /** The entity to be saved */
   protected Assignment assignment;
 
+  /** Code for file */
   Button selectFile,upload;
   TextView notification;
   Uri pdfUri;
@@ -125,17 +109,27 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
               AssignmentName.setText( assignment.getName() );
               StudentOrClass.setText( assignment.getClassId() );
 
-              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onDataChange");
+              Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
               // Getting Post failed, log a message
-              Log.w(LOAD_ASSIGNMENT_TAG, "loadAssignment:onCancelled", databaseError.toException());
+              Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onCancelled", databaseError.toException());
               // ...
             }
           });
     }
+
+    toDoItemsAdapter.startListening();
+  }
+
+  // Function to tell the app to stop getting
+  // data from database on stoping of the activity
+  @Override
+  protected void onStop() {
+    super.onStop();
+    toDoItemsAdapter.stopListening();
   }
 
   /** @param savedInstanceState */
@@ -143,15 +137,8 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Get id to edit
-    Intent intent = getIntent();
-    editEntityId = intent.getStringExtra(ACCEPT_ENTITY_ID);
-
+    // Initiate the entity
     assignment = new Assignment();
-
-    if (editEntityId != null) {
-      inEditMode = true;
-    }
 
     setContentView(R.layout.activity_assignment_create_form);
 
@@ -184,49 +171,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
     });
 
     // Load the to do tasks
-    toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
-    toDoItemsRecyclerView.setLayoutManager(new GridLayoutManager( AssignmentCreateFormActivity.this, 1));
-
-    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-      @Override
-      public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        return false;
-      }
-
-      @Override
-      public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-//        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder swipedAssignment = (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
-
-        switch(swipeDir) {
-          case ItemTouchHelper.LEFT:
-            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
-            break;
-
-          case ItemTouchHelper.RIGHT:
-            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
-            break;
-        }
-
-        // Remove item from backing list here
-        toDoItemsAdapter.notifyDataSetChanged();
-      }
-    });
-    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
-
-    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
-    ToDoItem tempToDoItem = new ToDoItem();
-    FirebaseRecyclerOptions<ToDoItem> options =
-        new FirebaseRecyclerOptions.Builder<ToDoItem>().setQuery(tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
-
-    // Create new Adapter
-    toDoItemsAdapter = new ToDoAssignmentFormAdapter(options);
-    toDoItemsAdapter.addItemClickListener(this);
-    toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
+    initToDoItemsList();
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
@@ -265,9 +210,9 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
                 .setAction("Action", null)
                 .show();
 
-            List<String> dummyList = new LinkedList<>();
-            dummyList.add("This is an element");
-            dummyList.add("This is another element");
+//            List<String> dummyList = new LinkedList<>();
+//            dummyList.add("This is an element");
+//            dummyList.add("This is another element");
 
             // Due Date timestamp
             long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds( cldr.getTimeInMillis() );
@@ -280,7 +225,10 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
 //            assignment.setAttachmentIds( null );
             assignment.save();
 
-           //Display notification
+            Intent toAssignmentOverview = new Intent(AssignmentCreateFormActivity.this, AssignmentOverviewActivity.class);
+            startActivity(toAssignmentOverview);
+
+            //Display notification
             String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
             Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
@@ -308,10 +256,6 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
             newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
           }
         });
-
-
-
-
 
     storage=FirebaseStorage.getInstance();
     database=FirebaseDatabase.getInstance();
@@ -344,6 +288,55 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
         }
     });
 
+  }
+
+  /**
+   * Create the to do items list
+   */
+  private void initToDoItemsList() {
+    toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
+    toDoItemsRecyclerView.setLayoutManager(new GridLayoutManager( AssignmentCreateFormActivity.this, 1));
+    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+      @Override
+      public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        return false;
+      }
+
+      @Override
+      public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+
+//        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder swipedAssignment = (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
+
+        switch(swipeDir) {
+          case ItemTouchHelper.LEFT:
+            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+            break;
+
+          case ItemTouchHelper.RIGHT:
+            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show();
+            break;
+        }
+
+        // Remove item from backing list here
+        toDoItemsAdapter.notifyDataSetChanged();
+      }
+    });
+    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+
+    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
+    ToDoItem tempToDoItem = new ToDoItem();
+    FirebaseRecyclerOptions<ToDoItem> toDoOptionsQuery =
+        new FirebaseRecyclerOptions.Builder<ToDoItem>()
+            .setIndexedQuery(assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
+
+    // Create new Adapter
+    toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
+    toDoItemsAdapter.addItemClickListener(this);
+    toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
   }
 
   private void uploadFile(Uri pdfUri){
@@ -440,6 +433,11 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
 
   // ---- End section to be generalized-----
 
+  /**
+   * When creating a new task, we want to save the assignment to
+   * ensure the data (name, due date, etc) are saved with the to do items
+   * @param savedInstanceState
+   */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
     assignment.save();
@@ -470,7 +468,7 @@ public class AssignmentCreateFormActivity extends AppCompatActivity
         if(resultCode == Activity.RESULT_OK){
           String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
-          if (assignment.getToDoIds().indexOf(toDoId) > 0) {
+          if (assignment.getToDoIds().get(toDoId) != null) {
             assignment.addToDoId(toDoId);
             assignment.save();
 

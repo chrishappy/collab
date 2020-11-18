@@ -17,6 +17,7 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * The adapter for the Assignment Form pages
@@ -50,9 +51,12 @@ public class AssignmentOverviewAdapter
       holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
     }
 
-    Date date = new Date(assignment.getDueDate());
-    DateFormat dateFormat = new SimpleDateFormat( String.valueOf(R.string.date_format__month_day) );
-    holder.dueDate.setText(dateFormat.format(date));
+    if (assignment.getDueDate() != 0) {
+      Date date = new Date(assignment.getDueDate());
+//      DateFormat dateFormat = new SimpleDateFormat( getText(R.string.date_format__month_day), Locale.CANADA);
+      DateFormat dateFormat = new SimpleDateFormat( "MMM d", Locale.CANADA);
+      holder.dueDate.setText(dateFormat.format(date));
+    }
 
     holder.editAssignment.setOnClickListener(
         new View.OnClickListener() {
@@ -75,6 +79,14 @@ public class AssignmentOverviewAdapter
         LayoutInflater.from(parent.getContext())
             .inflate(R.layout.viewholder_assignment_overview, parent, false);
     return new AssignmentOverviewAdapter.AssignmentsViewholder(view);
+  }
+
+  /**
+   * Archive the assignment on swipe
+   * @param position
+   */
+  public void deleteAssignment(int position) {
+
   }
 
   // Sub Class to create references of the views in Crad

@@ -41,17 +41,22 @@ public class ToDoAssignmentFormAdapter
   protected void onBindViewHolder(
       @NonNull ToDoAssignmentFormViewholder holder, int position, @NonNull ToDoItem toDoItem) {
 
+    // Set the to do item name
     holder.toDoName.setText(toDoItem.getName());
 
-    holder.toDoWrapper.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick( "editToDoAssignmentForm", toDoItem.getId() );
-            }
-          }
-        });
+    // Set the on click listener
+    View.OnClickListener editToDoItemListener = new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if (itemClickListener != null) {
+          itemClickListener.onEditButtonClick( "editToDoAssignmentForm", toDoItem.getId() );
+        }
+      }
+    };
+    holder.toDoName.setOnClickListener(editToDoItemListener);
+    holder.editButton.setOnClickListener(editToDoItemListener);
+
+
   }
 
   // Function to tell the class about the Card view (here
@@ -70,12 +75,14 @@ public class ToDoAssignmentFormAdapter
   // view (here "person.xml")
   class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
     TextView toDoName;
+    Button editButton;
     ConstraintLayout toDoWrapper;
 
     public ToDoAssignmentFormViewholder(@NonNull View itemView) {
       super(itemView);
 
       toDoName = itemView.findViewById(R.id.toDoName);
+      editButton = itemView.findViewById(R.id.edit_button);
       toDoWrapper = itemView.findViewById(R.id.toDoAssignmentFormWrapper);
     }
   }

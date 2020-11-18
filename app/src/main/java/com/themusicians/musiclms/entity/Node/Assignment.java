@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,10 @@ public class Assignment extends Node {
 
   protected long dueDate;
 
-  protected List<String> toDoIds;
+  protected Map<String, Boolean> toDoIds;
+
+  // This must make the field name of toDoIds
+  static final String toDoIdsName = "toDoIds";
 
   protected Map<Map, Attachment> attachments;
 
@@ -120,8 +124,15 @@ public class Assignment extends Node {
     return getEntityType() + "__" + getType();
   }
 
-  /** Settings and Getters */
+  /**
+   * Get To Do Items location
+   */
+  @Exclude
+  public DatabaseReference getToDoItemsKeyQuery() {
+    return getEntityDatabase().child(toDoIdsName);
+  }
 
+  /** Settings and Getters */
   public List<String> getAssignees() {
     return assignees;
   }
@@ -146,21 +157,21 @@ public class Assignment extends Node {
     this.dueDate = dueDate;
   }
 
-  public List<String> getToDoIds() {
+  public Map<String, Boolean> getToDoIds() {
     if (toDoIds == null) {
-      toDoIds = new LinkedList<String>();
+      toDoIds = new HashMap<>();
     }
     return toDoIds;
   }
 
   public void addToDoId(String toDoId) {
     if (toDoIds == null) {
-      toDoIds = new LinkedList<String>();
+      toDoIds = new HashMap<>();
     }
-    toDoIds.add(toDoId);
+    toDoIds.put(toDoId, true);
   }
 
-  public void setToDoIds(List<String> toDoIds) {
+  public void setToDoIds(Map<String, Boolean> toDoIds) {
     this.toDoIds = toDoIds;
   }
   /**/
