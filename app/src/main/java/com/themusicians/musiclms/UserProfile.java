@@ -216,7 +216,7 @@ public class UserProfile extends AppCompatActivity {
 
   /** Shifan's code */
   public void goChat(View view) {
-    Intent Chatpage = new Intent(this, Chat.class);
+    Intent Chatpage = new Intent(this, Users.class);
     startActivity(Chatpage);
   }
 }
