@@ -13,8 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +48,13 @@ public class UserProfile extends AppCompatActivity {
   protected Button add;
   protected List<String> Instruments;
   protected User currUser;
-  private ListView InstrumentList;
+  protected ListView InstrumentList;
+  // for add_students_teachers page the tabs
+  protected TabLayout tabLayout = findViewById(R.id.accountTeachersTab);
+  protected TabItem tabAccounts = findViewById(R.id.accTab);
+  protected TabItem tabTeachers = findViewById(R.id.teachersTab);
+  protected ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
+
 
   protected TextView newName, newEmail;
 
