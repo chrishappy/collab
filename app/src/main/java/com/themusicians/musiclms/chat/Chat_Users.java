@@ -26,8 +26,11 @@ import java.util.Iterator;
 
 /**
  * Chat_Users.java
+ *
  *<p> Select specific user to send message to
+ *
  * @todo Users' names
+ *
  * @author Shifan He Created by Shifan He on 2020-11-18
  */
 

@@ -20,8 +20,11 @@ import java.util.Map;
 
 /**
  * Chat.java
+ *
  *<p> Chat page
+ *
  * @todo Users' names
+ *
  * @author Shifan He Created by Shifan He on 2020-11-12
  */
 
