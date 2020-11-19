@@ -44,7 +44,7 @@ public class Users extends AppCompatActivity {
         pd.setMessage("Loading...");
         pd.show();
 
-        String url = "https://android-chat-app-e711d.firebaseio.com/users.json";
+        String url = "https://musiclms---cmpt276.firebaseio.com/node_user.json";
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
