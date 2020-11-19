@@ -1,4 +1,4 @@
-package com.themusicians.musiclms;
+package com.themusicians.musiclms.Chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.themusicians.musiclms.R;
+
 import java.util.HashMap;
 import java.util.Map;
 

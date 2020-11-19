@@ -1,4 +1,4 @@
-package com.themusicians.musiclms;
+package com.themusicians.musiclms.Chat;
 
 /**
  * Chat_UserDetails.java
