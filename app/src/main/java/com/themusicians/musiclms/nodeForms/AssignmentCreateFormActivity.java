@@ -42,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.themusicians.musiclms.Chat;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
@@ -550,4 +551,9 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
         break;
     }
   }
+    /** Shifan's code */
+    public void goChat(View view) {
+        Intent Chatpage = new Intent(this, Chat.class);
+        startActivity(Chatpage);
+    }
 }
