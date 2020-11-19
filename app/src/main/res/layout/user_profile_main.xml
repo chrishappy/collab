@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".UserProfile">
 
-    <Button
-        android:id="@+id/chatButton"
-        android:layout_width="90dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="620dp"
-        android:onClick="goChat"
-        android:text="Chat"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.981"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -75,6 +61,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.98" />
+
+    <Button
+        android:id="@+id/chatButton"
+        android:layout_width="90dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="620dp"
+        android:onClick="goChat"
+        android:text="@string/user_profile_chat"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.032" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
