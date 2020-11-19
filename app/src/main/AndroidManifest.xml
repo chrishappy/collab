@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Users"></activity>
+        <activity android:name=".Chat_Users"></activity>
         <activity android:name=".Chat" /> <!-- User Activities -->
         <activity android:name=".SignUp" />
         <activity android:name=".UserProfile" />

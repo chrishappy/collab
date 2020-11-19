@@ -23,7 +23,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Users extends AppCompatActivity {
+/**
+ * Chat_Users.java
+ *<p> Select specific user to send message to
+ * @todo Users' names
+ * @author Shifan He Created by Shifan He on 2020-11-18
+ */
+
+public class Chat_Users extends AppCompatActivity {
     ListView usersList;
     TextView noUsersText;
     ArrayList<String> al = new ArrayList<>();
@@ -38,7 +45,7 @@ public class Users extends AppCompatActivity {
         usersList = (ListView)findViewById(R.id.usersList);
         noUsersText = (TextView)findViewById(R.id.noUsersText);
 
-        pd = new ProgressDialog(Users.this);
+        pd = new ProgressDialog(Chat_Users.this);
         pd.setMessage("Loading...");
         pd.show();
 
@@ -56,14 +63,14 @@ public class Users extends AppCompatActivity {
             }
         });
 
-        RequestQueue rQueue = Volley.newRequestQueue(Users.this);
+        RequestQueue rQueue = Volley.newRequestQueue(Chat_Users.this);
         rQueue.add(request);
 
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserDetails.chatWith = al.get(position);
-                startActivity(new Intent(Users.this, Chat.class));
+                Chat_UserDetails.chatWith = al.get(position);
+                startActivity(new Intent(Chat_Users.this, Chat.class));
             }
         });
     }
@@ -78,7 +85,7 @@ public class Users extends AppCompatActivity {
             while(i.hasNext()){
                 key = i.next().toString();
 
-                if(!key.equals(UserDetails.username)) {
+                if(!key.equals(Chat_UserDetails.username)) {
                     al.add(key);
                 }
 

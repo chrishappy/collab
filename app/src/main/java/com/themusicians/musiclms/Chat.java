@@ -1,13 +1,5 @@
 package com.themusicians.musiclms;
 
-
-/**
- *
- * <p>Contributors: Shifan He Created by Shifan He on 2020-11-12
- *
- *
- */
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +15,13 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * Chat.java
+ *<p> Chat page
+ * @todo Users' names
+ * @author Shifan He Created by Shifan He on 2020-11-12
+ */
 
 public class Chat extends AppCompatActivity {
     LinearLayout layout;
@@ -42,8 +41,8 @@ public class Chat extends AppCompatActivity {
         scrollView = (ScrollView)findViewById(R.id.scrollView);
 
         Firebase.setAndroidContext(this);
-        reference1 = new Firebase("https://musiclms---cmpt276.firebaseio.com/chats/" + UserDetails.username + "_" + UserDetails.chatWith);
-        reference2 = new Firebase("https://musiclms---cmpt276.firebaseio.com/chats/" + UserDetails.chatWith + "_" + UserDetails.username);
+        reference1 = new Firebase("https://musiclms---cmpt276.firebaseio.com/chats/" + Chat_UserDetails.username + "_" + Chat_UserDetails.chatWith);
+        reference2 = new Firebase("https://musiclms---cmpt276.firebaseio.com/chats/" + Chat_UserDetails.chatWith + "_" + Chat_UserDetails.username);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +52,7 @@ public class Chat extends AppCompatActivity {
                 if(!messageText.equals("")){
                     Map<String, String> map = new HashMap<String, String>();
                     map.put("message", messageText);
-                    map.put("user", UserDetails.username);
+                    map.put("user", Chat_UserDetails.username);
                     reference1.push().setValue(map);
                     reference2.push().setValue(map);
                 }
@@ -67,11 +66,11 @@ public class Chat extends AppCompatActivity {
                 String message = map.get("message").toString();
                 String userName = map.get("user").toString();
 
-                if(userName.equals(UserDetails.username)){
+                if(userName.equals(Chat_UserDetails.username)){
                     addMessageBox("You:-\n" + message, 1);
                 }
                 else{
-                    addMessageBox(UserDetails.chatWith + ":-\n" + message, 2);
+                    addMessageBox(Chat_UserDetails.chatWith + ":-\n" + message, 2);
                 }
             }
 
