@@ -1,4 +1,4 @@
-package com.themusicians.musiclms.Chat;
+package com.themusicians.musiclms.chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
