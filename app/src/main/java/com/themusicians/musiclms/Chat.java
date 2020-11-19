@@ -94,7 +94,6 @@ public class Chat extends AppCompatActivity {
             }
         });
     }
-
     private void displayChatMessages() {
         ListView listOfMessages = (ListView) findViewById(R.id.list_of_messages);
         Query query = FirebaseDatabase.getInstance().getReference().child("chats");
@@ -103,7 +102,7 @@ public class Chat extends AppCompatActivity {
                 .build();
         adapter = new FirebaseListAdapter<ChatMessage>(options) {
             @Override
-            protected void populateView(View v, ChatMessage model, int position) {
+            protected void populateView(@NotNull View v, @NotNull ChatMessage model, int position) {
                 // Get references to the views of message.xml
                 TextView messageText = (TextView) v.findViewById(R.id.message_text);
                 TextView messageUser = (TextView) v.findViewById(R.id.message_user);
