@@ -112,18 +112,7 @@ public class User extends Node {
   public List<String> getInstruments() { return instruments; }
 
   public void setInstruments(List<String> instruments) {
-    setInstrument(instruments.get(0));
     this.instruments = instruments;
-  }
-
-  private String instrument;
-
-  public String getInstrument() {
-    return instrument;
-  }
-
-  public void setInstrument(String instrument) {
-    this.instrument = instrument;
   }
 
   /** */

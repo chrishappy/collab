@@ -60,19 +60,16 @@ public class UserProfile extends AppCompatActivity {
 
   protected Button add;
   protected List<String> Instruments;
-
-  private RecyclerView recyclerView;
-  instrumentAdapter adapter;
-  DatabaseReference mbase;
+  ArrayList<String> myArrayList = new ArrayList<>();
 
   protected User currUser;
   protected ListView InstrumentList;
-  // for add_students_teachers page the tabs
+/*
   protected TabLayout tabLayout = findViewById(R.id.accountTeachersTab);
   protected TabItem tabAccounts = findViewById(R.id.accTab);
   protected TabItem tabTeachers = findViewById(R.id.teachersTab);
   protected ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
-
+*/
 
   protected TextView newName, newEmail;
 
@@ -81,27 +78,29 @@ public class UserProfile extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_profile_main);
 
-    //
-      tabLayout = findViewById(R.id.accountTeachersTab);
-      tabAccounts = findViewById(R.id.accTab);
-      TabItem tabTeachers = findViewById(R.id.teachersTab);
-      ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
-
-      //
+    /*
+    tabLayout = findViewById(R.id.accountTeachersTab);
+    tabAccounts = findViewById(R.id.accTab);
+    TabItem tabTeachers = findViewById(R.id.teachersTab);
+    ViewPager2 viewpager1 = findViewById(R.id.viewpager1);*/
 
 
     final EditText newInstrument;
-
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
-    newInstrument = findViewById(R.id.enterInstruments);
 
-    add = findViewById(R.id.addButton);
-    Instruments = new ArrayList<String>();
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
+    newInstrument = findViewById(R.id.enterInstruments);
+    add = findViewById(R.id.addButton);
+    Instruments = new ArrayList<String>();
+    InstrumentList = (ListView) findViewById(R.id.InstrumentList);
+    final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(UserProfile.this, android.R.layout.simple_list_item_1, myArrayList);
+    DatabaseReference InstrumentRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("instruments");
+
+    //Fetch and display user name/email
     DatabaseReference reference =
         FirebaseDatabase.getInstance()
             .getReference()
@@ -126,6 +125,7 @@ public class UserProfile extends AppCompatActivity {
           public void onCancelled(@NonNull DatabaseError error) {}
         });
 
+    //Set user Instruments and store in Firebase
     currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -149,26 +149,40 @@ public class UserProfile extends AppCompatActivity {
       }
     });
 
-/////////////////////////display instruments
-    mbase = FirebaseDatabase.getInstance().getReference(currUser.getBaseTable());
+    //Display and update instruments in Firebase
+    InstrumentList.setAdapter(myArrayAdapter);
+    InstrumentRef.addChildEventListener(new ChildEventListener() {
+      @Override
+      public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        String value = snapshot.getValue(String.class);
+        myArrayList.add(value);
+        myArrayAdapter.notifyDataSetChanged();
+      }
 
-    recyclerView = findViewById(R.id.recycler);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+      @Override
+      public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        String value = snapshot.getValue(String.class);
+        myArrayList.add(value);
+        myArrayAdapter.notifyDataSetChanged();
+      }
 
-    FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().setQuery(mbase, User.class).build();
-    adapter = new instrumentAdapter(options);
-    recyclerView.setAdapter(adapter);
+      @Override
+      public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+        String value = snapshot.getValue(String.class);
+        myArrayList.remove(value);
+        myArrayAdapter.notifyDataSetChanged();
+      }
 
-  }
+      @Override
+      public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-  @Override protected void onStart(){
-    super.onStart();
-    adapter.startListening();
-  }
+      }
 
-  @Override protected void onStop(){
-    super.onStop();
-    adapter.stopListening();
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
   }
 
   public void toEditData(View view) {
