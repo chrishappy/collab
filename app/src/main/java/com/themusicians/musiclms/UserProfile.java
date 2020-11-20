@@ -67,11 +67,6 @@ public class UserProfile extends AppCompatActivity {
 
   protected User currUser;
   protected ListView InstrumentList;
-  // for add_students_teachers page the tabs
-  protected TabLayout tabLayout = findViewById(R.id.accountTeachersTab);
-  protected TabItem tabAccounts = findViewById(R.id.accTab);
-  protected TabItem tabTeachers = findViewById(R.id.teachersTab);
-  protected ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
 
 
   protected TextView newName, newEmail;
@@ -80,14 +75,6 @@ public class UserProfile extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_profile_main);
-
-    //
-      tabLayout = findViewById(R.id.accountTeachersTab);
-      tabAccounts = findViewById(R.id.accTab);
-      TabItem tabTeachers = findViewById(R.id.teachersTab);
-      ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
-
-      //
 
 
     final EditText newInstrument;
