@@ -34,15 +34,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:id="@+id/assignmentsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/assignmentsContainer"
         android:background="#65E4A6">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/assignmentOverviewRecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </ScrollView>
 

@@ -3,7 +3,11 @@ package com.themusicians.musiclms;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,16 +15,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,10 +54,17 @@ public class UserProfile extends AppCompatActivity {
 
   protected TextView myName;
   protected TextView myEmail;
+
   protected FirebaseUser currentUser;
   protected FirebaseAuth fAuth;
+
   protected Button add;
   protected List<String> Instruments;
+
+  private RecyclerView recyclerView;
+  instrumentAdapter adapter;
+  DatabaseReference mbase;
+
   protected User currUser;
   protected ListView InstrumentList;
   // for add_students_teachers page the tabs
@@ -77,13 +95,12 @@ public class UserProfile extends AppCompatActivity {
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
     newInstrument = findViewById(R.id.enterInstruments);
-    add = findViewById(R.id.addButton);
-    currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    Instruments = new ArrayList<String>();
-    InstrumentList = findViewById(R.id.instrumentList);
 
+    add = findViewById(R.id.addButton);
+    Instruments = new ArrayList<String>();
+
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
-    currUser.setStatus(true);
 
     DatabaseReference reference =
         FirebaseDatabase.getInstance()
@@ -131,6 +148,27 @@ public class UserProfile extends AppCompatActivity {
 
       }
     });
+
+/////////////////////////display instruments
+    mbase = FirebaseDatabase.getInstance().getReference(currUser.getBaseTable());
+
+    recyclerView = findViewById(R.id.recycler);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().setQuery(mbase, User.class).build();
+    adapter = new instrumentAdapter(options);
+    recyclerView.setAdapter(adapter);
+
+  }
+
+  @Override protected void onStart(){
+    super.onStart();
+    adapter.startListening();
+  }
+
+  @Override protected void onStop(){
+    super.onStop();
+    adapter.stopListening();
   }
 
   public void toEditData(View view) {

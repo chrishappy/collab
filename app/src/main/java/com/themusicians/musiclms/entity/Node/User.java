@@ -1,5 +1,8 @@
 package com.themusicians.musiclms.entity.Node;
 
+import com.themusicians.musiclms.data.Result;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,6 +100,7 @@ public class User extends Node {
   }
 
   /** Fields setters and getters */
+
   public List<String> getTechExperience() {
     return techExperience;
   }
@@ -105,12 +109,21 @@ public class User extends Node {
     this.techExperience = techExperience;
   }
 
-  public List<String> getInstruments() {
-    return instruments;
-  }
+  public List<String> getInstruments() { return instruments; }
 
   public void setInstruments(List<String> instruments) {
+    setInstrument(instruments.get(0));
     this.instruments = instruments;
+  }
+
+  private String instrument;
+
+  public String getInstrument() {
+    return instrument;
+  }
+
+  public void setInstrument(String instrument) {
+    this.instrument = instrument;
   }
 
   /** */
