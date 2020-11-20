@@ -53,8 +53,14 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +96,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     // If we are editing an assignment
     final EditText AssignmentName   = findViewById(R.id.assignment_name);
     final EditText StudentOrClass   = findViewById(R.id.students_or_class);
+    final EditText dueDate          = findViewById(R.id.dueDate);
     if (inEditMode) {
       assignment.getEntityDatabase().child( editEntityId )
           .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -98,6 +105,10 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
               assignment = dataSnapshot.getValue(Assignment.class);
               AssignmentName.setText( assignment.getName() );
               StudentOrClass.setText( assignment.getClassId() );
+
+                Date date = new Date(assignment.getDueDate()*1000);
+                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.CANADA);
+                dueDate.setText(dateFormat.format(date));
 
               Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
             }
@@ -270,15 +281,11 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
         @Override
         public void onClick(View view) {
 
-            if(pdfUri != null) {
-              Log.w("uploadFile()", "begin upload");
-              uploadFile(pdfUri);
-              Log.w("uploadFile()", "done upload");
+            if(pdfUri!=null)
+                uploadFile(pdfUri);
+            else
+                Toast.makeText(AssignmentCreateFormActivity.this,"Select a file",Toast.LENGTH_SHORT).show();
 
-            }
-            else {
-              Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT).show();
-            }
         }
     });
 
@@ -325,8 +332,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     ToDoItem tempToDoItem = new ToDoItem();
     FirebaseRecyclerOptions<ToDoItem> toDoOptionsQuery =
         new FirebaseRecyclerOptions.Builder<ToDoItem>()
-//            .setIndexedQuery(assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
-            .setQuery(tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
+            .setIndexedQuery(assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
 
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
@@ -336,18 +342,12 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
 
   private void uploadFile(Uri pdfUri){
 
-    Log.w("uploadFile()", "Begin upload");
-
-
-    progressDialog=new ProgressDialog(this);
-    Log.w("uploadFile()", "Begin upload 2 ");
+      progressDialog=new ProgressDialog(this);
       progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-    Log.w("uploadFile()", "Begin upload 3");
       progressDialog.setTitle("Uploading file...");
       progressDialog.setProgress(0);
       progressDialog.show();
 
-    Log.w("uploadFile()", "Begin upload 5");
       final String fileName=System.currentTimeMillis()+"";
       StorageReference storageReference=storage.getReference();
 
