@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
@@ -34,6 +39,8 @@ public class AssignmentOverviewAdapter
 
   private ItemClickListener itemClickListener;
 
+  DatabaseReference reff;
+
   public AssignmentOverviewAdapter(@NonNull FirebaseRecyclerOptions<Assignment> options) {
     super(options);
   }
@@ -48,7 +55,20 @@ public class AssignmentOverviewAdapter
     holder.assignmentName.setText(assignment.getName());
 
     if (assignment.getUid() != null) {
-      holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
+      reff= FirebaseDatabase.getInstance().getReference().child("node__user").child(assignment.getUid());
+      reff.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+          String name=snapshot.child("name").getValue().toString();
+          holder.authorName.setText(name);
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+      });
+
     }
 
     if (assignment.getClassId() != null) {
