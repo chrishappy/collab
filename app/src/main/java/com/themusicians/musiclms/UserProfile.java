@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +27,8 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -62,6 +66,14 @@ public class UserProfile extends AppCompatActivity {
   DatabaseReference mbase;
 
   protected User currUser;
+  protected ListView InstrumentList;
+  // for add_students_teachers page the tabs
+  protected TabLayout tabLayout = findViewById(R.id.accountTeachersTab);
+  protected TabItem tabAccounts = findViewById(R.id.accTab);
+  protected TabItem tabTeachers = findViewById(R.id.teachersTab);
+  protected ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
+
+
   protected TextView newName, newEmail;
 
   @Override

@@ -179,6 +179,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity
             new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
         startActivity(toCreateAssignment);
         return true;
+      case R.id.addTeachers:
+          setContentView(R.layout.add_students_teachers);
+        return true;
     }
     return super.onOptionsItemSelected(item);
   }
