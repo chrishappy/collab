@@ -63,6 +63,15 @@ public class UserProfile extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_profile_main);
 
+    //
+      tabLayout = findViewById(R.id.accountTeachersTab);
+      tabAccounts = findViewById(R.id.accTab);
+      TabItem tabTeachers = findViewById(R.id.teachersTab);
+      ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
+
+      //
+
+
     final EditText newInstrument;
 
     myName = findViewById(R.id.user_name);
