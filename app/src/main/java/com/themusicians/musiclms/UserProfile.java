@@ -71,6 +71,7 @@ public class UserProfile extends AppCompatActivity {
   protected ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
 */
 
+
   protected TextView newName, newEmail;
 
   @Override
@@ -86,6 +87,7 @@ public class UserProfile extends AppCompatActivity {
 
 
     final EditText newInstrument;
+
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
 
