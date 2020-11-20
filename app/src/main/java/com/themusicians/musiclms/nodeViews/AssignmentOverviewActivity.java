@@ -89,7 +89,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
                 .show();
 
             int position = viewHolder.getAdapterPosition();
-            assignmentOverviewAdapter.getRef(position).remove();
+//            assignmentOverviewAdapter.getRef(position).remove();
 //            assignmentOverviewAdapter.deleteAssignment(position);
             break;
 

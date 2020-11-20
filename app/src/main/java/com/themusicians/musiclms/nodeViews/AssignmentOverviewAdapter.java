@@ -79,42 +79,42 @@ public class AssignmentOverviewAdapter
           }
         });
 
-    holder.deleteAssignment.setOnLongClickListener(new View.OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View v) {
-        alertDelete(myKeyItem);
-        return true;
-      }
-    });
+//    holder.deleteAssignment.setOnLongClickListener(new View.OnLongClickListener() {
+//      @Override
+//      public boolean onLongClick(View v) {
+//        alertDelete(myKeyItem);
+//        return true;
+//      }
+//    });
   }
 
   /**
    * Confirm the deletion
    */
-  public void alertDelete(final String id) {
+//  public void alertDelete(final String id) {
+//
+//    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//    LayoutInflater inflater = getActivity().getLayoutInflater();
+//    final View dialogView = inflater.inflate(R.layout.warning_delete, null);
+//    dialogBuilder.setView(dialogView);
+//    final AlertDialog alertDialog = dialogBuilder.create();
+//    alertDialog.show();
+//
+//    final Button delete = dialogView.findViewById(R.id.delete);
+//
+//    delete.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        deleteRef(id);
+//        alertDialog.dismiss();
+////        Toast.makeText(Teachers_Admin_Activity.this,"Delete Successfully",Toast.LENGTH_LONG).show();
+//      }
+//    });
+//  }
 
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-    LayoutInflater inflater = getActivity().getLayoutInflater();
-    final View dialogView = inflater.inflate(R.layout.warning_delete, null);
-    dialogBuilder.setView(dialogView);
-    final AlertDialog alertDialog = dialogBuilder.create();
-    alertDialog.show();
-
-    final Button delete = dialogView.findViewById(R.id.delete);
-
-    delete.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        deleteRef(id);
-        alertDialog.dismiss();
-//        Toast.makeText(Teachers_Admin_Activity.this,"Delete Successfully",Toast.LENGTH_LONG).show();
-      }
-    });
-  }
-
-  private void deleteRef(String id) {
-    databaseRef.child(id).removeValue();
-  }
+//  private void deleteRef(String id) {
+//    databaseRef.child(id).removeValue();
+//  }
 
   // Function to tell the class about the Card view (here
   // "Assignment.xml")in
