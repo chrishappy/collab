@@ -44,8 +44,10 @@ import java.util.List;
 /**
  * ....
  *
- * <p>Contributors: Jerome Lau, Harveer Khangura Created by Jerome Lau on 2020-11-06
- *
+ * <p>
+ * @Contributors: Jerome Lau, Harveer Khangura
+ * @Author Jerome Lau
+ * @Since Nov 10, 2020
  * <p>--------------------------------
  *
  * @todo View user info
@@ -61,6 +63,7 @@ public class UserProfile extends AppCompatActivity {
   protected Button add;
   protected List<String> Instruments;
   ArrayList<String> myArrayList = new ArrayList<>();
+  boolean reInput;
 
   protected User currUser;
   protected ListView InstrumentList;
@@ -78,6 +81,10 @@ public class UserProfile extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_profile_main);
+
+    /**
+     * Initialize variables
+     */
 
     /*
     tabLayout = findViewById(R.id.accountTeachersTab);
@@ -102,7 +109,10 @@ public class UserProfile extends AppCompatActivity {
     final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(UserProfile.this, android.R.layout.simple_list_item_1, myArrayList);
     DatabaseReference InstrumentRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("instruments");
 
-    //Fetch and display user name/email
+
+    /**
+     * Fetch and display user name/email from Firebase
+     */
     DatabaseReference reference =
         FirebaseDatabase.getInstance()
             .getReference()
@@ -113,11 +123,17 @@ public class UserProfile extends AppCompatActivity {
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
             Object name = snapshot.child("name").getValue();
+            /**
+             * Checks if names exists
+             */
             if (name != null) {
               myName.setText(name.toString());
             }
 
             Object email = snapshot.child("email").getValue();
+            /**
+             * Checks if email exists
+             */
             if (email != null) {
               myEmail.setText(email.toString());
             }
@@ -127,7 +143,10 @@ public class UserProfile extends AppCompatActivity {
           public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-    //Set user Instruments and store in Firebase
+    /**
+     * Save user instruments in Firebase
+     */
+    reInput = true;
     currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -135,12 +154,25 @@ public class UserProfile extends AppCompatActivity {
         add.setOnClickListener(
           (v) -> {
             String instrumentName = newInstrument.getText().toString().trim();
+            /**
+             * Checks if instrument is new
+             */
+            boolean isNew = true;
+            for (int i = 0; i < myArrayList.size(); i++) {
+              if (instrumentName.toLowerCase().equals(myArrayList.get(i).toLowerCase())) {
+                isNew = false;
+              }
+            }
+
             if (instrumentName.isEmpty()) {
               Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
+            } else if (isNew == false){
+              Toast.makeText(UserProfile.this, instrumentName + " is already added",Toast.LENGTH_SHORT).show();
             } else {
               Instruments.add(instrumentName);
               currUser.setInstruments(Instruments);
               currUser.save();
+              reInput = false;
             }
           });
       }
@@ -151,12 +183,23 @@ public class UserProfile extends AppCompatActivity {
       }
     });
 
-    //Display and update instruments in Firebase
+    /**
+     * Display and update instruments from Firebase
+     */
     InstrumentList.setAdapter(myArrayAdapter);
     InstrumentRef.addChildEventListener(new ChildEventListener() {
       @Override
       public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        /**
+         * Updates display if instrument is added
+         */
         String value = snapshot.getValue(String.class);
+        /**
+         * Checks to pull instruments to list once
+         */
+        if(reInput == true) {
+          Instruments.add(value);
+        }
         myArrayList.add(value);
         myArrayAdapter.notifyDataSetChanged();
       }
@@ -170,6 +213,9 @@ public class UserProfile extends AppCompatActivity {
 
       @Override
       public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+        /**
+         * Updates display if intrument is removed
+         */
         String value = snapshot.getValue(String.class);
         myArrayList.remove(value);
         myArrayAdapter.notifyDataSetChanged();
@@ -187,10 +233,16 @@ public class UserProfile extends AppCompatActivity {
     });
   }
 
+  /**
+   * Redirects User to Editing data
+   */
   public void toEditData(View view) {
     setContentView(R.layout.user_profile_edit_data);
   }
 
+  /**
+   * Updates user name in Firebase
+   */
   public void changeName(View view) {
     newName = findViewById(R.id.changeName);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -209,10 +261,11 @@ public class UserProfile extends AppCompatActivity {
                 Toast.makeText(UserProfile.this, "Name updated", Toast.LENGTH_SHORT).show();
               }
             });
-
-    // make prompt that says it worked or smth
   }
 
+  /**
+   * Updates user email in Firebase
+   */
   public void changeEmail(View view) {
     newEmail = findViewById(R.id.changeEmail);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -229,9 +282,15 @@ public class UserProfile extends AppCompatActivity {
             });
   }
 
+  /**
+   * Updates user password in Firebase through email verification
+   */
   public void changePassword(View view) {
     fAuth = FirebaseAuth.getInstance();
 
+    /**
+     * Email verification dialog
+     */
     EditText resetMail = new EditText(view.getContext());
     AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder((view.getContext()));
 
@@ -281,6 +340,9 @@ public class UserProfile extends AppCompatActivity {
     passwordResetDialog.create().show();
   }
 
+  /**
+   * Redirects user to user profile page
+   */
   public void editDataBack(View view) {
     Intent reload = new Intent(this, UserProfile.class);
     startActivity(reload);

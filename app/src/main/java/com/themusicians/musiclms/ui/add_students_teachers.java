@@ -21,7 +21,7 @@ public class add_students_teachers extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Add teachers");
+        /*setTitle("Add teachers");
         setContentView(R.layout.add_students_teachers);
 
         tabLayout = findViewById(R.id.accountTeachersTab);
@@ -49,7 +49,7 @@ public class add_students_teachers extends AppCompatActivity {
 
             }
         });
-
+*/
     }
 
 

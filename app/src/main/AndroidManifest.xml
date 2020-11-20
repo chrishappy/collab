@@ -16,7 +16,6 @@
         <activity android:name=".Chat" /> <!-- User Activities -->
         <activity android:name=".SignUp" />
         <activity android:name=".UserProfile"  />
-        <activity android:name=".Placeholder" />
         <activity
             android:name=".myLogin"
             android:label="@string/title_activity_signin" /> <!-- Assignment -->

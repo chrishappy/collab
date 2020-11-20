@@ -14,17 +14,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
  * ....
  *
- * <p>Contributors: Jerome Lau Created by Jerome Lau on 2020-11-04
- *
+ * <p>
+ * @Contributors: Jerome Lau
+ * @Jerome Lau
+ * @Since Nov 4, 2020
  * <p>--------------------------------
  *
  * @todo Login users via Firebase
  */
 public class myLogin extends AppCompatActivity {
+
   EditText myEmail, myPassword;
   Button signin;
   FirebaseAuth fAuth;
@@ -35,12 +39,18 @@ public class myLogin extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_signin);
 
+    /**
+     * Initialize Variables
+     */
     myEmail = findViewById(R.id.myEmail);
     myPassword = findViewById(R.id.myPassword);
     fAuth = FirebaseAuth.getInstance();
     signin = findViewById(R.id.signin);
     register = findViewById(R.id.orRegister);
 
+    /**
+     * Listens for when the User clicks Sign In
+     */
     signin.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -48,19 +58,26 @@ public class myLogin extends AppCompatActivity {
             String email = myEmail.getText().toString().trim();
             String password = myPassword.getText().toString().trim();
 
-            // checks if email is empty
+            /**
+             * checks if user email is empty
+             */
             if (TextUtils.isEmpty(email)) {
               myEmail.setError("Email is Required.");
               return;
             }
 
-            // checks if password is empty
+            /**
+             * checks if user password is empty
+             */
             if (TextUtils.isEmpty(password)) {
               myPassword.setError("Password is Required");
               return;
             }
 
-            // registers account to firebase and sends to next screen
+            /**
+             * Verifies account with Firebase
+             * Redirects user to Assignment Overview
+             */
             fAuth
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
@@ -70,7 +87,7 @@ public class myLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                           Toast.makeText(myLogin.this, "Login Successful", Toast.LENGTH_SHORT)
                               .show();
-                          startActivity(new Intent(getApplicationContext(), Placeholder.class));
+                          startActivity(new Intent(getApplicationContext(), AssignmentOverviewActivity.class));
                         } else {
                           Toast.makeText(
                                   myLogin.this,
@@ -83,12 +100,14 @@ public class myLogin extends AppCompatActivity {
           }
         });
 
-    // Redirect to register account page
+    /**
+     * Redirects user to Registration
+     */
     register.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            Intent nextPageLogin = new Intent(myLogin.this, MainActivity.class);
+            Intent nextPageLogin = new Intent(myLogin.this, SignUp.class);
             startActivity(nextPageLogin);
           }
         });
