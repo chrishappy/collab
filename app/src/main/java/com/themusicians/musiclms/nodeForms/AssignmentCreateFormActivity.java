@@ -122,7 +122,10 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
           });
     }
 
-    toDoItemsAdapter.startListening();
+    // If the assignment has not be saved (no id()), the toDoItemsAdapter will not be initialized
+    if (toDoItemsAdapter != null) {
+      toDoItemsAdapter.startListening();
+    }
   }
 
   // Function to tell the app to stop getting
@@ -130,7 +133,11 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
   @Override
   protected void onStop() {
     super.onStop();
-    toDoItemsAdapter.stopListening();
+
+    // If the assignment has not be saved (no id()), the toDoItemsAdapter will not be initialized
+    if (toDoItemsAdapter != null) {
+      toDoItemsAdapter.stopListening();
+    }
   }
 
   /** @param savedInstanceState */
@@ -281,11 +288,15 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
         @Override
         public void onClick(View view) {
 
-            if(pdfUri!=null)
-                uploadFile(pdfUri);
-            else
-                Toast.makeText(AssignmentCreateFormActivity.this,"Select a file",Toast.LENGTH_SHORT).show();
+            if(pdfUri != null) {
+              Log.w("uploadFile()", "begin upload");
+              uploadFile(pdfUri);
+              Log.w("uploadFile()", "done upload");
 
+            }
+            else {
+              Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT).show();
+            }
         }
     });
 
@@ -295,6 +306,11 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
    * Create the to do items list
    */
   private void initToDoItemsList() {
+    // If the assignment has not been saved yet (and has no id), don't let initiate
+    if (assignment.getId() == null) {
+      return;
+    }
+
     toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
     toDoItemsRecyclerView.setLayoutManager(new GridLayoutManager( AssignmentCreateFormActivity.this, 1));
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -310,13 +326,13 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
 
         switch(swipeDir) {
           case ItemTouchHelper.LEFT:
-            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
+            Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show();
             break;
 
           case ItemTouchHelper.RIGHT:
-            Snackbar.make(toDoItemsRecyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+            Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show();
             break;
@@ -333,6 +349,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     FirebaseRecyclerOptions<ToDoItem> toDoOptionsQuery =
         new FirebaseRecyclerOptions.Builder<ToDoItem>()
             .setIndexedQuery(assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
+//            .setQuery(tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
 
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
@@ -342,12 +359,18 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
 
   private void uploadFile(Uri pdfUri){
 
-      progressDialog=new ProgressDialog(this);
+    Log.w("uploadFile()", "Begin upload");
+
+
+    progressDialog=new ProgressDialog(this);
+    Log.w("uploadFile()", "Begin upload 2 ");
       progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    Log.w("uploadFile()", "Begin upload 3");
       progressDialog.setTitle("Uploading file...");
       progressDialog.setProgress(0);
       progressDialog.show();
 
+    Log.w("uploadFile()", "Begin upload 5");
       final String fileName=System.currentTimeMillis()+"";
       StorageReference storageReference=storage.getReference();
 

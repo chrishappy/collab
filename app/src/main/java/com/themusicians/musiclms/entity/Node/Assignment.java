@@ -37,7 +37,7 @@ public class Assignment extends Node {
   protected Map<String, Boolean> toDoIds;
 
   // This must make the field name of toDoIds
-  static final String toDoIdsName = "toDoIds";
+  public static final String toDoIdsName = "toDoIds";
 
   protected Map<Map, Attachment> attachments;
 
@@ -119,10 +119,12 @@ public class Assignment extends Node {
 
   /**
    * Get To Do Items location
+   *
+   * Assumes assignment has an id
    */
   @Exclude
   public DatabaseReference getToDoItemsKeyQuery() {
-    return getEntityDatabase().child(toDoIdsName);
+    return getEntityDatabase().child(getId()).child(toDoIdsName);
   }
 
   /** Settings and Getters */

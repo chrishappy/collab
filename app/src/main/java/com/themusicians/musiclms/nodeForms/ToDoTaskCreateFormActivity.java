@@ -77,6 +77,8 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
 
     setContentView(R.layout.activity_to_do_item_create_form);
 
+    toDoItem = new ToDoItem();
+
     // Get fields
     final EditText ToDoItemName = findViewById(R.id.to_do_item_name);
     final CheckBox RequireRecording = findViewById(R.id.require_recording);
