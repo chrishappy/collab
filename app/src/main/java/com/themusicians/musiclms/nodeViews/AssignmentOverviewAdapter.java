@@ -51,6 +51,10 @@ public class AssignmentOverviewAdapter
       holder.authorName.setText(String.format("%s...", assignment.getUid().substring(0, 20)));
     }
 
+    if (assignment.getClassId() != null) {
+      holder.userName.setText(assignment.getClassId());
+    }
+
     if (assignment.getDueDate() != 0) {
       Date date = new Date(assignment.getDueDate()*1000);
 //      DateFormat dateFormat = new SimpleDateFormat( getText(R.string.date_format__month_day), Locale.CANADA);
@@ -95,7 +99,7 @@ public class AssignmentOverviewAdapter
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
   class AssignmentsViewHolder extends RecyclerView.ViewHolder {
-    TextView assignmentName, authorName, dueDate;
+    TextView assignmentName, authorName, dueDate,userName;
     Button editAssignment;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
@@ -104,6 +108,7 @@ public class AssignmentOverviewAdapter
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
       dueDate = itemView.findViewById(R.id.dueDate);
+      userName = itemView.findViewById(R.id.userName);
       editAssignment = itemView.findViewById(R.id.edit_button);
     }
   }
