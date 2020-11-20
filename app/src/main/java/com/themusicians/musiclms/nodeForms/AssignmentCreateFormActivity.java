@@ -58,10 +58,14 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -97,6 +101,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     // If we are editing an assignment
     final EditText AssignmentName   = findViewById(R.id.assignment_name);
     final EditText StudentOrClass   = findViewById(R.id.students_or_class);
+    final EditText dueDate          = findViewById(R.id.dueDate);
     if (inEditMode) {
       assignment.getEntityDatabase().child( editEntityId )
           .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -105,6 +110,10 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
               assignment = dataSnapshot.getValue(Assignment.class);
               AssignmentName.setText( assignment.getName() );
               StudentOrClass.setText( assignment.getClassId() );
+
+                Date date = new Date(assignment.getDueDate()*1000);
+                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.CANADA);
+                dueDate.setText(dateFormat.format(date));
 
               Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
             }
