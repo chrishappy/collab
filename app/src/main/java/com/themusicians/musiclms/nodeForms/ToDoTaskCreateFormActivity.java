@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +21,6 @@ import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
-import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 public class ToDoTaskCreateFormActivity extends CreateFormActivity
@@ -83,7 +82,7 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
     final CheckBox RequireRecording = findViewById(R.id.require_recording);
 
     // Cancel the Assignment
-    final Button assignmentCancel = findViewById(R.id.assignmentCancelAction);
+    final Button assignmentCancel = findViewById(R.id.cancelAction);
     assignmentCancel.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -97,7 +96,7 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
         });
 
     // Save the Assignment
-    final Button assignmentSave = findViewById(R.id.assignmentSaveAction1);
+    final Button assignmentSave = findViewById(R.id.saveAction);
     assignmentSave.setOnClickListener(
         new View.OnClickListener() {
           @Override

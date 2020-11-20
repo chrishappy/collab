@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class addAttachmentsViewModel extends ViewModel {
+public class AddAttachmentsViewModel extends ViewModel {
 
   private MutableLiveData<String> mText;
 
-  public addAttachmentsViewModel() {
+  public AddAttachmentsViewModel() {
     mText = new MutableLiveData<>();
     mText.setValue("This is home fragment");
   }

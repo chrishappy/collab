@@ -42,6 +42,8 @@
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/left_and_right_gutters"
         android:paddingRight="@dimen/left_and_right_gutters"
+        app:layout_anchor="@+id/assignment_wrapper"
+        app:layout_anchorGravity="center"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".nodeForms.AssignmentCreateFormActivity"
         tools:showIn="@layout/activity_assignment_create_form">
@@ -55,10 +57,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -74,9 +78,9 @@
                         android:id="@+id/students_or_class"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
                         android:autofillHints="@string/app_name"
-                        android:hint="@string/assignment__form__user_class"/>
+                        android:hint="@string/assignment__form__user_class"
+                        android:text="" />
                 </LinearLayout>
                 <!-- Replace with model:
                         https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
@@ -87,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <EditText
                         android:id="@+id/dueDate"
                         android:layout_width="wrap_content"
@@ -116,7 +121,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todoItemsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -125,14 +130,14 @@
 
                     <Button
                         android:id="@+id/todoAddItem"
+                        style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/assignment__form__add_todo_item"
-                        style="?attr/materialButtonOutlinedStyle"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <!-- Temporarily disable
                     <Button
@@ -147,19 +152,46 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <Space
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                style="borderTop: 1px solid #000"/>
+                android:layout_height="2dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="#c0c0c0" />
+
+            <fragment
+                android:id="@+id/showAttachments"
+                android:name="com.themusicians.musiclms.nodeForms.addAttachments.showAllAttachmentsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="#c0c0c0" />
 
 
             <!-- Start "AddAttachments Fragment". Migrate/Refactor later -->
-            <!--<fragment
+            <fragment
                 android:id="@+id/addAttachments"
-                android:name="com.themusicians.musiclms.nodeForms.addAttachments.addAttachmentsFragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" /> -->
+                android:name="com.themusicians.musiclms.nodeForms.addAttachments.createFormAttachmentsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="#c0c0c0" />
 
             <!-- End "AddAttachments" Fragment -->
 
@@ -212,21 +244,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="end">
+                android:gravity="end"
+                android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/assignmentCancelAction"
+                    android:id="@+id/cancelAction"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__cancel" />
 
                 <Button
-                    android:id="@+id/assignmentSaveAction1"
+                    android:id="@+id/saveAction"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 

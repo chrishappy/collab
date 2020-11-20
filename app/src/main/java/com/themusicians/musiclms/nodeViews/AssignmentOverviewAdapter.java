@@ -1,16 +1,19 @@
 package com.themusicians.musiclms.nodeViews;
 
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 
@@ -34,6 +37,8 @@ public class AssignmentOverviewAdapter
 
   private ItemClickListener itemClickListener;
 
+  protected DatabaseReference databaseRef;
+
   public AssignmentOverviewAdapter(@NonNull FirebaseRecyclerOptions<Assignment> options) {
     super(options);
   }
@@ -44,6 +49,9 @@ public class AssignmentOverviewAdapter
   @Override
   protected void onBindViewHolder(
       @NonNull AssignmentsViewHolder holder, int position, @NonNull Assignment assignment) {
+
+    // Set up database
+    databaseRef = assignment.getEntityDatabase();
 
     holder.assignmentName.setText(assignment.getName());
 
@@ -58,6 +66,9 @@ public class AssignmentOverviewAdapter
       holder.dueDate.setText(dateFormat.format(date));
     }
 
+    DatabaseReference itemRef = getRef(position);
+    final String myKeyItem = itemRef.getKey();
+
     holder.editAssignment.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -67,6 +78,42 @@ public class AssignmentOverviewAdapter
             }
           }
         });
+
+    holder.deleteAssignment.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        alertDelete(myKeyItem);
+        return true;
+      }
+    });
+  }
+
+  /**
+   * Confirm the deletion
+   */
+  public void alertDelete(final String id) {
+
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+    LayoutInflater inflater = getActivity().getLayoutInflater();
+    final View dialogView = inflater.inflate(R.layout.warning_delete, null);
+    dialogBuilder.setView(dialogView);
+    final AlertDialog alertDialog = dialogBuilder.create();
+    alertDialog.show();
+
+    final Button delete = dialogView.findViewById(R.id.delete);
+
+    delete.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        deleteRef(id);
+        alertDialog.dismiss();
+//        Toast.makeText(Teachers_Admin_Activity.this,"Delete Successfully",Toast.LENGTH_LONG).show();
+      }
+    });
+  }
+
+  private void deleteRef(String id) {
+    databaseRef.child(id).removeValue();
   }
 
   // Function to tell the class about the Card view (here
@@ -96,7 +143,7 @@ public class AssignmentOverviewAdapter
   // view (here "person.xml")
   class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate;
-    Button editAssignment;
+    Button editAssignment, deleteAssignment;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -105,6 +152,7 @@ public class AssignmentOverviewAdapter
       authorName = itemView.findViewById(R.id.authorName);
       dueDate = itemView.findViewById(R.id.dueDate);
       editAssignment = itemView.findViewById(R.id.edit_button);
+      editAssignment = itemView.findViewById(R.id.delete_button);
     }
   }
 

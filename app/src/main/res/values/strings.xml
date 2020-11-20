@@ -144,4 +144,8 @@
     <string name="form__edit_button">Edit</string>
     <string name="no_file_is_selected">no file is selected</string>
     <string name="upload">upload</string>
+    <string name="attachment__form__recording">Recording</string>
+    <string name="attachment__form__zoomLabel">Zoom Meeting</string>
+    <string name="attachment__form__scheduleZoomMeeting">Schedule Zoom Meeting</string>
+    <string name="form__delete_button">Delete</string>
 </resources>

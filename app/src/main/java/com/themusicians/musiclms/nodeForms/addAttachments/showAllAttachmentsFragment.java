@@ -1,70 +1,68 @@
-package com.themusicians.musiclms.nodeViews;
+package com.themusicians.musiclms.nodeForms.addAttachments;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Node.Assignment;
-import com.themusicians.musiclms.myLogin;
-import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
-import com.themusicians.musiclms.UserProfile;
+import com.themusicians.musiclms.nodeForms.addAttachments.AllAttachmentsAdapter;
+
 import org.jetbrains.annotations.NotNull;
 
-import static com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity.ACCEPT_ENTITY_ID;
+import static com.themusicians.musiclms.nodeForms.addAttachments.AllAttachmentsAdapter.editAllAttachments;
 
 /**
- * Displays the assignments
+ * Displays the AllAttachment
  *
  * <p>Based on
  * https://www.geeksforgeeks.org/how-to-populate-recyclerview-with-firebase-data-using-firebaseui-in-android-studio/
  *
  * @contributor
  * @author Nathan Tsai
- * @since Nov 7, 2020
+ * @since Nov 19, 2020
  */
-public class AssignmentOverviewActivity extends AppCompatActivity implements AssignmentOverviewAdapter.ItemClickListener {
+public class showAllAttachmentsFragment extends Fragment implements AllAttachmentsAdapter.ItemClickListener {
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
-  AssignmentOverviewAdapter assignmentOverviewAdapter; // Create Object of the Adapter class
+  AllAttachmentsAdapter assignmentOverviewAdapter; // Create Object of the Adapter class
   DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   /**
    * To Group elements, see this tutorial: https://stackoverflow.com/questions/34848401/divide-elements-on-groups-in-recyclerview
    * @param savedInstanceState
    */
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_assignment_overview);
+  public View onCreateView(
+      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+    // Generate the database
+    AllAttachment tempAllAttachment = new AllAttachment();
+    mbase = tempAllAttachment.getEntityDatabase();
+
+    View root = inflater.inflate(R.layout.fragment_show_attachments, container, false);
 
     // Create a instance of the database and get
-    // its reference
-    Assignment tempAssignment = new Assignment();
-    mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
-    recyclerView = findViewById(R.id.assignmentOverviewRecycler);
+    recyclerView = root.findViewById(R.id.attachmentsOverviewRecycler);
 
     // To display the Recycler view using grid layout for slide functionality
-    recyclerView.setLayoutManager(new GridLayoutManager( AssignmentOverviewActivity.this, 1));
+    recyclerView.setLayoutManager(new GridLayoutManager( getActivity(), 1));
 
     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
       @Override
@@ -89,8 +87,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
                 .show();
 
             int position = viewHolder.getAdapterPosition();
-            assignmentOverviewAdapter.getRef(position).remove();
-//            assignmentOverviewAdapter.deleteAssignment(position);
+            assignmentOverviewAdapter.deleteAssignment(position);
             break;
 
           case ItemTouchHelper.RIGHT:
@@ -107,36 +104,21 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate data
-    FirebaseRecyclerOptions<Assignment> options =
-        new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(mbase, Assignment.class).build();
+    FirebaseRecyclerOptions<AllAttachment> options =
+        new FirebaseRecyclerOptions.Builder<AllAttachment>().setQuery(mbase, AllAttachment.class).build();
 
     // Create new Adapter
-    assignmentOverviewAdapter = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapter = new AllAttachmentsAdapter(options);
     assignmentOverviewAdapter.addItemClickListener(this);
     recyclerView.setAdapter(assignmentOverviewAdapter);
 
-
-    /** Set the action button to add a new assignment */
-    FloatingActionButton fab = findViewById(R.id.createAssignment);
-    fab.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-
-            //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            //            .setAction("Action", null).show();
-
-            Intent redirectToAssignmentCreate =
-                new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-            startActivity(redirectToAssignmentCreate);
-          }
-        });
+    return root;
   }
 
   // Function to tell the app to start getting
   // data from database on starting of the activity
   @Override
-  protected void onStart() {
+  public void onStart() {
     super.onStart();
     assignmentOverviewAdapter.startListening();
   }
@@ -144,37 +126,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
   // Function to tell the app to stop getting
   // data from database on stoping of the activity
   @Override
-  protected void onStop() {
+  public void onStop() {
     super.onStop();
     assignmentOverviewAdapter.stopListening();
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.main_menu, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    fAuth = FirebaseAuth.getInstance();
-    switch (item.getItemId()) {
-      case R.id.logout:
-        fAuth.signOut();
-        Intent logout = new Intent(AssignmentOverviewActivity.this, myLogin.class);
-        startActivity(logout);
-        return true;
-      case R.id.userprofile:
-        Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
-        startActivity(toUserProfile);
-        return true;
-      case R.id.createassignment:
-        Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-        startActivity(toCreateAssignment);
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
   }
 
   /**
@@ -184,11 +138,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity implements Ass
   @Override
   public void onEditButtonClick(String type, String entityId) {
     switch(type) {
-      case "editAssignment":
-        Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-        toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
-        startActivity(toCreateAssignment);
-        break;
+//      case editAllAttachments:
+//        Intent toCreateAssignment = new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+//        toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
+//        startActivity(toCreateAssignment);
+//        break;
     }
   }
 }

@@ -51,8 +51,6 @@ public class Assignment extends Node {
   /** The constructor used to update an existing or to set an id */
   public Assignment(String id) {
     super(id);
-
-    System.out.println("The Assignment2 base table is: " + getBaseTable());
   }
 
   /** Load an assignment from the database */

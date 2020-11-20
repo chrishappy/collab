@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -33,7 +32,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,25 +41,20 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.themusicians.musiclms.MainActivity;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
 //import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
-import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Attachment.File;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -183,7 +176,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
         });
 
     // Cancel the Assignment
-    final Button assignmentCancel = findViewById(R.id.assignmentCancelAction);
+    final Button assignmentCancel = findViewById(R.id.cancelAction);
     assignmentCancel.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -197,7 +190,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
 
 
     // Save the Assignment
-    final Button assignmentSave = findViewById(R.id.assignmentSaveAction1);
+    final Button assignmentSave = findViewById(R.id.saveAction);
     assignmentSave.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -277,11 +270,15 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
         @Override
         public void onClick(View view) {
 
-            if(pdfUri!=null)
-                uploadFile(pdfUri);
-            else
-                Toast.makeText(AssignmentCreateFormActivity.this,"Select a file",Toast.LENGTH_SHORT).show();
+            if(pdfUri != null) {
+              Log.w("uploadFile()", "begin upload");
+              uploadFile(pdfUri);
+              Log.w("uploadFile()", "done upload");
 
+            }
+            else {
+              Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT).show();
+            }
         }
     });
 
@@ -328,7 +325,8 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     ToDoItem tempToDoItem = new ToDoItem();
     FirebaseRecyclerOptions<ToDoItem> toDoOptionsQuery =
         new FirebaseRecyclerOptions.Builder<ToDoItem>()
-            .setIndexedQuery(assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
+//            .setIndexedQuery(assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
+            .setQuery(tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
 
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
@@ -338,12 +336,18 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
 
   private void uploadFile(Uri pdfUri){
 
-      progressDialog=new ProgressDialog(this);
+    Log.w("uploadFile()", "Begin upload");
+
+
+    progressDialog=new ProgressDialog(this);
+    Log.w("uploadFile()", "Begin upload 2 ");
       progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    Log.w("uploadFile()", "Begin upload 3");
       progressDialog.setTitle("Uploading file...");
       progressDialog.setProgress(0);
       progressDialog.show();
 
+    Log.w("uploadFile()", "Begin upload 5");
       final String fileName=System.currentTimeMillis()+"";
       StorageReference storageReference=storage.getReference();
 

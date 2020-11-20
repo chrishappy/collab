@@ -58,7 +58,7 @@
             <!-- Start "AddAttachments Fragment". Migrate/Refactor later -->
             <!--<fragment
                 android:id="@+id/addAttachments"
-                android:name="com.themusicians.musiclms.nodeForms.addAttachments.addAttachmentsFragment"
+                android:name="com.themusicians.musiclms.nodeForms.addAttachments.createFormAttachmentsFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" /> -->
 
@@ -112,14 +112,14 @@
                 android:gravity="end">
 
                 <Button
-                    android:id="@+id/assignmentCancelAction"
+                    android:id="@+id/cancelAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__cancel" />
 
                 <Button
-                    android:id="@+id/assignmentSaveAction1"
+                    android:id="@+id/saveAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?attr/materialButtonOutlinedStyle"
