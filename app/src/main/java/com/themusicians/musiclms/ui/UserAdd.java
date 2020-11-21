@@ -1,17 +1,12 @@
 package com.themusicians.musiclms.ui;
 
 import android.os.Bundle;
-import android.widget.Adapter;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
 import com.themusicians.musiclms.R;
 
-public class add_students_teachers extends AppCompatActivity {
+public class UserAdd extends AppCompatActivity {
 
 /*
     // for add_students_teachers page the tabs
@@ -24,7 +19,7 @@ public class add_students_teachers extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setTitle("Add teachers");
-        setContentView(R.layout.add_students_teachers);
+        setContentView(R.layout.user_add_main);
 /*
         tabLayout = findViewById(R.id.accountTeachersTab);
         tabAccounts = findViewById(R.id.accTab);
@@ -50,9 +45,7 @@ public class add_students_teachers extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });*/
+        });
+*/
     }
-
-
-
 }

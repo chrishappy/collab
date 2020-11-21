@@ -24,14 +24,14 @@
         android:id="@+id/toEditData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="202dp"
         android:onClick="toEditData"
         android:text="Edit Data"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.383"
         app:layout_constraintStart_toEndOf="@+id/chatButton"
         app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
-        app:layout_constraintVertical_bias="0.343" />
+        app:layout_constraintVertical_bias="0.845" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
@@ -107,16 +107,12 @@
         app:layout_constraintVertical_bias="0.845" />
 
     <Button
-        android:id="@+id/addTeachers"
+        android:id="@+id/toAddUsers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="toAddTeachers"
-        android:text="Add teachers"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868" />
+        android:onClick="toAddUser"
+        android:text="Add Users"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="32dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

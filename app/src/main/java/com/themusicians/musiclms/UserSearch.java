@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +43,7 @@ public class UserSearch extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.user_profile_search);
+    setContentView(R.layout.user_add_search);
 
     searchRef = FirebaseDatabase.getInstance().getReference().child("node__user");
     searchRecycler = findViewById(R.id.searchRecycler);

@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.slideshow.add_students_teachers"></activity>
+        <activity android:name=".UserAddUsers"></activity>
+        <activity android:name=".ui.slideshow.add_students_teachers" />
         <activity android:name=".UserSearch" />
         <activity android:name=".Chat" /> <!-- User Activities -->
         <activity android:name=".SignUp" />
