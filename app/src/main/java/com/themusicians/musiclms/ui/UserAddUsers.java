@@ -1,8 +1,10 @@
-package com.themusicians.musiclms;
+package com.themusicians.musiclms.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.themusicians.musiclms.R;
 
 /*
     // for add_students_teachers page the tabs
