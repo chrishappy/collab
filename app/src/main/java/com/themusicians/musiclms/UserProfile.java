@@ -61,7 +61,6 @@ public class UserProfile extends AppCompatActivity {
 
   protected TextView newName, newEmail;
 
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
