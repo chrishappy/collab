@@ -3,33 +3,20 @@ package com.themusicians.musiclms;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -39,7 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.ui.add_students_teachers;
+import com.themusicians.musiclms.ui.UserAddUsers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +42,7 @@ import java.util.List;
  *
  * @todo View user info
  */
+
 public class UserProfile extends AppCompatActivity {
 
   protected TextView myName;
@@ -70,13 +58,6 @@ public class UserProfile extends AppCompatActivity {
 
   protected User currUser;
   protected ListView InstrumentList;
-/*
-  protected TabLayout tabLayout = findViewById(R.id.accountTeachersTab);
-  protected TabItem tabAccounts = findViewById(R.id.accTab);
-  protected TabItem tabTeachers = findViewById(R.id.teachersTab);
-  protected ViewPager2 viewpager1 = findViewById(R.id.viewpager1);
-*/
-
 
   protected TextView newName, newEmail;
 
@@ -89,13 +70,6 @@ public class UserProfile extends AppCompatActivity {
     /**
      * Initialize variables
      */
-
-    /*
-    tabLayout = findViewById(R.id.accountTeachersTab);
-    tabAccounts = findViewById(R.id.accTab);
-    TabItem tabTeachers = findViewById(R.id.teachersTab);
-    ViewPager2 viewpager1 = findViewById(R.id.viewpager1);*/
-
 
     final EditText newInstrument;
 
@@ -254,10 +228,11 @@ public class UserProfile extends AppCompatActivity {
     startActivity(toSearch);
   }
 
-  public void toAddTeachers(View view){
-    Intent toAdd = new Intent(this, add_students_teachers.class);
+  public void toAddUser(View view){
+    Intent toAdd = new Intent(this, UserAddUsers.class);
     startActivity(toAdd);
   }
+
 
   /**
    * Redirects User to Editing data
