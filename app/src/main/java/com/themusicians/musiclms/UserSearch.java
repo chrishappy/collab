@@ -21,6 +21,20 @@ import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
 
+/**
+ * ....
+ *
+ * <p>
+ * @Contributors: Jerome Lau
+ * @Author Jerome Lau
+ * @Since Nov 19, 2020
+ * <p>--------------------------------
+ *
+ * @todo Search for users
+ * @todo Add users to User Profile
+ * @todo Display searched users
+ */
+
 public class UserSearch extends AppCompatActivity {
 
   DatabaseReference searchRef;
@@ -40,7 +54,7 @@ public class UserSearch extends AppCompatActivity {
   }
 
   /**
-   * Display search pool
+   * On page start, display recycler view of searched users
    */
   @Override
   protected void onStart(){
@@ -48,6 +62,10 @@ public class UserSearch extends AppCompatActivity {
     if(searchRef != null){
       searchRef.addValueEventListener(new ValueEventListener() {
         @Override
+        /**
+         * Fetch users from Firebase and add them to the search list
+         * @param snapshot data snapshot for gathering data from Firebase
+         */
         public void onDataChange(@NonNull DataSnapshot snapshot) {
           if(snapshot.exists()){
             searchList = new ArrayList<>();
@@ -59,12 +77,19 @@ public class UserSearch extends AppCompatActivity {
           }
         }
 
+        /**
+         * Display message for error on fetching data from Firebase
+         * @param error
+         */
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
           Toast.makeText(UserSearch.this, error.getMessage(), Toast.LENGTH_SHORT).show();
         }
       });
     }
+    /**
+     * Check if search bar is empty
+     */
     if(searchView != null){
       searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         @Override
@@ -72,6 +97,11 @@ public class UserSearch extends AppCompatActivity {
           return false;
         }
 
+        /**
+         * On search bar text changes, call search method
+         * @param newText Passes user input, newText, to search function
+         * @return false
+         */
         @Override
         public boolean onQueryTextChange(String newText) {
           search(newText);
@@ -83,6 +113,8 @@ public class UserSearch extends AppCompatActivity {
 
   /**
    * Search bar
+   * Takes user input and adds new searched users into the search list
+   * @param str String of user input passed from onQueryTextChange
    */
   private void search(String str){
     ArrayList<User> mySearchList = new ArrayList<>();

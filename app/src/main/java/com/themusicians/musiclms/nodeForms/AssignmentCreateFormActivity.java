@@ -139,7 +139,7 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     // Get fields
     final EditText AssignmentName = findViewById(R.id.assignment_name);
     final EditText StudentOrClass = findViewById(R.id.students_or_class);
-    final EditText dueDate = findViewById(R.id.dueDate);
+    final EditText dueDate = findViewById(R.id.searchRole);
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);

@@ -111,6 +111,8 @@ public class SignUp extends AppCompatActivity {
 
             /**
              * Verifies user credentials with Firebase and registers account
+             * @param email references newEmail from user input
+             * @param password references newPassword from user input
              */
             fAuth
                 .createUserWithEmailAndPassword(email, password)
@@ -197,6 +199,8 @@ public class SignUp extends AppCompatActivity {
 
             /**
              * Verifies user credentials with Firebase and registers account
+             * @param email references newEmail from user input
+             * @param password references newPassword from user input
              */
             fAuth
                 .createUserWithEmailAndPassword(email, password)

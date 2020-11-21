@@ -100,9 +100,9 @@ public class AssignmentOverviewAdapter
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
 
-      assignmentName = itemView.findViewById(R.id.assignmentName);
-      authorName = itemView.findViewById(R.id.authorName);
-      dueDate = itemView.findViewById(R.id.dueDate);
+      assignmentName = itemView.findViewById(R.id.searchName);
+      authorName = itemView.findViewById(R.id.searchEmail);
+      dueDate = itemView.findViewById(R.id.searchRole);
       editAssignment = itemView.findViewById(R.id.edit_button);
     }
   }

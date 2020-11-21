@@ -77,6 +77,8 @@ public class myLogin extends AppCompatActivity {
             /**
              * Verifies account with Firebase
              * Redirects user to Assignment Overview
+             * @param email references myEmail from user input
+             * @param password references myPassword from user input
              */
             fAuth
                 .signInWithEmailAndPassword(email, password)

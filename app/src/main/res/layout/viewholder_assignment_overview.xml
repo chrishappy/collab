@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/assignmentNameLabel"
+            android:id="@+id/placeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/assignmentName"
+            android:id="@+id/searchName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -35,11 +35,11 @@
             android:layout_marginEnd="16dp"
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/assignmentNameLabel"
+            app:layout_constraintStart_toEndOf="@+id/placeName"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/authorNameLabel"
+            android:id="@+id/placeEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -47,10 +47,10 @@
             android:text="@string/assignment__overview__author_label"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assignmentNameLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/placeName" />
 
         <TextView
-            android:id="@+id/authorName"
+            android:id="@+id/searchEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -58,11 +58,11 @@
             android:layout_marginEnd="16dp"
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/authorNameLabel"
-            app:layout_constraintTop_toBottomOf="@+id/assignmentName" />
+            app:layout_constraintStart_toEndOf="@+id/placeEmail"
+            app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
         <TextView
-            android:id="@+id/dueDateLabel"
+            android:id="@+id/placeRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -71,10 +71,10 @@
             android:text="Due Date"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/authorNameLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/placeEmail" />
 
         <TextView
-            android:id="@+id/dueDate"
+            android:id="@+id/searchRole"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -83,8 +83,8 @@
             android:layout_marginBottom="16dp"
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dueDateLabel"
-            app:layout_constraintTop_toBottomOf="@+id/authorName" />
+            app:layout_constraintStart_toEndOf="@+id/placeRole"
+            app:layout_constraintTop_toBottomOf="@+id/searchEmail" />
 
         <LinearLayout
             android:id="@+id/actionsButtons"
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dueDate"
+            app:layout_constraintTop_toBottomOf="@+id/searchRole"
             android:gravity="end
 ">
             <Button

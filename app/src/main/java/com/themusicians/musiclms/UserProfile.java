@@ -110,7 +110,7 @@ public class UserProfile extends AppCompatActivity {
     DatabaseReference InstrumentRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("instruments");
 
     /**
-     * Fetch and display user name/email from Firebase
+     * References the user node and current user to fetch user name/email and displays them
      */
     DatabaseReference reference =
         FirebaseDatabase.getInstance()
@@ -143,7 +143,7 @@ public class UserProfile extends AppCompatActivity {
         });
 
     /**
-     * Save user instruments in Firebase
+     * Saves user instruments in Firebase
      */
     reInput = true;
     currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -162,7 +162,9 @@ public class UserProfile extends AppCompatActivity {
                 isNew = false;
               }
             }
-
+            /**
+             * Checks if instrument is empty
+             */
             if (instrumentName.isEmpty()) {
               Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
             } else if (isNew == false){
@@ -188,10 +190,13 @@ public class UserProfile extends AppCompatActivity {
     InstrumentList.setAdapter(myArrayAdapter);
     InstrumentRef.addChildEventListener(new ChildEventListener() {
       @Override
+      /**
+       * Runs on each instance of data and each time new child is added
+       * Takes each instance of data and stores it in a list
+       * @param snapshot data snapshot to fetch data from Firebase
+       * @param previousChildName
+       */
       public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        /**
-         * Updates display if instrument is added
-         */
         String value = snapshot.getValue(String.class);
         /**
          * Checks to pull instruments to list once
@@ -203,6 +208,11 @@ public class UserProfile extends AppCompatActivity {
         myArrayAdapter.notifyDataSetChanged();
       }
 
+      /**
+       * Updates instrument list if instrument is changed
+       * @param snapshot data snapshot to fetch data from Firebase
+       * @param previousChildName
+       */
       @Override
       public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         String value = snapshot.getValue(String.class);
@@ -210,11 +220,12 @@ public class UserProfile extends AppCompatActivity {
         myArrayAdapter.notifyDataSetChanged();
       }
 
+      /**
+       * Updates instrument list if instrument is removed
+       * @param snapshot data snapshot to fetch data from Firebase
+       */
       @Override
       public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-        /**
-         * Updates display if intrument is removed
-         */
         String value = snapshot.getValue(String.class);
         myArrayList.remove(value);
         myArrayAdapter.notifyDataSetChanged();
@@ -232,6 +243,9 @@ public class UserProfile extends AppCompatActivity {
     });
   }
 
+  /**
+   * Redirects to search for teachers
+   */
   public void toSearchTeachers(View view){
     Intent toSearch = new Intent(this, UserSearch.class);
     startActivity(toSearch);
