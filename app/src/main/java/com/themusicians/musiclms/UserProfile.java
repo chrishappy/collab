@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -98,7 +99,6 @@ public class UserProfile extends AppCompatActivity {
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
 
-
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
@@ -108,7 +108,6 @@ public class UserProfile extends AppCompatActivity {
     InstrumentList = (ListView) findViewById(R.id.InstrumentList);
     final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(UserProfile.this, android.R.layout.simple_list_item_1, myArrayList);
     DatabaseReference InstrumentRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("instruments");
-
 
     /**
      * Fetch and display user name/email from Firebase
@@ -167,7 +166,7 @@ public class UserProfile extends AppCompatActivity {
             if (instrumentName.isEmpty()) {
               Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
             } else if (isNew == false){
-              Toast.makeText(UserProfile.this, instrumentName + " is already added",Toast.LENGTH_SHORT).show();
+              Toast.makeText(UserProfile.this, instrumentName.toLowerCase() + " is already added",Toast.LENGTH_SHORT).show();
             } else {
               Instruments.add(instrumentName);
               currUser.setInstruments(Instruments);
@@ -231,6 +230,11 @@ public class UserProfile extends AppCompatActivity {
 
       }
     });
+  }
+
+  public void toSearchTeachers(View view){
+    Intent toSearch = new Intent(this, UserSearch.class);
+    startActivity(toSearch);
   }
 
   /**
