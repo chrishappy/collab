@@ -39,6 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.ui.add_students_teachers;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,7 @@ public class UserProfile extends AppCompatActivity {
 
 
   protected TextView newName, newEmail;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -249,6 +252,11 @@ public class UserProfile extends AppCompatActivity {
   public void toSearchTeachers(View view){
     Intent toSearch = new Intent(this, UserSearch.class);
     startActivity(toSearch);
+  }
+
+  public void toAddTeachers(View view){
+    Intent toAdd = new Intent(this, add_students_teachers.class);
+    startActivity(toAdd);
   }
 
   /**

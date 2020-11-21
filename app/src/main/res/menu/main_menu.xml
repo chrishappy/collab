@@ -10,10 +10,6 @@
         android:title="Create Assignment"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/addTeachers"
-        android:title="Add Teachers"
-        app:showAsAction="never"/>
-
     <item android:id="@+id/logout"
         android:title="Logout"
         app:showAsAction="never"/>
