@@ -12,4 +12,5 @@ public class Chat_UserDetails {
     static String username = "";
     //static String password = "";
     static String chatWith = "";
+    static String userId = "";
 }

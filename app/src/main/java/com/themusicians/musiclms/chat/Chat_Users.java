@@ -53,7 +53,7 @@ public class Chat_Users extends AppCompatActivity {
         pd.setMessage("Loading...");
         pd.show();
 
-        String url = "https://musiclms---cmpt276.firebaseio.com/node__user.json";
+        String url = "https://musiclms---cmpt276.firebaseio.com/node__user/.json";
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
