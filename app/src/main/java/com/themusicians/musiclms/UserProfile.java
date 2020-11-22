@@ -220,13 +220,8 @@ public class UserProfile extends AppCompatActivity {
   }
 
   /**
-   * Redirects to search for teachers
+   * Redirects to add users
    */
-  public void toSearchTeachers(View view){
-    Intent toSearch = new Intent(this, UserSearch.class);
-    startActivity(toSearch);
-  }
-
   public void toAddUser(View view){
     Intent toAdd = new Intent(this, UserAddUsers.class);
     startActivity(toAdd);
