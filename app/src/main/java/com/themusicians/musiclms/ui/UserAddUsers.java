@@ -1,26 +1,33 @@
 package com.themusicians.musiclms.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.UserSearch;
 import com.themusicians.musiclms.entity.Node.User;
+
+import java.util.ArrayList;
 
 public class UserAddUsers extends AppCompatActivity {
 
@@ -40,11 +47,10 @@ public class UserAddUsers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.user_add_main);
-
-        //display name
-
         myName = findViewById(R.id.name);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //display name
         currUser = new User(currentUser.getUid());
         DatabaseReference reference =
                 FirebaseDatabase.getInstance()

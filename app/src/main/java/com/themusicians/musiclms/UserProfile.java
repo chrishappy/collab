@@ -69,7 +69,6 @@ public class UserProfile extends AppCompatActivity {
     /**
      * Initialize variables
      */
-
     final EditText newInstrument;
 
     myName = findViewById(R.id.user_name);
@@ -149,6 +148,7 @@ public class UserProfile extends AppCompatActivity {
               Instruments.add(instrumentName);
               currUser.setInstruments(Instruments);
               currUser.save();
+              Toast.makeText(UserProfile.this, "Instrument added", Toast.LENGTH_SHORT).show();
               reInput = false;
             }
           });

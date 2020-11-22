@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.ui;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -23,7 +22,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new accountfragment();
             case 1:
-                return new teachersFragment();
+                return new userFragment();
             default:
                 return null;
         }

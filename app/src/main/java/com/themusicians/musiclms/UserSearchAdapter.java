@@ -46,12 +46,23 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
   Context context;
   DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
 
+  /**
+   * Initialize variables
+   * @param list ListView of added user list
+   * @param c Context of page
+   */
   public UserSearchAdapter(@NonNull  ArrayList<User> list, Context c){
     context = c;
     this.list = list;
+    /**
+     * Adds prior listed Firebase addedUsers to the added user list
+     */
     userRef.addChildEventListener(new ChildEventListener() {
       @Override
       public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        /**
+         * Checks if user ID is already added
+         */
         boolean input = true;
         String value = snapshot.getValue(String.class);
         for(int i = 0; i < userList.size(); i ++){
@@ -123,21 +134,28 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
       addUser = itemView.findViewById(R.id.searchAdd);
     }
 
+    //Add button onClick
     public void onClick(int position){
       addUser.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
           callAddUser(position);
         }
       });
     }
   }
 
+  /**
+   * On add button, get users ID and adds it to addedUsers in Firebase
+   * @param position position of cardView
+   */
   public void callAddUser(int position){
     currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
+        /**
+         * Checks if added user is new
+         */
         boolean isNew = true;
         for(int i = 0; i < userList.size(); i ++){
           if(list.get(position).getId().equals(userList.get(i))){
@@ -150,6 +168,9 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
         } else if(list.get(position).getId().equals(currUser.getId())){
           Toast.makeText(context, "Cannot add self", Toast.LENGTH_SHORT).show();
         } else {
+          /**
+           * Saves added users in Firebase
+           */
           currUser = snapshot.getValue(User.class);
           userList.add(list.get(position).getId());
           currUser.setAddedUsers(userList);
