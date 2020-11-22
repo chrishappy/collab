@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,7 +72,7 @@ public class UserSearch extends AppCompatActivity {
             for(DataSnapshot ds : snapshot.getChildren()){
               searchList.add(ds.getValue(User.class));
             }
-            UserSearchAdapter searchAdapter = new UserSearchAdapter(searchList);
+            UserSearchAdapter searchAdapter = new UserSearchAdapter(searchList, UserSearch.this);
             searchRecycler.setAdapter(searchAdapter);
           }
         }
@@ -120,7 +123,7 @@ public class UserSearch extends AppCompatActivity {
         mySearchList.add(object);
       }
     }
-    UserSearchAdapter userSearchAdapter = new UserSearchAdapter(mySearchList);
+    UserSearchAdapter userSearchAdapter = new UserSearchAdapter(mySearchList, UserSearch.this);
     searchRecycler.setAdapter(userSearchAdapter);
   }
 

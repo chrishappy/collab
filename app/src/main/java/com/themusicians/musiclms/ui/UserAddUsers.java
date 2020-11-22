@@ -27,7 +27,7 @@ public class UserAddUsers extends AppCompatActivity {
     // for add_students_teachers page the tabs
     protected TabLayout tabLayout;
     protected TabItem tabAccounts;
-    protected TabItem tabTeachers;
+    protected TabItem usersTab;
     protected ViewPager viewpager1;
 
     //
@@ -71,9 +71,9 @@ public class UserAddUsers extends AppCompatActivity {
                     }
                 });
         // tab layout
-        tabLayout = findViewById(R.id.accountTeachersTab);
+        tabLayout = findViewById(R.id.accountUsersTab);
         tabAccounts = findViewById(R.id.accTab);
-        tabTeachers = findViewById(R.id.teachersTab);
+        usersTab = findViewById(R.id.usersTab);
         viewpager1 = findViewById(R.id.viewpager1);
 
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());

@@ -8,7 +8,7 @@
 
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/accountTeachersTab"
+        android:id="@+id/accountUsersTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,10 +25,10 @@
             android:text="Account" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/teachersTab"
+            android:id="@+id/usersTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Teachers" />
+            android:text="Users" />
 
     </com.google.android.material.tabs.TabLayout>
 
@@ -53,16 +53,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountTeachersTab"
+        app:layout_constraintTop_toBottomOf="@+id/accountUsersTab"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/toSearchTeachers"
+        android:id="@+id/toSearchUsers"
         android:layout_width="176dp"
         android:layout_height="48dp"
         android:onClick="toSearchTeachers"
-        android:text="Search Teachers"
-        app:layout_constraintBottom_toTopOf="@+id/accountTeachersTab"
+        android:text="Search Users"
+        app:layout_constraintBottom_toTopOf="@+id/accountUsersTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toStartOf="parent"
