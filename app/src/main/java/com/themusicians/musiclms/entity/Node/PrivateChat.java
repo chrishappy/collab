@@ -2,11 +2,8 @@ package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.List;
-
 /**
  * @file Assignment.java
- *
  * @contributor Shifan He
  * @author Nathan Tsai
  * @since Nov 16, 2020
@@ -16,9 +13,7 @@ public class PrivateChat extends Node {
 
   protected final String type = "chat_private";
 
-  /**
-   * The chat will be between the author (uid) and this user (otherUid)
-   */
+  /** The chat will be between the author (uid) and this user (otherUid) */
   protected String otherUid;
 
   /** The default constructor for Firebase + loadMultiple */
@@ -29,9 +24,10 @@ public class PrivateChat extends Node {
   public PrivateChat(String id) {
     super(id);
   }
-  
+
   /**
    * Implement getBaseTable()
+   *
    * @return the database table to store the entity
    */
   @Override
@@ -39,9 +35,7 @@ public class PrivateChat extends Node {
     return getEntityType() + "__" + getType();
   }
 
-  /**
-   * Implement getType()
-   */
+  /** Implement getType() */
   @Override
   public String getType() {
     return type;
