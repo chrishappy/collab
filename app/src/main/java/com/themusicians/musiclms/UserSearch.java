@@ -48,7 +48,6 @@ public class UserSearch extends AppCompatActivity {
     searchRef = FirebaseDatabase.getInstance().getReference().child("node__user");
     searchRecycler = findViewById(R.id.searchRecycler);
     searchView = findViewById(R.id.searchView);
-
   }
 
   /**

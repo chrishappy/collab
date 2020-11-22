@@ -11,7 +11,6 @@ import com.themusicians.musiclms.R;
 
 public class UserAddUsers extends AppCompatActivity {
 
-
     // for add_students_teachers page the tabs
     protected TabLayout tabLayout;
     protected TabItem tabAccounts;
@@ -21,7 +20,7 @@ public class UserAddUsers extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTitle("Add teachers");
+
         setContentView(R.layout.user_add_main);
 
         tabLayout = findViewById(R.id.accountTeachersTab);

@@ -115,5 +115,15 @@ public class User extends Node {
     this.instruments = instruments;
   }
 
+  private List<String> addedUsers;
+
+  public List<String> getAddedUsers() {
+    return addedUsers;
+  }
+
+  public void setAddedUsers(List<String> addedUsers) {
+    this.addedUsers = addedUsers;
+  }
+
   /** */
 }

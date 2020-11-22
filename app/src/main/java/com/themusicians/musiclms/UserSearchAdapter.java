@@ -1,5 +1,6 @@
 package com.themusicians.musiclms;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewAdapter;
 
 import java.util.ArrayList;
 
@@ -29,8 +32,10 @@ import java.util.ArrayList;
 // database contents in a Recycler View
 public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.MyViewHolder>{
 
+  Context context;
   ArrayList<User> list;
-  public UserSearchAdapter(ArrayList<User> list){
+
+  public UserSearchAdapter(@NonNull  ArrayList<User> list){
     this.list = list;
   }
 
@@ -49,6 +54,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
     holder.userName.setText(list.get(position).getName());
     holder.userEmail.setText(list.get(position).getEmail());
     holder.userRole.setText(list.get(position).getRole());
+    holder.addUser.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -69,7 +75,16 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
       userRole = itemView.findViewById(R.id.searchRole);
       addUser = itemView.findViewById(R.id.searchAdd);
       //userInstruments = itemView.findViewById(R.id.searchInstruments);
+
+    }
+
+    public void onClick(int position){
+       addUser.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+           Toast.makeText(context, position +" is clicked", Toast.LENGTH_SHORT).show();
+         }
+       });
     }
   }
-
 }
