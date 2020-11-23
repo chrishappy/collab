@@ -4,7 +4,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,14 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Chat"></activity>
-        <!-- User Activities -->
+        <activity android:name=".ui.UserAddUsers" />
+        <activity android:name=".ui.slideshow.add_students_teachers" />
+        <activity android:name=".UserSearch" />
+        <activity android:name=".Chat" /> <!-- User Activities -->
         <activity android:name=".SignUp" />
         <activity android:name=".UserProfile" />
-        <activity android:name=".Placeholder" />
         <activity
-            android:name=".myLogin"
-            android:label="@string/title_activity_signin" />
+            android:name=".UserLogin"
+            android:label="@string/title_activity_signin" /> <!-- Assignment -->
         <activity
             android:name=".components.MainNavigation"
             android:label="@string/title_activity_assignment_overview"

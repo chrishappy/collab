@@ -6,6 +6,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 public class MainActivity extends AppCompatActivity {
   private Button button;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser mFirebaseUser = fAuth.getCurrentUser();
     if (mFirebaseUser != null) {
-      Intent redirectOverview = new Intent(this, Placeholder.class);
+      Intent redirectOverview = new Intent(this, AssignmentOverviewActivity.class);
       startActivity(redirectOverview);
     } else {
       Intent redirectSignUp = new Intent(this, SignUp.class);
