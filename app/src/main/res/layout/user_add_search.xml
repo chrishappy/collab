@@ -17,11 +17,11 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/returnUserProfile"
+        android:id="@+id/returnAddedUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="returnUserProfile"
-        android:text="Return to User Profile" />
+        android:onClick="returnAddedUsers"
+        android:text="Return to Added Users" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecycler"

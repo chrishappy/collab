@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
-import com.themusicians.musiclms.myLogin;
+import com.themusicians.musiclms.UserLogin;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import org.jetbrains.annotations.NotNull;
 
@@ -167,7 +167,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     switch (item.getItemId()) {
       case R.id.logout:
         fAuth.signOut();
-        Intent logout = new Intent(AssignmentOverviewActivity.this, myLogin.class);
+        Intent logout = new Intent(AssignmentOverviewActivity.this, UserLogin.class);
         startActivity(logout);
         return true;
       case R.id.userprofile:

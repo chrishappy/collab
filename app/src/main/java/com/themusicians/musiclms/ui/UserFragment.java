@@ -23,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -32,10 +31,10 @@ import java.util.List;
  * @Since Nov 20, 2020
  *
  * A simple {@link Fragment} subclass.
- * Use the {@link userFragment#newInstance} factory method to
+ * Use the {@link UserFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class userFragment extends Fragment {
+public class UserFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,7 +51,7 @@ public class userFragment extends Fragment {
     DatabaseReference addedUsersRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
     DatabaseReference nameRef;
 
-    public userFragment() {
+    public UserFragment() {
         // Required empty public constructor
     }
 
@@ -65,8 +64,8 @@ public class userFragment extends Fragment {
      * @return A new instance of fragment teachersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public userFragment newInstance(String param1, String param2) {
-        userFragment fragment = new userFragment();
+    public UserFragment newInstance(String param1, String param2) {
+        UserFragment fragment = new UserFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

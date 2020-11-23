@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.UserAddUsers;
 
 import java.util.ArrayList;
@@ -45,21 +47,19 @@ import java.util.List;
 
 public class UserProfile extends AppCompatActivity {
 
-  protected TextView myName;
-  protected TextView myEmail;
-
+  protected TextView myName, myEmail, newName, newEmail;
   protected FirebaseUser currentUser;
   protected FirebaseAuth fAuth;
 
-  protected Button add;
-  protected List<String> Instruments;
+  protected Button addInstrument, userProfileBack;
+  protected List<String> instruments;
   ArrayList<String> myArrayList = new ArrayList<>();
   boolean reInput;
 
   protected User currUser;
-  protected ListView InstrumentList;
+  protected ListView instrumentList;
 
-  protected TextView newName, newEmail;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +73,19 @@ public class UserProfile extends AppCompatActivity {
 
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
+    userProfileBack = findViewById(R.id.userProfileBack);
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
     newInstrument = findViewById(R.id.enterInstruments);
-    add = findViewById(R.id.addButton);
-    Instruments = new ArrayList<String>();
-    InstrumentList = (ListView) findViewById(R.id.InstrumentList);
+    addInstrument = findViewById(R.id.addButton);
+    instruments = new ArrayList<>();
+    instrumentList = findViewById(R.id.InstrumentList);
     final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(UserProfile.this, android.R.layout.simple_list_item_1, myArrayList);
     DatabaseReference InstrumentRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("instruments");
+
+    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
     /**
      * References the user node and current user to fetch user name/email and displays them
@@ -125,7 +128,7 @@ public class UserProfile extends AppCompatActivity {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         currUser = snapshot.getValue(User.class);
-        add.setOnClickListener(
+        addInstrument.setOnClickListener(
           (v) -> {
             String instrumentName = newInstrument.getText().toString().trim();
             /**
@@ -145,8 +148,8 @@ public class UserProfile extends AppCompatActivity {
             } else if (isNew == false){
               Toast.makeText(UserProfile.this, instrumentName.toLowerCase() + " is already added",Toast.LENGTH_SHORT).show();
             } else {
-              Instruments.add(instrumentName);
-              currUser.setInstruments(Instruments);
+              instruments.add(instrumentName);
+              currUser.setInstruments(instruments);
               currUser.save();
               Toast.makeText(UserProfile.this, "Instrument added", Toast.LENGTH_SHORT).show();
               reInput = false;
@@ -163,7 +166,7 @@ public class UserProfile extends AppCompatActivity {
     /**
      * Display and update instruments from Firebase
      */
-    InstrumentList.setAdapter(myArrayAdapter);
+    instrumentList.setAdapter(myArrayAdapter);
     InstrumentRef.addChildEventListener(new ChildEventListener() {
       @Override
       /**
@@ -178,7 +181,7 @@ public class UserProfile extends AppCompatActivity {
          * Checks to pull instruments to list once
          */
         if(reInput == true) {
-          Instruments.add(value);
+          instruments.add(value);
         }
         myArrayList.add(value);
         myArrayAdapter.notifyDataSetChanged();
@@ -226,7 +229,6 @@ public class UserProfile extends AppCompatActivity {
     Intent toAdd = new Intent(this, UserAddUsers.class);
     startActivity(toAdd);
   }
-
 
   /**
    * Redirects User to Editing data
@@ -341,6 +343,14 @@ public class UserProfile extends AppCompatActivity {
   public void editDataBack(View view) {
     Intent reload = new Intent(this, UserProfile.class);
     startActivity(reload);
+  }
+
+  /**
+   * Redirects user to Assignment Overview
+   */
+  public void backFromProfile(View view){
+    Intent toAssignmentOverview = new Intent(this, AssignmentOverviewActivity.class);
+    startActivity(toAssignmentOverview);
   }
 
   /** Shifan's code */

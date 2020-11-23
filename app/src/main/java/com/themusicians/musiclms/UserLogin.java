@@ -27,10 +27,10 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
  *
  * @todo Login users via Firebase
  */
-public class myLogin extends AppCompatActivity {
+public class UserLogin extends AppCompatActivity {
 
   EditText myEmail, myPassword;
-  Button signin;
+  Button signIn;
   FirebaseAuth fAuth;
   TextView register;
 
@@ -45,13 +45,13 @@ public class myLogin extends AppCompatActivity {
     myEmail = findViewById(R.id.myEmail);
     myPassword = findViewById(R.id.myPassword);
     fAuth = FirebaseAuth.getInstance();
-    signin = findViewById(R.id.signin);
+    signIn = findViewById(R.id.signin);
     register = findViewById(R.id.orRegister);
 
     /**
      * Listens for when the User clicks Sign In
      */
-    signin.setOnClickListener(
+    signIn.setOnClickListener(
         new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -87,12 +87,12 @@ public class myLogin extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                          Toast.makeText(myLogin.this, "Login Successful", Toast.LENGTH_SHORT)
+                          Toast.makeText(UserLogin.this, "Login Successful", Toast.LENGTH_SHORT)
                               .show();
                           startActivity(new Intent(getApplicationContext(), AssignmentOverviewActivity.class));
                         } else {
                           Toast.makeText(
-                                  myLogin.this,
+                                  UserLogin.this,
                                   "Login Error" + task.getException().getMessage(),
                                   Toast.LENGTH_SHORT)
                               .show();
@@ -109,7 +109,7 @@ public class myLogin extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            Intent nextPageLogin = new Intent(myLogin.this, SignUp.class);
+            Intent nextPageLogin = new Intent(UserLogin.this, SignUp.class);
             startActivity(nextPageLogin);
           }
         });

@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.ui.UserAddUsers;
 
 import java.util.ArrayList;
 
@@ -130,8 +131,8 @@ public class UserSearch extends AppCompatActivity {
   /**
    * Redirect to User Profile
    */
-  public void returnUserProfile(View view){
-    Intent toUserProfile = new Intent(this, UserProfile.class);
-    startActivity(toUserProfile);
+  public void returnAddedUsers(View view){
+    Intent toAddUsers = new Intent(this, UserAddUsers.class);
+    startActivity(toAddUsers);
   }
 }

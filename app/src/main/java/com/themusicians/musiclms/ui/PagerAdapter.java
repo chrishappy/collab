@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.themusicians.musiclms.accountfragment;
+import com.themusicians.musiclms.Accountfragment;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
@@ -20,9 +20,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return new accountfragment();
+                return new Accountfragment();
             case 1:
-                return new userFragment();
+                return new UserFragment();
             default:
                 return null;
         }

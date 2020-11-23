@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class SignUp extends AppCompatActivity {
   protected Button teacher, student;
   protected FirebaseAuth fAuth;
   protected CheckBox sendText, makeCall, joinZoom, scheduleZoom, watchYoutube, uploadYoutube;
+  protected TextView toLogin;
   DatabaseReference reference;
 
   /** Save User Date */
@@ -61,7 +63,7 @@ public class SignUp extends AppCompatActivity {
     newEmail = findViewById(R.id.newEmail);
     newPassword = findViewById(R.id.newPassword);
     newName = findViewById(R.id.newName);
-
+    toLogin = findViewById(R.id.toSignIn);
     fAuth = FirebaseAuth.getInstance();
     teacher = findViewById(R.id.signup_teacher);
     student = findViewById(R.id.signup_student);
@@ -309,5 +311,13 @@ public class SignUp extends AppCompatActivity {
   public void signUpTechBack(View view) {
     currentUser.delete();
     setContentView(R.layout.user_signup_main);
+  }
+
+  /**
+   * Redirects user to login page
+   */
+  public void toSignIn(View view){
+    Intent toLogin = new Intent(this, UserLogin.class);
+    startActivity(toLogin);
   }
 }
