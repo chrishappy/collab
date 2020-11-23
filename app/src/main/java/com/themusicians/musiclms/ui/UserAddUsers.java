@@ -29,7 +29,7 @@ import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
 
-public class UserAddUsers extends AppCompatActivity {
+public class UserAddUsers<button> extends AppCompatActivity {
 
     // for add_students_teachers page the tabs
     protected TabLayout tabLayout;
@@ -110,5 +110,13 @@ public class UserAddUsers extends AppCompatActivity {
     public void toSearchTeachers(View view){
         Intent toSearch = new Intent(this, UserSearch.class);
         startActivity(toSearch);
+    }
+
+    /**
+     * Redirects back to User Profile
+     */
+    public void backUserMain(View view){
+        Intent toUserProfile = new Intent(this, UserProfile.class);
+        startActivity(toUserProfile);
     }
 }
