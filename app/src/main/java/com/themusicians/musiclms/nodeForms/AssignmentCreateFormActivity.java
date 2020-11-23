@@ -146,7 +146,12 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     super.onCreate(savedInstanceState);
 
     // Initiate the entity
-    assignment = new Assignment();
+    if (inEditMode) {
+      assignment = new Assignment(editEntityId);
+    }
+    else {
+      assignment = new Assignment();
+    }
 
     setContentView(R.layout.activity_assignment_create_form);
 
