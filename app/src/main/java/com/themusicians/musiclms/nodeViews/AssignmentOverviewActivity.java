@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,9 +21,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.UserLogin;
 import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
-import com.themusicians.musiclms.UserLogin;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import org.jetbrains.annotations.NotNull;
 
@@ -85,7 +84,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
               @Override
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                DataSnapshot snapshot = assignmentOverviewAdapter.getSnapshots().getSnapshot(position);
+                DataSnapshot snapshot =
+                    assignmentOverviewAdapter.getSnapshots().getSnapshot(position);
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:

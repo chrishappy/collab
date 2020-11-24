@@ -1,5 +1,8 @@
 package com.themusicians.musiclms.nodeForms;
 
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -31,7 +34,6 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,9 +42,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Used to create and update assignments node entities
@@ -51,7 +51,6 @@ import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RET
  * @author Nathan Tsai
  * @since Nov 5, 2020
  */
-
 public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     implements ToDoAssignmentFormAdapter.ItemClickListener {
   /** The entity to be saved */
@@ -84,30 +83,33 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     final EditText StudentOrClass = findViewById(R.id.students_or_class);
     final EditText dueDate = findViewById(R.id.dueDate);
     if (inEditMode) {
-      assignment.getEntityDatabase().child( editEntityId )
-          .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-              assignment = dataSnapshot.getValue(Assignment.class);
+      assignment
+          .getEntityDatabase()
+          .child(editEntityId)
+          .addListenerForSingleValueEvent(
+              new ValueEventListener() {
+                @Override
+                public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                  assignment = dataSnapshot.getValue(Assignment.class);
 
-              assert assignment != null;
+                  assert assignment != null;
 
-              if (assignment.getName() != null) {
-                AssignmentName.setText( assignment.getName() );
-              }
+                  if (assignment.getName() != null) {
+                    AssignmentName.setText(assignment.getName());
+                  }
 
-              if ( assignment.getClassId() != null) {
-                StudentOrClass.setText( assignment.getClassId() );
-              }
+                  if (assignment.getClassId() != null) {
+                    StudentOrClass.setText(assignment.getClassId());
+                  }
 
-              if (assignment.getDueDate() != 0) {
-                Date date = new Date(assignment.getDueDate()*1000);
-                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.CANADA);
-                dueDate.setText(dateFormat.format(date));
-              }
+                  if (assignment.getDueDate() != 0) {
+                    Date date = new Date(assignment.getDueDate() * 1000);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+                    dueDate.setText(dateFormat.format(date));
+                  }
 
-              Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
-            }
+                  Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
+                }
 
                 @Override
                 public void onCancelled(@NotNull DatabaseError databaseError) {
@@ -132,10 +134,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     }
   }
 
-  /**
-   * Function to tell the app to stop getting
-   * data from database on stoping of the activity
-   */
+  /** Function to tell the app to stop getting data from database on stoping of the activity */
   @Override
   protected void onStop() {
     super.onStop();
@@ -156,8 +155,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     // Initiate the entity
     if (inEditMode) {
       assignment = new Assignment(editEntityId);
-    }
-    else {
+    } else {
       assignment = new Assignment();
     }
     setContentView(R.layout.activity_assignment_create_form);
@@ -168,26 +166,30 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     final EditText dueDate = findViewById(R.id.dueDate);
 
     // Show user auto complete
-    //Create a new ArrayAdapter with your context and the simple layout for the dropdown menu provided by Android
-    final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
-    //Child the root before all the push() keys are found and add a ValueEventListener()
-    tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-        //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-        for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
-          //Get the suggestion by childing the key of the string you want to get.
-          String suggestion = suggestionSnapshot.child("name").getValue(String.class);
-          //Add the retrieved string to the list
-          autoComplete.add(suggestion);
-        }
-      }
+    // Create a new ArrayAdapter with your context and the simple layout for the dropdown menu
+    // provided by Android
+    final ArrayAdapter<String> autoComplete =
+        new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+    // Child the root before all the push() keys are found and add a ValueEventListener()
+    tempUser
+        .getEntityDatabase()
+        .addValueEventListener(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(DataSnapshot dataSnapshot) {
+                // Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's
+                // inside the method.
+                for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
+                  // Get the suggestion by childing the key of the string you want to get.
+                  String suggestion = suggestionSnapshot.child("name").getValue(String.class);
+                  // Add the retrieved string to the list
+                  autoComplete.add(suggestion);
+                }
+              }
 
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-      }
-    });
+              @Override
+              public void onCancelled(DatabaseError databaseError) {}
+            });
     StudentOrClass.setAdapter(autoComplete);
 
     // Due Date Popup
@@ -294,15 +296,13 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:
-                    Snackbar.make(
-                            toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
+                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show();
                     break;
 
                   case ItemTouchHelper.RIGHT:
-                    Snackbar.make(
-                            toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
+                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show();
                     break;
@@ -323,7 +323,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                 assignment.getToDoItemsKeyQuery(), tempToDoItem.getEntityDatabase(), ToDoItem.class)
             .build();
     //            .setQuery(tempToDoItem.getEntityDatabase(), ToDoItem.class).build();
-
 
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
@@ -348,41 +347,40 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     super.onSaveInstanceState(savedInstanceState);
   }
 
-  /**
-   * To handle saving a To Do item
-   */
+  /** To handle saving a To Do item */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
     switch (requestCode) {
-      case REQUEST_TODO_ENTITY:if (resultCode == Activity.RESULT_OK) {
-        String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
+      case REQUEST_TODO_ENTITY:
+        if (resultCode == Activity.RESULT_OK) {
+          String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
-        if (assignment.getToDoIds().get(toDoId) == null) {
-          assignment.addToDoId(toDoId);
-          assignment.save();
+          if (assignment.getToDoIds().get(toDoId) == null) {
+            assignment.addToDoId(toDoId);
+            assignment.save();
 
-          // Display notification
-          Snackbar.make(
-              findViewById(R.id.createAssignmentLayout),
-              "To Do Item Saved",
-              Snackbar.LENGTH_LONG)
-              .setAction("Edit", null)
-              .show();
-        } else {
-          // Display notification
-          Snackbar.make(
-              findViewById(R.id.createAssignmentLayout),
-              "To Do Item Updated",
-              Snackbar.LENGTH_LONG)
-              .setAction("Edit", null)
-              .show();
+            // Display notification
+            Snackbar.make(
+                    findViewById(R.id.createAssignmentLayout),
+                    "To Do Item Saved",
+                    Snackbar.LENGTH_LONG)
+                .setAction("Edit", null)
+                .show();
+          } else {
+            // Display notification
+            Snackbar.make(
+                    findViewById(R.id.createAssignmentLayout),
+                    "To Do Item Updated",
+                    Snackbar.LENGTH_LONG)
+                .setAction("Edit", null)
+                .show();
           }
         }
-//        if (resultCode == Activity.RESULT_CANCELED) {
-          // Write your code if there's no result
-//        }
+        //        if (resultCode == Activity.RESULT_CANCELED) {
+        // Write your code if there's no result
+        //        }
         break;
 
       case 86:
@@ -392,7 +390,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           notification.setText(notificationText);
         } else {
           Toast.makeText(
-              AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
+                  AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
               .show();
         }
         break;
@@ -420,7 +418,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
       default:
         Toast.makeText(
-            AssignmentCreateFormActivity.this, "No actions for onEditButton: " + type, Toast.LENGTH_SHORT)
+                AssignmentCreateFormActivity.this,
+                "No actions for onEditButton: " + type,
+                Toast.LENGTH_SHORT)
             .show();
         break;
     }

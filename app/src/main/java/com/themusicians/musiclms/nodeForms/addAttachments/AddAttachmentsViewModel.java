@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel;
  * @author Nathan Tsai
  * @since Nov 23, 2020
  */
-
 public class AddAttachmentsViewModel extends ViewModel {
 
   private MutableLiveData<String> mText;

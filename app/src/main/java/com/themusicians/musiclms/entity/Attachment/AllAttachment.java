@@ -22,7 +22,7 @@ public class AllAttachment extends Attachment {
   }
 
   /** Default constructor */
-  public AllAttachment(String id ) {
+  public AllAttachment(String id) {
     super(id);
   }
 
@@ -76,5 +76,4 @@ public class AllAttachment extends Attachment {
   public void setFileId(String fileId) {
     this.fileId = fileId;
   }
-
 }

@@ -12,12 +12,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,21 +54,21 @@ public class AssignmentOverviewAdapter
 
     if (assignment.getUid() != null) {
       User tempUser = new User();
-      userEntityDatabase= tempUser.getEntityDatabase();
+      userEntityDatabase = tempUser.getEntityDatabase();
       userEntityDatabase
           .child(assignment.getUid())
-          .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-              String name = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
-              holder.authorName.setText(name);
-            }
+          .addValueEventListener(
+              new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                  String name =
+                      Objects.requireNonNull(snapshot.child("name").getValue()).toString();
+                  holder.authorName.setText(name);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-          });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+              });
     }
 
     if (assignment.getClassId() != null) {
@@ -78,8 +76,8 @@ public class AssignmentOverviewAdapter
     }
 
     if (assignment.getDueDate() != 0) {
-      Date date = new Date(assignment.getDueDate()*1000);
-      DateFormat dateFormat = new SimpleDateFormat( "MMM d", Locale.CANADA);
+      Date date = new Date(assignment.getDueDate() * 1000);
+      DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
 
@@ -117,7 +115,7 @@ public class AssignmentOverviewAdapter
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
-    TextView assignmentName, authorName, dueDate,userName;
+    TextView assignmentName, authorName, dueDate, userName;
     Button editAssignment;
 
     public AssignmentsViewHolder(@NonNull View itemView) {

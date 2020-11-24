@@ -9,18 +9,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +23,14 @@ import java.util.List;
  * The activity that manages the user sign up
  *
  * <p>
+ *
  * @contributor Harveer Khangura
  * @author Jerome Lau
  * @since Nov 3, 2020
- *
  * @todo Authenticate users via Firebase
  * @todo Store miscellaneous user info in Firebase
  * @todo Proceed through sign up layouts
  */
-
 public class SignUp extends AppCompatActivity {
 
   protected EditText newEmail, newPassword, newName;
@@ -133,9 +127,7 @@ public class SignUp extends AppCompatActivity {
                       newUser.save();
 
                       reference =
-                          FirebaseDatabase.getInstance()
-                              .getReference()
-                              .child("node__isTeacher");
+                          FirebaseDatabase.getInstance().getReference().child("node__isTeacher");
                       reference.child(currentUser.getUid()).setValue(true);
 
                       Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
@@ -231,7 +223,7 @@ public class SignUp extends AppCompatActivity {
   /**
    * Saves user tech experience in
    *
-   * Currently not used
+   * <p>Currently not used
    */
   public void signUpFinish(View view) {
 
@@ -295,18 +287,14 @@ public class SignUp extends AppCompatActivity {
     startActivity(signUpFinish);
   }
 
-  /**
-   * Redirects user to previous sign up page
-   */
+  /** Redirects user to previous sign up page */
   public void signUpTechBack(View view) {
     currentUser.delete();
     setContentView(R.layout.user_signup_main);
   }
 
-  /**
-   * Redirects user to login page
-   */
-  public void toSignIn(View view){
+  /** Redirects user to login page */
+  public void toSignIn(View view) {
     Intent toLogin = new Intent(this, UserLogin.class);
     startActivity(toLogin);
   }
