@@ -148,5 +148,8 @@
     <string name="attachment__form__zoomLabel">Zoom Meeting</string>
     <string name="attachment__form__scheduleZoomMeeting">Schedule Zoom Meeting</string>
     <string name="form__delete_button">Delete</string>
-    <string name="assignment__overview__user_label">User</string>
+    <string name="assignment__overview__user_label">Assignee</string>
+    <string name="title_activity_user_search">Search for Users</string>
+    <string name="title_activity_add_users">Add Users</string>
+    <string name="title_activity_chat_landing">Chat with others</string>
 </resources>

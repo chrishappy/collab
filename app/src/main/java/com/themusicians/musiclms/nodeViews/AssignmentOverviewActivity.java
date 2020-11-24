@@ -2,6 +2,7 @@ package com.themusicians.musiclms.nodeViews;
 
 import static com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity.ACCEPT_ENTITY_ID;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
@@ -47,8 +49,6 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   /**
    * To Group elements, see this tutorial:
    * https://stackoverflow.com/questions/34848401/divide-elements-on-groups-in-recyclerview
-   *
-   * @param savedInstanceState
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +84,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                */
               @Override
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                //        AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment =
-                // (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
+                int position = viewHolder.getAdapterPosition();
+                DataSnapshot snapshot = assignmentOverviewAdapter.getSnapshots().getSnapshot(position);
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:
@@ -94,9 +93,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                         .setAction("Action", null)
                         .show();
 
-                    int position = viewHolder.getAdapterPosition();
-                    assignmentOverviewAdapter.deleteAssignment(position);
-                    // assignmentOverviewAdapter.getRef(position).remove();
+                    tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
+                    assignmentOverviewAdapter.notifyItemRemoved(position);
                     break;
 
                   case ItemTouchHelper.RIGHT:
@@ -122,20 +120,13 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     assignmentOverviewAdapter.addItemClickListener(this);
     recyclerView.setAdapter(assignmentOverviewAdapter);
 
-    /** Set the action button to add a new assignment */
+    // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
     fab.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-
-            //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            //            .setAction("Action", null).show();
-
-            Intent redirectToAssignmentCreate =
-                new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-            startActivity(redirectToAssignmentCreate);
-          }
+        view -> {
+          Intent redirectToAssignmentCreate =
+              new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+          startActivity(redirectToAssignmentCreate);
         });
   }
 
@@ -162,6 +153,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     return true;
   }
 
+  @SuppressLint("NonConstantResourceId")
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     fAuth = FirebaseAuth.getInstance();
@@ -187,7 +179,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   /**
    * Run this function when clicking the edit button
    *
-   * @param entityId
+   * @param entityId the entity to edit
    */
   @Override
   public void onEditButtonClick(String type, String entityId) {
@@ -198,6 +190,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity
         toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
         startActivity(toCreateAssignment);
         break;
+
+      default:
+        throw new IllegalStateException("Unexpected value: " + type);
     }
   }
 }

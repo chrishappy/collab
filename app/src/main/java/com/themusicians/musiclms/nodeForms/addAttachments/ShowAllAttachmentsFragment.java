@@ -38,7 +38,7 @@ import static com.themusicians.musiclms.nodeForms.addAttachments.AllAttachmentsA
  * @author Nathan Tsai
  * @since Nov 19, 2020
  */
-public class showAllAttachmentsFragment extends Fragment implements AllAttachmentsAdapter.ItemClickListener {
+public class ShowAllAttachmentsFragment extends Fragment implements AllAttachmentsAdapter.ItemClickListener {
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
@@ -87,7 +87,7 @@ public class showAllAttachmentsFragment extends Fragment implements AllAttachmen
                 .show();
 
             int position = viewHolder.getAdapterPosition();
-            assignmentOverviewAdapter.deleteAssignment(position);
+            // assignmentOverviewAdapter.deleteAssignment(position);
             break;
 
           case ItemTouchHelper.RIGHT:

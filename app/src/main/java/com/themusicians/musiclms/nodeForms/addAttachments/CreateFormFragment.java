@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public abstract class createFormFragment extends Fragment {
+public abstract class CreateFormFragment extends Fragment {
 
     /**
      * The Firebase Auth Instance

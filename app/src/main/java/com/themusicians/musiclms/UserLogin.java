@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 /**
- * ....
+ * The user login page
  *
  * <p>
  * @Contributors: Jerome Lau

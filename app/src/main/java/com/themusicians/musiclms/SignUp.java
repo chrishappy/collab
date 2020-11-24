@@ -25,13 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ....
+ * The activity that manages the user sign up
  *
  * <p>
- * @Contributors: Jerome Lau, Harveer Khangura
- * @Author Jerome Lau
- * @Since Nov 3, 2020
- * <p>--------------------------------
+ * @contributor Harveer Khangura
+ * @author Jerome Lau
+ * @since Nov 3, 2020
  *
  * @todo Authenticate users via Firebase
  * @todo Store miscellaneous user info in Firebase
@@ -57,7 +56,7 @@ public class SignUp extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_signup_main);
 
-    /**
+    /*
      * Initialize Variables
      */
     newEmail = findViewById(R.id.newEmail);
@@ -68,180 +67,171 @@ public class SignUp extends AppCompatActivity {
     teacher = findViewById(R.id.signup_teacher);
     student = findViewById(R.id.signup_student);
 
-    /**
+    /*
      * Registers user as a teacher through Firebase
      */
     teacher.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            String email = newEmail.getText().toString().trim();
-            String password = newPassword.getText().toString().trim();
-            String name = newName.getText().toString().trim();
+        v -> {
+          String email = newEmail.getText().toString().trim();
+          String password = newPassword.getText().toString().trim();
+          String name = newName.getText().toString().trim();
 
-            /**
-             * Checks if user email is empty
-             */
-            if (TextUtils.isEmpty(email)) {
-              newEmail.setError("Email is Required.");
-              return;
-            }
-
-            /**
-             * Checks if user password is empty
-             */
-            if (TextUtils.isEmpty(password)) {
-              newPassword.setError("Password is Required");
-              return;
-            }
-
-            /**
-             * Checks if user password is at least 6 characters
-             */
-            if (password.length() < 6) {
-              newPassword.setError("Password must be more than 5 characters");
-              return;
-            }
-
-            /**
-             * Checks if user name is empty
-             */
-            if (TextUtils.isEmpty(name)) {
-              newName.setError("Name is Required");
-              return;
-            }
-
-            /**
-             * Verifies user credentials with Firebase and registers account
-             * @param email references newEmail from user input
-             * @param password references newPassword from user input
-             */
-            fAuth
-                .createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                    new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                          /**
-                           * Saves data in Firebase
-                           */
-                          newUser = new User(currentUser.getUid());
-                          newUser.setStatus(true);
-                          newUser.setEmail(email);
-                          newUser.setName(name);
-                          newUser.setRole("teacher");
-                          newUser.save();
-
-                          reference =
-                              FirebaseDatabase.getInstance()
-                                  .getReference()
-                                  .child("node__isTeacher");
-                          reference.child(String.valueOf(currentUser.getUid())).setValue(true);
-
-                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
-                          setContentView(R.layout.user_signup_tech);
-                        } else {
-                          Toast.makeText(
-                                  SignUp.this,
-                                  "Error" + task.getException().getMessage(),
-                                  Toast.LENGTH_SHORT)
-                              .show();
-                        }
-                      }
-                    });
+          /*
+           * Checks if user email is empty
+           */
+          if (TextUtils.isEmpty(email)) {
+            newEmail.setError("Email is Required.");
+            return;
           }
+
+          /*
+           * Checks if user password is empty
+           */
+          if (TextUtils.isEmpty(password)) {
+            newPassword.setError("Password is Required");
+            return;
+          }
+
+          /*
+           * Checks if user password is at least 6 characters
+           */
+          if (password.length() < 6) {
+            newPassword.setError("Password must be more than 5 characters");
+            return;
+          }
+
+          /*
+           * Checks if user name is empty
+           */
+          if (TextUtils.isEmpty(name)) {
+            newName.setError("Name is Required");
+            return;
+          }
+
+          /*
+           * Verifies user credentials with Firebase and registers account
+           * @param email references newEmail from user input
+           * @param password references newPassword from user input
+           */
+          fAuth
+              .createUserWithEmailAndPassword(email, password)
+              .addOnCompleteListener(
+                  task -> {
+                    if (task.isSuccessful()) {
+
+                      currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                      /*
+                       * Saves data in Firebase
+                       */
+                      assert currentUser != null;
+                      newUser = new User(currentUser.getUid());
+                      newUser.setStatus(true);
+                      newUser.setEmail(email);
+                      newUser.setName(name);
+                      newUser.setRole("teacher");
+                      newUser.save();
+
+                      reference =
+                          FirebaseDatabase.getInstance()
+                              .getReference()
+                              .child("node__isTeacher");
+                      reference.child(currentUser.getUid()).setValue(true);
+
+                      Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                      setContentView(R.layout.user_signup_tech);
+                    } else {
+                      Toast.makeText(
+                              SignUp.this,
+                              "Error" + task.getException().getMessage(),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  });
         });
 
-    /**
+    /*
      * Registers user as a student through Firebase
      */
     student.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            String email = newEmail.getText().toString().trim();
-            String password = newPassword.getText().toString().trim();
-            String name = newName.getText().toString().trim();
+        v -> {
+          String email = newEmail.getText().toString().trim();
+          String password = newPassword.getText().toString().trim();
+          String name = newName.getText().toString().trim();
 
-            /**
-             * Checks if user email is empty
-             */
-            if (TextUtils.isEmpty(email)) {
-              newEmail.setError("Email is Required.");
-              return;
-            }
-
-            /**
-             * Checks if user password is empty
-             */
-            if (TextUtils.isEmpty(password)) {
-              newPassword.setError("Password is Required");
-              return;
-            }
-
-            /**
-             * Checks if user password is at least 6 characters
-             */
-            if (password.length() < 6) {
-              newPassword.setError("Password must be more than 5 characters");
-              return;
-            }
-
-            /**
-             * Checks if user name is empty
-             */
-            if (TextUtils.isEmpty(name)) {
-              newName.setError("Name is Required");
-              return;
-            }
-
-            /**
-             * Verifies user credentials with Firebase and registers account
-             * @param email references newEmail from user input
-             * @param password references newPassword from user input
-             */
-            fAuth
-                .createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                    new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-
-                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                          /**
-                           * Saves data in Firebase
-                           */
-                          newUser = new User(currentUser.getUid());
-                          newUser.setStatus(true);
-                          newUser.setEmail(email);
-                          newUser.setName(name);
-                          newUser.setRole("student");
-                          newUser.save();
-
-                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
-                          setContentView(R.layout.user_signup_tech);
-                        } else {
-                          Toast.makeText(
-                                  SignUp.this,
-                                  "Error" + task.getException().getMessage(),
-                                  Toast.LENGTH_SHORT)
-                              .show();
-                        }
-                      }
-                    });
+          /*
+           * Checks if user email is empty
+           */
+          if (TextUtils.isEmpty(email)) {
+            newEmail.setError("Email is Required.");
+            return;
           }
+
+          /*
+           * Checks if user password is empty
+           */
+          if (TextUtils.isEmpty(password)) {
+            newPassword.setError("Password is Required");
+            return;
+          }
+
+          /*
+           * Checks if user password is at least 6 characters
+           */
+          if (password.length() < 6) {
+            newPassword.setError("Password must be more than 5 characters");
+            return;
+          }
+
+          /*
+           * Checks if user name is empty
+           */
+          if (TextUtils.isEmpty(name)) {
+            newName.setError("Name is Required");
+            return;
+          }
+
+          /*
+           * Verifies user credentials with Firebase and registers account
+           * @param email references newEmail from user input
+           * @param password references newPassword from user input
+           */
+          fAuth
+              .createUserWithEmailAndPassword(email, password)
+              .addOnCompleteListener(
+                  task -> {
+                    if (task.isSuccessful()) {
+
+                      currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                      /*
+                       * Saves data in Firebase
+                       */
+                      assert currentUser != null;
+                      newUser = new User(currentUser.getUid());
+                      newUser.setStatus(true);
+                      newUser.setEmail(email);
+                      newUser.setName(name);
+                      newUser.setRole("student");
+                      newUser.save();
+
+                      Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                      setContentView(R.layout.user_signup_tech);
+                    } else {
+                      Toast.makeText(
+                              SignUp.this,
+                              "Error" + task.getException().getMessage(),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  });
         });
   }
 
   /**
-   * Saves user tech experience in Firebase
+   * Saves user tech experience in
+   *
+   * Currently not used
    */
   public void signUpFinish(View view) {
 
@@ -298,7 +288,7 @@ public class SignUp extends AppCompatActivity {
       newUser.save();
     }
 
-    /**
+    /*
      * Redirects user to Assignment Overview
      */
     Intent signUpFinish = new Intent(this, AssignmentOverviewActivity.class);

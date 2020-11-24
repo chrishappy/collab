@@ -1,73 +1,56 @@
 package com.themusicians.musiclms.nodeForms;
 
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
-
-import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
-import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
-import com.themusicians.musiclms.entity.Attachment.Comment;
-import com.themusicians.musiclms.entity.Attachment.File;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
-import org.jetbrains.annotations.NotNull;
 
-public class AssignmentCreateFormActivity extends CreateFormActivity
-    implements AddAttachmentDialogFragment.AddAttachmentDialogListener,
-        ToDoAssignmentFormAdapter.ItemClickListener {
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
+
+/**
+ * Used to create and update assignments node entities
+ *
+ * @contributor Mingyang Wei
+ * @author Nathan Tsai
+ * @since Nov 5, 2020
+ */
+
+public class AssignmentCreateFormActivity extends NodeCreateFormActivity
+    implements ToDoAssignmentFormAdapter.ItemClickListener {
   /** The entity to be saved */
   protected Assignment assignment;
 
@@ -101,20 +84,30 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
       assignment.getEntityDatabase().child( editEntityId )
           .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
               assignment = dataSnapshot.getValue(Assignment.class);
-              AssignmentName.setText( assignment.getName() );
-              StudentOrClass.setText( assignment.getClassId() );
 
-              Date date = new Date(assignment.getDueDate()*1000);
-              DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.CANADA);
-              dueDate.setText(dateFormat.format(date));
+              assert assignment != null;
+
+              if (assignment.getName() != null) {
+                AssignmentName.setText( assignment.getName() );
+              }
+
+              if ( assignment.getClassId() != null) {
+                StudentOrClass.setText( assignment.getClassId() );
+              }
+
+              if (assignment.getDueDate() != 0) {
+                Date date = new Date(assignment.getDueDate()*1000);
+                DateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd", Locale.CANADA);
+                dueDate.setText(dateFormat.format(date));
+              }
 
               Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
             }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NotNull DatabaseError databaseError) {
                   // Getting Post failed, log a message
                   Log.w(
                       LOAD_ENTITY_DATABASE_TAG,
@@ -145,7 +138,6 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     }
   }
 
-  /** @param savedInstanceState */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -170,29 +162,22 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("PDT"));
     final Calendar cldr = cal.getInstance();
     dueDate.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            int day = cldr.get(Calendar.DAY_OF_MONTH);
-            int month = cldr.get(Calendar.MONTH);
-            int year = cldr.get(Calendar.YEAR);
-            // date picker dialog
-            DatePickerDialog picker =
-                new DatePickerDialog(
-                    AssignmentCreateFormActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-                      @Override
-                      public void onDateSet(
-                          DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                        cldr.set(year, monthOfYear, dayOfMonth);
-                      }
-                    },
-                    year,
-                    month,
-                    day);
-            picker.show();
-          }
+        v -> {
+          int day = cldr.get(Calendar.DAY_OF_MONTH);
+          int month = cldr.get(Calendar.MONTH);
+          int year = cldr.get(Calendar.YEAR);
+          // date picker dialog
+          DatePickerDialog picker =
+              new DatePickerDialog(
+                  AssignmentCreateFormActivity.this,
+                  (view, year1, monthOfYear, dayOfMonth) -> {
+                    dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
+                    cldr.set(year1, monthOfYear, dayOfMonth);
+                  },
+                  year,
+                  month,
+                  day);
+          picker.show();
         });
 
     // Load the to do tasks
@@ -202,117 +187,48 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     // From: https://stackoverflow.com/questions/10407159
     final Button addTask = findViewById(R.id.todoAddItem);
     addTask.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Intent intent =
-                new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
-            startActivityForResult(intent, REQUEST_TODO_ENTITY);
-          }
+        view -> {
+          Intent intent =
+              new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
+          startActivityForResult(intent, REQUEST_TODO_ENTITY);
         });
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);
     assignmentCancel.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
-            finish();
-          }
+        view -> {
+          Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
+              .setAction("Action", null)
+              .show();
+          finish();
         });
 
     // Save the Assignment
     final Button assignmentSave = findViewById(R.id.saveAction);
     assignmentSave.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            // Display notification
-            Snackbar.make(view, "Assignment about to be Saved", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show();
-            // Due Date timestamp
-            long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds(cldr.getTimeInMillis());
+        view -> {
+          // Display notification
+          Snackbar.make(view, "Assignment about to be Saved", Snackbar.LENGTH_LONG)
+              .setAction("Action", null)
+              .show();
+          // Due Date timestamp
+          long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds(cldr.getTimeInMillis());
 
-            assignment.setName(AssignmentName.getText().toString());
-            assignment.setClassId(StudentOrClass.getText().toString());
-            assignment.setDueDate(dueDateTimestamp);
-            assignment.setStatus(true);
-            assignment.setUid(currentUser.getUid());
-            //            assignment.setAttachmentIds( null );
-            assignment.save();
+          assignment.setName(AssignmentName.getText().toString());
+          assignment.setClassId(StudentOrClass.getText().toString());
+          assignment.setDueDate(dueDateTimestamp);
+          assignment.setStatus(true);
+          assignment.setUid(currentUser.getUid());
+          //            assignment.setAttachmentIds( null );
+          assignment.save();
 
-            Intent toAssignmentOverview =
-                new Intent(AssignmentCreateFormActivity.this, AssignmentOverviewActivity.class);
-            startActivity(toAssignmentOverview);
+          Intent toAssignmentOverview =
+              new Intent(AssignmentCreateFormActivity.this, AssignmentOverviewActivity.class);
+          startActivity(toAssignmentOverview);
 
-            // Display notification
-            String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
-            Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-          }
-        });
-
-    /*
-     * This section will be added to all Nodes. Please use variables to allow us
-     * to quickly move these functions into a separate class
-     *
-     * @todo Save Comment into database
-     * @todo Create "Add File Button" -> use the same functions
-     */
-
-    // Add a Comment
-    final Button addCommentButton = findViewById(R.id.addCommentButton);
-    addCommentButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            String dialogTag = "addComment";
-            DialogFragment newAddCommentDialog = new AddCommentDialogFragment();
-            newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
-          }
-        });
-
-    storage = FirebaseStorage.getInstance();
-    database = FirebaseDatabase.getInstance();
-
-    selectFile = findViewById(R.id.selectFile);
-    upload = findViewById(R.id.upload);
-    notification = findViewById(R.id.notification);
-
-    selectFile.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (ContextCompat.checkSelfPermission(
-                    AssignmentCreateFormActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-              selectPdf();
-            } else
-              ActivityCompat.requestPermissions(
-                  AssignmentCreateFormActivity.this,
-                  new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
-                  9);
-          }
-        });
-
-    upload.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-
-            if(pdfUri != null) {
-              Log.w("uploadFile()", "begin upload");
-              uploadFile(pdfUri);
-              Log.w("uploadFile()", "done upload");
-
-            }
-            else {
-              Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT).show();
-            }
-          }
+          // Display notification
+          String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
+          Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         });
   }
 
@@ -382,138 +298,11 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
   }
 
-  private void uploadFile(Uri pdfUri) {
-
-    Log.w("uploadFile()", "Begin upload");
-
-
-    progressDialog = new ProgressDialog(this);
-    Log.w("uploadFile()", "Begin upload 2 ");
-    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-    Log.w("uploadFile()", "Begin upload 3");
-    progressDialog.setTitle("Uploading file...");
-    progressDialog.setProgress(0);
-    progressDialog.show();
-
-    Log.w("uploadFile()", "Begin upload 5");
-    final Reference storageReference = storage.getReference();
-
-    File tempFile = new File();
-    storageReference
-        .child(tempFile.getBaseTable())
-        .child(fileName)
-        .putFile(pdfUri)
-        .addOnSuccessListener(
-            new OnSuccessListener<UploadTask.TaskSnapshot>() {
-              @Override
-              public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                task.addOnSuccessListener(
-                    new OnSuccessListener<Uri>() {
-                      @Override
-                      public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-
-                        DatabaseReference reference = database.getReference();
-
-                        reference
-                            .child(fileName)
-                            .setValue(url)
-                            .addOnCompleteListener(
-                                new OnCompleteListener<Void>() {
-                                  @Override
-                                  public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful())
-                                      Toast.makeText(
-                                              AssignmentCreateFormActivity.this,
-                                              "File successfully uploaded",
-                                              Toast.LENGTH_SHORT)
-                                          .show();
-                                    else
-                                      Toast.makeText(
-                                              AssignmentCreateFormActivity.this,
-                                              "File not successfully uploaded",
-                                              Toast.LENGTH_SHORT)
-                                          .show();
-                                  }
-                                });
-                      }
-                    });
-              }
-            })
-        .addOnFailureListener(
-            new OnFailureListener() {
-              @Override
-              public void onFailure(@NonNull Exception e) {
-
-                Toast.makeText(
-                        AssignmentCreateFormActivity.this,
-                        "File not successfully uploaded",
-                        Toast.LENGTH_SHORT)
-                    .show();
-              }
-            })
-        .addOnProgressListener(
-            new OnProgressListener<UploadTask.TaskSnapshot>() {
-              @Override
-              public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                int currentProgress =
-                    (int)
-                        (100
-                            * taskSnapshot.getBytesTransferred()
-                            / taskSnapshot.getTotalByteCount());
-                progressDialog.setProgress(currentProgress);
-              }
-            });
-  }
-
-  @Override
-  public void onRequestPermissionsResult(
-      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) selectPdf();
-    else
-      Toast.makeText(
-              AssignmentCreateFormActivity.this, "please provide permission..", Toast.LENGTH_SHORT)
-          .show();
-  }
-
-  private void selectPdf() {
-
-    Intent intent = new Intent();
-    intent.setType("application/pdf");
-    intent.setAction(Intent.ACTION_GET_CONTENT);
-    startActivityForResult(intent, 86);
-  }
-
-  @Override
-  public void onDialogPositiveClick(DialogFragment dialog) {
-    // Get field from dialog
-    final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
-
-    Comment newComment = new Comment();
-    newComment.setComment(AssignmentName.getText().toString());
-    newComment.save();
-  }
-
-  @Override
-  public void onDialogNegativeClick(DialogFragment dialog) {
-    Snackbar.make(
-            findViewById(R.id.createAssignmentLayout),
-            "Comment Negative clicked",
-            Snackbar.LENGTH_LONG)
-        .setAction("Action", null)
-        .show();
-  }
-
-  // ---- End section to be generalized-----
-
   /**
    * When creating a new task, we want to save the assignment to ensure the data (name, due date,
    * etc) are saved with the to do items
    *
-   * @param savedInstanceState
+   * @param savedInstanceState the bundle to be used to restore session
    */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -526,12 +315,15 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
     super.onSaveInstanceState(savedInstanceState);
   }
 
+  /**
+   * To handle saving a To Do item
+   */
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-    if (requestCode == REQUEST_TODO_ENTITY) {
-      if (resultCode == Activity.RESULT_OK) {
+    switch (requestCode) {
+      case REQUEST_TODO_ENTITY:if (resultCode == Activity.RESULT_OK) {
         String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
         if (assignment.getToDoIds().get(toDoId) == null) {
@@ -540,33 +332,41 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
 
           // Display notification
           Snackbar.make(
-                  findViewById(R.id.createAssignmentLayout),
-                  "To Do Item Saved",
-                  Snackbar.LENGTH_LONG)
+              findViewById(R.id.createAssignmentLayout),
+              "To Do Item Saved",
+              Snackbar.LENGTH_LONG)
               .setAction("Edit", null)
               .show();
         } else {
           // Display notification
           Snackbar.make(
-                  findViewById(R.id.createAssignmentLayout),
-                  "To Do Item Updated",
-                  Snackbar.LENGTH_LONG)
+              findViewById(R.id.createAssignmentLayout),
+              "To Do Item Updated",
+              Snackbar.LENGTH_LONG)
               .setAction("Edit", null)
               .show();
+          }
         }
-      }
-      if (resultCode == Activity.RESULT_CANCELED) {
-        // Write your code if there's no result
-      }
-    } else {
-      if (requestCode == 86 && resultCode == RESULT_OK && data != null) {
-        pdfUri = data.getData();
-        notification.setText("A file is selected : " + data.getData().getLastPathSegment());
-      } else {
-        Toast.makeText(
-                AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
-            .show();
-      }
+//        if (resultCode == Activity.RESULT_CANCELED) {
+          // Write your code if there's no result
+//        }
+        break;
+
+      case 86:
+        if (resultCode == RESULT_OK && data != null) {
+          pdfUri = data.getData();
+          String notificationText = "A file is selected : " + data.getData().getLastPathSegment();
+          notification.setText(notificationText);
+        } else {
+          Toast.makeText(
+              AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
+              .show();
+        }
+        break;
+
+      default:
+        Log.w("AssignmentCreateActivity", "No case to handle activity result.");
+        break;
     }
   }
 
@@ -583,6 +383,12 @@ public class AssignmentCreateFormActivity extends CreateFormActivity
             new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
         toEditToDoItem.putExtra(ACCEPT_ENTITY_ID, entityId);
         startActivityForResult(toEditToDoItem, REQUEST_TODO_ENTITY);
+        break;
+
+      default:
+        Toast.makeText(
+            AssignmentCreateFormActivity.this, "No actions for onEditButton: " + type, Toast.LENGTH_SHORT)
+            .show();
         break;
     }
   }

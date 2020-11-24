@@ -8,8 +8,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
+/**
+ * Simple landing activity to redirects appropriately
+ */
 public class MainActivity extends AppCompatActivity {
-  private Button button;
   private FirebaseAuth fAuth;
 
   @Override

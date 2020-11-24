@@ -13,10 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.UserAddUsers" />
+
+
         <activity android:name=".ui.slideshow.add_students_teachers" />
-        <activity android:name=".UserSearch" />
-        <activity android:name=".Chat" /> <!-- User Activities -->
+
+        <activity android:name=".ui.UserAddUsers"
+            android:label="@string/title_activity_add_users"
+            android:parentActivityName=".UserProfile" />
+        <activity
+            android:name=".UserSearch"
+            android:label="@string/title_activity_user_search"
+            android:parentActivityName=".ui.UserAddUsers" />
+        <activity
+            android:name=".Chat"
+            android:label="@string/title_activity_chat_landing"
+            android:parentActivityName=".UserProfile"/> <!-- User Activities -->
         <activity android:name=".SignUp" />
         <activity android:name=".UserProfile" />
         <activity

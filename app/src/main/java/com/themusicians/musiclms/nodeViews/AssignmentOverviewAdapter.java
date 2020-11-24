@@ -16,10 +16,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.User;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * The adapter for the Assignment Form pages
@@ -36,7 +39,7 @@ public class AssignmentOverviewAdapter
 
   private ItemClickListener itemClickListener;
 
-  DatabaseReference reff;
+  DatabaseReference userEntityDatabase;
 
   public AssignmentOverviewAdapter(@NonNull FirebaseRecyclerOptions<Assignment> options) {
     super(options);
@@ -52,20 +55,22 @@ public class AssignmentOverviewAdapter
     holder.assignmentName.setText(assignment.getName());
 
     if (assignment.getUid() != null) {
-      reff= FirebaseDatabase.getInstance().getReference().child("node__user").child(assignment.getUid());
-      reff.addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-          String name=snapshot.child("name").getValue().toString();
-          holder.authorName.setText(name);
-        }
+      User tempUser = new User();
+      userEntityDatabase= tempUser.getEntityDatabase();
+      userEntityDatabase
+          .child(assignment.getUid())
+          .addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+              String name = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
+              holder.authorName.setText(name);
+            }
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        }
-      });
-
+            }
+          });
     }
 
     if (assignment.getClassId() != null) {
@@ -74,18 +79,14 @@ public class AssignmentOverviewAdapter
 
     if (assignment.getDueDate() != 0) {
       Date date = new Date(assignment.getDueDate()*1000);
-//      DateFormat dateFormat = new SimpleDateFormat( getText(R.string.date_format__month_day), Locale.CANADA);
       DateFormat dateFormat = new SimpleDateFormat( "MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
 
     holder.editAssignment.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick("editAssignment", assignment.getId());
-            }
+        view -> {
+          if (itemClickListener != null) {
+            itemClickListener.onEditButtonClick("editAssignment", assignment.getId());
           }
         });
   }
@@ -105,20 +106,19 @@ public class AssignmentOverviewAdapter
   /**
    * Archive the assignment on swipe
    *
-   * @param position
+   * @param position the recycler item index
    */
   public void deleteAssignment(int position) {
     //    mRecentlyDeletedItem = mListItems.get(position);
     //    mRecentlyDeletedItemPosition = position;
     //    items.remove(position);
-    notifyItemRemoved(position);
   }
 
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
-  class AssignmentsViewHolder extends RecyclerView.ViewHolder {
+  static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate,userName;
-    Button editAssignment, deleteAssignment;
+    Button editAssignment;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);

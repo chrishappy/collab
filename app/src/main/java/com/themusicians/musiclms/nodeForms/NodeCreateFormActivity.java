@@ -8,7 +8,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 // import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 
-public abstract class CreateFormActivity extends AppCompatActivity {
+/**
+ * The class to be extended by node create forms
+ *
+ * @author Nathan Tsai
+ * @since Nov 17, 2020
+ */
+public abstract class NodeCreateFormActivity extends AppCompatActivity {
 
   /** The Firebase Auth Instance */
   protected FirebaseUser currentUser;

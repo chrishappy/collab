@@ -1,7 +1,7 @@
 package com.themusicians.musiclms.entity.Attachment;
 
 /**
- * The Comment Attachment class
+ * The class used to store data in Firebase for the All Attachment
  *
  * @author Nathan Tsai
  * @since Nov 10, 2020

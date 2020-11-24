@@ -1,6 +1,5 @@
 package com.themusicians.musiclms;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,9 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,18 +25,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.UserAddUsers;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ....
+ * Display the user information and link to chat page
  *
- * <p>
- * @Contributors: Jerome Lau, Harveer Khangura
- * @Author Jerome Lau
- * @Since Nov 10, 2020
- * <p>--------------------------------
+ * @contributors Harveer Khangura
+ * @author Jerome Lau
+ * @since Nov 10, 2020
  *
  * @todo View user info
  */
@@ -59,14 +52,12 @@ public class UserProfile extends AppCompatActivity {
   protected User currUser;
   protected ListView instrumentList;
 
-
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_profile_main);
 
-    /**
+    /*
      * Initialize variables
      */
     final EditText newInstrument;
@@ -87,7 +78,7 @@ public class UserProfile extends AppCompatActivity {
 
     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-    /**
+    /*
      * References the user node and current user to fetch user name/email and displays them
      */
     DatabaseReference reference =
@@ -100,7 +91,7 @@ public class UserProfile extends AppCompatActivity {
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
             Object name = snapshot.child("name").getValue();
-            /**
+            /*
              * Checks if names exists
              */
             if (name != null) {
@@ -108,7 +99,7 @@ public class UserProfile extends AppCompatActivity {
             }
 
             Object email = snapshot.child("email").getValue();
-            /**
+            /*
              * Checks if email exists
              */
             if (email != null) {
@@ -131,7 +122,7 @@ public class UserProfile extends AppCompatActivity {
         addInstrument.setOnClickListener(
           (v) -> {
             String instrumentName = newInstrument.getText().toString().trim();
-            /**
+            /*
              * Checks if instrument is new
              */
             boolean isNew = true;
@@ -140,7 +131,7 @@ public class UserProfile extends AppCompatActivity {
                 isNew = false;
               }
             }
-            /**
+            /*
              * Checks if instrument is empty
              */
             if (instrumentName.isEmpty()) {
@@ -163,13 +154,13 @@ public class UserProfile extends AppCompatActivity {
       }
     });
 
-    /**
+    /*
      * Display and update instruments from Firebase
      */
     instrumentList.setAdapter(myArrayAdapter);
     InstrumentRef.addChildEventListener(new ChildEventListener() {
       @Override
-      /**
+      /*
        * Runs on each instance of data and each time new child is added
        * Takes each instance of data and stores it in a list
        * @param snapshot data snapshot to fetch data from Firebase
@@ -177,7 +168,7 @@ public class UserProfile extends AppCompatActivity {
        */
       public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         String value = snapshot.getValue(String.class);
-        /**
+        /*
          * Checks to pull instruments to list once
          */
         if(reInput == true) {
@@ -252,12 +243,7 @@ public class UserProfile extends AppCompatActivity {
         .child("name")
         .setValue(name)
         .addOnSuccessListener(
-            new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void aVoid) {
-                Toast.makeText(UserProfile.this, "Name updated", Toast.LENGTH_SHORT).show();
-              }
-            });
+            aVoid -> Toast.makeText(UserProfile.this, "Name updated", Toast.LENGTH_SHORT).show());
   }
 
   /**
@@ -271,12 +257,7 @@ public class UserProfile extends AppCompatActivity {
     currentUser
         .updateEmail(email)
         .addOnSuccessListener(
-            new OnSuccessListener<Void>() {
-              @Override
-              public void onSuccess(Void aVoid) {
-                Toast.makeText(UserProfile.this, "Email updated", Toast.LENGTH_SHORT).show();
-              }
-            });
+            aVoid -> Toast.makeText(UserProfile.this, "Email updated", Toast.LENGTH_SHORT).show());
   }
 
   /**
@@ -297,42 +278,26 @@ public class UserProfile extends AppCompatActivity {
 
     passwordResetDialog.setPositiveButton(
         "Yes",
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
+        (dialog, which) -> {
 
-            String mail = resetMail.getText().toString();
-            fAuth
-                .sendPasswordResetEmail(mail)
-                .addOnSuccessListener(
-                    new OnSuccessListener<Void>() {
-                      @Override
-                      public void onSuccess(Void aVoid) {
-                        Toast.makeText(
-                                UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
-                            .show();
-                      }
-                    })
-                .addOnFailureListener(
-                    new OnFailureListener() {
-                      @Override
-                      public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(
-                                UserProfile.this,
-                                "Error! Reset link not sent" + e.getMessage(),
-                                Toast.LENGTH_SHORT)
-                            .show();
-                      }
-                    });
-          }
+          String mail = resetMail.getText().toString();
+          fAuth
+              .sendPasswordResetEmail(mail)
+              .addOnSuccessListener(
+                  aVoid -> Toast.makeText(
+                          UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
+                      .show())
+              .addOnFailureListener(
+                  e -> Toast.makeText(
+                          UserProfile.this,
+                          "Error! Reset link not sent" + e.getMessage(),
+                          Toast.LENGTH_SHORT)
+                      .show());
         });
 
     passwordResetDialog.setNegativeButton(
         "No",
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {}
-        });
+        (dialog, which) -> {});
 
     passwordResetDialog.create().show();
   }
@@ -355,7 +320,8 @@ public class UserProfile extends AppCompatActivity {
 
   /** Shifan's code */
   public void goChat(View view) {
-    Intent Chatpage = new Intent(this, Chat.class);
-    startActivity(Chatpage);
+    Toast.makeText(UserProfile.this, "Chats currently nonfunctional", Toast.LENGTH_SHORT).show();
+    // Intent Chatpage = new Intent(this, Chat.class);
+    // startActivity(Chatpage);
   }
 }

@@ -60,14 +60,64 @@ public class AllAttachmentsAdapter
     */
 
     holder.editButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick( editAllAttachments, allAttachment.getId() );
-            }
+        view -> {
+          if (itemClickListener != null) {
+            itemClickListener.onEditButtonClick( editAllAttachments, allAttachment.getId() );
           }
         });
+
+    /*
+     * This section will be added to all Nodes. Please use variables to allow us
+     * to quickly move these functions into a separate class
+     *
+     * @todo Save Comment into database
+     * @todo Create "Add File Button" -> use the same functions
+     */
+
+    /*
+    // Add a Comment
+    final Button addCommentButton = findViewById(R.id.addCommentButton);
+    addCommentButton.setOnClickListener(
+        view -> {
+          String dialogTag = "addComment";
+          DialogFragment newAddCommentDialog = new AddCommentDialogFragment();
+          newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
+        });
+
+    storage = FirebaseStorage.getInstance();
+    database = FirebaseDatabase.getInstance();
+
+    selectFile = findViewById(R.id.selectFile);
+    upload = findViewById(R.id.upload);
+    notification = findViewById(R.id.notification);
+
+    selectFile.setOnClickListener(
+        view -> {
+          if (ContextCompat.checkSelfPermission(
+                  AssignmentCreateFormActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+              == PackageManager.PERMISSION_GRANTED) {
+            selectPdf();
+          } else
+            ActivityCompat.requestPermissions(
+                AssignmentCreateFormActivity.this,
+                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                9);
+        });
+
+    upload.setOnClickListener(
+        view -> {
+
+          if(pdfUri != null) {
+            Log.w("uploadFile()", "begin upload");
+            uploadFile(pdfUri);
+            Log.w("uploadFile()", "done upload");
+
+          }
+          else {
+            Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT).show();
+          }
+        });
+     */
   }
 
   // Function to tell the class about the Card view (here
@@ -82,20 +132,9 @@ public class AllAttachmentsAdapter
     return new AllAttachmentViewHolder(view);
   }
 
-  /**
-   * Archive the assignment on swipe
-   * @param position
-   */
-  public void deleteAssignment(int position) {
-//    mRecentlyDeletedItem = mListItems.get(position);
-//    mRecentlyDeletedItemPosition = position;
-//    items.remove(position);
-    notifyItemRemoved(position);
-  }
-
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
-  class AllAttachmentViewHolder extends RecyclerView.ViewHolder {
+  static class AllAttachmentViewHolder extends RecyclerView.ViewHolder {
     TextView comment;
     Button editButton;
 

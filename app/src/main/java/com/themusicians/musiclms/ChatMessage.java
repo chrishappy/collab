@@ -2,7 +2,11 @@ package com.themusicians.musiclms;
 
 import java.util.Date;
 
-/** Contributors: Shifan He Nathan Tsai Created by Shifan He on 2020-11-15 */
+/**
+ * @contributor Nathan Tsai
+ * @author Shifan He
+ * @since Nov 15, 2020
+ */
 public class ChatMessage {
 
   private String messageText;

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,12 +16,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
-import com.themusicians.musiclms.attachmentDialogs.AddCommentDialogFragment;
-import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
-public class ToDoTaskCreateFormActivity extends CreateFormActivity
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Used to create and update To Do items
+ * Referenced from AssignmentCreateForm.java
+ *
+ * @author Nathan Tsai
+ * @since Nov 13, 2020
+ */
+public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
 
   /** The Firebase Auth Instance */
@@ -54,7 +60,7 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
           .addListenerForSingleValueEvent(
               new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   ToDoItemName.setText(toDoItem.getName());
                   RequireRecording.setChecked(toDoItem.getRequireRecording());
@@ -63,7 +69,7 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(@NotNull DatabaseError databaseError) {
                   // Getting Post failed, log a message
                   Log.w(
                       LOAD_ENTITY_DATABASE_TAG,
@@ -75,7 +81,6 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
     }
   }
 
-  /** @param savedInstanceState */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -96,69 +101,31 @@ public class ToDoTaskCreateFormActivity extends CreateFormActivity
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);
     assignmentCancel.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Snackbar.make(view, "To Do Item cancelled", Snackbar.LENGTH_LONG).show();
+        view -> {
+          Snackbar.make(view, "To Do Item cancelled", Snackbar.LENGTH_LONG).show();
 
-            Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_CANCELED, returnIntent);
-            finish();
-          }
+          Intent returnIntent = new Intent();
+          setResult(Activity.RESULT_CANCELED, returnIntent);
+          finish();
         });
 
     // Save the Assignment
     final Button assignmentSave = findViewById(R.id.saveAction);
     assignmentSave.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            // Due Date timestamp
-            ToDoItem toDoItem = new ToDoItem();
-            toDoItem.setName(ToDoItemName.getText().toString());
-            toDoItem.setStatus(true);
-            toDoItem.setUid(currentUser.getUid());
-            toDoItem.setRequireRecording(RequireRecording.isChecked());
-            toDoItem.save();
+        view -> {
+          // Due Date timestamp
+          ToDoItem toDoItem = new ToDoItem();
+          toDoItem.setName(ToDoItemName.getText().toString());
+          toDoItem.setStatus(true);
+          toDoItem.setUid(currentUser.getUid());
+          toDoItem.setRequireRecording(RequireRecording.isChecked());
+          toDoItem.save();
 
-            // Return To Do Item
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(RETURN_INTENT_TODO_ID, toDoItem.getId());
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
-          }
-        });
-
-    /*
-     * This section will be added to all Nodes. Please use variables to allow us
-     * to quickly move these functions into a separate class
-     *
-     * @todo Save Comment into database
-     * @todo Create "Add File Button" -> use the same functions
-     */
-
-    // Add a Comment
-    final Button addCommentButton = findViewById(R.id.addCommentButton);
-    addCommentButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            String dialogTag = "addComment";
-            DialogFragment newAddCommentDialog = new AddCommentDialogFragment();
-            newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
-          }
-        });
-
-    // Add a File
-    final Button addFileButton = findViewById(R.id.selectFile);
-    addFileButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            String dialogTag = "addFile";
-            DialogFragment newAddFileDialog = new AddFileDialogFragment();
-            newAddFileDialog.show(getSupportFragmentManager(), dialogTag);
-          }
+          // Return To Do Item
+          Intent returnIntent = new Intent();
+          returnIntent.putExtra(RETURN_INTENT_TODO_ID, toDoItem.getId());
+          setResult(Activity.RESULT_OK, returnIntent);
+          finish();
         });
   }
 

@@ -24,13 +24,12 @@ import com.themusicians.musiclms.ui.UserAddUsers;
 import java.util.ArrayList;
 
 /**
- * ....
+ * Allow users to search for teachers/students so
+ *  - teachers can assign homework to students
+ *  - students can receive homework from students
  *
- * <p>
- * @Contributors: Jerome Lau
- * @Author Jerome Lau
- * @Since Nov 19, 2020
- * <p>--------------------------------
+ * @author Jerome Lau
+ * @since Nov 19, 2020
  *
  * @todo Search for users
  * @todo Add users to User Profile

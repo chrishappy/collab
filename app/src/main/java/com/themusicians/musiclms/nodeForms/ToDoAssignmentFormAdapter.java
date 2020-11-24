@@ -19,9 +19,6 @@ import com.themusicians.musiclms.entity.Node.ToDoItem;
  * @author Nathan Tsai
  * @since Nov 10, 2020
  */
-// FirebaseRecyclerAdapter is a class provided by
-// FirebaseUI. it provides functions to bind, adapt and show
-// database contents in a Recycler View
 public class ToDoAssignmentFormAdapter
     extends FirebaseRecyclerAdapter<
         ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
@@ -44,12 +41,9 @@ public class ToDoAssignmentFormAdapter
 
     // Set the on click listener
     View.OnClickListener editToDoItemListener =
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (itemClickListener != null) {
-              itemClickListener.onEditButtonClick("editToDoAssignmentForm", toDoItem.getId());
-            }
+        view -> {
+          if (itemClickListener != null) {
+            itemClickListener.onEditButtonClick("editToDoAssignmentForm", toDoItem.getId());
           }
         };
     holder.toDoName.setOnClickListener(editToDoItemListener);
@@ -70,7 +64,7 @@ public class ToDoAssignmentFormAdapter
 
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
-  class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
+  static class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
     TextView toDoName;
     Button editButton;
     ConstraintLayout toDoWrapper;

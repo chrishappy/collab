@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="account fragment"
+        android:text="Placeholder for account"
         android:textSize="36sp" />
 </FrameLayout>
