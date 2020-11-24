@@ -23,7 +23,7 @@ import java.util.Map;
  *
  *<p> Chat page
  *
- * @todo Users' names Message receiving
+ * @todo Users' names & Proper Message sending and receiving
  *
  * @author Shifan He Created by Shifan He on 2020-11-12
  */
