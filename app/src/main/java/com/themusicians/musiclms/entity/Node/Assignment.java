@@ -36,7 +36,7 @@ public class Assignment extends Node {
   protected Map<String, Boolean> toDoIds;
 
   // This must make the field name of toDoIds
-  static final String toDoIdsName = "toDoIds";
+  public static final String toDoIdsName = "toDoIds";
 
   protected Map<Map, Attachment> attachments;
 
@@ -50,8 +50,6 @@ public class Assignment extends Node {
   /** The constructor used to update an existing or to set an id */
   public Assignment(String id) {
     super(id);
-
-    System.out.println("The Assignment2 base table is: " + getBaseTable());
   }
 
   /** Load an assignment from the database */
@@ -118,10 +116,14 @@ public class Assignment extends Node {
     return getEntityType() + "__" + getType();
   }
 
-  /** Get To Do Items location */
+  /**
+   * Get To Do Items location
+   *
+   * Assumes assignment has an id
+   */
   @Exclude
   public DatabaseReference getToDoItemsKeyQuery() {
-    return getEntityDatabase().child(toDoIdsName);
+    return getEntityDatabase().child(getId()).child(toDoIdsName);
   }
 
   /** Settings and Getters */

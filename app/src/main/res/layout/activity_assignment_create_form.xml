@@ -9,42 +9,13 @@
     tools:context=".nodeForms.AssignmentCreateFormActivity"
     android:id="@+id/createAssignmentLayout">
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:id="@+id/app_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/app_bar_height"-->
-<!--        android:fitsSystemWindows="true"-->
-<!--        android:theme="@style/AppTheme.AppBarOverlay">-->
-
-<!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
-<!--            android:id="@+id/toolbar_layout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:fitsSystemWindows="true"-->
-<!--            app:contentScrim="?attr/colorPrimary"-->
-<!--            app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
-<!--            app:toolbarId="@+id/toolbar">-->
-
-<!--            <androidx.appcompat.widget.Toolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="?attr/actionBarSize"-->
-<!--                app:layout_collapseMode="pin"-->
-<!--                app:popupTheme="@style/AppTheme.PopupOverlay" />-->
-
-<!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
-
-<!--    <include layout="@layout/content_scrolling" />-->
     <ScrollView
         android:id="@+id/assignment_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/left_and_right_gutters"
         android:paddingRight="@dimen/left_and_right_gutters"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".nodeForms.AssignmentCreateFormActivity"
-        tools:showIn="@layout/activity_assignment_create_form">
+        tools:context=".nodeForms.AssignmentCreateFormActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,10 +26,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -74,9 +47,9 @@
                         android:id="@+id/students_or_class"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
                         android:autofillHints="@string/app_name"
-                        android:hint="@string/assignment__form__user_class"/>
+                        android:hint="@string/assignment__form__user_class"
+                        android:text="" />
                 </LinearLayout>
                 <!-- Replace with model:
                         https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
@@ -87,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
                     <EditText
                         android:id="@+id/dueDate"
                         android:layout_width="wrap_content"
@@ -116,7 +90,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todoItemsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -125,14 +99,14 @@
 
                     <Button
                         android:id="@+id/todoAddItem"
+                        style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/assignment__form__add_todo_item"
-                        style="?attr/materialButtonOutlinedStyle"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <!-- Temporarily disable
                     <Button
@@ -147,63 +121,90 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <Space
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                style="borderTop: 1px solid #000"/>
+                android:layout_height="2dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="#c0c0c0" />
+
+<!--            <fragment-->
+<!--                android:id="@+id/showAttachments"-->
+<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:layout_marginBottom="30dp"-->
+<!--                android:background="#c0c0c0" />-->
 
 
             <!-- Start "AddAttachments Fragment". Migrate/Refactor later -->
-            <!--<fragment
-                android:id="@+id/addAttachments"
-                android:name="com.themusicians.musiclms.nodeForms.addAttachments.addAttachmentsFragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" /> -->
+<!--            <fragment-->
+<!--                android:id="@+id/addAttachments"-->
+<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:layout_marginBottom="30dp"-->
+<!--                android:background="#c0c0c0" />-->
 
             <!-- End "AddAttachments" Fragment -->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".ui.home.HomeFragment">
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                tools:context=".ui.home.HomeFragment">-->
 
-                <!-- Dummy Element -->
+            <!--                &lt;!&ndash; Dummy Element &ndash;&gt;-->
 
-                <Button
-                    android:id="@+id/addCommentButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/attachment__add__comment"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+            <!--                <Button-->
+            <!--                    android:id="@+id/addCommentButton"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="@string/attachment__add__comment"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintHorizontal_bias="1.0"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:layout_constraintVertical_bias="0.0" />-->
 
-                <Button
-                    android:id="@+id/selectFile"
-                    android:layout_width="114dp"
-                    android:layout_height="47dp"
-                    android:text="@string/attachment__add__file"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <!--                <Button-->
+            <!--                    android:id="@+id/selectFile"-->
+            <!--                    android:layout_width="114dp"-->
+            <!--                    android:layout_height="47dp"-->
+            <!--                    android:text="@string/attachment__add__file"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-            <TextView
-                android:id="@+id/notification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_file_is_selected" />
+            <!--            <TextView-->
+            <!--                android:id="@+id/notification"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/no_file_is_selected" />-->
 
-            <Button
-                android:id="@+id/upload"
-                android:layout_width="114dp"
-                android:layout_height="wrap_content"
-                android:text="@string/upload" />
+            <!--            <Button-->
+            <!--                android:id="@+id/upload"-->
+            <!--                android:layout_width="114dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/upload" />-->
 
             <Space
                 android:layout_width="match_parent"
@@ -212,37 +213,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="end">
+                android:gravity="end"
+                android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/assignmentCancelAction"
+                    android:id="@+id/cancelAction"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__cancel" />
 
                 <Button
-                    android:id="@+id/assignmentSaveAction1"
+                    android:id="@+id/saveAction"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
-
-
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="@dimen/fab_margin"-->
-<!--        app:layout_anchor="@id/app_bar"-->
-<!--        app:layout_anchorGravity="bottom|end"-->
-<!--        app:srcCompat="@android:drawable/ic_dialog_email" />-->
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

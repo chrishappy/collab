@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,26 +19,31 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ....
+ * The activity that manages the user sign up
  *
- * <p>Contributors: Jerome Lau Created by Jerome Lau on 2020-11-03
- *
- * <p>--------------------------------
+ * <p>
+ * @contributor Harveer Khangura
+ * @author Jerome Lau
+ * @since Nov 3, 2020
  *
  * @todo Authenticate users via Firebase
  * @todo Store miscellaneous user info in Firebase
  * @todo Proceed through sign up layouts
  */
-// c
+
 public class SignUp extends AppCompatActivity {
+
   protected EditText newEmail, newPassword, newName;
   protected Button teacher, student;
   protected FirebaseAuth fAuth;
   protected CheckBox sendText, makeCall, joinZoom, scheduleZoom, watchYoutube, uploadYoutube;
+  protected TextView toLogin;
   DatabaseReference reference;
 
   /** Save User Date */
@@ -50,155 +56,183 @@ public class SignUp extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_signup_main);
 
+    /*
+     * Initialize Variables
+     */
     newEmail = findViewById(R.id.newEmail);
     newPassword = findViewById(R.id.newPassword);
     newName = findViewById(R.id.newName);
-
-    // Store user
+    toLogin = findViewById(R.id.toSignIn);
     fAuth = FirebaseAuth.getInstance();
     teacher = findViewById(R.id.signup_teacher);
     student = findViewById(R.id.signup_student);
 
-    // Sign up page teacher button
+    /*
+     * Registers user as a teacher through Firebase
+     */
     teacher.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            String email = newEmail.getText().toString().trim();
-            String password = newPassword.getText().toString().trim();
-            String name = newName.getText().toString().trim();
+        v -> {
+          String email = newEmail.getText().toString().trim();
+          String password = newPassword.getText().toString().trim();
+          String name = newName.getText().toString().trim();
 
-            // checks if email is empty
-            if (TextUtils.isEmpty(email)) {
-              newEmail.setError("Email is Required.");
-              return;
-            }
-
-            // checks if password is empty
-            if (TextUtils.isEmpty(password)) {
-              newPassword.setError("Password is Required");
-              return;
-            }
-
-            // checks for password minimum length
-            if (password.length() < 6) {
-              newPassword.setError("Password must be more than 5 characters");
-              return;
-            }
-
-            // checks if name is empty
-            if (TextUtils.isEmpty(name)) {
-              newName.setError("Name is Required");
-              return;
-            }
-
-            // registers account to firebase and sends to next screen
-            fAuth
-                .createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                    new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                          // Get current user
-                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                          newUser = new User(currentUser.getUid());
-                          newUser.setStatus(true);
-                          newUser.setEmail(email);
-                          newUser.setName(name);
-                          newUser.setRole("teacher");
-                          newUser.save();
-
-                          reference =
-                              FirebaseDatabase.getInstance()
-                                  .getReference()
-                                  .child("node__isTeacher");
-                          reference.child(String.valueOf(currentUser.getUid())).setValue(true);
-
-                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
-                          setContentView(R.layout.user_signup_tech);
-                        } else {
-                          Toast.makeText(
-                                  SignUp.this,
-                                  "Error" + task.getException().getMessage(),
-                                  Toast.LENGTH_SHORT)
-                              .show();
-                        }
-                      }
-                    });
+          /*
+           * Checks if user email is empty
+           */
+          if (TextUtils.isEmpty(email)) {
+            newEmail.setError("Email is Required.");
+            return;
           }
+
+          /*
+           * Checks if user password is empty
+           */
+          if (TextUtils.isEmpty(password)) {
+            newPassword.setError("Password is Required");
+            return;
+          }
+
+          /*
+           * Checks if user password is at least 6 characters
+           */
+          if (password.length() < 6) {
+            newPassword.setError("Password must be more than 5 characters");
+            return;
+          }
+
+          /*
+           * Checks if user name is empty
+           */
+          if (TextUtils.isEmpty(name)) {
+            newName.setError("Name is Required");
+            return;
+          }
+
+          /*
+           * Verifies user credentials with Firebase and registers account
+           * @param email references newEmail from user input
+           * @param password references newPassword from user input
+           */
+          fAuth
+              .createUserWithEmailAndPassword(email, password)
+              .addOnCompleteListener(
+                  task -> {
+                    if (task.isSuccessful()) {
+
+                      currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                      /*
+                       * Saves data in Firebase
+                       */
+                      assert currentUser != null;
+                      newUser = new User(currentUser.getUid());
+                      newUser.setStatus(true);
+                      newUser.setEmail(email);
+                      newUser.setName(name);
+                      newUser.setRole("teacher");
+                      newUser.save();
+
+                      reference =
+                          FirebaseDatabase.getInstance()
+                              .getReference()
+                              .child("node__isTeacher");
+                      reference.child(currentUser.getUid()).setValue(true);
+
+                      Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                      setContentView(R.layout.user_signup_tech);
+                    } else {
+                      Toast.makeText(
+                              SignUp.this,
+                              "Error" + task.getException().getMessage(),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  });
         });
 
-    // Sign up page student button
+    /*
+     * Registers user as a student through Firebase
+     */
     student.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            String email = newEmail.getText().toString().trim();
-            String password = newPassword.getText().toString().trim();
-            String name = newName.getText().toString().trim();
+        v -> {
+          String email = newEmail.getText().toString().trim();
+          String password = newPassword.getText().toString().trim();
+          String name = newName.getText().toString().trim();
 
-            // checks if email is empty
-            if (TextUtils.isEmpty(email)) {
-              newEmail.setError("Email is Required.");
-              return;
-            }
-
-            // checks if password is empty
-            if (TextUtils.isEmpty(password)) {
-              newPassword.setError("Password is Required");
-              return;
-            }
-
-            // checks for password minimum length
-            if (password.length() < 6) {
-              newPassword.setError("Password must be more than 5 characters");
-              return;
-            }
-
-            // checks if name is empty
-            if (TextUtils.isEmpty(name)) {
-              newName.setError("Name is Required");
-              return;
-            }
-
-            // registers account to firebase and sends to next screen
-            fAuth
-                .createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                    new OnCompleteListener<AuthResult>() {
-                      @Override
-                      public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                          // Get current user
-                          currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                          newUser = new User(currentUser.getUid());
-                          newUser.setStatus(true);
-                          newUser.setEmail(email);
-                          newUser.setName(name);
-                          newUser.setRole("student");
-                          newUser.save();
-
-                          Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
-                          setContentView(R.layout.user_signup_tech);
-                        } else {
-                          Toast.makeText(
-                                  SignUp.this,
-                                  "Error" + task.getException().getMessage(),
-                                  Toast.LENGTH_SHORT)
-                              .show();
-                        }
-                      }
-                    });
+          /*
+           * Checks if user email is empty
+           */
+          if (TextUtils.isEmpty(email)) {
+            newEmail.setError("Email is Required.");
+            return;
           }
+
+          /*
+           * Checks if user password is empty
+           */
+          if (TextUtils.isEmpty(password)) {
+            newPassword.setError("Password is Required");
+            return;
+          }
+
+          /*
+           * Checks if user password is at least 6 characters
+           */
+          if (password.length() < 6) {
+            newPassword.setError("Password must be more than 5 characters");
+            return;
+          }
+
+          /*
+           * Checks if user name is empty
+           */
+          if (TextUtils.isEmpty(name)) {
+            newName.setError("Name is Required");
+            return;
+          }
+
+          /*
+           * Verifies user credentials with Firebase and registers account
+           * @param email references newEmail from user input
+           * @param password references newPassword from user input
+           */
+          fAuth
+              .createUserWithEmailAndPassword(email, password)
+              .addOnCompleteListener(
+                  task -> {
+                    if (task.isSuccessful()) {
+
+                      currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                      /*
+                       * Saves data in Firebase
+                       */
+                      assert currentUser != null;
+                      newUser = new User(currentUser.getUid());
+                      newUser.setStatus(true);
+                      newUser.setEmail(email);
+                      newUser.setName(name);
+                      newUser.setRole("student");
+                      newUser.save();
+
+                      Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                      setContentView(R.layout.user_signup_tech);
+                    } else {
+                      Toast.makeText(
+                              SignUp.this,
+                              "Error" + task.getException().getMessage(),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  });
         });
   }
 
-  // Sign up tech page
+  /**
+   * Saves user tech experience in
+   *
+   * Currently not used
+   */
   public void signUpFinish(View view) {
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -254,12 +288,26 @@ public class SignUp extends AppCompatActivity {
       newUser.save();
     }
 
-    Intent signUpFinish = new Intent(this, Placeholder.class);
+    /*
+     * Redirects user to Assignment Overview
+     */
+    Intent signUpFinish = new Intent(this, AssignmentOverviewActivity.class);
     startActivity(signUpFinish);
   }
 
+  /**
+   * Redirects user to previous sign up page
+   */
   public void signUpTechBack(View view) {
     currentUser.delete();
     setContentView(R.layout.user_signup_main);
+  }
+
+  /**
+   * Redirects user to login page
+   */
+  public void toSignIn(View view){
+    Intent toLogin = new Intent(this, UserLogin.class);
+    startActivity(toLogin);
   }
 }

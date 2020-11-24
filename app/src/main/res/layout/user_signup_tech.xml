@@ -13,25 +13,11 @@
         android:onClick="signUpTechBack"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/signup_finish"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadYoutube"
-        app:layout_constraintVertical_bias="0.544" />
-
-    <Button
-        android:id="@+id/signup_finish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:onClick="signUpFinish"
-        android:text="Finish"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintHorizontal_bias="0.616"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadYoutube"
-        app:layout_constraintVertical_bias="0.952" />
+        app:layout_constraintVertical_bias="0.504" />
 
     <TextView
         android:id="@+id/signuptech1"
@@ -117,4 +103,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.786" />
+
+    <Button
+        android:id="@+id/signup_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/signup_tech_back"
+        app:layout_constraintTop_toBottomOf="@+id/uploadYoutube" />
 </androidx.constraintlayout.widget.ConstraintLayout>

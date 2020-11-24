@@ -22,6 +22,10 @@ public abstract class Attachment extends Entity {
   public Attachment() {
     super();
   }
+
+  public Attachment(String id) {
+    super(id);
+  }
   /**
    * Save the Node to the Database
    *
