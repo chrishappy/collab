@@ -50,10 +50,12 @@
         <activity
             android:name=".nodeForms.AssignmentCreateFormActivity"
             android:label="@string/title_activity_assignment_create_form"
+            android:launchMode="singleTop"
             android:parentActivityName=".nodeViews.AssignmentOverviewActivity" />
         <activity
             android:name=".nodeViews.AssignmentViewActivity"
             android:label="@string/title_activity_assignment_view"
+            android:launchMode="singleTop"
             android:parentActivityName=".nodeViews.AssignmentOverviewActivity" />
 
         <!-- To Do Tasks -->
@@ -61,9 +63,11 @@
             android:name=".nodeForms.ToDoTaskCreateFormActivity"
             android:label="@string/title_activity_to_do_item_create_form"
             android:parentActivityName=".nodeForms.AssignmentCreateFormActivity" />
+
         <activity
             android:name=".nodeViews.ToDoViewActivity"
             android:label="@string/title_activity_to_do_item_view"
+            android:launchMode="singleTop"
             android:parentActivityName=".nodeViews.AssignmentViewActivity" />
 
         <!-- Main Activity -->

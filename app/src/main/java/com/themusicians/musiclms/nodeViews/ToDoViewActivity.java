@@ -61,36 +61,45 @@ public class ToDoViewActivity extends NodeViewActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     // If we are editing an to do item
-    toDoItem
-        .getEntityDatabase()
-        .child(viewEntityId)
-        .addListenerForSingleValueEvent(
-            new ValueEventListener() {
-              @Override
-              public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                toDoItem = dataSnapshot.getValue(ToDoItem.class);
-                toDoItemName.setText(toDoItem.getName());
+    if (viewEntityId != null) {
+      toDoItem
+          .getEntityDatabase()
+          .child(viewEntityId)
+          .addListenerForSingleValueEvent(
+              new ValueEventListener() {
+                @Override
+                public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                  toDoItem = dataSnapshot.getValue(ToDoItem.class);
+                  toDoItemName.setText(toDoItem.getName());
 
-                Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
-              }
+                  Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
+                }
 
-              @Override
-              public void onCancelled(@NotNull DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(
-                    LOAD_ENTITY_DATABASE_TAG,
-                    "loadToDoItem:onCancelled",
-                    databaseError.toException());
-                // ...
-              }
-            });
+                @Override
+                public void onCancelled(@NotNull DatabaseError databaseError) {
+                  // Getting Post failed, log a message
+                  Log.w(
+                      LOAD_ENTITY_DATABASE_TAG,
+                      "loadToDoItem:onCancelled",
+                      databaseError.toException());
+                  // ...
+                }
+              });
+    }
+    else {
+      Toast.makeText(
+          ToDoViewActivity.this,
+          "There was a problem loading this ToDo",
+          Toast.LENGTH_LONG)
+          .show();;
+    }
   }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_to_do_item_create_form);
+    setContentView(R.layout.activity_to_do_item_view);
     toDoItem = new ToDoItem();
 
     // Get fields

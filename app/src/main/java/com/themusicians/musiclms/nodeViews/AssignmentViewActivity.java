@@ -58,44 +58,53 @@ public class AssignmentViewActivity extends NodeViewActivity
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     // If we are editing an assignment
-    assignment
-        .getEntityDatabase()
-        .child(viewEntityId)
-        .addListenerForSingleValueEvent(
-            new ValueEventListener() {
-              @Override
-              public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                assignment = dataSnapshot.getValue(Assignment.class);
+    if (viewEntityId != null) {
+      assignment
+          .getEntityDatabase()
+          .child(viewEntityId)
+          .addListenerForSingleValueEvent(
+              new ValueEventListener() {
+                @Override
+                public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                  assignment = dataSnapshot.getValue(Assignment.class);
 
-                assert assignment != null;
+                  assert assignment != null;
 
-                if (assignment.getName() != null) {
-                  AssignmentName.setText(assignment.getName());
+                  if (assignment.getName() != null) {
+                    AssignmentName.setText(assignment.getName());
+                  }
+
+                  if (assignment.getClassId() != null) {
+                    StudentOrClass.setText(assignment.getClassId());
+                  }
+
+                  if (assignment.getDueDate() != 0) {
+                    Date date = new Date(assignment.getDueDate() * 1000);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+                    dueDate.setText(dateFormat.format(date));
+                  }
+
+                  Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
 
-                if (assignment.getClassId() != null) {
-                  StudentOrClass.setText(assignment.getClassId());
+                @Override
+                public void onCancelled(@NotNull DatabaseError databaseError) {
+                  // Getting Post failed, log a message
+                  Log.w(
+                      LOAD_ENTITY_DATABASE_TAG,
+                      "loadAssignment:onCancelled",
+                      databaseError.toException());
+                  // ...
                 }
-
-                if (assignment.getDueDate() != 0) {
-                  Date date = new Date(assignment.getDueDate() * 1000);
-                  DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
-                  dueDate.setText(dateFormat.format(date));
-                }
-
-                Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
-              }
-
-              @Override
-              public void onCancelled(@NotNull DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(
-                    LOAD_ENTITY_DATABASE_TAG,
-                    "loadAssignment:onCancelled",
-                    databaseError.toException());
-                // ...
-              }
-            });
+              });
+    }
+    else {
+    Toast.makeText(
+        AssignmentViewActivity.this,
+        "There was a problem loading this Assignment",
+        Toast.LENGTH_LONG)
+        .show();;
+  }
 
     // For after creating the first to do item
     if (toDoItemsAdapter == null) {
