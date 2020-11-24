@@ -15,8 +15,6 @@
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/left_and_right_gutters"
         android:paddingRight="@dimen/left_and_right_gutters"
-        app:layout_anchor="@+id/assignment_wrapper"
-        app:layout_anchorGravity="center"
         tools:context=".nodeForms.AssignmentCreateFormActivity">
 
         <LinearLayout

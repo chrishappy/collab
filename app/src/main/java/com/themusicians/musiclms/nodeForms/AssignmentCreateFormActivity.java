@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
+import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
@@ -118,6 +121,11 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               });
     }
 
+    // For after creating the first to do item
+    if (toDoItemsAdapter == null) {
+      initToDoItemsList();
+    }
+
     // If the assignment has not be saved (no id()), the toDoItemsAdapter will not be initialized
     if (toDoItemsAdapter != null) {
       toDoItemsAdapter.startListening();
@@ -142,6 +150,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    // Temp Entities
+    User tempUser = new User();
+
     // Initiate the entity
     if (inEditMode) {
       assignment = new Assignment(editEntityId);
@@ -149,13 +160,35 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     else {
       assignment = new Assignment();
     }
-
     setContentView(R.layout.activity_assignment_create_form);
 
     // Get fields
     final EditText AssignmentName = findViewById(R.id.assignment_name);
-    final EditText StudentOrClass = findViewById(R.id.students_or_class);
+    final MultiAutoCompleteTextView StudentOrClass = findViewById(R.id.students_or_class);
     final EditText dueDate = findViewById(R.id.dueDate);
+
+    // Show user auto complete
+    //Create a new ArrayAdapter with your context and the simple layout for the dropdown menu provided by Android
+    final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
+    //Child the root before all the push() keys are found and add a ValueEventListener()
+    tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+        for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
+          //Get the suggestion by childing the key of the string you want to get.
+          String suggestion = suggestionSnapshot.child("name").getValue(String.class);
+          //Add the retrieved string to the list
+          autoComplete.add(suggestion);
+        }
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+    StudentOrClass.setAdapter(autoComplete);
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);

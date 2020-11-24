@@ -114,7 +114,6 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     assignmentSave.setOnClickListener(
         view -> {
           // Due Date timestamp
-          ToDoItem toDoItem = new ToDoItem();
           toDoItem.setName(ToDoItemName.getText().toString());
           toDoItem.setStatus(true);
           toDoItem.setUid(currentUser.getUid());
