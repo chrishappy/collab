@@ -182,13 +182,20 @@ public class AssignmentOverviewActivity extends AppCompatActivity
    * @param entityId the entity to edit
    */
   @Override
-  public void onEditButtonClick(String type, String entityId) {
+  public void onButtonClick(String type, String entityId) {
     switch (type) {
       case "editAssignment":
         Intent toCreateAssignment =
             new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
         toCreateAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
         startActivity(toCreateAssignment);
+        break;
+
+      case "viewAssignment":
+        Intent toViewAssignment =
+            new Intent(AssignmentOverviewActivity.this, AssignmentViewActivity.class);
+        toViewAssignment.putExtra(ACCEPT_ENTITY_ID, entityId);
+        startActivity(toViewAssignment);
         break;
 
       default:

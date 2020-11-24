@@ -84,7 +84,14 @@ public class AssignmentOverviewAdapter
     holder.editAssignment.setOnClickListener(
         view -> {
           if (itemClickListener != null) {
-            itemClickListener.onEditButtonClick("editAssignment", assignment.getId());
+            itemClickListener.onButtonClick("editAssignment", assignment.getId());
+          }
+        });
+
+    holder.viewAssignment.setOnClickListener(
+        view -> {
+          if (itemClickListener != null) {
+            itemClickListener.onButtonClick("viewAssignment", assignment.getId());
           }
         });
   }
@@ -116,7 +123,7 @@ public class AssignmentOverviewAdapter
   // view (here "person.xml")
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate, userName;
-    Button editAssignment;
+    Button editAssignment, viewAssignment;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -126,6 +133,7 @@ public class AssignmentOverviewAdapter
       dueDate = itemView.findViewById(R.id.dueDate);
       userName = itemView.findViewById(R.id.userName);
       editAssignment = itemView.findViewById(R.id.edit_button);
+      viewAssignment = itemView.findViewById(R.id.view_button);
     }
   }
 
@@ -135,7 +143,7 @@ public class AssignmentOverviewAdapter
    * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
-    void onEditButtonClick(String type, String entityId);
+    void onButtonClick(String type, String entityId);
   }
 
   public void addItemClickListener(ItemClickListener listener) {

@@ -407,7 +407,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    * @param entityId the entity we are editing
    */
   @Override
-  public void onEditButtonClick(String type, String entityId) {
+  public void onButtonClick(String type, String entityId) {
     switch (type) {
       case "editToDoAssignmentForm":
         Intent toEditToDoItem =

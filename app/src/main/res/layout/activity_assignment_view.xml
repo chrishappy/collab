@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".nodeViews.AssignmentViewActivity"
+    android:id="@+id/createAssignmentLayout">
+
+    <ScrollView
+        android:id="@+id/assignment_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/left_and_right_gutters"
+        android:paddingRight="@dimen/left_and_right_gutters"
+        android:paddingTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/assignment_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/assignment__form__assignment_name" />
+
+                    <TextView
+                        android:id="@+id/students_or_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/assignment__form__user_class" />
+                </LinearLayout>
+                <!-- Replace with model:
+                        https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
+                        See section "Android Show DatePicker on EditText Click Example"
+
+                 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dueDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:text="@string/assignment__form__due_date" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/assignment__form__view_todos"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todoItemsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="#c0c0c0" />
+
+<!--            <fragment-->
+<!--                android:id="@+id/showAttachments"-->
+<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:layout_marginBottom="30dp"-->
+<!--                android:background="#c0c0c0" />-->
+
+
+            <!-- Start "AddAttachments Fragment". Migrate/Refactor later -->
+<!--            <fragment-->
+<!--                android:id="@+id/addAttachments"-->
+<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:layout_marginBottom="30dp"-->
+<!--                android:background="#c0c0c0" />-->
+
+            <!-- End "AddAttachments" Fragment -->
+
+            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                tools:context=".ui.home.HomeFragment">-->
+
+            <!--                &lt;!&ndash; Dummy Element &ndash;&gt;-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/addCommentButton"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="@string/attachment__add__comment"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintHorizontal_bias="1.0"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent"-->
+            <!--                    app:layout_constraintVertical_bias="0.0" />-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/selectFile"-->
+            <!--                    android:layout_width="114dp"-->
+            <!--                    android:layout_height="47dp"-->
+            <!--                    android:text="@string/attachment__add__file"-->
+            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/notification"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/no_file_is_selected" />-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/upload"-->
+            <!--                android:layout_width="114dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/upload" />-->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
