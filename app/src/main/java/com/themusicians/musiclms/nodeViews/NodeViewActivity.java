@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -16,7 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
  * @author Nathan Tsai
  * @since Nov 17, 2020
  */
-public abstract class NodeViewActivity extends AppCompatActivity {
+public abstract class NodeViewActivity extends YouTubeBaseActivity {
 
   /** The Firebase Auth Instance */
   protected FirebaseUser currentUser;

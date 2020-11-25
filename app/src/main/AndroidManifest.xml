@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,10 +38,6 @@
         <activity
             android:name=".UserLogin"
             android:label="@string/title_activity_login" />
-        <activity
-            android:name=".components.MainNavigation"
-            android:label="@string/title_activity_assignment_overview"
-            android:theme="@style/AppTheme.NoActionBar" />
         <!--
         For back button
         https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar
@@ -67,8 +67,11 @@
         <activity
             android:name=".nodeViews.ToDoViewActivity"
             android:label="@string/title_activity_to_do_item_view"
-            android:launchMode="singleTop"
             android:parentActivityName=".nodeViews.AssignmentViewActivity" />
+        <activity
+            android:name=".nodeViews.YoutubeRecording"
+            android:label="Temp Youtube Page"
+            android:parentActivityName=".nodeViews.AssignmentOverviewActivity" />
 
         <!-- Main Activity -->
         <activity android:name=".MainActivity">

@@ -1,42 +1,32 @@
 package com.themusicians.musiclms.nodeViews;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.entity.Attachment.Comment;
-import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
-import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
-import com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * Used to create and update assignments node entities
@@ -50,6 +40,10 @@ public class ToDoViewActivity extends NodeViewActivity {
 
   /** Fields */
   private TextView toDoItemName;
+  private VideoView recordingVideo;
+
+  /** For video recording */
+  static final int REQUEST_VIDEO_CAPTURE = 1;
 
   /** The To Do Item object */
   ToDoItem toDoItem;
@@ -91,9 +85,11 @@ public class ToDoViewActivity extends NodeViewActivity {
           ToDoViewActivity.this,
           "There was a problem loading this ToDo",
           Toast.LENGTH_LONG)
-          .show();;
+          .show();
     }
   }
+
+  private YouTubePlayer YPlayer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +100,28 @@ public class ToDoViewActivity extends NodeViewActivity {
 
     // Get fields
     toDoItemName = findViewById(R.id.to_do_item_name);
-
   }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    super.onActivityResult(requestCode, resultCode, intent);
+    if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+      Uri videoUri = intent.getData();
+      recordingVideo.setVideoURI(videoUri);
+    }
+  }
+
+  /**
+   * Record video
+   *
+   * See: https://developer.android.com/training/camera/videobasics
+   * For YT: https://www.sitepoint.com/using-the-youtube-api-to-embed-video-in-an-android-app/
+   */
+  private void dispatchTakeVideoIntent() {
+    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+    if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+      startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+    }
+  }
+
 }
