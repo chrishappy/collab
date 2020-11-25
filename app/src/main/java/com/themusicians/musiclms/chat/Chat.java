@@ -13,6 +13,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,10 +38,10 @@ public class Chat extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_chat);
 
-    layout = (LinearLayout) findViewById(R.id.layout1);
-    sendButton = (ImageView) findViewById(R.id.sendButton);
-    messageArea = (EditText) findViewById(R.id.messageArea);
-    scrollView = (ScrollView) findViewById(R.id.scrollView);
+    layout = findViewById(R.id.layout1);
+    sendButton = findViewById(R.id.sendButton);
+    messageArea = findViewById(R.id.messageArea);
+    scrollView = findViewById(R.id.scrollView);
 
     Firebase.setAndroidContext(this);
     reference1 =

@@ -15,6 +15,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,6 +38,7 @@ public class Chat_Users extends AppCompatActivity {
   ArrayList<String> al = new ArrayList<>();
   int totalUsers = 0;
   ProgressDialog pd;
+  FirebaseUser currentUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,14 @@ public class Chat_Users extends AppCompatActivity {
 
     usersList = (ListView) findViewById(R.id.usersList);
     noUsersText = (TextView) findViewById(R.id.noUsersText);
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     pd = new ProgressDialog(Chat_Users.this);
     pd.setMessage("Loading...");
     pd.show();
 
     String url = "https://musiclms---cmpt276.firebaseio.com/node__user/.json";
+
 
     StringRequest request =
         new StringRequest(
