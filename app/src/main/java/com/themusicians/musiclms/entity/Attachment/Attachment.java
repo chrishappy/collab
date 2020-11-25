@@ -79,6 +79,8 @@ public abstract class Attachment extends Entity {
               }
             });
 
+    setIsNew(true);
+
     return result[0];
   }
 

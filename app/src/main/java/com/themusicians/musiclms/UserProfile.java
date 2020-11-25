@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.chat.Chat_Users;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.UserAddUsers;
@@ -34,10 +35,8 @@ import java.util.List;
  * @contributors Harveer Khangura
  * @author Jerome Lau
  * @since Nov 10, 2020
- *
  * @todo View user info
  */
-
 public class UserProfile extends AppCompatActivity {
 
   protected TextView myName, myEmail, newName, newEmail;
@@ -73,8 +72,15 @@ public class UserProfile extends AppCompatActivity {
     addInstrument = findViewById(R.id.addButton);
     instruments = new ArrayList<>();
     instrumentList = findViewById(R.id.InstrumentList);
-    final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(UserProfile.this, android.R.layout.simple_list_item_1, myArrayList);
-    DatabaseReference InstrumentRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("instruments");
+    final ArrayAdapter<String> myArrayAdapter =
+        new ArrayAdapter<String>(
+            UserProfile.this, android.R.layout.simple_list_item_1, myArrayList);
+    DatabaseReference InstrumentRef =
+        FirebaseDatabase.getInstance()
+            .getReference()
+            .child("node__user")
+            .child(currentUser.getUid())
+            .child("instruments");
 
     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -111,126 +117,129 @@ public class UserProfile extends AppCompatActivity {
           public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-    /**
-     * Saves user instruments in Firebase
-     */
+    /** Saves user instruments in Firebase */
     reInput = true;
-    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        currUser = snapshot.getValue(User.class);
-        addInstrument.setOnClickListener(
-          (v) -> {
-            String instrumentName = newInstrument.getText().toString().trim();
-            /*
-             * Checks if instrument is new
-             */
-            boolean isNew = true;
-            for (int i = 0; i < myArrayList.size(); i++) {
-              if (instrumentName.toLowerCase().equals(myArrayList.get(i).toLowerCase())) {
-                isNew = false;
+    currUser
+        .getEntityDatabase()
+        .child(currentUser.getUid())
+        .addListenerForSingleValueEvent(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currUser = snapshot.getValue(User.class);
+                addInstrument.setOnClickListener(
+                    (v) -> {
+                      String instrumentName = newInstrument.getText().toString().trim();
+                      /*
+                       * Checks if instrument is new
+                       */
+                      boolean isNew = true;
+                      for (int i = 0; i < myArrayList.size(); i++) {
+                        if (instrumentName.toLowerCase().equals(myArrayList.get(i).toLowerCase())) {
+                          isNew = false;
+                        }
+                      }
+                      /*
+                       * Checks if instrument is empty
+                       */
+                      if (instrumentName.isEmpty()) {
+                        Toast.makeText(
+                                UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT)
+                            .show();
+                      } else if (isNew == false) {
+                        Toast.makeText(
+                                UserProfile.this,
+                                instrumentName.toLowerCase() + " is already added",
+                                Toast.LENGTH_SHORT)
+                            .show();
+                      } else {
+                        instruments.add(instrumentName);
+                        currUser.setInstruments(instruments);
+                        currUser.save();
+                        Toast.makeText(UserProfile.this, "Instrument added", Toast.LENGTH_SHORT)
+                            .show();
+                        reInput = false;
+                      }
+                    });
               }
-            }
-            /*
-             * Checks if instrument is empty
-             */
-            if (instrumentName.isEmpty()) {
-              Toast.makeText(UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT).show();
-            } else if (isNew == false){
-              Toast.makeText(UserProfile.this, instrumentName.toLowerCase() + " is already added",Toast.LENGTH_SHORT).show();
-            } else {
-              instruments.add(instrumentName);
-              currUser.setInstruments(instruments);
-              currUser.save();
-              Toast.makeText(UserProfile.this, "Instrument added", Toast.LENGTH_SHORT).show();
-              reInput = false;
-            }
-          });
-      }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {}
+            });
 
     /*
      * Display and update instruments from Firebase
      */
     instrumentList.setAdapter(myArrayAdapter);
-    InstrumentRef.addChildEventListener(new ChildEventListener() {
-      @Override
-      /*
-       * Runs on each instance of data and each time new child is added
-       * Takes each instance of data and stores it in a list
-       * @param snapshot data snapshot to fetch data from Firebase
-       * @param previousChildName
-       */
-      public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        String value = snapshot.getValue(String.class);
-        /*
-         * Checks to pull instruments to list once
-         */
-        if(reInput == true) {
-          instruments.add(value);
-        }
-        myArrayList.add(value);
-        myArrayAdapter.notifyDataSetChanged();
-      }
+    InstrumentRef.addChildEventListener(
+        new ChildEventListener() {
+          @Override
+          /*
+           * Runs on each instance of data and each time new child is added
+           * Takes each instance of data and stores it in a list
+           * @param snapshot data snapshot to fetch data from Firebase
+           * @param previousChildName
+           */
+          public void onChildAdded(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            String value = snapshot.getValue(String.class);
+            /*
+             * Checks to pull instruments to list once
+             */
+            if (reInput == true) {
+              instruments.add(value);
+            }
+            myArrayList.add(value);
+            myArrayAdapter.notifyDataSetChanged();
+          }
 
-      /**
-       * Updates instrument list if instrument is changed
-       * @param snapshot data snapshot to fetch data from Firebase
-       * @param previousChildName
-       */
-      @Override
-      public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        String value = snapshot.getValue(String.class);
-        myArrayList.add(value);
-        myArrayAdapter.notifyDataSetChanged();
-      }
+          /**
+           * Updates instrument list if instrument is changed
+           *
+           * @param snapshot data snapshot to fetch data from Firebase
+           * @param previousChildName
+           */
+          @Override
+          public void onChildChanged(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            String value = snapshot.getValue(String.class);
+            myArrayList.add(value);
+            myArrayAdapter.notifyDataSetChanged();
+          }
 
-      /**
-       * Updates instrument list if instrument is removed
-       * @param snapshot data snapshot to fetch data from Firebase
-       */
-      @Override
-      public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-        String value = snapshot.getValue(String.class);
-        myArrayList.remove(value);
-        myArrayAdapter.notifyDataSetChanged();
-      }
+          /**
+           * Updates instrument list if instrument is removed
+           *
+           * @param snapshot data snapshot to fetch data from Firebase
+           */
+          @Override
+          public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            String value = snapshot.getValue(String.class);
+            myArrayList.remove(value);
+            myArrayAdapter.notifyDataSetChanged();
+          }
 
-      @Override
-      public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+          @Override
+          public void onChildMoved(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
   }
 
-  /**
-   * Redirects to add users
-   */
-  public void toAddUser(View view){
+  /** Redirects to add users */
+  public void toAddUser(View view) {
     Intent toAdd = new Intent(this, UserAddUsers.class);
     startActivity(toAdd);
   }
 
-  /**
-   * Redirects User to Editing data
-   */
+  /** Redirects User to Editing data */
   public void toEditData(View view) {
     setContentView(R.layout.user_profile_edit_data);
   }
 
-  /**
-   * Updates user name in Firebase
-   */
+  /** Updates user name in Firebase */
   public void changeName(View view) {
     newName = findViewById(R.id.changeName);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -246,9 +255,7 @@ public class UserProfile extends AppCompatActivity {
             aVoid -> Toast.makeText(UserProfile.this, "Name updated", Toast.LENGTH_SHORT).show());
   }
 
-  /**
-   * Updates user email in Firebase
-   */
+  /** Updates user email in Firebase */
   public void changeEmail(View view) {
     newEmail = findViewById(R.id.changeEmail);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -260,15 +267,11 @@ public class UserProfile extends AppCompatActivity {
             aVoid -> Toast.makeText(UserProfile.this, "Email updated", Toast.LENGTH_SHORT).show());
   }
 
-  /**
-   * Updates user password in Firebase through email verification
-   */
+  /** Updates user password in Firebase through email verification */
   public void changePassword(View view) {
     fAuth = FirebaseAuth.getInstance();
 
-    /**
-     * Email verification dialog
-     */
+    /** Email verification dialog */
     EditText resetMail = new EditText(view.getContext());
     AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder((view.getContext()));
 
@@ -279,49 +282,43 @@ public class UserProfile extends AppCompatActivity {
     passwordResetDialog.setPositiveButton(
         "Yes",
         (dialog, which) -> {
-
           String mail = resetMail.getText().toString();
           fAuth
               .sendPasswordResetEmail(mail)
               .addOnSuccessListener(
-                  aVoid -> Toast.makeText(
-                          UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
-                      .show())
+                  aVoid ->
+                      Toast.makeText(
+                              UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
+                          .show())
               .addOnFailureListener(
-                  e -> Toast.makeText(
-                          UserProfile.this,
-                          "Error! Reset link not sent" + e.getMessage(),
-                          Toast.LENGTH_SHORT)
-                      .show());
+                  e ->
+                      Toast.makeText(
+                              UserProfile.this,
+                              "Error! Reset link not sent" + e.getMessage(),
+                              Toast.LENGTH_SHORT)
+                          .show());
         });
 
-    passwordResetDialog.setNegativeButton(
-        "No",
-        (dialog, which) -> {});
+    passwordResetDialog.setNegativeButton("No", (dialog, which) -> {});
 
     passwordResetDialog.create().show();
   }
 
-  /**
-   * Redirects user to user profile page
-   */
+  /** Redirects user to user profile page */
   public void editDataBack(View view) {
     Intent reload = new Intent(this, UserProfile.class);
     startActivity(reload);
   }
 
-  /**
-   * Redirects user to Assignment Overview
-   */
-  public void backFromProfile(View view){
+  /** Redirects user to Assignment Overview */
+  public void backFromProfile(View view) {
     Intent toAssignmentOverview = new Intent(this, AssignmentOverviewActivity.class);
     startActivity(toAssignmentOverview);
   }
 
   /** Shifan's code */
   public void goChat(View view) {
-    Toast.makeText(UserProfile.this, "Chats currently nonfunctional", Toast.LENGTH_SHORT).show();
-    // Intent Chatpage = new Intent(this, Chat.class);
-    // startActivity(Chatpage);
+    Intent Chatpage = new Intent(this, Chat_Users.class);
+    startActivity(Chatpage);
   }
 }

@@ -19,10 +19,8 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 /**
  * The user login page
  *
- * <p>
- * @Contributors: Jerome Lau
- * @Jerome Lau
- * @Since Nov 4, 2020
+ * <p>@Contributors: Jerome Lau @Jerome Lau @Since Nov 4, 2020
+ *
  * <p>--------------------------------
  *
  * @todo Login users via Firebase
@@ -39,18 +37,14 @@ public class UserLogin extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.user_signin);
 
-    /**
-     * Initialize Variables
-     */
+    /** Initialize Variables */
     myEmail = findViewById(R.id.myEmail);
     myPassword = findViewById(R.id.myPassword);
     fAuth = FirebaseAuth.getInstance();
     signIn = findViewById(R.id.signin);
     register = findViewById(R.id.orRegister);
 
-    /**
-     * Listens for when the User clicks Sign In
-     */
+    /** Listens for when the User clicks Sign In */
     signIn.setOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -58,25 +52,21 @@ public class UserLogin extends AppCompatActivity {
             String email = myEmail.getText().toString().trim();
             String password = myPassword.getText().toString().trim();
 
-            /**
-             * checks if user email is empty
-             */
+            /** checks if user email is empty */
             if (TextUtils.isEmpty(email)) {
               myEmail.setError("Email is Required.");
               return;
             }
 
-            /**
-             * checks if user password is empty
-             */
+            /** checks if user password is empty */
             if (TextUtils.isEmpty(password)) {
               myPassword.setError("Password is Required");
               return;
             }
 
             /**
-             * Verifies account with Firebase
-             * Redirects user to Assignment Overview
+             * Verifies account with Firebase Redirects user to Assignment Overview
+             *
              * @param email references myEmail from user input
              * @param password references myPassword from user input
              */
@@ -89,7 +79,9 @@ public class UserLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                           Toast.makeText(UserLogin.this, "Login Successful", Toast.LENGTH_SHORT)
                               .show();
-                          startActivity(new Intent(getApplicationContext(), AssignmentOverviewActivity.class));
+                          startActivity(
+                              new Intent(
+                                  getApplicationContext(), AssignmentOverviewActivity.class));
                         } else {
                           Toast.makeText(
                                   UserLogin.this,
@@ -102,9 +94,7 @@ public class UserLogin extends AppCompatActivity {
           }
         });
 
-    /**
-     * Redirects user to Registration
-     */
+    /** Redirects user to Registration */
     register.setOnClickListener(
         new View.OnClickListener() {
           @Override

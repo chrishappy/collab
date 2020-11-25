@@ -142,6 +142,7 @@
     <string name="to_do_item__form__name">Name</string>
     <string name="to_do_item__form__require_recording">Require Recording</string>
     <string name="form__edit_button">Edit</string>
+    <string name="user_profile_chat">Chat</string>
     <string name="no_file_is_selected">no file is selected</string>
     <string name="upload">upload</string>
     <string name="attachment__form__recording">Recording</string>
@@ -152,4 +153,11 @@
     <string name="title_activity_user_search">Search for Users</string>
     <string name="title_activity_add_users">Add Users</string>
     <string name="title_activity_chat_landing">Chat with others</string>
+    <string name="title_activity_user_main_profile">User Profile</string>
+    <string name="title_activity_login">Log In</string>
+    <string name="assignment__form__view_todos">To Do</string>
+    <string name="form__view_button">View</string>
+    <string name="title_activity_assignment_view">View Assignment</string>
+    <string name="title_activity_to_do_item_view">View To Do Item</string>
+    <string name="to_do_item__adapter_button"><![CDATA[>]]></string>
 </resources>

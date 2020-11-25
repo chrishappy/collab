@@ -26,8 +26,6 @@ public abstract class Node extends Entity {
    */
   protected String name;
 
-  protected String email;
-
   protected List<String> attachmentIds;
 
   protected List<String> allowedAttachments;

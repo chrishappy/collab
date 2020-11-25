@@ -119,7 +119,7 @@ public class Assignment extends Node {
   /**
    * Get To Do Items location
    *
-   * Assumes assignment has an id
+   * <p>Assumes assignment has an id
    */
   @Exclude
   public DatabaseReference getToDoItemsKeyQuery() {

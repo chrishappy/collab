@@ -43,7 +43,7 @@ public class ToDoAssignmentFormAdapter
     View.OnClickListener editToDoItemListener =
         view -> {
           if (itemClickListener != null) {
-            itemClickListener.onEditButtonClick("editToDoAssignmentForm", toDoItem.getId());
+            itemClickListener.onButtonClick("editToDoAssignmentForm", toDoItem.getId());
           }
         };
     holder.toDoName.setOnClickListener(editToDoItemListener);
@@ -84,7 +84,7 @@ public class ToDoAssignmentFormAdapter
    * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
-    void onEditButtonClick(String type, String entityId);
+    void onButtonClick(String type, String entityId);
   }
 
   public void addItemClickListener(ItemClickListener listener) {

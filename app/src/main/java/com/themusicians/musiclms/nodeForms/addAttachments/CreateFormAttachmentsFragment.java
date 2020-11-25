@@ -9,16 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
-import com.themusicians.musiclms.entity.Attachment.Comment;
-import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 
 /**
  * Create the attachments to be added to all node create/update forms
@@ -29,11 +24,10 @@ import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
  */
 public class CreateFormAttachmentsFragment extends CreateFormFragment {
 
-//  private AddAttachmentsViewModel homeViewModel;
+  //  private AddAttachmentsViewModel homeViewModel;
 
   /** The attachment to be edited or saved */
   protected AllAttachment attachment;
-
 
   /** Receive the entity id of the attachment to edit */
   public static CreateFormAttachmentsFragment newInstance(String editEntityId) {
@@ -62,13 +56,12 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
 
     attachment = new AllAttachment();
 
-//    homeViewModel = new ViewModelProvider(this).get(addAttachmentsViewModel.class);
+    //    homeViewModel = new ViewModelProvider(this).get(addAttachmentsViewModel.class);
 
     View root = inflater.inflate(R.layout.fragment_add_attachments, container, false);
 
     // The comment fields
     final EditText editComment = root.findViewById(R.id.editComment);
-
 
     // The file fields
 
@@ -84,27 +77,23 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
     final Button saveAction = root.findViewById(R.id.saveAction);
     saveAction.setOnClickListener(
         view -> {
-
-          attachment.setComment( editComment.getText().toString() );
-          attachment.setStatus( true );
-          attachment.setUid( currentUser.getUid() );
+          attachment.setComment(editComment.getText().toString());
+          attachment.setStatus(true);
+          attachment.setUid(currentUser.getUid());
           attachment.save();
 
-          //Display notification
+          // Display notification
           String saveMessage = (editEntityId != null) ? "Attachment updated" : "Attachment Saved";
-          Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG)
-              .setAction("Action", null)
-              .show();
+          Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         });
 
     final Button cancelAction = root.findViewById(R.id.cancelAction);
     cancelAction.setOnClickListener(
         view -> {
-          //Display notification
-          String saveMessage = (editEntityId != null) ? "Attachment update cancelled" : "Attachment save cancelled";
-          Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG)
-              .setAction("Action", null)
-              .show();
+          // Display notification
+          String saveMessage =
+              (editEntityId != null) ? "Attachment update cancelled" : "Attachment save cancelled";
+          Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         });
 
     return root;
@@ -119,11 +108,11 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
 
     // Always call the superclass so it can save the view hierarchy state
     super.onSaveInstanceState(savedInstanceState);
-  }/*
-   * Not working function to upload a pdf
-   *
-   * @param pdfUri the file to upload
-   */
+  } /*
+     * Not working function to upload a pdf
+     *
+     * @param pdfUri the file to upload
+     */
   /*
   private void uploadFile(Uri pdfUri) {
 
@@ -193,18 +182,14 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
   }
    */
 
-  /**
-   * Ask user permission to get PDF
-   */
+  /** Ask user permission to get PDF */
   @Override
   public void onRequestPermissionsResult(
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
       selectPdf();
-    }
-    else {
-      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT)
-          .show();
+    } else {
+      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT).show();
     }
   }
 
@@ -216,24 +201,24 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
     startActivityForResult(intent, 86);
   }
 
-//  @Override
-//  public void onDialogPositiveClick(DialogFragment dialog) {
-//    // Get field from dialog
-//    final EditText AssignmentName = findViewById(R.id.assignment_name);
-//
-//    Comment newComment = new Comment();
-//    newComment.setComment(AssignmentName.getText().toString());
-//    newComment.save();
-//  }
-//
-//  @Override
-//  public void onDialogNegativeClick(DialogFragment dialog) {
-//    Snackbar.make(
-//        findViewById(R.id.createAssignmentLayout),
-//        "Comment Negative clicked",
-//        Snackbar.LENGTH_LONG)
-//        .setAction("Action", null)
-//        .show();
-//  }
+  //  @Override
+  //  public void onDialogPositiveClick(DialogFragment dialog) {
+  //    // Get field from dialog
+  //    final EditText AssignmentName = findViewById(R.id.assignment_name);
+  //
+  //    Comment newComment = new Comment();
+  //    newComment.setComment(AssignmentName.getText().toString());
+  //    newComment.save();
+  //  }
+  //
+  //  @Override
+  //  public void onDialogNegativeClick(DialogFragment dialog) {
+  //    Snackbar.make(
+  //        findViewById(R.id.createAssignmentLayout),
+  //        "Comment Negative clicked",
+  //        Snackbar.LENGTH_LONG)
+  //        .setAction("Action", null)
+  //        .show();
+  //  }
 
 }

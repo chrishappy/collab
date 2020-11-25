@@ -18,12 +18,10 @@ import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
-
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Used to create and update To Do items
- * Referenced from AssignmentCreateForm.java
+ * Used to create and update To Do items Referenced from AssignmentCreateForm.java
  *
  * @author Nathan Tsai
  * @since Nov 13, 2020
@@ -88,9 +86,8 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     setContentView(R.layout.activity_to_do_item_create_form);
 
     if (inEditMode) {
-      toDoItem = new ToDoItem( editEntityId );
-    }
-    else {
+      toDoItem = new ToDoItem(editEntityId);
+    } else {
       toDoItem = new ToDoItem();
     }
 
