@@ -119,10 +119,4 @@ public class UserSearch extends AppCompatActivity {
     UserSearchAdapter userSearchAdapter = new UserSearchAdapter(mySearchList, UserSearch.this);
     searchRecycler.setAdapter(userSearchAdapter);
   }
-
-  /** Redirect to User Profile */
-  public void returnAddedUsers(View view) {
-    Intent toAddUsers = new Intent(this, UserAddUsers.class);
-    startActivity(toAddUsers);
-  }
 }

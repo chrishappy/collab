@@ -156,7 +156,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
                 /** Checks if added user is new */
                 boolean isNew = true;
                 for (int i = 0; i < userList.size(); i++) {
-                  if (list.get(position).getId().equals(userList.get(i))) {
+                  if (list.get(position).getId(). equals(userList.get(i))) {
                     isNew = false;
                   }
                 }
