@@ -14,6 +14,15 @@ import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.themusicians.musiclms.R;
 
+/**
+ * A demo page to play youtube videos
+ *
+ * Currently, nothing links to it. Need to add menu in assignment overview
+ *
+ * @author Nathan Tsai
+ * @since Nov 24, 2020
+ */
+
 public class YoutubeRecording extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
   private static final int RECOVERY_REQUEST = 1;

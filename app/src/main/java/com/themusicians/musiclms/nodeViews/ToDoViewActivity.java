@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -34,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Nathan Tsai
  * @since Nov 24, 2020
  */
-public class ToDoViewActivity extends NodeViewActivity {
+public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.OnInitializedListener {
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
 
@@ -47,6 +49,13 @@ public class ToDoViewActivity extends NodeViewActivity {
 
   /** The To Do Item object */
   ToDoItem toDoItem;
+
+  /**
+   * Youtube
+   */
+  private static final int RECOVERY_REQUEST = 1;
+  private YouTubePlayerView youTubeView;
+  private YouTubePlayer player;
 
   @Override
   public void onStart() {
@@ -100,15 +109,51 @@ public class ToDoViewActivity extends NodeViewActivity {
 
     // Get fields
     toDoItemName = findViewById(R.id.to_do_item_name);
+    youTubeView = findViewById(R.id.youtube_view);
+    youTubeView.initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
+
+    final EditText seekToText = findViewById(R.id.seek_to_text);
+    Button seekToButton = findViewById(R.id.seek_to_button);
+    seekToButton.setOnClickListener(v -> {
+      int skipToSecs = Integer.parseInt(seekToText.getText().toString());
+      player.seekToMillis(skipToSecs * 1000);
+    });
+  }
+
+  @Override
+  public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
+    this.player = player;
+
+    if (!wasRestored) {
+      player.cueVideo("fhWaJi1Hsfo"); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+    }
+  }
+
+  @Override
+  public void onInitializationFailure(Provider provider, YouTubeInitializationResult errorReason) {
+    if (errorReason.isUserRecoverableError()) {
+      errorReason.getErrorDialog(this, RECOVERY_REQUEST).show();
+    } else {
+      String error = String.format(getString(R.string.player_error), errorReason.toString());
+      Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    super.onActivityResult(requestCode, resultCode, intent);
+    if (requestCode == RECOVERY_REQUEST) {
+      // Retry initialization if user performed a recovery action
+      getYouTubePlayerProvider().initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
+    }
+
     if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
       Uri videoUri = intent.getData();
       recordingVideo.setVideoURI(videoUri);
     }
+  }
+
+  protected Provider getYouTubePlayerProvider() {
+    return youTubeView;
   }
 
   /**
