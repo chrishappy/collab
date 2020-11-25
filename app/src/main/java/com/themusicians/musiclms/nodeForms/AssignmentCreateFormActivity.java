@@ -169,7 +169,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
     // Show user auto complete
     //Create a new ArrayAdapter with your context and the simple layout for the dropdown menu provided by Android
-    final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
+    final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line);
     //Child the root before all the push() keys are found and add a ValueEventListener()
     tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
       @Override
@@ -189,6 +189,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       }
     });
     StudentOrClass.setAdapter(autoComplete);
+    StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);
