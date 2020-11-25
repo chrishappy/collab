@@ -13,24 +13,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ui.UserAddUsers"
+        <activity android:name=".chat.NewChat"></activity>
+        <activity
+            android:name=".UserAddUsers"
             android:label="@string/title_activity_add_users"
             android:parentActivityName=".UserProfile" />
         <activity
             android:name=".UserSearch"
             android:label="@string/title_activity_user_search"
-            android:parentActivityName=".ui.UserAddUsers" />
-        <activity android:name=".chat.Chat_Users"></activity>
+            android:parentActivityName=".UserAddUsers" />
+        <activity android:name=".chat.Chat_Users" />
         <activity
             android:name=".chat.Chat"
             android:label="@string/title_activity_chat_landing"
-            android:parentActivityName=".UserProfile"/> <!-- User Activities -->
-        <activity android:name=".SignUp"
+            android:parentActivityName=".UserProfile" /> <!-- User Activities -->
+        <activity
+            android:name=".SignUp"
             android:label="@string/title_activity_signin" />
-        <activity android:name=".UserProfile"
+        <activity
+            android:name=".UserProfile"
             android:label="@string/title_activity_user_main_profile"
-            android:parentActivityName=".nodeViews.AssignmentOverviewActivity"/>
+            android:parentActivityName=".nodeViews.AssignmentOverviewActivity" />
         <activity
             android:name=".UserLogin"
             android:label="@string/title_activity_login" />
@@ -42,7 +45,6 @@
         For back button
         https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar
         -->
-
         <!-- Assignments -->
         <activity
             android:name=".nodeViews.AssignmentOverviewActivity"
@@ -56,24 +58,20 @@
             android:name=".nodeViews.AssignmentViewActivity"
             android:label="@string/title_activity_assignment_view"
             android:launchMode="singleTop"
-            android:parentActivityName=".nodeViews.AssignmentOverviewActivity" />
-
-        <!-- To Do Tasks -->
+            android:parentActivityName=".nodeViews.AssignmentOverviewActivity" /> <!-- To Do Tasks -->
         <activity
             android:name=".nodeForms.ToDoTaskCreateFormActivity"
             android:label="@string/title_activity_to_do_item_create_form"
             android:parentActivityName=".nodeForms.AssignmentCreateFormActivity" />
-
         <activity
             android:name=".nodeViews.ToDoViewActivity"
             android:label="@string/title_activity_to_do_item_view"
             android:launchMode="singleTop"
-            android:parentActivityName=".nodeViews.AssignmentViewActivity" />
-
-        <!-- Main Activity -->
+            android:parentActivityName=".nodeViews.AssignmentViewActivity" /> <!-- Main Activity -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

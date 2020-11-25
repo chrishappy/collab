@@ -32,6 +32,7 @@ import org.json.JSONObject;
  * @todo Users' names
  * @author Shifan He Created by Shifan He on 2020-11-18
  */
+
 public class Chat_Users extends AppCompatActivity {
   ListView usersList;
   TextView noUsersText;
@@ -54,7 +55,6 @@ public class Chat_Users extends AppCompatActivity {
     pd.show();
 
     String url = "https://musiclms---cmpt276.firebaseio.com/node__user/.json";
-
 
     StringRequest request =
         new StringRequest(

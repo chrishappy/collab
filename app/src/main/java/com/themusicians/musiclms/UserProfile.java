@@ -22,10 +22,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.themusicians.musiclms.chat.Chat_Users;
+import com.themusicians.musiclms.chat.NewChat;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-import com.themusicians.musiclms.ui.UserAddUsers;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +47,9 @@ public class UserProfile extends AppCompatActivity {
   protected List<String> instruments;
   ArrayList<String> myArrayList = new ArrayList<>();
   boolean reInput;
-
-  protected User currUser;
   protected ListView instrumentList;
+  protected User currUser;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class UserProfile extends AppCompatActivity {
 
     myName = findViewById(R.id.user_name);
     myEmail = findViewById(R.id.user_email);
-    userProfileBack = findViewById(R.id.userProfileBack);
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
@@ -317,8 +316,8 @@ public class UserProfile extends AppCompatActivity {
   }
 
   /** Shifan's code */
-  public void goChat(View view) {
-    Intent Chatpage = new Intent(this, Chat_Users.class);
-    startActivity(Chatpage);
+  public void toChat(View view) {
+    Intent toChatPage = new Intent(this, NewChat.class);
+    startActivity(toChatPage);
   }
 }
