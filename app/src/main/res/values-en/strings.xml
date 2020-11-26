@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="lan_chinese">Chinese</string>
+    <string name="lan_en">English</string>
+    <string name="select_language">Choose a language</string>
 	<string name="app_name">Music LMS</string>
 	<string name="title_activity_signin">Sign In</string>
 	<string name="prompt_email">Email</string>
@@ -151,4 +154,5 @@
 	<string name="title_activity_chat_landing">Chat with others</string>
 	<string name="title_activity_user_main_profile">User Profile</string>
 	<string name="title_activity_login">Log In</string>
+    <string name="text_content">text</string>
 </resources>
