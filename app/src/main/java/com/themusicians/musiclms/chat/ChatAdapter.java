@@ -48,12 +48,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
   @Override
   public ChatAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view;
-    if(viewType == MSG_TYPE_RIGHT) {
-      view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right, parent, false);
-    } else{
-      view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left, parent, false);
+    if(viewType == MSG_TYPE_RIGHT){
+      view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
+    } else {
+      view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
     }
     return new MyViewHolder(view);
+
   }
   // Function to bind the view in Card view with data in
   // User class
@@ -82,9 +83,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
   @Override
   public int getItemViewType(int position) {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    if(list.get(position).getSender().equals(currentUser.getUid())) {
+    if(list.get(position).getSender().equals(currentUser.getUid())){
       return MSG_TYPE_RIGHT;
-    } else{
+    }else{
       return MSG_TYPE_LEFT;
     }
   }

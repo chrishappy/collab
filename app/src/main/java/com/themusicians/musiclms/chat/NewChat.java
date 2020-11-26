@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,12 +33,12 @@ public class NewChat extends AppCompatActivity {
   FirebaseUser currentUser;
   DatabaseReference reference, toRef;
 
-  //ChatAdapter chatAdapter;
-  //List<ChatClass> chatList;
+  ChatAdapter chatAdapter;
+  List<ChatClass> chatList;
 
-  //RecyclerView recyclerView;
+  RecyclerView recyclerView;
 
-  String toMessageID, toMessageName;
+  String toMessageID;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +52,16 @@ public class NewChat extends AppCompatActivity {
     textMessage = findViewById(R.id.messageBox);
     sendButton = findViewById(R.id.sendMessage);
 
-    /*recyclerView = findViewById(R.id.chatRecycler);
+    recyclerView = findViewById(R.id.chatRecycler);
     recyclerView.setHasFixedSize(true);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
     linearLayoutManager.setStackFromEnd(true);
-    recyclerView.setLayoutManager(linearLayoutManager);*/
+    recyclerView.setLayoutManager(linearLayoutManager);
 
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         toMessageID = snapshot.getValue(String.class);
-        DatabaseReference r = FirebaseDatabase.getInstance().getReference().child("node__user").child(toMessageID).child("name");
-        reference.addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-            toMessageName = snapshot.getValue(String.class);
-          }
-
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-
-          }
-        });
       }
 
       @Override
@@ -88,22 +77,23 @@ public class NewChat extends AppCompatActivity {
         if(!msg.equals("")){
           sendMessage(currentUser.getUid(), toMessageID, msg);
         }
+        textMessage.setText("");
       }
     });
 
-    /*reference = FirebaseDatabase.getInstance().getReference().child("node__user");
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user");
     reference.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-        //readMessages(currentUser.getUid(), toMessageID, toMessageName);
+        readMessages(currentUser.getUid(), toMessageID);
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
 
       }
-    });*/
+    });
 
   }
 
@@ -117,21 +107,23 @@ public class NewChat extends AppCompatActivity {
     reference.child("Chats").push().setValue(hashMap);
   }
 
-  /*private void readMessages(String myid, String userid, String name){
+  private void readMessages(String myId, String userId){
     chatList = new ArrayList<>();
 
-    reference = FirebaseDatabase.getInstance().getReference("Chats");
+    reference = FirebaseDatabase.getInstance().getReference().child("Chats");
     reference.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         chatList.clear();
         for(DataSnapshot ds : snapshot.getChildren()){
           ChatClass chat = ds.getValue(ChatClass.class);
-          if(chat.getReceiver().equals(myid) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
+          if(chat.getReceiver().equals(myId) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myId)){
             chatList.add(chat);
           }
-          chatAdapter = new ChatAdapter(chatList, NewChat.this, toMessageName);
+
+          chatAdapter = new ChatAdapter(chatList, NewChat.this);
           recyclerView.setAdapter(chatAdapter);
+
         }
       }
 
@@ -140,5 +132,5 @@ public class NewChat extends AppCompatActivity {
 
       }
     });
-  }*/
+  }
 }

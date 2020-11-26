@@ -159,6 +159,7 @@ public class UserProfile extends AppCompatActivity {
                             .show();
                         reInput = false;
                       }
+                      newInstrument.setText("");
                     });
               }
 

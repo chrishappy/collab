@@ -14,6 +14,8 @@ public class ChatClass {
     this.message = message;
   }
 
+  public ChatClass (){}
+
   public String getSender() {
     return sender;
   }
