@@ -16,7 +16,7 @@ public class SettingAc extends BaseAc {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_language);
         setTitle("Activity");
         final String[] cities = {getString(R.string.lan_chinese), getString(R.string.lan_en)};
         final String[] locals = {"zh_rCN", "en"};
