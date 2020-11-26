@@ -19,7 +19,7 @@ public class Language extends BaseAc {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_language);
         setTitle("第一个Activity");
         findViewById(R.id.btn_setting).setOnClickListener(new View.OnClickListener() {
             @Override
