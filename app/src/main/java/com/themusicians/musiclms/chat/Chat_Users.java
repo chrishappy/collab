@@ -44,10 +44,10 @@ public class Chat_Users extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_users);
+    //setContentView(R.layout.activity_users);
 
-    usersList = (ListView) findViewById(R.id.usersList);
-    noUsersText = (TextView) findViewById(R.id.noUsersText);
+   // usersList = (ListView) findViewById(R.id.usersList);
+  //  noUsersText = (TextView) findViewById(R.id.noUsersText);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     pd = new ProgressDialog(Chat_Users.this);

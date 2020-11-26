@@ -98,6 +98,17 @@ public class User extends Node {
   }
 
   /** Fields setters and getters */
+
+  private String recentText;
+
+  public String getRecentText() {
+    return recentText;
+  }
+
+  public void setRecentText(String recentText) {
+    this.recentText = recentText;
+  }
+
   public List<String> getTechExperience() {
     return techExperience;
   }

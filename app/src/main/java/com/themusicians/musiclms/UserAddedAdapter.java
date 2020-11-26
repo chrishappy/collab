@@ -1,6 +1,7 @@
 package com.themusicians.musiclms;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.chat.NewChat;
 import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
   FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   User currUser = new User(currentUser.getUid());
   Context context;
-  DatabaseReference addedRef;
+
 
   /**
    * Initialize variables
@@ -94,7 +96,26 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
     // Add button onClick
     public void onClick(int position) {
+      userChat.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+              currUser = snapshot.getValue(User.class);
+              currUser.setRecentText(list.get(position).getId());
+              currUser.save();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+          });
+          Intent toChat = new Intent(context, NewChat.class);
+          context.startActivity(toChat);
+        }
+      });
     }
   }
 }

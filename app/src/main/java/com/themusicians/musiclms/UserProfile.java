@@ -260,6 +260,7 @@ public class UserProfile extends AppCompatActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String email = newEmail.getText().toString().trim();
 
+    FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("email").setValue(email);
     currentUser
         .updateEmail(email)
         .addOnSuccessListener(
