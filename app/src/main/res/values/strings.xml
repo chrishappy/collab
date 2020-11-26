@@ -159,4 +159,5 @@
     <string name="title_activity_user_main_profile">User Profile</string>
     <string name="title_activity_login">Log In</string>
     <string name="text_content">text</string>
+    <string name="action_Language">Language</string>
 </resources>

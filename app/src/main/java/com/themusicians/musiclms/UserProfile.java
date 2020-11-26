@@ -321,4 +321,10 @@ public class UserProfile extends AppCompatActivity {
     Intent Chatpage = new Intent(this, Chat_Users.class);
     startActivity(Chatpage);
   }
+
+    public void goLanguage(View view) {
+        Intent Languagepage = new Intent(this, Language.class);
+        startActivity(Languagepage);
+    }
+
 }

@@ -17,9 +17,9 @@ public class SettingAc extends BaseAc {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("设置Activity");
+        setTitle("Activity");
         final String[] cities = {getString(R.string.lan_chinese), getString(R.string.lan_en)};
-        final String[] locals = {"zh_CN", "en", "ja", "de"};
+        final String[] locals = {"zh_rCN", "en"};
         Button button = (Button)findViewById(R.id.btn_setting);
         button.setText("Language");
         button.setOnClickListener(new View.OnClickListener() {

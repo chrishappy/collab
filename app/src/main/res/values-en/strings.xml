@@ -30,7 +30,7 @@
 	<string name="assignment__form__cancel_assignment">Cancel</string>
 	<string name="assignment__form__cancel">Cancel</string>
 	<string name="assignment__form__save">Save</string>
-	<string name="assignment__form__add_todos">Add all \ 's</string>
+    <string name="assignment__form__add_todos">Add Todo\'s</string>
 	<string name="title_activity_assignment_overview">Assignment Overview</string>
 	<string name="navigation_drawer_open">Open navigation drawer</string>
 	<string name="navigation_drawer_close">Close navigation drawer</string>
@@ -155,4 +155,5 @@
 	<string name="title_activity_user_main_profile">User Profile</string>
 	<string name="title_activity_login">Log In</string>
     <string name="text_content">text</string>
+    <string name="action_Language">Language</string>
 </resources>
