@@ -2,6 +2,8 @@ package com.themusicians.musiclms.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +18,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Node.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class NewChat extends AppCompatActivity {
 
@@ -27,7 +32,12 @@ public class NewChat extends AppCompatActivity {
   FirebaseUser currentUser;
   DatabaseReference reference, toRef;
 
-  String toMessage;
+  //ChatAdapter chatAdapter;
+  //List<ChatClass> chatList;
+
+  //RecyclerView recyclerView;
+
+  String toMessageID, toMessageName;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +51,28 @@ public class NewChat extends AppCompatActivity {
     textMessage = findViewById(R.id.messageBox);
     sendButton = findViewById(R.id.sendMessage);
 
+    /*recyclerView = findViewById(R.id.chatRecycler);
+    recyclerView.setHasFixedSize(true);
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+    linearLayoutManager.setStackFromEnd(true);
+    recyclerView.setLayoutManager(linearLayoutManager);*/
+
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        toMessage = snapshot.getValue(String.class);
+        toMessageID = snapshot.getValue(String.class);
+        DatabaseReference r = FirebaseDatabase.getInstance().getReference().child("node__user").child(toMessageID).child("name");
+        reference.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            toMessageName = snapshot.getValue(String.class);
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+
+          }
+        });
       }
 
       @Override
@@ -52,15 +80,30 @@ public class NewChat extends AppCompatActivity {
 
       }
     });
+
     sendButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
-          sendMessage(currentUser.getUid(), toMessage ,msg);
+          sendMessage(currentUser.getUid(), toMessageID, msg);
         }
       }
     });
+
+    /*reference = FirebaseDatabase.getInstance().getReference().child("node__user");
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+        //readMessages(currentUser.getUid(), toMessageID, toMessageName);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });*/
 
   }
 
@@ -73,4 +116,29 @@ public class NewChat extends AppCompatActivity {
 
     reference.child("Chats").push().setValue(hashMap);
   }
+
+  /*private void readMessages(String myid, String userid, String name){
+    chatList = new ArrayList<>();
+
+    reference = FirebaseDatabase.getInstance().getReference("Chats");
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        chatList.clear();
+        for(DataSnapshot ds : snapshot.getChildren()){
+          ChatClass chat = ds.getValue(ChatClass.class);
+          if(chat.getReceiver().equals(myid) && chat.getSender().equals(userid) || chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
+            chatList.add(chat);
+          }
+          chatAdapter = new ChatAdapter(chatList, NewChat.this, toMessageName);
+          recyclerView.setAdapter(chatAdapter);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+  }*/
 }

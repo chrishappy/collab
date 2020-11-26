@@ -22,11 +22,7 @@
             android:name=".UserSearch"
             android:label="@string/title_activity_user_search"
             android:parentActivityName=".UserAddUsers" />
-        <activity android:name=".chat.Chat_Users" />
-        <activity
-            android:name=".chat.Chat"
-            android:label="@string/title_activity_chat_landing"
-            android:parentActivityName=".UserProfile" /> <!-- User Activities -->
+        <!-- User Activities -->
         <activity
             android:name=".SignUp"
             android:label="@string/title_activity_signin" />

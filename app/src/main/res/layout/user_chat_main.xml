@@ -8,10 +8,17 @@
     android:background="#e6e6e6"
     tools:context=".chat.NewChat">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chatRecycler"
+        android:layout_above="@+id/bottom"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
+        android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
         android:padding="5dp">
 
