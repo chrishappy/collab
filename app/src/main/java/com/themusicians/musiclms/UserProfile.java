@@ -346,9 +346,9 @@ public class UserProfile extends AppCompatActivity {
     Intent Chatpage = new Intent(this, Chat_Users.class);
     startActivity(Chatpage);
   }
-
+  /** Shifan's code */
   private void showChangeLanguageDialog() {
-      final String[] listItems = {"简体中文", "English"};
+      final String[] listItems = {"English", "简体中文"};
       AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
       mBuilder.setTitle("Choose Language...");
       mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
@@ -371,30 +371,34 @@ public class UserProfile extends AppCompatActivity {
       mDialog.show();
   }
 
-    @SuppressWarnings("deprecation")
-    public Locale getSystemLocaleLegacy(Configuration config){
-        return config.locale;
-    }
+  @SuppressWarnings("deprecation")
+  public Locale getSystemLocaleLegacy(Configuration config){
+      return config.locale;
+  }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    public Locale getSystemLocale(Configuration config){
-        return config.getLocales().get(0);
-    }
+  @TargetApi(Build.VERSION_CODES.N)
+  public Locale getSystemLocale(Configuration config){
+      return config.getLocales().get(0);
+  }
 
-    @SuppressWarnings("deprecation")
-    public void setSystemLocaleLegacy(Configuration config, Locale locale){
-        config.locale = locale;
-    }
+  @SuppressWarnings("deprecation")
+  public void setSystemLocaleLegacy(Configuration config, Locale locale){
+      config.locale = locale;
+  }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    public void setSystemLocale(Configuration config, Locale locale){
-        config.setLocale(locale);
-    }
+  @TargetApi(Build.VERSION_CODES.N)
+  public void setSystemLocale(Configuration config, Locale locale){
+      config.setLocale(locale);
+  }
   private void setLocale(String lang) {
       Locale locale = new Locale(lang);
       Locale.setDefault(locale);
       Configuration config = new Configuration();
-      config.locale = locale;
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+          setSystemLocale(config, locale);
+      }else{
+          setSystemLocaleLegacy(config, locale);
+      }
       getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
       SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
       editor.putString("My_Lang", lang);
@@ -406,5 +410,5 @@ public class UserProfile extends AppCompatActivity {
       String language = prefs.getString("My_Lang", "");
       setLocale(language);
   }
-    /**End of Shifan's code */
+  /**End of Shifan's code */
 }
