@@ -4,12 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-// import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 
 /**
  * The class to be extended by node create forms
@@ -17,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
  * @author Nathan Tsai
  * @since Nov 17, 2020
  */
-public abstract class NodeViewActivity extends YouTubeBaseActivity {
+public abstract class NodeViewActivity extends AppCompatActivity {
 
   /** The Firebase Auth Instance */
   protected FirebaseUser currentUser;

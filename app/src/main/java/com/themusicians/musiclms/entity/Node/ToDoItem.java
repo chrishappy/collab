@@ -22,6 +22,10 @@ public class ToDoItem extends Node {
    */
   protected boolean requireRecording;
 
+  protected String recordingYoutubeId;
+
+  protected List<String> recordingFeedback;
+
   protected long toDoState;
 
   protected List<String> attachedAssignments;
@@ -54,6 +58,22 @@ public class ToDoItem extends Node {
 
   public void setRequireRecording(boolean requireRecording) {
     this.requireRecording = requireRecording;
+  }
+
+  public String getRecordingYoutubeId() {
+    return recordingYoutubeId;
+  }
+
+  public void setRecordingYoutubeId(String recordingYoutubeId) {
+    this.recordingYoutubeId = recordingYoutubeId;
+  }
+
+  public List<String> getRecordingFeedback() {
+    return recordingFeedback;
+  }
+
+  public void setRecordingFeedback(List<String> recordingFeedback) {
+    this.recordingFeedback = recordingFeedback;
   }
 
   public long getToDoState() {

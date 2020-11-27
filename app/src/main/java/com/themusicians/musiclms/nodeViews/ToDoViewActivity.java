@@ -5,12 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,13 +23,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBar;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBarListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayer.Provider;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Nathan Tsai
  * @since Nov 24, 2020
  */
-public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.OnInitializedListener {
+public class ToDoViewActivity extends NodeViewActivity {
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
 
@@ -55,7 +58,9 @@ public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.
    */
   private static final int RECOVERY_REQUEST = 1;
   private YouTubePlayerView youTubeView;
-  private YouTubePlayer player;
+  private ListView recordingFeedbackListView;
+  private Button seekToButton;
+  private EditText seekToText;
 
   @Override
   public void onStart() {
@@ -74,6 +79,26 @@ public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   toDoItemName.setText(toDoItem.getName());
+
+                  String videoId = toDoItem.getRecordingYoutubeId();
+                  if (videoId != null) {
+                    youTubeView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                      @Override
+                      public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        youTubePlayer.loadVideo(videoId, 0);
+
+                        seekToButton.setOnClickListener(v -> {
+                          int skipToSecs = Integer.parseInt(seekToText.getText().toString());
+                          youTubePlayer.seekTo(skipToSecs);
+                        });
+
+//                        ArrayAdapter<String> arrayAdapter =
+//                            new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toDoItem.getRecordingFeedback());
+//                        // Set The Adapter
+//                        recordingFeedbackListView.setAdapter(arrayAdapter);
+                      }
+                    });
+                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
                 }
@@ -98,8 +123,6 @@ public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.
     }
   }
 
-  private YouTubePlayer YPlayer;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -109,42 +132,54 @@ public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.
 
     // Get fields
     toDoItemName = findViewById(R.id.to_do_item_name);
-    youTubeView = findViewById(R.id.youtube_view);
-    youTubeView.initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
+    seekToText = findViewById(R.id.seek_to_text);
+    seekToButton = findViewById(R.id.seek_to_button);
+    recordingFeedbackListView = findViewById(R.id.recordingFeedbackListView);
 
-    final EditText seekToText = findViewById(R.id.seek_to_text);
-    Button seekToButton = findViewById(R.id.seek_to_button);
-    seekToButton.setOnClickListener(v -> {
-      int skipToSecs = Integer.parseInt(seekToText.getText().toString());
-      player.seekToMillis(skipToSecs * 1000);
-    });
+    // Load Youtube
+    youTubeView = findViewById(R.id.youtube_player_view);
+    getLifecycle().addObserver(youTubeView);
+
+    // Set up Feedback
+
+
+
+
+//    final EditText seekToText = findViewById(R.id.seek_to_text);
+//    Button seekToButton = findViewById(R.id.seek_to_button);
+//    seekToButton.setOnClickListener(v -> {
+//      int skipToSecs = Integer.parseInt(seekToText.getText().toString());
+//      player.seekToMillis(skipToSecs * 1000);
+//    });
   }
 
-  @Override
-  public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
-    this.player = player;
-
-    if (!wasRestored) {
-      player.cueVideo("fhWaJi1Hsfo"); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
-    }
-  }
-
-  @Override
-  public void onInitializationFailure(Provider provider, YouTubeInitializationResult errorReason) {
-    if (errorReason.isUserRecoverableError()) {
-      errorReason.getErrorDialog(this, RECOVERY_REQUEST).show();
-    } else {
-      String error = String.format(getString(R.string.player_error), errorReason.toString());
-      Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-    }
-  }
+//  @Override
+//  public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
+//    this.player = player;
+//
+//    if (!wasRestored) {
+//      player.cueVideo("fhWaJi1Hsfo"); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+//    }
+//  }
+//
+//  @Override
+//  public void onInitializationFailure(Provider provider, YouTubeInitializationResult errorReason) {
+//    if (errorReason.isUserRecoverableError()) {
+//      errorReason.getErrorDialog(this, RECOVERY_REQUEST).show();
+//    } else {
+//      String error = String.format(getString(R.string.player_error), errorReason.toString());
+//      Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+//    }
+//  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    if (requestCode == RECOVERY_REQUEST) {
-      // Retry initialization if user performed a recovery action
-      getYouTubePlayerProvider().initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
-    }
+    super.onActivityResult(requestCode, resultCode, intent);
+
+//    if (requestCode == RECOVERY_REQUEST) {
+//      // Retry initialization if user performed a recovery action
+//      getYouTubePlayerProvider().initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
+//    }
 
     if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
       Uri videoUri = intent.getData();
@@ -152,9 +187,9 @@ public class ToDoViewActivity extends NodeViewActivity implements YouTubePlayer.
     }
   }
 
-  protected Provider getYouTubePlayerProvider() {
-    return youTubeView;
-  }
+//  protected Provider getYouTubePlayerProvider() {
+//    return youTubeView;
+//  }
 
   /**
    * Record video

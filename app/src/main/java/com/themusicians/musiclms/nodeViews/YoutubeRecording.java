@@ -22,7 +22,7 @@ import com.themusicians.musiclms.R;
  * @author Nathan Tsai
  * @since Nov 24, 2020
  */
-
+/**
 public class YoutubeRecording extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
   private static final int RECOVERY_REQUEST = 1;
@@ -76,3 +76,4 @@ public class YoutubeRecording extends YouTubeBaseActivity implements YouTubePlay
     return youTubeView;
   }
 }
+ */
