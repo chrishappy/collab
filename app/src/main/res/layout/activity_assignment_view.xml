@@ -97,7 +97,13 @@
                 android:layout_marginBottom="30dp"
                 android:background="#c0c0c0" />
 
-<!--            <fragment-->
+            <CheckBox
+                android:id="@+id/assignment_completedCB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/completed" />
+
+            <!--            <fragment-->
 <!--                android:id="@+id/showAttachments"-->
 <!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"-->
 <!--                android:layout_width="match_parent"-->

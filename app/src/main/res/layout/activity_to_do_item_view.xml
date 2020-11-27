@@ -47,6 +47,12 @@
                 android:layout_marginBottom="30dp"
                 android:background="#c0c0c0" />
 
+            <CheckBox
+                android:id="@+id/complete_to_do_itemCB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/completed" />
+
         </LinearLayout>
 
     </ScrollView>
