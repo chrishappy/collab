@@ -1,7 +1,4 @@
 <resources>
-    <string name="lan_chinese">Chinese</string>
-    <string name="lan_en">English</string>
-    <string name="select_language">Choose a language</string>
     <string name="app_name">Music LMS</string>
     <string name="title_activity_signin">Sign In</string>
     <string name="prompt_email">Email</string>
