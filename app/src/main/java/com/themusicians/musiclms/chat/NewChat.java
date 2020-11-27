@@ -2,11 +2,14 @@ package com.themusicians.musiclms.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,8 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Node.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class NewChat extends AppCompatActivity {
 
@@ -27,7 +33,12 @@ public class NewChat extends AppCompatActivity {
   FirebaseUser currentUser;
   DatabaseReference reference, toRef;
 
-  String toMessage;
+  ChatAdapter chatAdapter;
+  List<ChatClass> chatList;
+
+  RecyclerView recyclerView;
+
+  String toMessageID;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +52,16 @@ public class NewChat extends AppCompatActivity {
     textMessage = findViewById(R.id.messageBox);
     sendButton = findViewById(R.id.sendMessage);
 
+    recyclerView = findViewById(R.id.chatRecycler);
+    recyclerView.setHasFixedSize(true);
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+    linearLayoutManager.setStackFromEnd(true);
+    recyclerView.setLayoutManager(linearLayoutManager);
+
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        toMessage = snapshot.getValue(String.class);
+        toMessageID = snapshot.getValue(String.class);
       }
 
       @Override
@@ -52,13 +69,29 @@ public class NewChat extends AppCompatActivity {
 
       }
     });
+
     sendButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
-          sendMessage(currentUser.getUid(), toMessage ,msg);
+          sendMessage(currentUser.getUid(), toMessageID, msg);
         }
+        textMessage.setText("");
+      }
+    });
+
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user");
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+        readMessages(currentUser.getUid(), toMessageID);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
       }
     });
 
@@ -72,5 +105,32 @@ public class NewChat extends AppCompatActivity {
     hashMap.put("message", message);
 
     reference.child("Chats").push().setValue(hashMap);
+  }
+
+  private void readMessages(String myId, String userId){
+    chatList = new ArrayList<>();
+
+    reference = FirebaseDatabase.getInstance().getReference().child("Chats");
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        chatList.clear();
+        for(DataSnapshot ds : snapshot.getChildren()){
+          ChatClass chat = ds.getValue(ChatClass.class);
+          if(chat.getReceiver().equals(myId) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myId)){
+            chatList.add(chat);
+          }
+
+          chatAdapter = new ChatAdapter(chatList, NewChat.this);
+          recyclerView.setAdapter(chatAdapter);
+
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
   }
 }

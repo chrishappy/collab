@@ -159,6 +159,7 @@ public class UserProfile extends AppCompatActivity {
                             .show();
                         reInput = false;
                       }
+                      newInstrument.setText("");
                     });
               }
 
@@ -314,11 +315,5 @@ public class UserProfile extends AppCompatActivity {
   public void backFromProfile(View view) {
     Intent toAssignmentOverview = new Intent(this, AssignmentOverviewActivity.class);
     startActivity(toAssignmentOverview);
-  }
-
-  /** Shifan's code */
-  public void toChat(View view) {
-    Intent toChatPage = new Intent(this, NewChat.class);
-    startActivity(toChatPage);
   }
 }

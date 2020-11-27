@@ -37,7 +37,6 @@ import java.util.ArrayList;
 public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyViewHolder> {
 
   ArrayList<User> list;
-  ArrayList<String> userList = new ArrayList<>();
   FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   User currUser = new User(currentUser.getUid());
   Context context;
