@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
@@ -14,18 +15,26 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
 import java.util.Locale;
 
-public class Language extends BaseAc {
+public class Language extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setApplocale("zh-rCN");
+
         setContentView(R.layout.activity_language);
-        setTitle("第一个Activity");
-        findViewById(R.id.btn_setting).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Language.this, SettingAc.class));
-            }
-        });
+    }
+
+    private void setApplocale(String localeCode) {
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(new Locale(localeCode.toLowerCase()));
+        } else {
+            conf.locale = new Locale(localeCode.toLowerCase());
+        }
+        res.updateConfiguration(conf, dm);
     }
 }

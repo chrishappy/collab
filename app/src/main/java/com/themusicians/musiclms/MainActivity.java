@@ -1,11 +1,18 @@
 package com.themusicians.musiclms;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
+
+import java.util.Locale;
 
 /** Simple landing activity to redirects appropriately */
 public class MainActivity extends AppCompatActivity {
@@ -14,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    setApplocale("zh-rCN");
 
     fAuth = FirebaseAuth.getInstance();
 
@@ -27,4 +36,17 @@ public class MainActivity extends AppCompatActivity {
     }
     setContentView(R.layout.activity_main);
   }
+
+  private void setApplocale(String localeCode) {
+    Resources res = getResources();
+    DisplayMetrics dm = res.getDisplayMetrics();
+    Configuration conf = res.getConfiguration();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      conf.setLocale(new Locale(localeCode.toLowerCase()));
+    } else {
+      conf.locale = new Locale(localeCode.toLowerCase());
+    }
+    res.updateConfiguration(conf, dm);
+  }
+
 }
