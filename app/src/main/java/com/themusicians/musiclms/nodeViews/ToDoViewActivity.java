@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -50,6 +51,7 @@ public class ToDoViewActivity extends NodeViewActivity {
 
   /** Fields */
   private TextView toDoItemName;
+  private CheckBox toDoCheck;
 
   /** The To Do Item object */
   ToDoItem toDoItem;
@@ -71,6 +73,12 @@ public class ToDoViewActivity extends NodeViewActivity {
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   toDoItemName.setText(toDoItem.getName());
+
+                  if (toDoItem.getcompleteToDo() == true) {
+                      toDoCheck.setChecked(true);
+                  }else{
+                      toDoCheck.setChecked(false);
+                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
                 }
@@ -104,6 +112,20 @@ public class ToDoViewActivity extends NodeViewActivity {
 
     // Get fields
     toDoItemName = findViewById(R.id.to_do_item_name);
+    toDoCheck = findViewById(R.id.complete_to_do_itemCB);
+
+    toDoCheck.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(toDoCheck.isChecked()){
+                toDoItem.setcompleteToDo(true);
+                toDoItem.save();
+            }else{
+                toDoItem.setcompleteToDo(false);
+                toDoItem.save();
+            }
+        }
+    });
 
   }
 }
