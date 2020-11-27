@@ -1,6 +1,12 @@
 package com.themusicians.musiclms;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +35,7 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.ui.UserAddUsers;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Display the user information and link to chat page
@@ -54,6 +62,10 @@ public class UserProfile extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    /**Shifan's code */
+    loadLocale();
+    /** End of Shifan's code*/
+
     setContentView(R.layout.user_profile_main);
 
     /*
@@ -226,6 +238,19 @@ public class UserProfile extends AppCompatActivity {
           @Override
           public void onCancelled(@NonNull DatabaseError error) {}
         });
+
+          /** Shifan's code */
+          ActionBar actionBar = getSupportActionBar();
+          actionBar.setTitle(getResources().getString(R.string.app_name));
+
+          Button changeLang = findViewById(R.id.changeMyLang);
+          changeLang.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  showChangeLanguageDialog();
+              }
+          });
+          /** End of Shifan's code */
   }
 
   /** Redirects to add users */
@@ -322,9 +347,64 @@ public class UserProfile extends AppCompatActivity {
     startActivity(Chatpage);
   }
 
-    public void goLanguage(View view) {
-        Intent Languagepage = new Intent(this, Language.class);
-        startActivity(Languagepage);
+  private void showChangeLanguageDialog() {
+      final String[] listItems = {"简体中文", "English"};
+      AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
+      mBuilder.setTitle("Choose Language...");
+      mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+              if (i == 0){
+                  setLocale ("en");
+                  recreate();
+              }
+              else if (i == 1){
+                  setLocale ("zh");
+                  recreate();
+              }
+
+              dialogInterface.dismiss();
+          }
+      });
+
+      AlertDialog mDialog = mBuilder.create();
+      mDialog.show();
+  }
+
+    @SuppressWarnings("deprecation")
+    public Locale getSystemLocaleLegacy(Configuration config){
+        return config.locale;
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
+    public Locale getSystemLocale(Configuration config){
+        return config.getLocales().get(0);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setSystemLocaleLegacy(Configuration config, Locale locale){
+        config.locale = locale;
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public void setSystemLocale(Configuration config, Locale locale){
+        config.setLocale(locale);
+    }
+  private void setLocale(String lang) {
+      Locale locale = new Locale(lang);
+      Locale.setDefault(locale);
+      Configuration config = new Configuration();
+      config.locale = locale;
+      getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+      SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+      editor.putString("My_Lang", lang);
+      editor.apply();
+  }
+
+  public void loadLocale(){
+      SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+      String language = prefs.getString("My_Lang", "");
+      setLocale(language);
+  }
+    /**End of Shifan's code */
 }
