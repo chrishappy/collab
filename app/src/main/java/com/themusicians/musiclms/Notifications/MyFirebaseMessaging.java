@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.themusicians.musiclms.chat.NewChat;
+import com.themusicians.musiclms.chat.Chat;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService{
 
@@ -32,7 +32,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int j = Integer.parseInt(user.replaceAll("//D",""));
-        Intent intent = new Intent(this, NewChat.class);
+        Intent intent = new Intent(this, Chat.class);
     }
 
 }

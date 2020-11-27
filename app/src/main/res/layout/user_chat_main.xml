@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e6e6e6"
-    tools:context=".chat.NewChat">
+    tools:context=".chat.Chat">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

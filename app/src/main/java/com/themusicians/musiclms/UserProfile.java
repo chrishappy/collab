@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.themusicians.musiclms.chat.NewChat;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 
@@ -43,7 +42,7 @@ public class UserProfile extends AppCompatActivity {
   protected FirebaseUser currentUser;
   protected FirebaseAuth fAuth;
 
-  protected Button addInstrument, userProfileBack;
+  protected Button addInstrument;
   protected List<String> instruments;
   ArrayList<String> myArrayList = new ArrayList<>();
   boolean reInput;

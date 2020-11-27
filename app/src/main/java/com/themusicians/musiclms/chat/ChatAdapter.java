@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.User;
@@ -27,9 +29,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
   public static final int MSG_TYPE_LEFT = 0;
   public static final int MSG_TYPE_RIGHT = 1;
   private List<ChatClass> list;
-  FirebaseUser currentUser;
+  FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   Context context;
-
 
   /**
    * Initialize variables
@@ -60,6 +61,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
   // User class
   @Override
   public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
+
     ChatClass chat = list.get(position);
     holder.showMessage.setText(chat.getMessage());
   }
@@ -82,7 +84,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
   @Override
   public int getItemViewType(int position) {
-    currentUser = FirebaseAuth.getInstance().getCurrentUser();
     if(list.get(position).getSender().equals(currentUser.getUid())){
       return MSG_TYPE_RIGHT;
     }else{

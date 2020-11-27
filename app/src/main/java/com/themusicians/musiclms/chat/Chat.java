@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,13 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class NewChat extends AppCompatActivity {
+public class Chat extends AppCompatActivity {
 
   EditText textMessage;
   Button sendButton;
@@ -38,7 +36,7 @@ public class NewChat extends AppCompatActivity {
 
   RecyclerView recyclerView;
 
-  String toMessageID;
+  String toMessageID, toMessageName;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +60,18 @@ public class NewChat extends AppCompatActivity {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         toMessageID = snapshot.getValue(String.class);
+        DatabaseReference r = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
+        r.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            toMessageName = snapshot.getValue(String.class);
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+
+          }
+        });
       }
 
       @Override
@@ -121,7 +131,7 @@ public class NewChat extends AppCompatActivity {
             chatList.add(chat);
           }
 
-          chatAdapter = new ChatAdapter(chatList, NewChat.this);
+          chatAdapter = new ChatAdapter(chatList, Chat.this);
           recyclerView.setAdapter(chatAdapter);
 
         }

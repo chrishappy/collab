@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.themusicians.musiclms.chat.NewChat;
+import com.themusicians.musiclms.chat.Chat;
 import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
             }
           });
-          Intent toChat = new Intent(context, NewChat.class);
+          Intent toChat = new Intent(context, Chat.class);
           context.startActivity(toChat);
         }
       });
