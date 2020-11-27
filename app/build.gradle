@@ -50,6 +50,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.firebase:firebase-client-android:2.5.2+'
     implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
 //    implementation 'org.testng:testng:6.9.6'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
@@ -57,10 +58,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 // notifications
-    implementation 'com.sqaure.retrofit2:retrofit:2.3.0'
-    implementation 'com.sqaure.retrofit2:converter-gson:2.3.0'
-    implementation 'com.google.firebase:firebase-messaging:17.3.1'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
 
 
 

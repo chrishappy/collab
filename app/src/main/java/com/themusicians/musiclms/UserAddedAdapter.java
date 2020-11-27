@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,13 +15,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.chat.NewChat;
 import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The adapter for the AddedUsers page
@@ -54,7 +52,10 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
   }
 
-  // Function to tell the class about the Card view
+    public UserAddedAdapter(Context context, List<User> aUsers) {
+    }
+
+    // Function to tell the class about the Card view
   // which the data will be shown
   @NonNull
   @Override
