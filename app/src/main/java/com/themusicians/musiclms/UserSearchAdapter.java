@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
   FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   User currUser = new User(currentUser.getUid());
   Context context;
+
   DatabaseReference userRef =
       FirebaseDatabase.getInstance()
           .getReference()
@@ -156,7 +158,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
                 /** Checks if added user is new */
                 boolean isNew = true;
                 for (int i = 0; i < userList.size(); i++) {
-                  if (list.get(position).getId().equals(userList.get(i))) {
+                  if (list.get(position).getId(). equals(userList.get(i))) {
                     isNew = false;
                   }
                 }

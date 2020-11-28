@@ -1,85 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/accountUsersTab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.213">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/accTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/usersTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Users" />
-
-    </com.google.android.material.tabs.TabLayout>
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
+        android:text="Name"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/addedUsers"
+        app:layout_constraintEnd_toStartOf="@+id/searchUsers"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.151" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager1"
-        android:layout_width="416dp"
-        android:layout_height="533dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountUsersTab"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/toSearchUsers"
-        android:layout_width="176dp"
-        android:layout_height="48dp"
-        android:onClick="toSearchTeachers"
-        android:text="Search Users"
-        app:layout_constraintBottom_toTopOf="@+id/accountUsersTab"
+        android:id="@+id/searchUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toSearchUsers"
+        android:text="Add New Users"
+        app:layout_constraintBottom_toTopOf="@+id/addedUsers"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.979" />
+        app:layout_constraintVertical_bias="1.0" />
 
-<!--    <Button-->
-<!--        android:id="@+id/addUsersBack"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:onClick="backUserMain"-->
-<!--        android:text="Back"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/toSearchUsers"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.978"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.0" />-->
+    <SearchView
+        android:id="@+id/addedSearch"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/addedRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</LinearLayout>

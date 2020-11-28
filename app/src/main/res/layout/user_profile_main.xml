@@ -13,25 +13,10 @@
         android:onClick="toAddUser"
         android:text="Add Users"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/chatButton"
-        app:layout_constraintHorizontal_bias="0.58"
+        app:layout_constraintEnd_toStartOf="@+id/toEditData"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
         app:layout_constraintVertical_bias="0.845" />
-
-    <Button
-        android:id="@+id/chatButton"
-        android:layout_width="90dp"
-        android:layout_height="47dp"
-        android:onClick="goChat"
-        android:text="Chat"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
-        app:layout_constraintVertical_bias="0.842" />
 
     <Button
         android:id="@+id/toEditData"
@@ -41,21 +26,10 @@
         android:text="Edit Data"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.342"
-        app:layout_constraintStart_toEndOf="@+id/chatButton"
-        app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
-        app:layout_constraintVertical_bias="0.845" />
-
-    <ListView
-        android:id="@+id/instrument_list"
-        android:layout_width="332dp"
-        android:layout_height="268dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.765"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
-        app:layout_constraintVertical_bias="0.842" />
+        app:layout_constraintVertical_bias="0.843" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
@@ -113,21 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfileBack"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.594" />
-
-<!--    <Button-->
-<!--        android:id="@+id/userProfileBack"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:onClick="backFromProfile"-->
-<!--        android:text="Back"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/InstrumentList"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.049"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.082" />-->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

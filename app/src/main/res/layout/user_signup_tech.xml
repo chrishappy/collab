@@ -16,101 +16,114 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.616"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadYoutube"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.504" />
 
-    <TextView
-        android:id="@+id/signuptech1"
-        android:layout_width="176dp"
-        android:layout_height="55dp"
-        android:text="I have experience ..."
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="231dp"
+        android:layout_height="335dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.162" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <CheckBox
-        android:id="@+id/sendText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sending a text message"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.432"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.393" />
+        <TextView
+            android:id="@+id/signuptech1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="I have experience ..."
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.154" />
 
-    <CheckBox
-        android:id="@+id/makeCall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Making a Phone call"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.47" />
 
-    <CheckBox
-        android:id="@+id/joinZoom"
-        android:layout_width="201dp"
-        android:layout_height="37dp"
-        android:text="Joining a Zoom call"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556" />
+        <CheckBox
+            android:id="@+id/sendText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Sending a text message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.412" />
 
-    <CheckBox
-        android:id="@+id/scheduleZoom"
-        android:layout_width="201dp"
-        android:layout_height="37dp"
-        android:text="Schedule a Zoom call"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.642" />
+        <CheckBox
+            android:id="@+id/makeCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Making a Phone call"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.47" />
 
-    <CheckBox
-        android:id="@+id/watchYoutube"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Watching a YouTube video"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.462"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.715" />
+        <CheckBox
+            android:id="@+id/joinZoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Joining a Zoom call"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.541" />
 
-    <CheckBox
-        android:id="@+id/uploadYoutube"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Uploading a YouTube video"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786" />
+        <CheckBox
+            android:id="@+id/scheduleZoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Schedule a Zoom call"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.609" />
+
+        <CheckBox
+            android:id="@+id/watchYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Watching a YouTube video"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.673" />
+
+        <CheckBox
+            android:id="@+id/uploadYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Uploading a YouTube video"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.739" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/signup_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="signUpFinish"
         android:text="Finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signup_tech_back"
-        app:layout_constraintTop_toBottomOf="@+id/uploadYoutube" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

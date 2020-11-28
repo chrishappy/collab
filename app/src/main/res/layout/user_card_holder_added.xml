@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/searchName"
+            android:id="@+id/searchName2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -52,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@+id/placeName" />
 
         <TextView
-            android:id="@+id/searchEmail"
+            android:id="@+id/searchEmail2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -61,7 +61,7 @@
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/placeEmail"
-            app:layout_constraintTop_toBottomOf="@+id/searchName" />
+            app:layout_constraintTop_toBottomOf="@+id/searchName2" />
 
         <TextView
             android:id="@+id/placeRole"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toBottomOf="@+id/placeEmail" />
 
         <TextView
-            android:id="@+id/searchRole"
+            android:id="@+id/searchRole2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -86,29 +86,26 @@
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/placeRole"
-            app:layout_constraintTop_toBottomOf="@+id/searchEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/searchEmail2" />
 
         <LinearLayout
-            android:id="@+id/actionsButtons"
+            android:id="@+id/actionsButtons2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchRole"
+            app:layout_constraintTop_toBottomOf="@+id/searchRole2"
             android:gravity="end">
 
-
             <Button
-                android:id="@+id/searchAdd"
+                android:id="@+id/addedChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:hint="Add"/>
-
-
+                android:hint="Chat"/>
 
         </LinearLayout>
 

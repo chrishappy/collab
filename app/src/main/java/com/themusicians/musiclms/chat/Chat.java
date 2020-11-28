@@ -1,122 +1,146 @@
 package com.themusicians.musiclms.chat;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.themusicians.musiclms.R;
-import java.util.HashMap;
-import java.util.Map;
 
-/**
- * Chat.java
- *
- * <p>Chat page
- *
- * @todo Users' names Message receiving
- * @author Shifan He Created by Shifan He on 2020-11-12
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Chat extends AppCompatActivity {
-  LinearLayout layout;
-  ImageView sendButton;
-  EditText messageArea;
-  ScrollView scrollView;
-  Firebase reference1, reference2;
+
+  EditText textMessage;
+  Button sendButton;
+
+  FirebaseUser currentUser;
+  DatabaseReference reference, toRef;
+
+  ChatAdapter chatAdapter;
+  List<ChatClass> chatList;
+
+  RecyclerView recyclerView;
+
+  String toMessageID, toMessageName;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_chat);
+    setContentView(R.layout.user_chat_main);
 
-    layout = (LinearLayout) findViewById(R.id.layout1);
-    sendButton = (ImageView) findViewById(R.id.sendButton);
-    messageArea = (EditText) findViewById(R.id.messageArea);
-    scrollView = (ScrollView) findViewById(R.id.scrollView);
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user");
+    toRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("recentText");
 
-    Firebase.setAndroidContext(this);
-    reference1 =
-        new Firebase(
-            "https://musiclms---cmpt276.firebaseio.com/chats/"
-                + Chat_UserDetails.username
-                + "_"
-                + Chat_UserDetails.chatWith);
-    reference2 =
-        new Firebase(
-            "https://musiclms---cmpt276.firebaseio.com/chats/"
-                + Chat_UserDetails.chatWith
-                + "_"
-                + Chat_UserDetails.username);
+    textMessage = findViewById(R.id.messageBox);
+    sendButton = findViewById(R.id.sendMessage);
 
-    sendButton.setOnClickListener(
-        new View.OnClickListener() {
+    recyclerView = findViewById(R.id.chatRecycler);
+    recyclerView.setHasFixedSize(true);
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+    linearLayoutManager.setStackFromEnd(true);
+    recyclerView.setLayoutManager(linearLayoutManager);
+
+    toRef.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        toMessageID = snapshot.getValue(String.class);
+        DatabaseReference r = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
+        r.addValueEventListener(new ValueEventListener() {
           @Override
-          public void onClick(View v) {
-            String messageText = messageArea.getText().toString();
-
-            if (!messageText.equals("")) {
-              Map<String, String> map = new HashMap<String, String>();
-              map.put("message", messageText);
-              map.put("user", Chat_UserDetails.username);
-              reference1.push().setValue(map);
-              reference2.push().setValue(map);
-            }
-          }
-        });
-
-    reference1.addChildEventListener(
-        new ChildEventListener() {
-          @Override
-          public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Map map = dataSnapshot.getValue(Map.class);
-            String message = map.get("message").toString();
-            String userName = map.get("user").toString();
-
-            if (userName.equals(Chat_UserDetails.username)) {
-              addMessageBox("You:-\n" + message, 1);
-            } else {
-              addMessageBox(Chat_UserDetails.chatWith + ":-\n" + message, 2);
-            }
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            toMessageName = snapshot.getValue(String.class);
           }
 
           @Override
-          public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+          public void onCancelled(@NonNull DatabaseError error) {
 
-          @Override
-          public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-          @Override
-          public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-
-          @Override
-          public void onCancelled(FirebaseError firebaseError) {}
+          }
         });
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
+    sendButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String msg = textMessage.getText().toString();
+        if(!msg.equals("")){
+          sendMessage(currentUser.getUid(), toMessageID, msg);
+        }
+        textMessage.setText("");
+      }
+    });
+
+    reference = FirebaseDatabase.getInstance().getReference().child("node__user");
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+        readMessages(currentUser.getUid(), toMessageID);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
   }
 
-  public void addMessageBox(String message, int type) {
-    TextView textView = new TextView(Chat.this);
-    textView.setText(message);
-    LinearLayout.LayoutParams lp =
-        new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    lp.setMargins(0, 0, 0, 10);
-    textView.setLayoutParams(lp);
+  private void sendMessage(String sender, String receiver, String message){
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+    HashMap<String, Object> hashMap = new HashMap<>();
+    hashMap.put("sender", sender);
+    hashMap.put("receiver", receiver);
+    hashMap.put("message", message);
 
-    if (type == 1) {
-      textView.setBackgroundResource(R.drawable.rounded_corner1);
-    } else {
-      textView.setBackgroundResource(R.drawable.rounded_corner2);
-    }
+    reference.child("Chats").push().setValue(hashMap);
+  }
 
-    layout.addView(textView);
-    scrollView.fullScroll(View.FOCUS_DOWN);
+  private void readMessages(String myId, String userId){
+    chatList = new ArrayList<>();
+
+    reference = FirebaseDatabase.getInstance().getReference().child("Chats");
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        chatList.clear();
+        for(DataSnapshot ds : snapshot.getChildren()){
+          ChatClass chat = ds.getValue(ChatClass.class);
+          if(chat.getReceiver().equals(myId) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myId)){
+            chatList.add(chat);
+          }
+
+          chatAdapter = new ChatAdapter(chatList, Chat.this);
+          recyclerView.setAdapter(chatAdapter);
+
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
   }
 }
