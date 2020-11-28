@@ -28,15 +28,44 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                    android:id="@+id/youtube_player_view"
+                <LinearLayout
+                    android:id="@+id/youtube_recorder_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:showFullScreenButton="false" />
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/add_recording_video"
+                        style="@android:style/Widget.DeviceDefault.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:drawableStart="@drawable/ic_baseline_play_circle_filled_100"
+                        android:drawableTint="@color/colorPrimary"
+                        android:text="@string/add_recording"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:textSize="25sp" />
+
+                    <VideoView
+                        android:id="@+id/tempRecordingVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/youtube_player_wrapper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                        android:id="@+id/youtube_player_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        app:videoId="PJbtWOSYjBM"
+                        app:showFullScreenButton="false" />
 
                     <EditText
                         android:id="@+id/seek_to_text"
