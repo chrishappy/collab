@@ -67,6 +67,7 @@
     <string name="form__view_button">View</string>
     <string name="title_activity_assignment_view">View Assignment</string>
     <string name="title_activity_to_do_item_view">View To Do Item</string>
+    <string name="completed">Completed</string>
 
     <!-- Youtube -->
     <string name="player_error">Error initializing YouTube player: %s</string>

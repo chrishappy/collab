@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,7 @@ public class AssignmentViewActivity extends NodeViewActivity
   private TextView AssignmentName;
   private TextView StudentOrClass;
   private TextView dueDate;
+  private CheckBox assignmentCheck;
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
@@ -82,6 +85,12 @@ public class AssignmentViewActivity extends NodeViewActivity
                     Date date = new Date(assignment.getDueDate() * 1000);
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
+                  }
+
+                  if (assignment.getcompleteAssignment() == true) {
+                    assignmentCheck.setChecked(true);
+                  }else{
+                    assignmentCheck.setChecked(false);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
@@ -143,6 +152,20 @@ public class AssignmentViewActivity extends NodeViewActivity
     AssignmentName = findViewById(R.id.assignment_name);
     StudentOrClass = findViewById(R.id.students_or_class);
     dueDate = findViewById(R.id.dueDate);
+    assignmentCheck = findViewById(R.id.assignment_completedCB);
+
+    assignmentCheck.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(assignmentCheck.isChecked()){
+          assignment.setcompleteAssignment(true);
+          assignment.save();
+        }else{
+          assignment.setcompleteAssignment(false);
+          assignment.save();
+        }
+      }
+    });
 
     // Load the to do tasks
     initToDoItemsList();

@@ -22,6 +22,8 @@ public class ToDoItem extends Node {
    */
   protected boolean requireRecording;
 
+  protected boolean completeToDo;
+
   protected String recordingYoutubeId;
 
   protected List<String> recordingFeedback;
@@ -104,4 +106,13 @@ public class ToDoItem extends Node {
   public String getType() {
     return type;
   }
+
+  public boolean getcompleteToDo() {
+    return completeToDo;
+  }
+
+  public void setcompleteToDo(boolean completeToDo) {
+    this.completeToDo = completeToDo;
+  }
+
 }

@@ -33,6 +33,8 @@ public class Assignment extends Node {
 
   protected long dueDate;
 
+  protected boolean completeAssignment;
+
   protected Map<String, Boolean> toDoIds;
 
   // This must make the field name of toDoIds
@@ -168,5 +170,14 @@ public class Assignment extends Node {
   public void setToDoIds(Map<String, Boolean> toDoIds) {
     this.toDoIds = toDoIds;
   }
+
+  public boolean getcompleteAssignment() {
+    return completeAssignment;
+  }
+
+  public void setcompleteAssignment(boolean completeAssignment) {
+    this.completeAssignment = completeAssignment;
+  }
+
   /**/
 }

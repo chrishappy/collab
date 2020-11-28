@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -46,6 +47,26 @@ public class ToDoAssignmentFormAdapter
             itemClickListener.onButtonClick("editToDoAssignmentForm", toDoItem.getId());
           }
         };
+
+    if (toDoItem.getcompleteToDo() == true) {
+      holder.toDoCheck.setChecked(true);
+    }else{
+      holder.toDoCheck.setChecked(false);
+    }
+
+    holder.toDoCheck.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if(holder.toDoCheck.isChecked()){
+          toDoItem.setcompleteToDo(true);
+          toDoItem.save();
+        }else{
+          toDoItem.setcompleteToDo(false);
+          toDoItem.save();
+        }
+      }
+    });
+
     holder.toDoName.setOnClickListener(editToDoItemListener);
     holder.editButton.setOnClickListener(editToDoItemListener);
   }
@@ -67,6 +88,7 @@ public class ToDoAssignmentFormAdapter
   static class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
     TextView toDoName;
     Button editButton;
+    CheckBox toDoCheck;
     ConstraintLayout toDoWrapper;
 
     public ToDoAssignmentFormViewholder(@NonNull View itemView) {
@@ -75,6 +97,10 @@ public class ToDoAssignmentFormAdapter
       toDoName = itemView.findViewById(R.id.toDoName);
       editButton = itemView.findViewById(R.id.edit_button);
       toDoWrapper = itemView.findViewById(R.id.toDoAssignmentFormWrapper);
+      toDoCheck = itemView.findViewById(R.id.to_do_item_completed);
+
+
+
     }
   }
 

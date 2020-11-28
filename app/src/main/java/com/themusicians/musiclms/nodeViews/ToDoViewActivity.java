@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +45,7 @@ public class ToDoViewActivity extends NodeViewActivity {
 
   /** Fields */
   private TextView toDoItemName;
+  private CheckBox toDoCheck;
   private VideoView recordingVideo;
 
   /** For video recording */
@@ -79,6 +80,12 @@ public class ToDoViewActivity extends NodeViewActivity {
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   toDoItemName.setText(toDoItem.getName());
+
+                  if (toDoItem.getcompleteToDo() == true) {
+                      toDoCheck.setChecked(true);
+                  }else{
+                      toDoCheck.setChecked(false);
+                  }
 
                   String videoId = toDoItem.getRecordingYoutubeId();
                   if (videoId != null) {
@@ -132,6 +139,20 @@ public class ToDoViewActivity extends NodeViewActivity {
 
     // Get fields
     toDoItemName = findViewById(R.id.to_do_item_name);
+    toDoCheck = findViewById(R.id.complete_to_do_itemCB);
+
+    toDoCheck.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(toDoCheck.isChecked()){
+                toDoItem.setcompleteToDo(true);
+                toDoItem.save();
+            }else{
+                toDoItem.setcompleteToDo(false);
+                toDoItem.save();
+            }
+        }
+    });
     seekToText = findViewById(R.id.seek_to_text);
     seekToButton = findViewById(R.id.seek_to_button);
     recordingFeedbackListView = findViewById(R.id.recordingFeedbackListView);
@@ -203,5 +224,4 @@ public class ToDoViewActivity extends NodeViewActivity {
       startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
     }
   }
-
 }
