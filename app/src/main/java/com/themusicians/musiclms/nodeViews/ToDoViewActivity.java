@@ -67,7 +67,12 @@ public class ToDoViewActivity extends NodeViewActivity {
   private Button seekToButton;
   private EditText seekToText;
 
+  /** Recording Feedback */
+  private EditText feedbackText;
+  private Button addFeedback;
+
   /** Add Recording fields */
+  private Uri videoUri;
   private Button addRecording;
 
   @Override
@@ -156,18 +161,26 @@ public class ToDoViewActivity extends NodeViewActivity {
 
     // To Do Checkbox
     toDoCheck = findViewById(R.id.complete_to_do_itemCB);
-
     toDoCheck.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         if(toDoCheck.isChecked()){
           toDoItem.setcompleteToDo(true);
           toDoItem.save();
-        }else{
+        } else{
           toDoItem.setcompleteToDo(false);
           toDoItem.save();
         }
       }
+    });
+
+    // Recording feedback
+    feedbackText = findViewById(R.id.add_recording_feedback__text);
+    addFeedback = findViewById(R.id.add_recording_feedback__save);
+
+    addFeedback.setOnClickListener(view -> {
+      toDoItem.addRecordingFeedback(feedbackText.getText().toString());
+      toDoItem.save();
     });
 
     // Add Recording
@@ -175,6 +188,20 @@ public class ToDoViewActivity extends NodeViewActivity {
     addRecording = findViewById(R.id.add_recording_video);
     addRecording.setOnClickListener(view -> {
       dispatchTakeVideoIntent();
+    });
+
+    Button tempButton1 = findViewById(R.id.tempButton1);
+    tempButton1.setOnClickListener(v -> {
+      String videoPath = getDataColumn(getApplicationContext(), videoUri, null, null);
+      uploadYoutubeVideo(videoPath);
+    });
+
+    Button tempButton2 = findViewById(R.id.tempButton2);
+    tempButton2.setOnClickListener(v -> {
+      Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+      sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title 2");
+      sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, videoUri);
+      startActivity(Intent.createChooser(sharingIntent,"_share_:"));
     });
     // Set up Feedback
 
@@ -218,11 +245,8 @@ public class ToDoViewActivity extends NodeViewActivity {
 //    }
 
     if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-      Uri videoUri = intent.getData();
+      videoUri = intent.getData();
       recordingVideo.setVideoURI(videoUri);
-
-      String videoPath = getDataColumn(getApplicationContext(), videoUri, null, null);
-      uploadYoutubeVideo(videoPath);
     }
   }
 
@@ -257,9 +281,9 @@ public class ToDoViewActivity extends NodeViewActivity {
     Uri uri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, content);
 
     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Title");
+    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title::");
     sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, uri);
-    startActivity(Intent.createChooser(sharingIntent,"share:"));
+    startActivity(Intent.createChooser(sharingIntent,"_share_::"));
   }
 
   public static String getDataColumn(Context context, Uri uri, String selection,

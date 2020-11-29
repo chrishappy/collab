@@ -74,4 +74,6 @@
     <string name="seek_to">Jump To</string>
     <string name="seek_to_hint">Seconds</string>
     <string name="add_recording">Add Recording</string>
+    <string name="add_recording_feedback__text">Add feedback text</string>
+    <string name="add_recording_feedback__save">Save Feedback</string>
 </resources>
