@@ -1,0 +1,276 @@
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.themusicians.musiclms\">\r\n\r\n    <uses-permission android:name=\"android.permission.INTERNET\" />\r\n    <uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\r\n    <uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".chat.NewChat\"></activity>\r\n        <activity\r\n            android:name=\".UserAddUsers\"\r\n            android:label=\"@string/title_activity_add_users\"\r\n            android:parentActivityName=\".UserProfile\" />\r\n        <activity\r\n            android:name=\".UserSearch\"\r\n            android:label=\"@string/title_activity_user_search\"\r\n            android:parentActivityName=\".UserAddUsers\" />\r\n        <!-- User Activities -->\r\n        <activity\r\n            android:name=\".SignUp\"\r\n            android:label=\"@string/title_activity_signin\" />\r\n        <activity\r\n            android:name=\".UserProfile\"\r\n            android:label=\"@string/title_activity_user_main_profile\"\r\n            android:parentActivityName=\".nodeViews.AssignmentOverviewActivity\" />\r\n        <activity\r\n            android:name=\".UserLogin\"\r\n            android:label=\"@string/title_activity_login\" />\r\n        <activity\r\n            android:name=\".components.MainNavigation\"\r\n            android:label=\"@string/title_activity_assignment_overview\"\r\n            android:theme=\"@style/AppTheme.NoActionBar\" />\r\n        <!--\r\n        For back button\r\n        https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar\r\n        -->\r\n        <!-- Assignments -->\r\n        <activity\r\n            android:name=\".nodeViews.AssignmentOverviewActivity\"\r\n            android:label=\"@string/title_activity_assignment_overview\" />\r\n        <activity\r\n            android:name=\".nodeForms.AssignmentCreateFormActivity\"\r\n            android:label=\"@string/title_activity_assignment_create_form\"\r\n            android:launchMode=\"singleTop\"\r\n            android:parentActivityName=\".nodeViews.AssignmentOverviewActivity\" />\r\n        <activity\r\n            android:name=\".nodeViews.AssignmentViewActivity\"\r\n            android:label=\"@string/title_activity_assignment_view\"\r\n            android:launchMode=\"singleTop\"\r\n            android:parentActivityName=\".nodeViews.AssignmentOverviewActivity\" /> <!-- To Do Tasks -->\r\n        <activity\r\n            android:name=\".nodeForms.ToDoTaskCreateFormActivity\"\r\n            android:label=\"@string/title_activity_to_do_item_create_form\"\r\n            android:parentActivityName=\".nodeForms.AssignmentCreateFormActivity\" />\r\n        <activity\r\n            android:name=\".nodeViews.ToDoViewActivity\"\r\n            android:label=\"@string/title_activity_to_do_item_view\"\r\n            android:launchMode=\"singleTop\"\r\n            android:parentActivityName=\".nodeViews.AssignmentViewActivity\" /> <!-- Main Activity -->\r\n        <activity android:name=\".MainActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 7d6c673cc4ecdc336365b930550212bcca1e4001)
++++ app/src/main/AndroidManifest.xml	(date 1606787913375)
+@@ -71,6 +71,26 @@
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
++// notifications
++        <service android:name=".Notifications.MyFirebaseIdService"
++            android:enabled="true"
++            android:exported="true">
++
++            <intent-filter>
++                <action android:name ="com.google.firebase.INSTANCE_ID_EVENT"/>
++            </intent-filter>
++        </service>
++
++        <service android:name=".Notifications.MyFirebaseMessaging"
++            android:enabled="true"
++            android:exported="true">
++
++            <intent-filter>
++                <action android:name ="com.google.firebase.MESSAGING_EVENT"/>
++            </intent-filter>
++        </service>
++
+     </application>
+ 
++
+ </manifest>
+\ No newline at end of file
+Index: app/src/main/java/com/themusicians/musiclms/chat/NewChat.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.themusicians.musiclms.chat;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.os.Bundle;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.themusicians.musiclms.R;\r\nimport com.themusicians.musiclms.entity.Node.User;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashMap;\r\nimport java.util.List;\r\n\r\npublic class NewChat extends AppCompatActivity {\r\n\r\n  EditText textMessage;\r\n  Button sendButton;\r\n\r\n  FirebaseUser currentUser;\r\n  DatabaseReference reference, toRef;\r\n\r\n  ChatAdapter chatAdapter;\r\n  List<ChatClass> chatList;\r\n\r\n  RecyclerView recyclerView;\r\n\r\n  String toMessageID;\r\n\r\n  @Override\r\n  protected void onCreate(Bundle savedInstanceState) {\r\n    super.onCreate(savedInstanceState);\r\n    setContentView(R.layout.user_chat_main);\r\n\r\n    currentUser = FirebaseAuth.getInstance().getCurrentUser();\r\n    reference = FirebaseDatabase.getInstance().getReference().child(\"node__user\");\r\n    toRef = FirebaseDatabase.getInstance().getReference().child(\"node__user\").child(currentUser.getUid()).child(\"recentText\");\r\n\r\n    textMessage = findViewById(R.id.messageBox);\r\n    sendButton = findViewById(R.id.sendMessage);\r\n\r\n    recyclerView = findViewById(R.id.chatRecycler);\r\n    recyclerView.setHasFixedSize(true);\r\n    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());\r\n    linearLayoutManager.setStackFromEnd(true);\r\n    recyclerView.setLayoutManager(linearLayoutManager);\r\n\r\n    toRef.addValueEventListener(new ValueEventListener() {\r\n      @Override\r\n      public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n        toMessageID = snapshot.getValue(String.class);\r\n      }\r\n\r\n      @Override\r\n      public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n      }\r\n    });\r\n\r\n    sendButton.setOnClickListener(new View.OnClickListener() {\r\n      @Override\r\n      public void onClick(View v) {\r\n        String msg = textMessage.getText().toString();\r\n        if(!msg.equals(\"\")){\r\n          sendMessage(currentUser.getUid(), toMessageID, msg);\r\n        }\r\n        textMessage.setText(\"\");\r\n      }\r\n    });\r\n\r\n    reference = FirebaseDatabase.getInstance().getReference().child(\"node__user\");\r\n    reference.addValueEventListener(new ValueEventListener() {\r\n      @Override\r\n      public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n\r\n        readMessages(currentUser.getUid(), toMessageID);\r\n      }\r\n\r\n      @Override\r\n      public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n      }\r\n    });\r\n\r\n  }\r\n\r\n  private void sendMessage(String sender, String receiver, String message){\r\n    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();\r\n    HashMap<String, Object> hashMap = new HashMap<>();\r\n    hashMap.put(\"sender\", sender);\r\n    hashMap.put(\"receiver\", receiver);\r\n    hashMap.put(\"message\", message);\r\n\r\n    reference.child(\"Chats\").push().setValue(hashMap);\r\n  }\r\n\r\n  private void readMessages(String myId, String userId){\r\n    chatList = new ArrayList<>();\r\n\r\n    reference = FirebaseDatabase.getInstance().getReference().child(\"Chats\");\r\n    reference.addValueEventListener(new ValueEventListener() {\r\n      @Override\r\n      public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n        chatList.clear();\r\n        for(DataSnapshot ds : snapshot.getChildren()){\r\n          ChatClass chat = ds.getValue(ChatClass.class);\r\n          if(chat.getReceiver().equals(myId) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myId)){\r\n            chatList.add(chat);\r\n          }\r\n\r\n          chatAdapter = new ChatAdapter(chatList, NewChat.this);\r\n          recyclerView.setAdapter(chatAdapter);\r\n\r\n        }\r\n      }\r\n\r\n      @Override\r\n      public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n      }\r\n    });\r\n  }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/themusicians/musiclms/chat/NewChat.java	(revision 7d6c673cc4ecdc336365b930550212bcca1e4001)
++++ app/src/main/java/com/themusicians/musiclms/chat/NewChat.java	(date 1606797188802)
+@@ -1,23 +1,28 @@
+ package com.themusicians.musiclms.chat;
+ 
++import android.os.Bundle;
++import android.view.View;
++import android.widget.Button;
++import android.widget.EditText;
++
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
+ 
+-import android.os.Bundle;
+-import android.view.View;
+-import android.widget.Button;
+-import android.widget.EditText;
+-import android.widget.Toast;
+-
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.database.DataSnapshot;
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+ import com.google.firebase.database.FirebaseDatabase;
++import com.google.firebase.database.Query;
+ import com.google.firebase.database.ValueEventListener;
++import com.themusicians.musiclms.Notifications.Client;
++import com.themusicians.musiclms.Notifications.Data;
++import com.themusicians.musiclms.Notifications.MyResponse;
++import com.themusicians.musiclms.Notifications.Sender;
++import com.themusicians.musiclms.Notifications.Token;
+ import com.themusicians.musiclms.R;
+ import com.themusicians.musiclms.entity.Node.User;
+ 
+@@ -25,6 +30,10 @@
+ import java.util.HashMap;
+ import java.util.List;
+ 
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
++
+ public class NewChat extends AppCompatActivity {
+ 
+   EditText textMessage;
+@@ -40,11 +49,19 @@
+ 
+   String toMessageID;
+ 
++  String userId;
++  APIService apiService;
++  boolean notify = false;
++
++
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+     super.onCreate(savedInstanceState);
+     setContentView(R.layout.user_chat_main);
+ 
++
++
++    apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+     currentUser = FirebaseAuth.getInstance().getCurrentUser();
+     reference = FirebaseDatabase.getInstance().getReference().child("node__user");
+     toRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("recentText");
+@@ -73,6 +90,7 @@
+     sendButton.setOnClickListener(new View.OnClickListener() {
+       @Override
+       public void onClick(View v) {
++        notify = true;
+         String msg = textMessage.getText().toString();
+         if(!msg.equals("")){
+           sendMessage(currentUser.getUid(), toMessageID, msg);
+@@ -89,6 +107,64 @@
+         readMessages(currentUser.getUid(), toMessageID);
+       }
+ 
++      @Override
++      public void onCancelled(@NonNull DatabaseError error) {
++
++      }
++    });
++
++    final String msg = textMessage.getText().toString();
++    reference = FirebaseDatabase.getInstance().getReference("node__user").child(currentUser.getUid());
++    reference.addValueEventListener(new ValueEventListener() {
++      @Override
++      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
++        User user = dataSnapshot.getValue(User.class);
++        if(notify){
++          sendNotification(toMessageID,user.getUid(),msg);
++        }
++        notify = false;
++      }
++
++      @Override
++      public void onCancelled(@NonNull DatabaseError error) {
++
++      }
++    });
++
++  }
++  private void sendNotification(String receiver, String username, String message){
++    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
++    Query query = tokens.orderByKey().equalTo(receiver);
++    query.addValueEventListener(new ValueEventListener() {
++      @Override
++      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
++        for(DataSnapshot snapshot :dataSnapshot.getChildren()){
++          Token token = snapshot.getValue(Token.class);
++          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username,message,"new message",userId);
++
++          Sender sender = new Sender(data, token.getToken());
++
++          apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
++            @Override
++            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
++              if(response.code() == 200){
++                if(response.body().success !=1){
++                  // ask jerome names
++                  //Toast.makeText(messageActivity.this,"failed",Toast.LENGTH_SHORT.show());
++                }
++              }
++            }
++
++            @Override
++            public void onFailure(Call<MyResponse> call, Throwable t) {
++
++            }
++          });
++
++
++        }
++      }
++
+       @Override
+       public void onCancelled(@NonNull DatabaseError error) {
+ 
+@@ -97,6 +173,7 @@
+ 
+   }
+ 
++
+   private void sendMessage(String sender, String receiver, String message){
+     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+     HashMap<String, Object> hashMap = new HashMap<>();
+@@ -133,4 +210,4 @@
+       }
+     });
+   }
+-}
+\ No newline at end of file
++}
+Index: app/src/main/java/com/themusicians/musiclms/Notifications/MyFirebaseMessaging.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.themusicians.musiclms.Notifications;\r\n\r\nimport android.content.Intent;\r\n\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.messaging.FirebaseMessagingService;\r\nimport com.google.firebase.messaging.RemoteMessage;\r\nimport com.themusicians.musiclms.chat.NewChat;\r\n\r\npublic class MyFirebaseMessaging extends FirebaseMessagingService{\r\n\r\n    @Override\r\n    public void onMessageReceived(RemoteMessage remoteMessage){\r\n        super.onMessageReceived(remoteMessage);\r\n\r\n        String sent = remoteMessage.getData().get(\"sent\");\r\n\r\n        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();\r\n\r\n        if(firebaseUser != null && sent.equals(firebaseUser.getUid())){\r\n            sendNotification(remoteMessage);\r\n        }\r\n    }\r\n\r\n    private void sendNotification(RemoteMessage remoteMessage) {\r\n\r\n        String user = remoteMessage.getData().get(\"user\");\r\n        String icon = remoteMessage.getData().get(\"icon\");\r\n        String title = remoteMessage.getData().get(\"title\");\r\n        String body = remoteMessage.getData().get(\"body\");\r\n\r\n        RemoteMessage.Notification notification = remoteMessage.getNotification();\r\n        int j = Integer.parseInt(user.replaceAll(\"//D\",\"\"));\r\n        Intent intent = new Intent(this, NewChat.class);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/themusicians/musiclms/Notifications/MyFirebaseMessaging.java	(revision 7d6c673cc4ecdc336365b930550212bcca1e4001)
++++ app/src/main/java/com/themusicians/musiclms/Notifications/MyFirebaseMessaging.java	(date 1606455960050)
+@@ -1,6 +1,14 @@
+ package com.themusicians.musiclms.Notifications;
+ 
++import android.app.NotificationManager;
++import android.app.PendingIntent;
++import android.content.Context;
+ import android.content.Intent;
++import android.media.RingtoneManager;
++import android.net.Uri;
++import android.os.Bundle;
++
++import androidx.core.app.NotificationCompat;
+ 
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+@@ -31,8 +39,33 @@
+         String body = remoteMessage.getData().get("body");
+ 
+         RemoteMessage.Notification notification = remoteMessage.getNotification();
++        // line below was buggy
+         int j = Integer.parseInt(user.replaceAll("//D",""));
+         Intent intent = new Intent(this, NewChat.class);
++        Bundle bundle = new Bundle();
++        bundle.putString("userid", user);
++        intent.putExtras(bundle);
++        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
++        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent,PendingIntent.FLAG_ONE_SHOT);
++
++        Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
++        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
++                .setSmallIcon(Integer.parseInt(icon))
++                .setContentTitle(title)
++                .setContentText(body)
++                .setAutoCancel(true)
++                .setSound(defaultSound)
++                .setContentIntent(pendingIntent);
++
++        NotificationManager noti = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
++
++        int i =0;
++        if(j>0){
++            i=j;
++        }
++
++        noti.notify(i,builder.build());
++
+     }
+ 
+ }
+Index: app/src/main/java/com/themusicians/musiclms/Notifications/Data.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.themusicians.musiclms.Notifications;\r\n\r\npublic class Data {\r\n    protected String user;\r\n    protected int icon;\r\n    protected String body;\r\n    protected String title;\r\n    protected String sent;\r\n\r\n    public Data(String user, int icon, String body, String title, String sent){\r\n        this.user = user;\r\n        this.icon = icon;\r\n        this.body = body;\r\n        this.title = title;\r\n        this.sent = sent;\r\n    }\r\n\r\n    public Data(){\r\n\r\n    }\r\n\r\n    public String getUser() {\r\n        return user;\r\n    }\r\n\r\n    public void setUser(String user) {\r\n        this.user = user;\r\n    }\r\n\r\n    public int getIcon() {\r\n        return icon;\r\n    }\r\n\r\n    public void setIcon(int icon) {\r\n        this.icon = icon;\r\n    }\r\n\r\n    public String getBody() {\r\n        return body;\r\n    }\r\n\r\n    public void setBody(String body) {\r\n        this.body = body;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public String getSent() {\r\n        return sent;\r\n    }\r\n\r\n    public void setSent(String sent) {\r\n        this.sent = sent;\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/themusicians/musiclms/Notifications/Data.java	(revision 7d6c673cc4ecdc336365b930550212bcca1e4001)
++++ app/src/main/java/com/themusicians/musiclms/Notifications/Data.java	(date 1606788576394)
+@@ -15,7 +15,7 @@
+         this.sent = sent;
+     }
+ 
+-    public Data(){
++    public Data(String uid, int ic_launcher, String username, String message, String new_message, String userId){
+ 
+     }
+ 

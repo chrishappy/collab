@@ -15,7 +15,7 @@ public class Data {
         this.sent = sent;
     }
 
-    public Data(){
+    public Data(String uid, int ic_launcher, String username, String message, String new_message, String userId){
 
     }
 
