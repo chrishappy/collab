@@ -36,10 +36,6 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">导航标题</string>
-    <string name="menu_home">家</string>
-    <string name="menu_gallery">画廊</string>
-    <string name="menu_slideshow">幻灯片</string>
-    <string name="large_text">“材料是隐喻。 n  n”</string>
     <string name="hello_blank_fragment">你好空白片段</string>
     <string name="attachment__add__comment">添加评论</string>
     <string name="attachment_dialog__add__comment">添加一个评论</string>
