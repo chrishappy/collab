@@ -54,22 +54,21 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.0'
 
+    // Youtube
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 //    implementation files('libs\\YouTubeAndroidPlayerApi.jar')
 //    implementation 'org.testng:testng:6.9.6'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-// notifications
-
+    // notifications
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
 
-
-
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }
 
