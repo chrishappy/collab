@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.entity.Node;
 
-
 import java.util.List;
 
 /**

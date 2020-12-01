@@ -63,6 +63,8 @@
     <string name="title_activity_chat_landing">Chat with others</string>
     <string name="title_activity_user_main_profile">User Profile</string>
     <string name="title_activity_login">Log In</string>
+    <string name="text_content">text</string>
+    <string name="action_Language">Language</string>
     <string name="assignment__form__view_todos">To Do</string>
     <string name="form__view_button">View</string>
     <string name="title_activity_assignment_view">View Assignment</string>

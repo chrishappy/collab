@@ -33,6 +33,10 @@
 
         <!-- User Activities -->
         <activity
+            android:name=".chat.Chat"
+            android:label="@string/title_activity_chat_landing"
+            android:parentActivityName=".UserProfile" /> <!-- User Activities -->
+        <activity
             android:name=".SignUp"
             android:label="@string/title_activity_signin" />
         <activity
@@ -46,7 +50,7 @@
         For back button
         https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar
         -->
-        <!-- Assignments -->
+        <!-- Assignment -->
         <activity
             android:name=".nodeViews.AssignmentOverviewActivity"
             android:label="@string/title_activity_assignment_overview" />
