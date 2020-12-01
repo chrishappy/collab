@@ -22,14 +22,14 @@ import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 // FirebaseRecyclerAdapter is a class provided by
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
-public class AllAttachmentsAdapter
-    extends FirebaseRecyclerAdapter<AllAttachment, AllAttachmentsAdapter.AllAttachmentViewHolder> {
+public class ShowAllAttachmentsAdapter
+    extends FirebaseRecyclerAdapter<AllAttachment, ShowAllAttachmentsAdapter.AllAttachmentViewHolder> {
 
   private ItemClickListener itemClickListener;
 
   public static String editAllAttachments = "editAllAttachments";
 
-  public AllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
+  public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
     super(options);
   }
 
@@ -126,7 +126,7 @@ public class AllAttachmentsAdapter
   public AllAttachmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.viewholder_attachment, parent, false);
+            .inflate(R.layout.viewholder_show_attachment, parent, false);
     return new AllAttachmentViewHolder(view);
   }
 

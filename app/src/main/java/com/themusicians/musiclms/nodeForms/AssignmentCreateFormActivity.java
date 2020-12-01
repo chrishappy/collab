@@ -18,6 +18,7 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,9 +31,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Entity;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment;
+import com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -71,6 +75,11 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
+
+  /** For Attachments */
+  private Fragment showAttachment;
+  private Fragment editAttachment;
+
 
   @Override
   public void onStart() {
@@ -218,6 +227,12 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     // Load the to do tasks
     initToDoItemsList();
 
+    // Show attachments
+    initShowAttachments(assignment);
+
+    // Show attachments edit form
+    initCreateAttachments(assignment);
+
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
     final Button addTask = findViewById(R.id.todoAddItem);
@@ -265,6 +280,34 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
           Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         });
+  }
+
+  /**
+   * Populate the showAttachment fragment
+   *
+   * @param entity the entity to fetch attachments for
+   */
+  private void initShowAttachments(Entity entity) {
+    getSupportFragmentManager().beginTransaction()
+        .add(
+            R.id.showAttachments,
+            ShowAllAttachmentsFragment.newInstance(entity.getId()),
+            "ShowAllAttachmentsFragment")
+        .commit();
+  }
+
+  /**
+   * Populate the addAttachment fragment
+   *
+   * @param entity the entity to add attachments to
+   */
+  private void initCreateAttachments(Entity entity) {
+    getSupportFragmentManager().beginTransaction()
+        .add(
+            R.id.addAttachments,
+            CreateFormAttachmentsFragment.newInstance(entity.getId()),
+            "CreateFormAttachmentsFragment")
+        .commit();
   }
 
   /** Create the to do items list */

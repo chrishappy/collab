@@ -3,6 +3,7 @@ package com.themusicians.musiclms.entity.Node;
 import android.util.Log;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ServerValue;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
@@ -27,6 +28,8 @@ public abstract class Node extends Entity {
   protected String name;
 
   protected List<String> attachmentIds;
+
+  protected final static String attachmentName = "attachmentIds";
 
   protected List<String> allowedAttachments;
 
@@ -62,6 +65,17 @@ public abstract class Node extends Entity {
   public String getEntityType() {
     return entityType;
   }
+
+  /**
+   * Get Attachments location
+   *
+   * <p>Assumes assignment has an id
+   */
+  @Exclude
+  public String getAttachmentsKeyQueryString() {
+    return getBaseTable() + "/" + getId() + "/" + attachmentName;
+  }
+
   /**
    * Save the Node to the Database
    *
