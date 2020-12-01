@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/messageBox"
             android:background="@android:color/transparent"
-            android:hint="Type a message..."
+            android:hint="@string/Type_a_message"
             android:layout_toLeftOf="@+id/sendMessage"
             android:layout_centerVertical="true"/>
 
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sendMessage"
-            android:text="Send"
+            android:text="@string/Send"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"/>
 

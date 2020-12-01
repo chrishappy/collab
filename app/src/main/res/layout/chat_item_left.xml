@@ -11,7 +11,7 @@
         android:layout_marginLeft="16dp"
         android:id="@+id/showMessage"
         android:textSize="18sp"
-        android:text="hello"
+        android:text="@string/hello"
         android:padding="8dp"
         android:background="@drawable/background_left"/>
 

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Name:"
+            android:text="@string/Name_"
             android:textSize="25dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Email:"
+            android:text="@string/Email_"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/placeName" />
@@ -70,7 +70,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
 
-            android:text="Role:"
+            android:text="@string/Role_"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/placeEmail" />
@@ -105,7 +105,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:hint="Chat"/>
+                android:hint="@string/user_profile_chat"/>
 
         </LinearLayout>
 
