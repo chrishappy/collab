@@ -3,7 +3,7 @@
     <string name="title_activity_signin">Sign In</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -113,4 +113,5 @@
     <string name="Watching_YouTube">Watching a YouTube video</string>
     <string name="Uploading_YouTube">Uploading a YouTube video</string>
     <string name="Finish">Finish</string>
+    <string name="Logout">Logout</string>
 </resources>

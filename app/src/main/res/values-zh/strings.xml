@@ -98,7 +98,7 @@
     <string name="Confirm">确认</string>
     <string name="Reset_Password">密码重置</string>
     <string name="Back">返回</string>
-    <string name="Edit_Data">编辑数据</string>
+    <string name="Edit_Data">编辑资料</string>
     <string name="Enter_instruments_here">在此输入乐器</string>
     <string name="or_Register_an_account_here">或者点此注册账号</string>
     <string name="Preferred_Name">称呼</string>
@@ -115,4 +115,5 @@
     <string name="Watching_YouTube">观看YouTube视频</string>
     <string name="Uploading_YouTube">上传YouTube视频</string>
     <string name="Finish">完成</string>
+    <string name="Logout">登出</string>
 </resources>
