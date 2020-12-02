@@ -132,7 +132,7 @@ public class Chat extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         User user = dataSnapshot.getValue(User.class);
         if(notify){
-          sendNotification(toMessageID,user.getUid(),msg);
+          sendNotification(toMessageID,currentUser.getUid(),msg);
         }
         notify = false;
       }
