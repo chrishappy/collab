@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Assignment.java
@@ -34,6 +35,12 @@ public class Assignment extends Node {
   protected long dueDate;
 
   protected boolean completeAssignment;
+
+  protected int countOfTotalToDos = 0;
+
+  protected int countOfDoneToDos = 0;
+
+  protected Stack<String> todosID;
 
   protected Map<String, Boolean> toDoIds;
 
@@ -175,6 +182,19 @@ public class Assignment extends Node {
 
   public void setcompleteAssignment(boolean completeAssignment) {
     this.completeAssignment = completeAssignment;
+  }
+
+  public void setCountOfTotalToDos(){ this.countOfTotalToDos = toDoIds.size(); }
+  public int getCountOfTotalToDos(){ return countOfTotalToDos; }
+
+  public void addCountOfDoneToDos(){ this.countOfDoneToDos++; }
+  public int getCountOfDoneToDos(){ return countOfDoneToDos; }
+
+  public void pushToDos(String todoid) {
+    if (this.todosID == null) {
+      this.todosID = new Stack<String>();
+    }
+    this.todosID.push(todoid);
   }
 
   /**/
