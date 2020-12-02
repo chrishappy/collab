@@ -185,9 +185,11 @@ public class Assignment extends Node {
   }
 
   public void setCountOfTotalToDos(){ this.countOfTotalToDos = toDoIds.size(); }
+
   public int getCountOfTotalToDos(){ return countOfTotalToDos; }
 
   public void addCountOfDoneToDos(){ this.countOfDoneToDos++; }
+
   public int getCountOfDoneToDos(){ return countOfDoneToDos; }
 
   public void pushToDos(String todoid) {
@@ -197,5 +199,4 @@ public class Assignment extends Node {
     this.todosID.push(todoid);
   }
 
-  /**/
 }

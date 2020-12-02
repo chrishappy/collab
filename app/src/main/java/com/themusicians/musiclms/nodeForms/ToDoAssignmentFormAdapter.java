@@ -57,7 +57,7 @@ public class ToDoAssignmentFormAdapter
     holder.toDoCheck.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if(holder.toDoCheck.isChecked()){
+        if (holder.toDoCheck.isChecked()){
           toDoItem.setcompleteToDo(true);
           toDoItem.save();
         }else{
@@ -98,9 +98,6 @@ public class ToDoAssignmentFormAdapter
       editButton = itemView.findViewById(R.id.edit_button);
       toDoWrapper = itemView.findViewById(R.id.toDoAssignmentFormWrapper);
       toDoCheck = itemView.findViewById(R.id.to_do_item_completed);
-
-
-
     }
   }
 

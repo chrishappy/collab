@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,14 +82,14 @@ public class AssignmentOverviewAdapter
       holder.dueDate.setText(dateFormat.format(date));
     }
 
-    holder.editAssignment.setOnClickListener(
-        view -> {
-          if (itemClickListener != null) {
-            itemClickListener.onButtonClick("editAssignment", assignment.getId());
-          }
-        });
+//    holder.editAssignment.setOnClickListener(
+//        view -> {
+//          if (itemClickListener != null) {
+//            itemClickListener.onButtonClick("editAssignment", assignment.getId());
+//          }
+//        });
 
-    holder.viewAssignment.setOnClickListener(
+    holder.wrapper.setOnClickListener(
         view -> {
           if (itemClickListener != null) {
             itemClickListener.onButtonClick("viewAssignment", assignment.getId());
@@ -123,17 +124,21 @@ public class AssignmentOverviewAdapter
   // view (here "person.xml")
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate, userName;
-    Button editAssignment, viewAssignment;
+//    Button editAssignment, viewAssignment;
+    LinearLayout wrapper;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
+
+      wrapper = itemView.findViewById(R.id.assignment_overview_wrapper);
 
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
       dueDate = itemView.findViewById(R.id.dueDate);
       userName = itemView.findViewById(R.id.userName);
-      editAssignment = itemView.findViewById(R.id.edit_button);
-      viewAssignment = itemView.findViewById(R.id.view_button);
+
+      // editAssignment = itemView.findViewById(R.id.edit_button);
+      // viewAssignment = itemView.findViewById(R.id.view_button);
     }
   }
 

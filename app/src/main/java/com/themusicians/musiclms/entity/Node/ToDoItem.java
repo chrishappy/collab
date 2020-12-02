@@ -34,7 +34,7 @@ public class ToDoItem extends Node {
 
   protected long toDoState;
 
-  protected List<String> attachedAssignments;
+  protected String attachedAssignment;
 
   protected Object TimeCompleted;
 
@@ -99,12 +99,12 @@ public class ToDoItem extends Node {
     this.toDoState = toDoState;
   }
 
-  public List<String> getAttachedAssignments() {
-    return attachedAssignments;
+  public String getAttachedAssignment() {
+    return attachedAssignment;
   }
 
-  public void setAttachedAssignments(List<String> attachedAssignments) {
-    this.attachedAssignments = attachedAssignments;
+  public void setAttachedAssignment(String attachedAssignments) {
+    this.attachedAssignment = attachedAssignments;
   }
 
   public Object getTimeCompleted() {

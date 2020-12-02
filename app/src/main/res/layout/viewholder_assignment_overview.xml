@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:scrollbars="vertical">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="364dp">
+        android:layout_height="wrap_content"
+        android:id="@+id/assignment_overview_wrapper"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/assignmentNameLabel"
@@ -111,47 +112,46 @@
             app:layout_constraintStart_toEndOf="@+id/userNameLabel"
             app:layout_constraintTop_toBottomOf="@+id/assignmentName" />
 
-        <LinearLayout
-            android:id="@+id/actionsButtons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dueDate"
-            app:layout_constraintVertical_bias="0.797">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/actionsButtons"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/dueDate"-->
+<!--            android:gravity="end">-->
 
-            <Button
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/form__edit_button" />
+<!--            <Button-->
+<!--                android:id="@+id/edit_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                android:hint="@string/form__edit_button" />-->
 
-            <Button
-                android:id="@+id/view_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/form__view_button" />
+<!--            <Button-->
+<!--                android:id="@+id/view_button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                android:hint="@string/form__view_button"/>-->
 
-            <!--            <Button-->
-            <!--                android:id="@+id/delete_button"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginStart="16dp"-->
-            <!--                android:layout_marginTop="16dp"-->
-            <!--                android:layout_marginEnd="16dp"-->
-            <!--                android:layout_marginBottom="16dp"-->
-            <!--                android:hint="@string/form__delete_button"/>-->
+<!--            &lt;!&ndash;            <Button&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:id="@+id/delete_button"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_marginStart="16dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_marginTop="16dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_marginEnd="16dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:layout_marginBottom="16dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:hint="@string/form__delete_button"/>&ndash;&gt;-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <ProgressBar
             android:id="@+id/progressBar2"
@@ -162,7 +162,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dueDate" />
+    </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
