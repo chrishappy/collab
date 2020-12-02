@@ -143,20 +143,20 @@
 
 
 <!--             Start "AddAttachments Fragment". Migrate/Refactor later -->
-            <fragment
-                android:id="@+id/addAttachments"
-                android:name="com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+<!--            <fragment-->
+<!--                android:id="@+id/addAttachments"-->
+<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="30dp"
-                android:background="#c0c0c0" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:layout_marginBottom="30dp"-->
+<!--                android:background="#c0c0c0" />-->
 
             <!-- End "AddAttachments" Fragment -->
 

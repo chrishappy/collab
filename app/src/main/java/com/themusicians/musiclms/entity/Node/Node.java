@@ -7,6 +7,9 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ServerValue;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
+
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +30,11 @@ public abstract class Node extends Entity {
    */
   protected String name;
 
-  protected List<String> attachmentIds;
-
   protected final static String attachmentName = "attachmentIds";
 
   protected List<String> allowedAttachments;
 
-  protected Map<Map, Attachment> attachments;
+  protected Map<String, Boolean> attachmentIds;
 
   /*** End fields ***/
 
@@ -72,8 +73,8 @@ public abstract class Node extends Entity {
    * <p>Assumes assignment has an id
    */
   @Exclude
-  public String getAttachmentsKeyQueryString() {
-    return getBaseTable() + "/" + getId() + "/" + attachmentName;
+  public DatabaseReference getAttachmentsReference() {
+    return getEntityDatabase().child(getId()).child(attachmentName);
   }
 
   /**
@@ -149,12 +150,20 @@ public abstract class Node extends Entity {
     this.name = name;
   }
 
-  public List<String> getAttachmentIds() {
+  public Map<String, Boolean> getAttachmentIds() {
     return attachmentIds;
   }
 
-  public void setAttachmentIds(List<String> attachmentIds) {
-    this.attachmentIds = attachmentIds;
+  public Node addAttachmentId(String attachmentId) {
+    if (attachmentIds == null) {
+      attachmentIds = new HashMap<>();
+    }
+
+    if (attachmentIds.get(attachmentId) == null) {
+      attachmentIds.put(attachmentId, true);
+    }
+
+    return this;
   }
 
   public List<String> getAllowedAttachments() {

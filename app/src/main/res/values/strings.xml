@@ -78,6 +78,7 @@
     <string name="add_recording">Add Recording</string>
     <string name="add_recording_feedback__text">Add feedback text</string>
     <string name="add_recording_feedback__save">Save Feedback</string>
+    <string name="add_attachment">Add Attachment</string>
     <string name="user_preferred_name">Preferred Name</string>
     <string name="user_hi_i_am">Hi, I am ...</string>
     <string name="user_signup_email">Email</string>

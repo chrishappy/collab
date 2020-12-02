@@ -79,6 +79,13 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
 
+  /**
+   * @return the node we are editing
+   */
+  @Override
+  public Node getNode() {
+    return assignment;
+  }
 
   @Override
   public void onStart() {
@@ -229,7 +236,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     initShowAttachments(assignment);
 
     // Show attachments edit form
-    initCreateAttachments(assignment);
+//    initCreateAttachments(assignment);
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
@@ -299,7 +306,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
       fragmentTransaction.add(
           R.id.showAttachments,
-          ShowAllAttachmentsFragment.newInstance(node.getAttachmentsKeyQueryString()),
+          ShowAllAttachmentsFragment.newInstance(node.getId()),
           "ShowAllAttachmentsFragment");
       fragmentTransaction.commitAllowingStateLoss();
     }
@@ -318,6 +325,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 //            "CreateFormAttachmentsFragment")
 //        .commit();
 
+    /*
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final Fragment content = fragmentManager.findFragmentById(R.id.addAttachments);
     if (!(content instanceof CreateFormAttachmentsFragment)) {
@@ -328,6 +336,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           "addAttachments");
       fragmentTransaction.commitAllowingStateLoss();
     }
+    /* */
   }
 
   /** Create the to do items list */

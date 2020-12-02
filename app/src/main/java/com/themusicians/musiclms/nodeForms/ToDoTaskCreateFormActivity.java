@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
 import com.themusicians.musiclms.entity.Attachment.Comment;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,6 +41,14 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
 
   /** The To Do Item object */
   ToDoItem toDoItem;
+
+  /**
+   * @return the node we are editing
+   */
+  @Override
+  public Node getNode() {
+    return toDoItem;
+  }
 
   @Override
   public void onStart() {

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
+import com.themusicians.musiclms.entity.Node.Node;
+import com.themusicians.musiclms.nodeForms.NodeCreateFormActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +55,7 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
 
   // Where to find the attachments
   private String parentNodeId;
+  private Node nodeToBeEdited;
 
   /** Receive the entity id of the attachment to edit */
   public static ShowAllAttachmentsFragment newInstance(String parentNodeId) {
@@ -72,6 +76,8 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     if (getArguments() != null) {
       parentNodeId = getArguments().getString(PARENT_NODE_ID);
     }
+
+    nodeToBeEdited = ((NodeCreateFormActivity) getActivity()).getNode();
   }
 
   // Function to tell the app to start getting
@@ -79,7 +85,10 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
   @Override
   public void onStart() {
     super.onStart();
-    showAllAttachmentsAdapter.startListening();
+    if (nodeToBeEdited.getId() != null) {
+      initShowAttachmentRecyclerView();
+      showAllAttachmentsAdapter.startListening();
+    }
   }
 
   // Function to tell the app to stop getting
@@ -87,7 +96,9 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
   @Override
   public void onStop() {
     super.onStop();
-    showAllAttachmentsAdapter.stopListening();
+    if (nodeToBeEdited != null) {
+      showAllAttachmentsAdapter.stopListening();
+    }
   }
 
   public View onCreateView(
@@ -98,12 +109,21 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
 
     View root = inflater.inflate(R.layout.fragment_show_attachments, container, false);
 
+    // Add attachment
+    final Button addAttachment = root.findViewById(R.id.add_attachment_button);
+//    final NestedScrollView scrollContainer = root.findViewById(R.id.attachmentContainer);
+    addAttachment.setOnClickListener(view -> {
+      showPopup(addAttachment);
+    });
+
     // Create a instance of the database and get
     recyclerView = root.findViewById(R.id.attachmentsOverviewRecycler);
 
-    // To display the Recycler view using grid layout for slide functionality
-    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+    return root;
+  }
 
+  private void initShowAttachmentRecyclerView() {
+    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
     ItemTouchHelper itemTouchHelper =
         new ItemTouchHelper(
             new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -155,15 +175,13 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     FirebaseRecyclerOptions<AllAttachment> options =
         new FirebaseRecyclerOptions.Builder<AllAttachment>()
             .setQuery(tempAllAttachment.getEntityDatabase(), AllAttachment.class)
-//            .setIndexedQuery(mbase.getReference(attachmentKeyQuery), tempAllAttachment.getEntityDatabase(), AllAttachment.class)
+//            .setIndexedQuery(nodeToBeEdited.getAttachmentsReference(), tempAllAttachment.getEntityDatabase(), AllAttachment.class)
             .build();
 
     // Create new Adapter
     showAllAttachmentsAdapter = new ShowAllAttachmentsAdapter(options);
     showAllAttachmentsAdapter.addItemClickListener(this);
     recyclerView.setAdapter(showAllAttachmentsAdapter);
-
-    return root;
   }
 
   /**
@@ -202,7 +220,6 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
 
     // Show under anchor view with 10 vertical offset
     popupWindow.showAsDropDown(anchorView, 0, 10);
-
   }
 
   private void initCreateAttachment(View root, PopupWindow popup) {
@@ -212,10 +229,19 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     final Button saveAction = root.findViewById(R.id.saveAction);
     saveAction.setOnClickListener(
         view -> {
+
+          // Save the attachment
           attachment.setComment(editComment.getText().toString());
           attachment.setStatus(true);
           attachment.setUid(currentUser.getUid());
           attachment.save();
+
+          // Add the attachment to the node
+          NodeCreateFormActivity nodeCreateFormActivity = (NodeCreateFormActivity) getActivity();
+          nodeCreateFormActivity
+              .getNode()
+              .addAttachmentId(attachment.getId())
+              .save();
 
           // Display notification
           String saveMessage = (editEntityId != null) ? "Attachment updated" : "Attachment Saved";

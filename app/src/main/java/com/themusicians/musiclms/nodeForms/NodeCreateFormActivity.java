@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.themusicians.musiclms.entity.Node.Node;
 
 // import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 
@@ -59,4 +60,7 @@ public abstract class NodeCreateFormActivity extends AppCompatActivity {
     // Initalize the current user
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
   }
+
+  /** Return the node we are editing */
+  public abstract Node getNode();
 }
