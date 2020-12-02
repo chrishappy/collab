@@ -13,6 +13,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import org.jetbrains.annotations.NotNull;
@@ -28,13 +29,26 @@ import org.jetbrains.annotations.NotNull;
  * @since Nov 19, 2020
  */
 public class ShowAllAttachmentsFragment extends Fragment
-    implements AllAttachmentsAdapter.ItemClickListener {
+    implements ShowAllAttachmentsAdapter.ItemClickListener {
+
+  private static final String ACCEPT_ATTACHMENT_KEY_QUERY = "ACCEPT_ATTACHMENT_KEY_QUERY";
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
-  AllAttachmentsAdapter assignmentOverviewAdapter; // Create Object of the Adapter class
-  DatabaseReference mbase; // Create object of the Firebase Realtime Database
+  ShowAllAttachmentsAdapter showAllAttachmentsAdapter; // Create Object of the Adapter class
+  FirebaseDatabase mbase; // Create object of the Firebase Realtime Database
 
+  // Where to find the attachments
+  private String attachmentKeyQuery;
+
+  /** Receive the entity id of the attachment to edit */
+  public static ShowAllAttachmentsFragment newInstance(String attachmentKeyQuery) {
+    ShowAllAttachmentsFragment fragment = new ShowAllAttachmentsFragment();
+    Bundle args = new Bundle();
+    args.putString(ACCEPT_ATTACHMENT_KEY_QUERY, attachmentKeyQuery);
+    fragment.setArguments(args);
+    return fragment;
+  }
   /**
    * To Group elements, see this tutorial:
    * https://stackoverflow.com/questions/34848401/divide-elements-on-groups-in-recyclerview
@@ -45,8 +59,7 @@ public class ShowAllAttachmentsFragment extends Fragment
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
     // Generate the database
-    AllAttachment tempAllAttachment = new AllAttachment();
-    mbase = tempAllAttachment.getEntityDatabase();
+    mbase = FirebaseDatabase.getInstance();
 
     View root = inflater.inflate(R.layout.fragment_show_attachments, container, false);
 
@@ -82,7 +95,7 @@ public class ShowAllAttachmentsFragment extends Fragment
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:
-                    Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
+                    Snackbar.make(recyclerView, "Attachment swiped left", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show();
 
@@ -91,31 +104,43 @@ public class ShowAllAttachmentsFragment extends Fragment
                     break;
 
                   case ItemTouchHelper.RIGHT:
-                    Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+                    Snackbar.make(recyclerView, "Attachment swiped right", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show();
                     break;
                 }
 
                 // Remove item from backing list here
-                assignmentOverviewAdapter.notifyDataSetChanged();
+                showAllAttachmentsAdapter.notifyDataSetChanged();
               }
             });
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
-    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
-    // data
+    AllAttachment tempAllAttachment = new AllAttachment();
     FirebaseRecyclerOptions<AllAttachment> options =
         new FirebaseRecyclerOptions.Builder<AllAttachment>()
-            .setQuery(mbase, AllAttachment.class)
+            .setQuery(tempAllAttachment.getEntityDatabase(), AllAttachment.class)
+//            .setIndexedQuery(mbase.getReference(attachmentKeyQuery), tempAllAttachment.getEntityDatabase(), AllAttachment.class)
             .build();
 
     // Create new Adapter
-    assignmentOverviewAdapter = new AllAttachmentsAdapter(options);
-    assignmentOverviewAdapter.addItemClickListener(this);
-    recyclerView.setAdapter(assignmentOverviewAdapter);
+    showAllAttachmentsAdapter = new ShowAllAttachmentsAdapter(options);
+    showAllAttachmentsAdapter.addItemClickListener(this);
+    recyclerView.setAdapter(showAllAttachmentsAdapter);
 
     return root;
+  }
+
+  /**
+   * Set the arguments
+   */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    if (getArguments() != null) {
+      attachmentKeyQuery = getArguments().getString(ACCEPT_ATTACHMENT_KEY_QUERY);
+    }
   }
 
   // Function to tell the app to start getting
@@ -123,7 +148,7 @@ public class ShowAllAttachmentsFragment extends Fragment
   @Override
   public void onStart() {
     super.onStart();
-    assignmentOverviewAdapter.startListening();
+    showAllAttachmentsAdapter.startListening();
   }
 
   // Function to tell the app to stop getting
@@ -131,7 +156,7 @@ public class ShowAllAttachmentsFragment extends Fragment
   @Override
   public void onStop() {
     super.onStop();
-    assignmentOverviewAdapter.stopListening();
+    showAllAttachmentsAdapter.stopListening();
   }
 
   /**

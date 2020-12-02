@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
-
 import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseUser;
 

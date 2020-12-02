@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.entity.Node;
 
-
 import java.util.List;
 
 /**
@@ -98,6 +97,16 @@ public class User extends Node {
   }
 
   /** Fields setters and getters */
+
+  private String viewUser;
+
+  public String getViewUser() {
+    return viewUser;
+  }
+
+  public void setViewUser(String viewUser) {
+    this.viewUser = viewUser;
+  }
 
   private String recentText;
 

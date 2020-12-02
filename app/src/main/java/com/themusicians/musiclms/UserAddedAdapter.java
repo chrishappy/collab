@@ -9,12 +9,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.chat.Chat;
 import com.themusicians.musiclms.entity.Node.User;
@@ -35,6 +40,7 @@ import java.util.List;
 public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyViewHolder> {
 
   ArrayList<User> list;
+
   FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   User currUser = new User(currentUser.getUid());
   Context context;
@@ -52,16 +58,16 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
   }
 
-    public UserAddedAdapter(Context context, List<User> aUsers) {
-    }
+  public UserAddedAdapter(Context context, List<User> aUsers) {
+  }
 
-    // Function to tell the class about the Card view
+  // Function to tell the class about the Card view
   // which the data will be shown
   @NonNull
   @Override
   public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card_holder_added, parent, false);
+      LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card_holder_added, parent, false);
     return new MyViewHolder(view);
   }
   // Function to bind the view in Card view with data in
@@ -84,7 +90,7 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
   // view (here "person.xml")
   class MyViewHolder extends RecyclerView.ViewHolder {
     TextView userName2, userEmail2, userRole2;
-    Button userChat;
+    Button userChat, viewUser, deleteUser;
 
     public MyViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -92,6 +98,8 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
       userEmail2 = itemView.findViewById(R.id.searchEmail2);
       userRole2 = itemView.findViewById(R.id.searchRole2);
       userChat = itemView.findViewById(R.id.addedChat);
+      viewUser = itemView.findViewById(R.id.addedViewUser);
+      deleteUser = itemView.findViewById(R.id.addedDelete);
     }
 
     // Add button onClick
@@ -99,23 +107,86 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
       userChat.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-              currUser = snapshot.getValue(User.class);
-              currUser.setRecentText(list.get(position).getId());
-              currUser.save();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-          });
-          Intent toChat = new Intent(context, Chat.class);
-          context.startActivity(toChat);
+          callChat(position);
         }
       });
-    }
+       viewUser.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+           callViewUser(position);
+         }
+       });
+       deleteUser.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+           callDeleteUser(position);
+         }
+       });
+     }
+  }
+
+  /**
+   * Redirects user to chat page
+   * @param position
+   */
+  public void callChat(int position){
+    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        currUser = snapshot.getValue(User.class);
+        currUser.setRecentText(list.get(position).getId());
+        currUser.save();
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    Intent toChat = new Intent(context, Chat.class);
+    context.startActivity(toChat);
+  }
+
+  /**
+   * On view user, view other users profile
+   */
+  public void callViewUser(int position){
+    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        currUser = snapshot.getValue(User.class);
+        currUser.setViewUser(list.get(position).getId());
+        currUser.save();
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error){
+
+      }
+    });
+
+    Intent toView = new Intent(context, UserSearchView.class);
+    context.startActivity(toView);
+  }
+
+  public void callDeleteUser(int position){
+    DatabaseReference delete = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
+    delete.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for(DataSnapshot ds : snapshot.getChildren()){
+          if(ds.getValue(String.class).equals(list.get(position).getId())) {
+            ds.getRef().removeValue();
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
+
   }
 }

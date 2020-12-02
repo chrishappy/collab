@@ -1,6 +1,9 @@
 package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,6 +24,12 @@ public class ToDoItem extends Node {
    * <p>Public properties will be automatically saved by Firebase Private will not
    */
   protected boolean requireRecording;
+
+  protected boolean completeToDo;
+
+  protected String recordingYoutubeId;
+
+  protected List<String> recordingFeedback;
 
   protected long toDoState;
 
@@ -56,6 +65,29 @@ public class ToDoItem extends Node {
     this.requireRecording = requireRecording;
   }
 
+  public String getRecordingYoutubeId() {
+    return recordingYoutubeId;
+  }
+
+  public void setRecordingYoutubeId(String recordingYoutubeId) {
+    this.recordingYoutubeId = recordingYoutubeId;
+  }
+
+  public List<String> getRecordingFeedback() {
+    return recordingFeedback;
+  }
+
+  public void addRecordingFeedback(String recordingFeedbackString) {
+    if (this.recordingFeedback == null) {
+      recordingFeedback = new ArrayList<>();
+    }
+    this.recordingFeedback.add(recordingFeedbackString);
+  }
+
+  public void setRecordingFeedback(List<String> recordingFeedback) {
+    this.recordingFeedback = recordingFeedback;
+  }
+
   public long getToDoState() {
     return toDoState;
   }
@@ -84,4 +116,13 @@ public class ToDoItem extends Node {
   public String getType() {
     return type;
   }
+
+  public boolean getcompleteToDo() {
+    return completeToDo;
+  }
+
+  public void setcompleteToDo(boolean completeToDo) {
+    this.completeToDo = completeToDo;
+  }
+
 }

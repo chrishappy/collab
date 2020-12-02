@@ -29,6 +29,9 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
   /** The attachment to be edited or saved */
   protected AllAttachment attachment;
 
+  /** The node the attachment is attached to */
+  private String attachmentParentId;
+
   /** Receive the entity id of the attachment to edit */
   public static CreateFormAttachmentsFragment newInstance(String editEntityId) {
     CreateFormAttachmentsFragment fragment = new CreateFormAttachmentsFragment();
@@ -38,17 +41,21 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
     return fragment;
   }
 
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    if (getArguments() != null) {
+      attachmentParentId = getArguments().getString(ACCEPT_ENTITY_ID);
+    }
+  }
+
   /** Set the user object + fill in the edit information */
   @Override
   public void onStart() {
     super.onStart();
     // Check if user is signed in (non-null) and update UI accordingly.
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
   }
 
   public View onCreateView(
@@ -70,7 +77,7 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
     //            @Override
     //            public void onChanged(@Nullable String s) {
     //                textView.setText(s);
-    //            }
+    //            }+
     //        });
 
     // Save the data
@@ -108,7 +115,9 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
 
     // Always call the superclass so it can save the view hierarchy state
     super.onSaveInstanceState(savedInstanceState);
-  } /*
+  }
+
+  /*
      * Not working function to upload a pdf
      *
      * @param pdfUri the file to upload
