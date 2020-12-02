@@ -40,7 +40,7 @@ import java.util.List;
 public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyViewHolder> {
 
   ArrayList<User> list;
-
+  ArrayList<String> addedList = new ArrayList<>();
   FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   User currUser = new User(currentUser.getUid());
   Context context;
@@ -170,11 +170,11 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
   }
 
   public void callDeleteUser(int position){
-    DatabaseReference delete = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
+    /*DatabaseReference delete = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
     delete.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for(DataSnapshot ds : snapshot.getChildren()){
+        for(DataSnapshot ds : snapshot.getChildren()) {
           if(ds.getValue(String.class).equals(list.get(position).getId())) {
             ds.getRef().removeValue();
           }
@@ -185,8 +185,6 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
       public void onCancelled(@NonNull DatabaseError error) {
 
       }
-    });
-
-
+    });*/
   }
 }
