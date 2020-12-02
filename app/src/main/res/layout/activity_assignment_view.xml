@@ -86,6 +86,7 @@
                     android:id="@+id/todoItemsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
             </LinearLayout>
 
             <View
@@ -102,6 +103,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/completed" />
+
+            <Button
+                android:id="@+id/auth_edit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/form__edit_button"
+                android:visibility="invisible" />
 
             <!--            <fragment-->
 <!--                android:id="@+id/showAttachments"-->

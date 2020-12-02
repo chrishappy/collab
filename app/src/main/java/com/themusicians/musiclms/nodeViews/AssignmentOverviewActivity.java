@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,15 +19,21 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.UserLogin;
 import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Displays the assignments
@@ -122,6 +130,32 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
+
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    String userid = currentUser.getUid();
+
+    DatabaseReference userEntityDatabase;
+
+    User tempUser = new User();
+    userEntityDatabase = tempUser.getEntityDatabase();
+    userEntityDatabase
+            .child(userid)
+            .addValueEventListener(
+                    new ValueEventListener() {
+                      @Override
+                      public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String role =
+                                Objects.requireNonNull(snapshot.child("role").getValue()).toString();
+                        if(role.matches("teacher")){
+                          fab.setVisibility(View.VISIBLE);
+                        }
+                      }
+
+                      @Override
+                      public void onCancelled(@NonNull DatabaseError error) {}
+                    });
+
     fab.setOnClickListener(
         view -> {
           Intent redirectToAssignmentCreate =
@@ -136,6 +170,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStart() {
     super.onStart();
     assignmentOverviewAdapter.startListening();
+
+
   }
 
   // Function to tell the app to stop getting
