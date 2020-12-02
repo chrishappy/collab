@@ -1,7 +1,12 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
+import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +15,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +33,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Node.Node;
@@ -43,7 +54,7 @@ import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachme
  * @author Nathan Tsai
  * @since Nov 19, 2020
  */
-public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
+public class ShowAllAttachmentsFragment extends CreateFormFragment
     implements ShowAllAttachmentsAdapter.ItemClickListener {
 
   private static final String PARENT_NODE_ID = "ACCEPT_ATTACHMENT_KEY_QUERY";
@@ -53,9 +64,22 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
   ShowAllAttachmentsAdapter showAllAttachmentsAdapter; // Create Object of the Adapter class
   FirebaseDatabase mbase; // Create object of the Firebase Realtime Database
 
+  /** The attachment to be edited or saved */
+  protected AllAttachment attachment;
+
   // Where to find the attachments
   private String parentNodeId;
   private Node nodeToBeEdited;
+
+  /** For Uploading a File */
+  Button selectFile, upload;
+
+  TextView notification;
+  Uri pdfUri;
+
+  FirebaseStorage storage; // used for upload files
+  FirebaseDatabase database; // used to store URLs of uploaded files
+  ProgressDialog progressDialog;
 
   /** Receive the entity id of the attachment to edit */
   public static ShowAllAttachmentsFragment newInstance(String parentNodeId) {
@@ -77,6 +101,10 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
       parentNodeId = getArguments().getString(PARENT_NODE_ID);
     }
 
+    // The attachment for create attachment
+    attachment = new AllAttachment();
+
+    // The node to add attachments
     nodeToBeEdited = ((NodeCreateFormActivity) getActivity()).getNode();
   }
 
@@ -113,7 +141,7 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     final Button addAttachment = root.findViewById(R.id.add_attachment_button);
 //    final NestedScrollView scrollContainer = root.findViewById(R.id.attachmentContainer);
     addAttachment.setOnClickListener(view -> {
-      showPopup(addAttachment);
+      showCreateAttachmentPopup(addAttachment);
     });
 
     // Create a instance of the database and get
@@ -185,7 +213,7 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
   }
 
   /**
-   * Run this function when clicking the edit button
+   * Run this function when clicking the edit button in the adapter
    *
    * @param entityId
    */
@@ -198,12 +226,16 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
         inEditMode = true;
         attachment.setId( editEntityId );
 
-        showPopup(clickedItem);
+        showCreateAttachmentPopup(clickedItem);
       break;
     }
   }
 
-  public void showPopup(View anchorView) {
+  /**
+   * Show the popup to create or edit an attachment
+   * @param anchorView The view to display the popup under
+   */
+  public void showCreateAttachmentPopup(View anchorView) {
 
     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
 
@@ -222,6 +254,12 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     popupWindow.showAsDropDown(anchorView, 0, 10);
   }
 
+  /**
+   * Initiate the create attachment form
+   *
+   * @param root Where to find all the widgets
+   * @param popup the popup we're editing
+   */
   private void initCreateAttachment(View root, PopupWindow popup) {
     final EditText editComment = root.findViewById(R.id.editComment);
 
@@ -229,7 +267,6 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     final Button saveAction = root.findViewById(R.id.saveAction);
     saveAction.setOnClickListener(
         view -> {
-
           // Save the attachment
           attachment.setComment(editComment.getText().toString());
           attachment.setStatus(true);
@@ -292,9 +329,144 @@ public class ShowAllAttachmentsFragment extends CreateFormAttachmentsFragment
     }
   }
 
+  /**
+   * After saving or canceling the popup, run this function
+   * @param popupToClose the popup currently opened
+   */
   private void closePopup(PopupWindow popupToClose) {
     editEntityId = null;
     inEditMode = false;
     popupToClose.dismiss();
+  }
+
+  /**
+   * Upload a file
+   */
+  private void initUploadFile(View root) {
+
+    // Upload a file
+    storage = FirebaseStorage.getInstance();
+    database = FirebaseDatabase.getInstance();
+
+    selectFile = root.findViewById(R.id.selectFile);
+    upload = root.findViewById(R.id.upload);
+    notification = root.findViewById(R.id.notification);
+
+    selectFile.setOnClickListener(
+        view -> {
+          if (ContextCompat.checkSelfPermission(
+              getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+              == PackageManager.PERMISSION_GRANTED) {
+            selectPdf();
+          } else
+            ActivityCompat.requestPermissions(
+                getActivity(),
+                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                9);
+        });
+
+    upload.setOnClickListener(
+        view -> {
+
+          if(pdfUri != null) {
+            Log.w("uploadFile()", "begin upload");
+            uploadFile(pdfUri);
+            Log.w("uploadFile()", "done upload");
+
+          }
+          else {
+            Toast.makeText(getActivity(), "Select a file", Toast.LENGTH_SHORT).show();
+          }
+        });
+  }
+
+  /** Ask user permission to get PDF */
+  @Override
+  public void onRequestPermissionsResult(
+      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+      selectPdf();
+    } else {
+      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  private void selectPdf() {
+    Intent intent = new Intent();
+    intent.setType("application/pdf");
+    intent.setAction(Intent.ACTION_GET_CONTENT);
+    startActivityForResult(intent, 86);
+  }
+
+  /*
+   * Not working function to upload a pdf
+   *
+   * @param pdfUri the file to upload
+   */
+  private void uploadFile(Uri pdfUri) {
+
+//    progressDialog = new ProgressDialog(getActivity());
+//    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//    progressDialog.setTitle("Uploading file...");
+//    progressDialog.setProgress(0);
+//    progressDialog.show();
+
+    final String fileName = System.currentTimeMillis() + "";
+    StorageReference storageReference = storage.getReference();
+
+    storageReference
+        .child("attachment__files")
+        .child(fileName)
+        .putFile(pdfUri)
+        .addOnSuccessListener(
+            taskSnapshot -> {
+
+              Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+//              task.addOnSuccessListener(
+//                  new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                      String url = uri.toString();
+//
+//                      DatabaseReference reference = database.getReference();
+//
+//                      reference
+//                          .child("attachment__files")
+//                          .child(fileName)
+//                          .setValue(url)
+//                          .addOnCompleteListener(
+//                              task1 -> {
+//                                if (task1.isSuccessful())
+//                                  Toast.makeText(
+//                                      getActivity(),
+//                                      "File successfully uploaded",
+//                                      Toast.LENGTH_SHORT)
+//                                      .show();
+//                                else
+//                                  Toast.makeText(
+//                                      getActivity(),
+//                                      "File not successfully uploaded",
+//                                      Toast.LENGTH_SHORT)
+//                                      .show();
+//                              });
+//                    }
+//                  });
+            })
+        .addOnFailureListener(
+            e -> Toast.makeText(
+                getActivity(),
+                "File not successfully uploaded",
+                Toast.LENGTH_SHORT)
+                .show());
+//        .addOnProgressListener(
+//            taskSnapshot -> {
+//
+//              int currentProgress =
+//                  (int)
+//                      (100
+//                          * taskSnapshot.getBytesTransferred()
+//                          / taskSnapshot.getTotalByteCount());
+//              progressDialog.setProgress(currentProgress);
+//            });
   }
 }
