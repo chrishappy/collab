@@ -257,6 +257,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
           assignment.setUid(currentUser.getUid());
+          assignment.setCountOfTotalToDos();
           //            assignment.setAttachmentIds( null );
           assignment.save();
 
@@ -413,6 +414,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
           if (assignment.getToDoIds().get(toDoId) == null) {
             assignment.addToDoId(toDoId);
+            assignment.pushToDos(toDoId);
             assignment.save();
 
             // Display notification
