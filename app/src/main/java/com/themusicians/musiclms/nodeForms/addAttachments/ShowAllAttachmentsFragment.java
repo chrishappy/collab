@@ -278,6 +278,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
           // Add the attachment to the node
           NodeCreateFormActivity nodeCreateFormActivity = (NodeCreateFormActivity) getActivity();
+          assert nodeCreateFormActivity != null;
           nodeCreateFormActivity
               .getNode()
               .addAttachmentId(attachment.getId())

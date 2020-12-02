@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -125,7 +126,7 @@ public class AssignmentOverviewAdapter
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate, userName;
 //    Button editAssignment, viewAssignment;
-    LinearLayout wrapper;
+    ConstraintLayout wrapper;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
