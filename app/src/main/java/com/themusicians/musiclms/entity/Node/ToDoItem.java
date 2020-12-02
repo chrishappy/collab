@@ -47,8 +47,6 @@ public class ToDoItem extends Node {
 
   public ToDoItem(String id) {
     super(id);
-
-    assignment = new Assignment(getAttachedAssignment());
   }
 
   /**
@@ -131,11 +129,17 @@ public class ToDoItem extends Node {
   public void setcompleteToDo(boolean completeToDo) {
     this.completeToDo = completeToDo;
 
-    assignment
-        .getToDoItemsKeyQuery()
-        .child(this.getId())
-        .setValue(getcompleteToDo());
-    // get reference to: node__assignment/getAttachedAssignment()/toDoItems/MY_TODO_ID
+    if (assignment == null) {
+      assignment = new Assignment(getAttachedAssignment());
+    }
+
+    if (assignment.getId() != null) {
+      assignment
+          .getToDoItemsKeyQuery()
+          .child(this.getId())
+          .setValue(getcompleteToDo());
+      // get reference to: node__assignment/getAttachedAssignment()/toDoItems/MY_TODO_ID
+    }
   }
 
 }
