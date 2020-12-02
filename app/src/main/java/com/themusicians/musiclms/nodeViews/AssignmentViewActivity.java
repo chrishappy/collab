@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
 import com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +52,7 @@ public class AssignmentViewActivity extends NodeViewActivity
   private TextView StudentOrClass;
   private TextView dueDate;
   private CheckBox assignmentCheck;
+  private Button editButton;
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
@@ -91,6 +94,12 @@ public class AssignmentViewActivity extends NodeViewActivity
                     assignmentCheck.setChecked(true);
                   }else{
                     assignmentCheck.setChecked(false);
+                  }
+
+                  String userid = currentUser.getUid();
+
+                  if(assignment.getUid().matches(userid)){
+                    editButton.setVisibility(View.VISIBLE);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
@@ -144,6 +153,8 @@ public class AssignmentViewActivity extends NodeViewActivity
     // Temp Entities
     User tempUser = new User();
 
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
     // Initiate the entity
     assignment = new Assignment(viewEntityId);
     setContentView(R.layout.activity_assignment_view);
@@ -153,6 +164,7 @@ public class AssignmentViewActivity extends NodeViewActivity
     StudentOrClass = findViewById(R.id.students_or_class);
     dueDate = findViewById(R.id.dueDate);
     assignmentCheck = findViewById(R.id.assignment_completedCB);
+    editButton = findViewById(R.id.auth_edit_button);
 
     assignmentCheck.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -164,6 +176,19 @@ public class AssignmentViewActivity extends NodeViewActivity
           assignment.setcompleteAssignment(false);
           assignment.save();
         }
+      }
+    });
+
+    String userid = currentUser.getUid();
+
+    if(assignment.getUid() == userid){
+      editButton.setVisibility(View.VISIBLE);
+    }
+
+    editButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class));
       }
     });
 
