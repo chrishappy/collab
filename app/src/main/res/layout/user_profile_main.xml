@@ -6,37 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".UserProfile">
 
-    <Button
-        android:id="@+id/toAddUsers"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="toAddUser"
-        android:text="Add Users"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/toEditData"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
-        app:layout_constraintVertical_bias="0.845" />
-
-    <Button
-        android:id="@+id/changeMyLang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/action_Language" />
-
-    <Button
-        android:id="@+id/toEditData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="toEditData"
-        android:text="Edit Data"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.765"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InstrumentList"
-        app:layout_constraintVertical_bias="0.843" />
+        android:gravity="center">
+        <Button
+            android:id="@+id/toAddUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toAddUser"
+            android:text="Add Users" />
+
+        <Button
+            android:id="@+id/changeMyLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_Language"
+            android:layout_margin="20dp"/>
+
+        <Button
+            android:id="@+id/toEditData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toEditData"
+            android:text="Edit Data" />
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
