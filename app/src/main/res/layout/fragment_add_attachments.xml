@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/left_and_right_gutters"
-    android:paddingRight="@dimen/left_and_right_gutters"
-    tools:context=".nodeForms.AssignmentCreateFormActivity" >
+    android:paddingRight="@dimen/left_and_right_gutters" >
 
     <!-- Dummy Element -->
     <LinearLayout
@@ -44,6 +43,15 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/commentAttachment"
         app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/selectFile"
+            android:layout_width="114dp"
+            android:layout_height="47dp"
+            android:text="@string/attachment__add__file"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/notification"

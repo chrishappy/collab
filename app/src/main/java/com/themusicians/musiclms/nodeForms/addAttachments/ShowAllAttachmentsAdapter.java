@@ -69,41 +69,7 @@ public class ShowAllAttachmentsAdapter
           DialogFragment newAddCommentDialog = new AddCommentDialogFragment();
           newAddCommentDialog.show(getSupportFragmentManager(), dialogTag);
         });
-
-    storage = FirebaseStorage.getInstance();
-    database = FirebaseDatabase.getInstance();
-
-    selectFile = findViewById(R.id.selectFile);
-    upload = findViewById(R.id.upload);
-    notification = findViewById(R.id.notification);
-
-    selectFile.setOnClickListener(
-        view -> {
-          if (ContextCompat.checkSelfPermission(
-                  AssignmentCreateFormActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-              == PackageManager.PERMISSION_GRANTED) {
-            selectPdf();
-          } else
-            ActivityCompat.requestPermissions(
-                AssignmentCreateFormActivity.this,
-                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
-                9);
-        });
-
-    upload.setOnClickListener(
-        view -> {
-
-          if(pdfUri != null) {
-            Log.w("uploadFile()", "begin upload");
-            uploadFile(pdfUri);
-            Log.w("uploadFile()", "done upload");
-
-          }
-          else {
-            Toast.makeText(AssignmentCreateFormActivity.this, "Select a file", Toast.LENGTH_SHORT).show();
-          }
-        });
-     */
+    */
   }
 
   // Function to tell the class about the Card view (here
@@ -146,4 +112,21 @@ public class ShowAllAttachmentsAdapter
   public void addItemClickListener(ItemClickListener listener) {
     itemClickListener = listener;
   }
+
+  /**
+   *
+
+   case 86:
+   if (resultCode == RESULT_OK && data != null) {
+   pdfUri = data.getData();
+   String notificationText = "A file is selected : " + data.getData().getLastPathSegment();
+   notification.setText(notificationText);
+   } else {
+   Toast.makeText(
+   AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
+   .show();
+   }
+   break;
+   */
+
 }

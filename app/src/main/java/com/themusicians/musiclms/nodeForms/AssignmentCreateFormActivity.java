@@ -5,9 +5,7 @@ import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RET
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,18 +26,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.entity.Entity;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment;
 import com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment;
-import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,16 +55,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     implements ToDoAssignmentFormAdapter.ItemClickListener {
   /** The entity to be saved */
   protected Assignment assignment;
-
-  /** Code for file */
-  Button selectFile, upload;
-
-  TextView notification;
-  Uri pdfUri;
-
-  FirebaseStorage storage; // used for upload files
-  FirebaseDatabase database; // used to store URLs of uploaded files
-  ProgressDialog progressDialog;
 
   /** Create recycler view for to do items */
   private RecyclerView toDoItemsRecyclerView;
@@ -292,7 +275,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    */
   private void initShowAttachments(Node node) {
 
-
 //    getSupportFragmentManager().beginTransaction()
 //        .add(
 //            R.id.showAttachments,
@@ -453,18 +435,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
         //        if (resultCode == Activity.RESULT_CANCELED) {
         // Write your code if there's no result
         //        }
-        break;
-
-      case 86:
-        if (resultCode == RESULT_OK && data != null) {
-          pdfUri = data.getData();
-          String notificationText = "A file is selected : " + data.getData().getLastPathSegment();
-          notification.setText(notificationText);
-        } else {
-          Toast.makeText(
-                  AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
-              .show();
-        }
         break;
 
       default:

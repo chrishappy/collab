@@ -3,6 +3,7 @@ package com.themusicians.musiclms.entity.Node;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,7 +82,9 @@ public class ToDoItem extends Node {
     if (this.recordingFeedback == null) {
       recordingFeedback = new ArrayList<>();
     }
-    this.recordingFeedback.add(recordingFeedbackString);
+
+    recordingFeedback.add(recordingFeedbackString);
+    Collections.sort(recordingFeedback);
   }
 
   public void setRecordingFeedback(List<String> recordingFeedback) {

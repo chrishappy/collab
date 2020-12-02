@@ -210,24 +210,24 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
   }
    */
 
-  /** Ask user permission to get PDF */
-  @Override
-  public void onRequestPermissionsResult(
-      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-      selectPdf();
-    } else {
-      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT).show();
-    }
-  }
-
-  private void selectPdf() {
-
-    Intent intent = new Intent();
-    intent.setType("application/pdf");
-    intent.setAction(Intent.ACTION_GET_CONTENT);
-    startActivityForResult(intent, 86);
-  }
+//  /** Ask user permission to get PDF */
+//  @Override
+//  public void onRequestPermissionsResult(
+//      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//      selectPdf();
+//    } else {
+//      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT).show();
+//    }
+//  }
+//
+//  private void selectPdf() {
+//
+//    Intent intent = new Intent();
+//    intent.setType("application/pdf");
+//    intent.setAction(Intent.ACTION_GET_CONTENT);
+//    startActivityForResult(intent, 86);
+//  }
 
 //  @Override
 //  public void onEditButtonClick(String type, String entityId) {

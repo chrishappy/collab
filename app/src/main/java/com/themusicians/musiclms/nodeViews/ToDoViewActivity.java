@@ -33,6 +33,8 @@ import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * Used to create and update assignments node entities
  *
@@ -64,6 +66,7 @@ public class ToDoViewActivity extends NodeViewActivity {
   private EditText seekToText;
 
   /** Recording Feedback */
+  private ToDoRecordingFeedbackAdapter recordingFeedbackAdapter;
   private EditText feedbackText;
   private Button addFeedback;
 
@@ -112,7 +115,7 @@ public class ToDoViewActivity extends NodeViewActivity {
                         });
 
                         ArrayAdapter<String> arrayAdapter =
-                            new ArrayAdapter<String>(ToDoViewActivity.this, android.R.layout.simple_list_item_1, toDoItem.getRecordingFeedback());
+                            new ArrayAdapter<>(ToDoViewActivity.this, android.R.layout.simple_list_item_1, toDoItem.getRecordingFeedback());
                         // Set The Adapter
                         recordingFeedbackListView.setAdapter(arrayAdapter);
                       }
@@ -178,13 +181,33 @@ public class ToDoViewActivity extends NodeViewActivity {
       toDoItem.save();
     });
 
-    // Recording feedback
+    // View Recording feedback
+    // @todo Replace with clickable adapter
+    if (toDoItem.getRecordingFeedback() != null ) {
+      recordingFeedbackAdapter =
+          new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
+      recordingFeedbackListView.setAdapter(recordingFeedbackAdapter);
+    }
+
+    // Add Recording feedback
     feedbackText = findViewById(R.id.add_recording_feedback__text);
     addFeedback = findViewById(R.id.add_recording_feedback__save);
 
     addFeedback.setOnClickListener(view -> {
-      toDoItem.addRecordingFeedback(feedbackText.getText().toString());
+      toDoItem.addRecordingFeedback("00:00 | " + feedbackText.getText().toString());
       toDoItem.save();
+
+      if (recordingFeedbackAdapter != null ) {
+        // Update recording feedback
+        recordingFeedbackAdapter.clear();
+        recordingFeedbackAdapter.addAll(toDoItem.getRecordingFeedback());
+      }
+      else {
+        assert toDoItem.getRecordingFeedback() != null;
+        recordingFeedbackAdapter =
+            new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
+        recordingFeedbackListView.setAdapter(recordingFeedbackAdapter);
+      }
     });
 
     // Add Recording
@@ -194,6 +217,7 @@ public class ToDoViewActivity extends NodeViewActivity {
       dispatchTakeVideoIntent();
     });
 
+    // Testing share video
     Button tempButton1 = findViewById(R.id.tempButton1);
     tempButton1.setOnClickListener(v -> {
       String videoPath = getDataColumn(getApplicationContext(), videoUri, null, null);
@@ -207,7 +231,6 @@ public class ToDoViewActivity extends NodeViewActivity {
       sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, videoUri);
       startActivity(Intent.createChooser(sharingIntent,"_share_:"));
     });
-    // Set up Feedback
 
 
 
