@@ -93,6 +93,10 @@ public class ToDoViewActivity extends NodeViewActivity {
                   // Set checked
                   toDoCheck.setChecked(toDoItem.getcompleteToDo());
 
+                  seekToButton.setOnClickListener(v -> {
+                    Toast.makeText(ToDoViewActivity.this, "Seek Button clicked. Time:", Toast.LENGTH_LONG).show();
+                  });
+
                   // Process video id
                   String videoId = toDoItem.getRecordingYoutubeId();
                   if (videoId != null) {
@@ -111,6 +115,18 @@ public class ToDoViewActivity extends NodeViewActivity {
                             new ArrayAdapter<String>(ToDoViewActivity.this, android.R.layout.simple_list_item_1, toDoItem.getRecordingFeedback());
                         // Set The Adapter
                         recordingFeedbackListView.setAdapter(arrayAdapter);
+                      }
+                    });
+                  }
+                  else {
+                    youTubeView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+                      @Override
+                      public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        seekToButton.setOnClickListener(v -> {
+                          int skipToSecs = Integer.parseInt(seekToText.getText().toString());
+                          youTubePlayer.seekTo(skipToSecs);
+                          Toast.makeText(ToDoViewActivity.this, "Player2 clicked. Time: " + skipToSecs, Toast.LENGTH_LONG).show();
+                        });
                       }
                     });
                   }
