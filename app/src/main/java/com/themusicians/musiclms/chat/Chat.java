@@ -134,6 +134,7 @@ public class Chat extends AppCompatActivity {
         if(notify){
           sendNotification(toMessageID,currentUser.getUid(),msg);
         }
+
         notify = false;
       }
 
