@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Entity;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment;
@@ -75,10 +78,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
-
-  /** For Attachments */
-  private Fragment showAttachment;
-  private Fragment editAttachment;
 
 
   @Override
@@ -127,7 +126,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                       LOAD_ENTITY_DATABASE_TAG,
                       "loadAssignment:onCancelled",
                       databaseError.toException());
-                  // ...
                 }
               });
     }
@@ -244,7 +242,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
         });
 
     // Cancel the Assignment
-    final Button assignmentCancel = findViewById(R.id.cancelAction);
+    final Button assignmentCancel = findViewById(R.id.cancelAction1);
     assignmentCancel.setOnClickListener(
         view -> {
           Snackbar.make(view, "Assignment about to be cancelled", Snackbar.LENGTH_LONG)
@@ -254,7 +252,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
         });
 
     // Save the Assignment
-    final Button assignmentSave = findViewById(R.id.saveAction);
+    final Button assignmentSave = findViewById(R.id.saveAction1);
     assignmentSave.setOnClickListener(
         view -> {
           // Display notification
@@ -272,9 +270,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           //            assignment.setAttachmentIds( null );
           assignment.save();
 
-          Intent toAssignmentOverview =
-              new Intent(AssignmentCreateFormActivity.this, AssignmentOverviewActivity.class);
-          startActivity(toAssignmentOverview);
+          finish();
 
           // Display notification
           String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
@@ -285,29 +281,53 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   /**
    * Populate the showAttachment fragment
    *
-   * @param entity the entity to fetch attachments for
+   * @param node the entity to fetch attachments for
    */
-  private void initShowAttachments(Entity entity) {
-    getSupportFragmentManager().beginTransaction()
-        .add(
-            R.id.showAttachments,
-            ShowAllAttachmentsFragment.newInstance(entity.getId()),
-            "ShowAllAttachmentsFragment")
-        .commit();
+  private void initShowAttachments(Node node) {
+
+
+//    getSupportFragmentManager().beginTransaction()
+//        .add(
+//            R.id.showAttachments,
+//            ShowAllAttachmentsFragment.newInstance(node.getId()),
+//            "ShowAllAttachmentsFragment")
+//        .commit();
+
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    final Fragment content = fragmentManager.findFragmentById(R.id.showAttachments);
+    if (!(content instanceof ShowAllAttachmentsFragment)) {
+      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+      fragmentTransaction.add(
+          R.id.showAttachments,
+          ShowAllAttachmentsFragment.newInstance(node.getAttachmentsKeyQueryString()),
+          "ShowAllAttachmentsFragment");
+      fragmentTransaction.commitAllowingStateLoss();
+    }
   }
 
   /**
    * Populate the addAttachment fragment
    *
-   * @param entity the entity to add attachments to
+   * @param node the entity to add attachments to
    */
-  private void initCreateAttachments(Entity entity) {
-    getSupportFragmentManager().beginTransaction()
-        .add(
-            R.id.addAttachments,
-            CreateFormAttachmentsFragment.newInstance(entity.getId()),
-            "CreateFormAttachmentsFragment")
-        .commit();
+  private void initCreateAttachments(Node node) {
+//    getSupportFragmentManager().beginTransaction()
+//        .add(
+//            R.id.addAttachments,
+//            CreateFormAttachmentsFragment.newInstance(node.getId()),
+//            "CreateFormAttachmentsFragment")
+//        .commit();
+
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+    final Fragment content = fragmentManager.findFragmentById(R.id.addAttachments);
+    if (!(content instanceof CreateFormAttachmentsFragment)) {
+      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+      fragmentTransaction.add(
+          R.id.addAttachments,
+          CreateFormAttachmentsFragment.newInstance(node.getId(), CreateFormAttachmentsFragment.CREATE_ATTACHMENT),
+          "addAttachments");
+      fragmentTransaction.commitAllowingStateLoss();
+    }
   }
 
   /** Create the to do items list */

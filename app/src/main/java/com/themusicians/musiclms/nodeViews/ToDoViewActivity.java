@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -18,10 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,8 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBar;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBarListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
@@ -91,14 +87,13 @@ public class ToDoViewActivity extends NodeViewActivity {
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
+                  assert toDoItem != null;
                   toDoItemName.setText(toDoItem.getName());
 
-                  if (toDoItem.getcompleteToDo() == true) {
-                      toDoCheck.setChecked(true);
-                  }else{
-                      toDoCheck.setChecked(false);
-                  }
+                  // Set checked
+                  toDoCheck.setChecked(toDoItem.getcompleteToDo());
 
+                  // Process video id
                   String videoId = toDoItem.getRecordingYoutubeId();
                   if (videoId != null) {
                     youTubeView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
@@ -109,6 +104,7 @@ public class ToDoViewActivity extends NodeViewActivity {
                         seekToButton.setOnClickListener(v -> {
                           int skipToSecs = Integer.parseInt(seekToText.getText().toString());
                           youTubePlayer.seekTo(skipToSecs);
+                          Toast.makeText(ToDoViewActivity.this, "Player clicked. Time: " + skipToSecs, Toast.LENGTH_LONG).show();
                         });
 
                         ArrayAdapter<String> arrayAdapter =
@@ -161,17 +157,9 @@ public class ToDoViewActivity extends NodeViewActivity {
 
     // To Do Checkbox
     toDoCheck = findViewById(R.id.complete_to_do_itemCB);
-    toDoCheck.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if(toDoCheck.isChecked()){
-          toDoItem.setcompleteToDo(true);
-          toDoItem.save();
-        } else{
-          toDoItem.setcompleteToDo(false);
-          toDoItem.save();
-        }
-      }
+    toDoCheck.setOnClickListener(view -> {
+      toDoItem.setcompleteToDo(toDoCheck.isChecked());
+      toDoItem.save();
     });
 
     // Recording feedback

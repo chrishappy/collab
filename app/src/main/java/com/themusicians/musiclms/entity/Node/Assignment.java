@@ -45,8 +45,6 @@ public class Assignment extends Node {
   /** The default constructor for Firebase + loadMultiple */
   public Assignment() {
     super();
-
-    System.out.println("The Assignment base table is: " + getBaseTable());
   }
 
   /** The constructor used to update an existing or to set an id */
