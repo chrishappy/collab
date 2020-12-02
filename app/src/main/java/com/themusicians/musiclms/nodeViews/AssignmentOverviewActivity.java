@@ -203,11 +203,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity
         Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
         startActivity(toUserProfile);
         return true;
-      case R.id.createassignment:
-        Intent toCreateAssignment =
-            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-        startActivity(toCreateAssignment);
-        return true;
+//      case R.id.createassignment:
+//        Intent toCreateAssignment =
+//            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+//        startActivity(toCreateAssignment);
+//        return true;
     }
     return super.onOptionsItemSelected(item);
   }

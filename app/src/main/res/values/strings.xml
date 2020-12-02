@@ -110,4 +110,5 @@
     <string name="add">Add</string>
     <string name="add_name">Name</string>
     <string name="add_new_users">Add New Users</string>
+    <string name="user_profile__edit_data">Edit Data</string>
 </resources>

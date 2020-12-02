@@ -144,7 +144,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
       showCreateAttachmentPopup(addAttachment);
     });
 
-    // Create a instance of the database and get
+    // Set recycler, but initiate in onStart()
     recyclerView = root.findViewById(R.id.attachmentsOverviewRecycler);
 
     return root;
@@ -239,8 +239,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
 
-    PopupWindow popupWindow = new PopupWindow(popupView,
-        AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT);
+    PopupWindow popupWindow = new PopupWindow(popupView,300, 500);
+    popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+//    popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 
     // Set up all the fields
     initCreateAttachment(popupView, popupWindow);
@@ -262,6 +263,8 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
    */
   private void initCreateAttachment(View root, PopupWindow popup) {
     final EditText editComment = root.findViewById(R.id.editComment);
+
+    initUploadFile(root);
 
     // Save the data
     final Button saveAction = root.findViewById(R.id.saveAction);

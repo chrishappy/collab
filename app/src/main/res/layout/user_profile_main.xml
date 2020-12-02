@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="toEditData"
-            android:text="Edit Data" />
+            android:text="@string/user_profile__edit_data" />
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputEditText
