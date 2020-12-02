@@ -97,7 +97,7 @@ public class UserAddUsers<button> extends AppCompatActivity {
                 reference.addChildEventListener(new ChildEventListener() {
                   public void onChildAdded(@NonNull DataSnapshot Snapshot, @Nullable String previousChildName) {
                     String value = Snapshot.getValue(String.class);
-                    if(ds.getValue(User.class).getId().equals(value)){
+                    if (ds.getValue(User.class).getId().equals(value)) {
                       addedList.add(ds.getValue(User.class));
                       addedAdapter.notifyDataSetChanged();
                     }
