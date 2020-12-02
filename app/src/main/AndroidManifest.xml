@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
-
 
     <application
         android:allowBackup="true"
@@ -18,10 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!--        <activity-->
-<!--            android:name=".chat.Chat"-->
-<!--            android:label="Chat"-->
-<!--            android:parentActivityName=".UserAddUsers"/>-->
+        <activity android:name=".UserSearchView"></activity>
+        <!-- <activity -->
+        <!-- android:name=".chat.Chat" -->
+        <!-- android:label="Chat" -->
+        <!-- android:parentActivityName=".UserAddUsers"/> -->
         <activity
             android:name=".UserAddUsers"
             android:label="@string/title_activity_add_users"
@@ -29,9 +30,7 @@
         <activity
             android:name=".UserSearch"
             android:label="@string/title_activity_user_search"
-            android:parentActivityName=".UserAddUsers" />
-
-        <!-- User Activities -->
+            android:parentActivityName=".UserAddUsers" /> <!-- User Activities -->
         <activity
             android:name=".chat.Chat"
             android:label="@string/title_activity_chat_landing"
@@ -73,37 +72,33 @@
             android:label="@string/title_activity_to_do_item_view"
             android:launchMode="singleTop"
             android:parentActivityName=".nodeViews.AssignmentViewActivity" /> <!-- Main Activity -->
-<!--        <activity-->
-<!--            android:name=".nodeViews.YoutubeRecording"-->
-<!--            android:label="Temp Youtube Page"-->
-<!--            android:parentActivityName=".nodeViews.AssignmentOverviewActivity" />-->
-
+        <!-- <activity -->
+        <!-- android:name=".nodeViews.YoutubeRecording" -->
+        <!-- android:label="Temp Youtube Page" -->
+        <!-- android:parentActivityName=".nodeViews.AssignmentOverviewActivity" /> -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Notifications -->
-        <service android:name=".Notifications.MyFirebaseIdService"
+        </activity> <!-- Notifications -->
+        <service
+            android:name=".Notifications.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name ="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".Notifications.MyFirebaseMessaging"
+        <service
+            android:name=".Notifications.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name ="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
-
 
 </manifest>

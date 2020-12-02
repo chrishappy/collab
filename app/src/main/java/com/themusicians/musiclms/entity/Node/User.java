@@ -98,6 +98,16 @@ public class User extends Node {
 
   /** Fields setters and getters */
 
+  private String viewUser;
+
+  public String getViewUser() {
+    return viewUser;
+  }
+
+  public void setViewUser(String viewUser) {
+    this.viewUser = viewUser;
+  }
+
   private String recentText;
 
   public String getRecentText() {

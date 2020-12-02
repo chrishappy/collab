@@ -35,7 +35,6 @@ public class UserAddUsers<button> extends AppCompatActivity {
   ArrayList<User> addedList;
   RecyclerView addedRecycler;
   SearchView searchView;
-  boolean add;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +48,6 @@ public class UserAddUsers<button> extends AppCompatActivity {
     reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
     addedRecycler = findViewById(R.id.addedRecycler);
     searchView = findViewById(R.id.addedSearch);
-
-
 
     // display name
     currUser = new User(currentUser.getUid());
@@ -188,6 +185,4 @@ public class UserAddUsers<button> extends AppCompatActivity {
     Intent toSearch = new Intent(this, UserSearch.class);
     startActivity(toSearch);
   }
-
-
 }
