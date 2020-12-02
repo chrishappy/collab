@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -27,7 +28,7 @@ public class ShowAllAttachmentsAdapter
 
   private ItemClickListener itemClickListener;
 
-  public static String editAllAttachments = "editAllAttachments";
+  public final static String editAllAttachments = "editAllAttachments";
 
   public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
     super(options);
@@ -44,23 +45,10 @@ public class ShowAllAttachmentsAdapter
       holder.comment.setText(allAttachment.getComment());
     }
 
-    /*
-        if (allAttachment.getUid() != null) {
-          holder.authorName.setText(String.format("%s...", allAttachment.getUid().substring(0, 20)));
-        }
-
-        if (allAttachment.getDueDate() != 0) {
-          Date date = new Date(allAttachment.getDueDate());
-    //      DateFormat dateFormat = new SimpleDateFormat( getText(R.string.date_format__month_day), Locale.CANADA);
-          DateFormat dateFormat = new SimpleDateFormat( "MMM d", Locale.CANADA);
-          holder.dueDate.setText(dateFormat.format(date));
-        }
-        */
-
     holder.editButton.setOnClickListener(
         view -> {
           if (itemClickListener != null) {
-            itemClickListener.onEditButtonClick(editAllAttachments, allAttachment.getId());
+            itemClickListener.onEditButtonClick(editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
           }
         });
 
@@ -135,10 +123,12 @@ public class ShowAllAttachmentsAdapter
   static class AllAttachmentViewHolder extends RecyclerView.ViewHolder {
     TextView comment;
     Button editButton;
+    ConstraintLayout allAttachmentWrapper;
 
     public AllAttachmentViewHolder(@NonNull View itemView) {
       super(itemView);
 
+      allAttachmentWrapper = itemView.findViewById(R.id.allAttachmentWrapper);
       comment = itemView.findViewById(R.id.viewComment);
       editButton = itemView.findViewById(R.id.edit_button);
     }
@@ -150,7 +140,7 @@ public class ShowAllAttachmentsAdapter
    * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
-    void onEditButtonClick(String type, String entityId);
+    void onEditButtonClick(String type, String entityId, View clickedView);
   }
 
   public void addItemClickListener(ItemClickListener listener) {

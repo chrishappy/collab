@@ -1,11 +1,14 @@
 package com.themusicians.musiclms.entity.Attachment;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * The class used to store data in Firebase for the All Attachment
  *
  * @author Nathan Tsai
  * @since Nov 10, 2020
  */
+@IgnoreExtraProperties
 public class AllAttachment extends Attachment {
 
   protected final String type = "all";

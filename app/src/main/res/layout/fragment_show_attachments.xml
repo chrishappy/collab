@@ -5,22 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/left_and_right_gutters"
-    android:paddingRight="@dimen/left_and_right_gutters"
-    tools:context=".nodeForms.AssignmentCreateFormActivity" >
+    tools:context=".nodeForms.addAttachments.ShowAllAttachmentsFragment" >
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/attachmentContainer"
-        android:background="#65E4A6">
+        android:id="@+id/attachmentContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/attachmentsOverviewRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

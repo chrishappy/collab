@@ -24,19 +24,28 @@ import com.themusicians.musiclms.entity.Attachment.AllAttachment;
  */
 public class CreateFormAttachmentsFragment extends CreateFormFragment {
 
+  public static final String CREATE_ATTACHMENT = "CREATE_ATTACHMENT";
+
+  public static final String EDIT_ATTACHMENT = "EDIT_ATTACHMENT";
+
+  public static final String ACCEPT_EDIT_ATTACHMENT_MODE = "ACCEPT_EDIT_ATTACHMENT_MODE";
+
   //  private AddAttachmentsViewModel homeViewModel;
 
   /** The attachment to be edited or saved */
   protected AllAttachment attachment;
 
   /** The node the attachment is attached to */
-  private String attachmentParentId;
+  private String editParentId;
+
+  private String mode;
 
   /** Receive the entity id of the attachment to edit */
-  public static CreateFormAttachmentsFragment newInstance(String editEntityId) {
+  public static CreateFormAttachmentsFragment newInstance(String editEntityId, String editAttachmentMode) {
     CreateFormAttachmentsFragment fragment = new CreateFormAttachmentsFragment();
     Bundle args = new Bundle();
     args.putString(ACCEPT_ENTITY_ID, editEntityId);
+    args.putString(ACCEPT_EDIT_ATTACHMENT_MODE, editAttachmentMode);
     fragment.setArguments(args);
     return fragment;
   }
@@ -46,7 +55,17 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
     super.onCreate(savedInstanceState);
 
     if (getArguments() != null) {
-      attachmentParentId = getArguments().getString(ACCEPT_ENTITY_ID);
+      mode = getArguments().getString(ACCEPT_EDIT_ATTACHMENT_MODE);
+
+      switch (mode) {
+        case EDIT_ATTACHMENT:
+          editEntityId = getArguments().getString(ACCEPT_ENTITY_ID);
+          break;
+
+        case CREATE_ATTACHMENT:
+          editParentId = getArguments().getString(ACCEPT_ENTITY_ID);
+          break;
+      }
     }
   }
 
@@ -209,6 +228,18 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
     intent.setAction(Intent.ACTION_GET_CONTENT);
     startActivityForResult(intent, 86);
   }
+
+//  @Override
+//  public void onEditButtonClick(String type, String entityId) {
+//    switch (type) {
+//      case editAllAttachments:
+//
+//        break;
+//
+//      default:
+//        throw new IllegalStateException("Unexpected value: " + type);
+//    }
+//  }
 
   //  @Override
   //  public void onDialogPositiveClick(DialogFragment dialog) {
