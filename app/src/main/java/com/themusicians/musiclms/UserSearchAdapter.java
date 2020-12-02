@@ -225,10 +225,18 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
               other.getEntityDatabase().child(other.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  other = snapshot.getValue(User.class);
-                  otherList.add(currentUser.getUid());
-                  other.setAddedUsers(otherList);
-                  other.save();
+                  boolean otherNew = true;
+                  for (int i = 0; i < otherList.size(); i++) {
+                    if (currentUser.getUid().equals(otherList.get(i))) {
+                      otherNew = false;
+                    }
+                  }
+                  if(otherNew) {
+                    other = snapshot.getValue(User.class);
+                    otherList.add(currentUser.getUid());
+                    other.setAddedUsers(otherList);
+                    other.save();
+                  }
                 }
 
                 @Override

@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserSearchView"></activity>
+        <activity android:name=".UserSearchView"
+            android:label="@string/view"
+            android:parentActivityName=".UserAddUsers"/>
         <!-- <activity -->
         <!-- android:name=".chat.Chat" -->
         <!-- android:label="Chat" -->
@@ -45,6 +47,7 @@
         <activity
             android:name=".UserLogin"
             android:label="@string/title_activity_login" />
+
         <!--
         For back button
         https://stackoverflow.com/questions/14545139/android-back-button-in-the-title-bar
