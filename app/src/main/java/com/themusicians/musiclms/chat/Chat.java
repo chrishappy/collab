@@ -1,6 +1,7 @@
 package com.themusicians.musiclms.chat;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,7 +52,7 @@ public class Chat extends AppCompatActivity {
   String toMessageID, toMessageName;
   String userId;
   APIService apiService;
-  boolean notify = false;
+  boolean notify = true;
 
 
   @Override
@@ -151,16 +152,17 @@ public class Chat extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
-          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username,message,"new message",userId);
+          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",userId);
 
           Sender sender = new Sender(data, token.getToken());
 
           apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
             @Override
             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+              Log.d("random","randomness");
               if(response.code() == 200){
+
                 if(response.body().success !=1){
-                  // ask jerome names
                   Toast.makeText(Chat.this,"failed",Toast.LENGTH_SHORT).show();
                 }
               }
@@ -168,7 +170,7 @@ public class Chat extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MyResponse> call, Throwable t) {
-
+              Log.d("ran","rand");
             }
           });
 
