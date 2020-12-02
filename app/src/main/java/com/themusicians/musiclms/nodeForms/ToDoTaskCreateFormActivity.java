@@ -39,6 +39,11 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
   /** The request code for retrieving to do items */
   static final String RETURN_INTENT_TODO_ID = "TODO_ID_KEY";
 
+  /** The assignment id to attach the to do item to */
+  public static final String ACCEPT_ATTACHED_ASSIGNMENT_ID = "ACCEPT_ATTACHED_ASSIGNMENT_ID";
+
+  private String attachedAssignmeentId;
+
   /** The To Do Item object */
   ToDoItem toDoItem;
 
@@ -94,6 +99,10 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
 
     setContentView(R.layout.activity_to_do_item_create_form);
 
+    // Load the attached assignment id
+    Intent intent = getIntent();
+    attachedAssignmeentId = intent.getStringExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID);
+
     if (inEditMode) {
       toDoItem = new ToDoItem(editEntityId);
     } else {
@@ -120,6 +129,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     assignmentSave.setOnClickListener(
         view -> {
           // Due Date timestamp
+          toDoItem.setAttachedAssignment(attachedAssignmeentId);
           toDoItem.setName(ToDoItemName.getText().toString());
           toDoItem.setStatus(true);
           toDoItem.setUid(currentUser.getUid());

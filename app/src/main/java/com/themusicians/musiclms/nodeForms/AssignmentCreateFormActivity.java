@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeForms;
 
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.ACCEPT_ATTACHED_ASSIGNMENT_ID;
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
 
@@ -414,7 +415,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
           if (assignment.getToDoIds().get(toDoId) == null) {
             assignment.addToDoId(toDoId);
-            assignment.pushToDos(toDoId);
+//            assignment.pushToDos(toDoId);
             assignment.save();
 
             // Display notification
@@ -457,6 +458,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
         Intent toEditToDoItem =
             new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
         toEditToDoItem.putExtra(ACCEPT_ENTITY_ID, entityId);
+        toEditToDoItem.putExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID, entityId);
         startActivityForResult(toEditToDoItem, REQUEST_TODO_ENTITY);
         break;
 

@@ -40,7 +40,7 @@ public class Assignment extends Node {
 
   protected int countOfDoneToDos = 0;
 
-  protected Stack<String> todosID;
+//  protected Stack<String> todosID;
 
   protected Map<String, Boolean> toDoIds;
 
@@ -188,15 +188,25 @@ public class Assignment extends Node {
 
   public int getCountOfTotalToDos(){ return countOfTotalToDos; }
 
-  public void addCountOfDoneToDos(){ this.countOfDoneToDos++; }
+//  public void addCountOfDoneToDos(){ this.countOfDoneToDos++; }
 
-  public int getCountOfDoneToDos(){ return countOfDoneToDos; }
+  public int getCountOfDoneToDos(){
+    countOfDoneToDos = 0;
 
-  public void pushToDos(String todoid) {
-    if (this.todosID == null) {
-      this.todosID = new Stack<String>();
+    for (Boolean isChecked : getToDoIds().values()) {
+      if (isChecked) {
+        countOfDoneToDos++;
+      }
     }
-    this.todosID.push(todoid);
+
+    return countOfDoneToDos;
   }
+
+//  public void pushToDos(String todoid) {
+//    if (this.todosID == null) {
+//      this.todosID = new Stack<String>();
+//    }
+//    this.todosID.push(todoid);
+//  }
 
 }

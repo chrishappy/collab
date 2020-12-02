@@ -36,6 +36,8 @@ public class ToDoItem extends Node {
 
   protected String attachedAssignment;
 
+  private Assignment assignment;
+
   protected Object TimeCompleted;
 
   /** The default constructor for Firebase + loadMultiple */
@@ -45,6 +47,8 @@ public class ToDoItem extends Node {
 
   public ToDoItem(String id) {
     super(id);
+
+    assignment = new Assignment(getAttachedAssignment());
   }
 
   /**
@@ -126,6 +130,12 @@ public class ToDoItem extends Node {
 
   public void setcompleteToDo(boolean completeToDo) {
     this.completeToDo = completeToDo;
+
+    assignment
+        .getToDoItemsKeyQuery()
+        .child(this.getId())
+        .setValue(getcompleteToDo());
+    // get reference to: node__assignment/getAttachedAssignment()/toDoItems/MY_TODO_ID
   }
 
 }
