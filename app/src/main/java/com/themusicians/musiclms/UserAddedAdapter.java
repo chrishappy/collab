@@ -216,6 +216,5 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
       }
     });
-
   }
 }
