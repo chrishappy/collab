@@ -47,6 +47,8 @@ public class User extends Node {
 
   private String recentText;
 
+  private String viewUser;
+
   private Map<String, Boolean> relatedAssignments;
 
   private static final String relatedAssignmentsName = "relatedAssignments";
@@ -116,7 +118,6 @@ public class User extends Node {
   public void setRole(String role) {
     this.role = role;
   }
-  private String viewUser;
 
   public String getViewUser() {
     return viewUser;
