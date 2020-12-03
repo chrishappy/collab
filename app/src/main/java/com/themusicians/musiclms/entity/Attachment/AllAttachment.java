@@ -17,7 +17,7 @@ public class AllAttachment extends Attachment {
   protected String comment;
 
   /** File Fields */
-  protected String fileId;
+  protected String fileUploadUri;
 
   /** Default constructor */
   public AllAttachment() {
@@ -72,11 +72,11 @@ public class AllAttachment extends Attachment {
   }
 
   /** File setters and getters */
-  public String getFileId() {
-    return fileId;
+  public String getFileUploadUri() {
+    return fileUploadUri;
   }
 
-  public void setFileId(String fileId) {
-    this.fileId = fileId;
+  public void setFileUploadUri(String fileUploadUri) {
+    this.fileUploadUri = fileUploadUri;
   }
 }

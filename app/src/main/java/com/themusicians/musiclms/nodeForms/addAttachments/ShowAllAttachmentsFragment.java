@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,6 +44,9 @@ import com.themusicians.musiclms.nodeForms.NodeCreateFormActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
 import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.editAllAttachments;
 
 /**
@@ -124,7 +129,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   @Override
   public void onStop() {
     super.onStop();
-    if (nodeToBeEdited != null) {
+    if (showAllAttachmentsAdapter != null) {
       showAllAttachmentsAdapter.stopListening();
     }
   }
@@ -239,20 +244,18 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
 
-    PopupWindow popupWindow = new PopupWindow(popupView,300, 500);
-    popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-//    popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+    PopupWindow popupWindow = new PopupWindow(popupView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     // Set up all the fields
     initCreateAttachment(popupView, popupWindow);
 
-    // If the PopupWindow should be focusable
+    // If allow popup to be clicked
     popupWindow.setFocusable(true);
     popupWindow.setOutsideTouchable(false);
-    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.rgb(225, 225, 225)));
 
-    // Show under anchor view with 10 vertical offset
-    popupWindow.showAsDropDown(anchorView, 0, 10);
+    // Show Popup in the middle of the screen
+    popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0); //.showAsDropDown(anchorView, 0, 10);
   }
 
   /**
@@ -359,19 +362,19 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     selectFile.setOnClickListener(
         view -> {
           if (ContextCompat.checkSelfPermission(
-              getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+              requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
               == PackageManager.PERMISSION_GRANTED) {
             selectPdf();
           } else
             ActivityCompat.requestPermissions(
-                getActivity(),
+                requireActivity(),
                 new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
                 9);
+           selectPdf();
         });
 
     upload.setOnClickListener(
         view -> {
-
           if(pdfUri != null) {
             Log.w("uploadFile()", "begin upload");
             uploadFile(pdfUri);
@@ -419,42 +422,35 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     StorageReference storageReference = storage.getReference();
 
     storageReference
-        .child("attachment__files")
+        .child(attachment.getBaseTable())
         .child(fileName)
         .putFile(pdfUri)
         .addOnSuccessListener(
             taskSnapshot -> {
 
               Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-//              task.addOnSuccessListener(
-//                  new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                      String url = uri.toString();
-//
-//                      DatabaseReference reference = database.getReference();
-//
-//                      reference
-//                          .child("attachment__files")
-//                          .child(fileName)
-//                          .setValue(url)
-//                          .addOnCompleteListener(
-//                              task1 -> {
-//                                if (task1.isSuccessful())
-//                                  Toast.makeText(
-//                                      getActivity(),
-//                                      "File successfully uploaded",
-//                                      Toast.LENGTH_SHORT)
-//                                      .show();
-//                                else
-//                                  Toast.makeText(
-//                                      getActivity(),
-//                                      "File not successfully uploaded",
-//                                      Toast.LENGTH_SHORT)
-//                                      .show();
-//                              });
-//                    }
-//                  });
+              task.addOnSuccessListener(
+                  uri -> {
+                      String url = uri.toString();
+
+                      attachment.setFileUploadUri(url);
+
+                      if (attachment.save()) {
+                        Toast.makeText(
+                            getActivity(),
+                            "File successfully uploaded",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                      }
+                      else {
+                        Toast.makeText(
+                            getActivity(),
+                            "File not successfully uploaded",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                      }
+
+                  });
             })
         .addOnFailureListener(
             e -> Toast.makeText(
@@ -472,5 +468,19 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 //                          / taskSnapshot.getTotalByteCount());
 //              progressDialog.setProgress(currentProgress);
 //            });
+  }
+
+  /**
+   * Process selected pdf for upload
+   */
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == 86 && resultCode == RESULT_OK && data!= null ){
+      pdfUri = data.getData();
+      String pathUrl = data.getData().getLastPathSegment();
+      notification.setText(String.format(getString(R.string.attachment__pdf_ppload_preview), pathUrl));
+    } else{
+      Toast.makeText(getActivity(),"Please select a file",Toast.LENGTH_SHORT).show();
+    }
   }
 }

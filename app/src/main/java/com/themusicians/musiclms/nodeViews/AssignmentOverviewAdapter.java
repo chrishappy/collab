@@ -59,13 +59,15 @@ public class AssignmentOverviewAdapter
       userEntityDatabase = tempUser.getEntityDatabase();
       userEntityDatabase
           .child(assignment.getUid())
+          .child("name")
           .addValueEventListener(
               new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  String name =
-                      Objects.requireNonNull(snapshot.child("name").getValue()).toString();
-                  holder.authorName.setText(name);
+                  Object name = snapshot.getValue();
+                  if (name != null) {
+                    holder.authorName.setText(name.toString());
+                  }
                 }
 
                 @Override
