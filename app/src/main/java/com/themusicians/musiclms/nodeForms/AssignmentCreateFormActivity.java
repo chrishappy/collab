@@ -386,6 +386,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
+    assignment.setUid(currentUser.getUid());
     assignment.save();
 
     // Save the user's current game state
