@@ -104,6 +104,8 @@ public class Chat extends AppCompatActivity {
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
           sendMessage(currentUser.getUid(), toMessageID, msg);
+          sendNotification(toMessageID,currentUser.getUid(),msg);
+
         }
         textMessage.setText("");
       }
@@ -153,7 +155,7 @@ public class Chat extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
-          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",userId);
+          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
 
           Sender sender = new Sender(data, token.getToken());
 
