@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -85,6 +86,9 @@ public class AssignmentOverviewAdapter
       holder.dueDate.setText(dateFormat.format(date));
     }
 
+    int amountOfProgress = assignment.getCountOfDoneToDos() / assignment.getCountOfTotalToDos();
+    holder.progressBar.setProgress(amountOfProgress);
+
 //    holder.editAssignment.setOnClickListener(
 //        view -> {
 //          if (itemClickListener != null) {
@@ -127,6 +131,7 @@ public class AssignmentOverviewAdapter
   // view (here "person.xml")
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     TextView assignmentName, authorName, dueDate, userName;
+    ProgressBar progressBar;
 //    Button editAssignment, viewAssignment;
     ConstraintLayout wrapper;
 
@@ -137,6 +142,7 @@ public class AssignmentOverviewAdapter
 
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
+      progressBar = itemView.findViewById(R.id.progress_bar);
       dueDate = itemView.findViewById(R.id.dueDate);
       userName = itemView.findViewById(R.id.userName);
 
