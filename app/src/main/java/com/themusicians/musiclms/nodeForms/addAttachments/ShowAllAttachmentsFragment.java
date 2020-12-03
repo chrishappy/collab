@@ -38,7 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Node.Node;
-import com.themusicians.musiclms.nodeForms.NodeCreateFormActivity;
+import com.themusicians.musiclms.nodeForms.NodeActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -105,7 +105,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     attachment = new AllAttachment();
 
     // The node to add attachments
-    nodeToBeEdited = ((NodeCreateFormActivity) getActivity()).getNodeForAttachments();
+    nodeToBeEdited = ((NodeActivity) getActivity()).getNodeForAttachments();
   }
 
   // Function to tell the app to start getting
@@ -286,10 +286,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
           attachment.save();
 
           // Add the attachment to the node
-          NodeCreateFormActivity nodeCreateFormActivity = (NodeCreateFormActivity) getActivity();
-          assert nodeCreateFormActivity != null;
-          nodeCreateFormActivity
-              .getNodeForAttachments()
+          nodeToBeEdited
               .addAttachmentId(attachment.getId())
               .save();
 
