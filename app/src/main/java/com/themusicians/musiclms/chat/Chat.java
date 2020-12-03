@@ -103,9 +103,11 @@ public class Chat extends AppCompatActivity {
         notify = true;
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
+          Log.d("test1","test12");
           sendMessage(currentUser.getUid(), toMessageID, msg);
-          sendNotification(toMessageID,currentUser.getUid(),msg);
 
+          sendNotification(toMessageID,currentUser.getUid(),msg);
+          Log.d("test2","test22");
         }
         textMessage.setText("");
       }
@@ -138,6 +140,7 @@ public class Chat extends AppCompatActivity {
         User user = dataSnapshot.getValue(User.class);
         if(notify){
           sendNotification(toMessageID,currentUser.getUid(),msg);
+          Log.d("test23","test23");
         }
 
         notify = false;
@@ -151,7 +154,8 @@ public class Chat extends AppCompatActivity {
 
   }
   private void sendNotification(String receiver, String username, String message){
-    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+    Log.d("test24","test24");
+    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("recentText");
     Query query = tokens.orderByKey().equalTo(receiver);
     query.addValueEventListener(new ValueEventListener() {
       @Override
@@ -159,9 +163,9 @@ public class Chat extends AppCompatActivity {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
           Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
-
+          Log.d("test25","test25");
           Sender sender = new Sender(data, token.getToken());
-
+          Log.d("test26","test26");
           apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
             @Override
             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
