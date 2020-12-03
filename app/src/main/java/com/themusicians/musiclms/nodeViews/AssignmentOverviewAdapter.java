@@ -142,7 +142,7 @@ public class AssignmentOverviewAdapter
 
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
-      progressBar = itemView.findViewById(R.id.progress_bar);
+      progressBar = itemView.findViewById(R.id.progressBar2);
       dueDate = itemView.findViewById(R.id.dueDate);
       userName = itemView.findViewById(R.id.userName);
 
