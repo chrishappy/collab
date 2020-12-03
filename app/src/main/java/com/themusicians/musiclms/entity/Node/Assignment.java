@@ -3,12 +3,12 @@ package com.themusicians.musiclms.entity.Node;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.themusicians.musiclms.entity.Attachment.Attachment;
+import com.google.firebase.database.ServerValue;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * Assignment.java
@@ -34,22 +34,30 @@ public class Assignment extends Node {
 
   protected long dueDate;
 
-  protected boolean completeAssignment;
+  /** Whether this assignment is completed */
+  protected boolean assignmentComplete;
 
+  protected Object assignmentCompleteTime;
+
+  /** Whether this assignment is marked */
+  protected boolean assignmentMarked;
+
+  protected Object assignmentMarkedTime;
+
+  /** Fields for the progress bar */
   protected int countOfTotalToDos = 0;
 
   protected int countOfDoneToDos = 0;
 
 //  protected Stack<String> todosID;
 
+  /** The to do items attached to this assignment */
   protected Map<String, Boolean> toDoIds;
 
   // This must make the field name of toDoIds
   public static final String toDoIdsName = "toDoIds";
 
-  protected Map<Map, Attachment> attachments;
-
-  /** The default constructor for Firebase + loadMultiple */
+  /** The default constructor for Firebase */
   public Assignment() {
     super();
   }
@@ -143,7 +151,15 @@ public class Assignment extends Node {
     tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
   }
 
-  /** Settings and Getters */
+  /**
+   * Settings and Getters
+   *
+   * Required for Firebase Database
+   */
+
+  /**
+   * The users the assignment is given to
+   */
   public List<String> getAssignees() {
     if (assignees == null) {
       assignees = new LinkedList<>();
@@ -159,6 +175,51 @@ public class Assignment extends Node {
     this.assignees = assignees;
   }
 
+  /**
+   * For when the assignment is completed by student
+   */
+  public boolean getAssignmentComplete() {
+    return assignmentComplete;
+  }
+
+  public void setAssignmentComplete(boolean assignmentComplete) {
+    this.assignmentComplete = assignmentComplete;
+
+    if (getAssignmentComplete()) {
+      setAssignmentCompleteTime(ServerValue.TIMESTAMP);
+    }
+  }
+
+  public Object getAssignmentCompleteTime() {
+    return assignmentCompleteTime;
+  }
+
+  public void setAssignmentCompleteTime(Object assignmentCompleteTime) {
+    this.assignmentCompleteTime = assignmentCompleteTime;
+  }
+
+  /**
+   * For when the teacher is finished marking the assignment
+   */
+  public boolean getAssignmentMarked() {
+    return assignmentMarked;
+  }
+
+  public void setAssignmentMarked(boolean assignmentMarked) {
+    this.assignmentMarked = assignmentMarked;
+  }
+
+  public Object getAssignmentMarkedTime() {
+    return assignmentMarkedTime;
+  }
+
+  public void setAssignmentMarkedTime(Object assignmentMarkedTime) {
+    this.assignmentMarkedTime = assignmentMarkedTime;
+  }
+
+  /**
+   * Other
+   */
   public String getClassId() {
     return classId;
   }
@@ -190,14 +251,9 @@ public class Assignment extends Node {
     this.toDoIds = toDoIds;
   }
 
-  public boolean getcompleteAssignment() {
-    return completeAssignment;
-  }
-
-  public void setcompleteAssignment(boolean completeAssignment) {
-    this.completeAssignment = completeAssignment;
-  }
-
+  /**
+   * For calculating the student's progress
+   */
   public void setCountOfTotalToDos(){ this.countOfTotalToDos = getToDoIds().size(); }
 
   public int getCountOfTotalToDos(){ return countOfTotalToDos; }

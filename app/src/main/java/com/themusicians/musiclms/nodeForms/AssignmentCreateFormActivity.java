@@ -67,7 +67,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    * @return the node we are editing
    */
   @Override
-  public Node getNode() {
+  public Node getNodeForAttachments() {
     return assignment;
   }
 
@@ -217,7 +217,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     initToDoItemsList();
 
     // Show attachments
-    initShowAttachments(assignment);
+    initShowAttachments();
 
     // Show attachments edit form
 //    initCreateAttachments(assignment);
@@ -268,51 +268,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
           Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         });
-  }
-
-  /**
-   * Populate the showAttachment fragment
-   *
-   * @param node the entity to fetch attachments for
-   */
-  private void initShowAttachments(Node node) {
-    final FragmentManager fragmentManager = getSupportFragmentManager();
-    final Fragment content = fragmentManager.findFragmentById(R.id.showAttachments);
-    if (!(content instanceof ShowAllAttachmentsFragment)) {
-      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      fragmentTransaction.add(
-          R.id.showAttachments,
-          ShowAllAttachmentsFragment.newInstance(node.getId()),
-          "ShowAllAttachmentsFragment");
-      fragmentTransaction.commitAllowingStateLoss();
-    }
-  }
-
-  /**
-   * Populate the addAttachment fragment
-   *
-   * @param node the entity to add attachments to
-   */
-  private void initCreateAttachments(Node node) {
-//    getSupportFragmentManager().beginTransaction()
-//        .add(
-//            R.id.addAttachments,
-//            CreateFormAttachmentsFragment.newInstance(node.getId()),
-//            "CreateFormAttachmentsFragment")
-//        .commit();
-
-    /*
-    final FragmentManager fragmentManager = getSupportFragmentManager();
-    final Fragment content = fragmentManager.findFragmentById(R.id.addAttachments);
-    if (!(content instanceof CreateFormAttachmentsFragment)) {
-      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      fragmentTransaction.add(
-          R.id.addAttachments,
-          CreateFormAttachmentsFragment.newInstance(node.getId(), CreateFormAttachmentsFragment.CREATE_ATTACHMENT),
-          "addAttachments");
-      fragmentTransaction.commitAllowingStateLoss();
-    }
-    /* */
   }
 
   /** Create the to do items list */

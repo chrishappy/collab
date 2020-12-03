@@ -27,14 +27,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -44,8 +41,6 @@ import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.nodeForms.NodeCreateFormActivity;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.SHOW_PDF;
@@ -110,7 +105,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     attachment = new AllAttachment();
 
     // The node to add attachments
-    nodeToBeEdited = ((NodeCreateFormActivity) getActivity()).getNode();
+    nodeToBeEdited = ((NodeCreateFormActivity) getActivity()).getNodeForAttachments();
   }
 
   // Function to tell the app to start getting
@@ -294,7 +289,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
           NodeCreateFormActivity nodeCreateFormActivity = (NodeCreateFormActivity) getActivity();
           assert nodeCreateFormActivity != null;
           nodeCreateFormActivity
-              .getNode()
+              .getNodeForAttachments()
               .addAttachmentId(attachment.getId())
               .save();
 

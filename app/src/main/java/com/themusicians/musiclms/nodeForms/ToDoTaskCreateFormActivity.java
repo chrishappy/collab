@@ -51,7 +51,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
    * @return the node we are editing
    */
   @Override
-  public Node getNode() {
+  public Node getNodeForAttachments() {
     return toDoItem;
   }
 
@@ -112,6 +112,9 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     // Get fields
     final EditText ToDoItemName = findViewById(R.id.to_do_item_name);
     final CheckBox RequireRecording = findViewById(R.id.require_recording);
+
+    // Initialize attachments
+    initShowAttachments();
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);

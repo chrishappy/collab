@@ -1,13 +1,11 @@
 package com.themusicians.musiclms.nodeViews;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -15,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,11 +21,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
-import com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity;
+
 import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,8 +51,14 @@ public class AssignmentViewActivity extends NodeViewActivity
   private TextView AssignmentName;
   private TextView StudentOrClass;
   private TextView dueDate;
-  private CheckBox assignmentCheck;
-  private Button editButton;
+  private FloatingActionButton editButton;
+
+  /** Checkbox fields */
+  private LinearLayout assignmentCompleteWrapper;
+  private CheckBox assignmentComplete;
+
+  private LinearLayout assignmentMarkedWrapper;
+  private CheckBox assignmentMarked;
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
@@ -90,12 +96,20 @@ public class AssignmentViewActivity extends NodeViewActivity
                     dueDate.setText(dateFormat.format(date));
                   }
 
-                  assignmentCheck.setChecked(assignment.getcompleteAssignment());
+                  // Set checkboxes
+                  assignmentComplete.setChecked(assignment.getAssignmentComplete());
+                  assignmentMarked.setChecked(assignment.getAssignmentMarked());
 
-                  String userid = currentUser.getUid();
-
-                  if(assignment.getUid().matches(userid)){
+                  // If the author/teacher, show edit + marked checkbox
+                  if (assignment.getUid().matches(currentUser.getUid())) {
                     editButton.setVisibility(View.VISIBLE);
+
+                    if (assignment.getAssignmentComplete()) {
+                      assignmentMarkedWrapper.setVisibility(View.VISIBLE);
+                    }
+                  }
+                  else { // must be student
+                    assignmentCompleteWrapper.setVisibility(View.VISIBLE);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
@@ -118,7 +132,7 @@ public class AssignmentViewActivity extends NodeViewActivity
         "There was a problem loading this Assignment",
         Toast.LENGTH_LONG)
         .show();;
-  }
+    }
 
     // For after creating the first to do item
     if (toDoItemsAdapter == null) {
@@ -159,39 +173,40 @@ public class AssignmentViewActivity extends NodeViewActivity
     AssignmentName = findViewById(R.id.assignment_name);
     StudentOrClass = findViewById(R.id.students_or_class);
     dueDate = findViewById(R.id.dueDate);
-    assignmentCheck = findViewById(R.id.assignment_completedCB);
     editButton = findViewById(R.id.auth_edit_button);
 
-    assignmentCheck.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if(assignmentCheck.isChecked()){
-          assignment.setcompleteAssignment(true);
-          assignment.save();
-        }else{
-          assignment.setcompleteAssignment(false);
-          assignment.save();
-        }
-      }
+    // Checkbox wrappers for visibility
+    assignmentCompleteWrapper = findViewById(R.id.assignment__student_done);
+    assignmentMarkedWrapper = findViewById(R.id.assignment__teacher_marked);
+
+    // Checkboxes: assignment complete or marked
+    assignmentComplete = findViewById(R.id.assignment_completedCB);
+    assignmentComplete.setOnClickListener(v -> {
+      assignment.setAssignmentComplete(assignmentComplete.isChecked());
+      assignment.save();
     });
 
-    String userid = currentUser.getUid();
+    assignmentMarked = findViewById(R.id.assignment_marked_CB);
+    assignmentMarked.setOnClickListener(v -> {
+      assignment.setAssignmentMarked(assignmentMarked.isChecked());
+      assignment.save();
+    });
 
-    if(assignment.getUid() == userid) {
-      editButton.setVisibility(View.VISIBLE);
-    }
-
-    editButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
-        toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
-        startActivity(toEditAssignment);
-      }
+    // Floating edit button
+    editButton.setOnClickListener(v -> {
+      Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
+      toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
+      startActivity(toEditAssignment);
     });
 
     // Load the to do tasks
     initToDoItemsList();
+  }
+
+  /** Return the node to add attachments to */
+  @Override
+  public Node getNodeForAttachments() {
+    return assignment;
   }
 
   /** Create the to do items list */

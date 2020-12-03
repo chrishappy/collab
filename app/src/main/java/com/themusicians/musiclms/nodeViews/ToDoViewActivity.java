@@ -29,6 +29,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 import org.jetbrains.annotations.NotNull;
@@ -233,6 +234,8 @@ public class ToDoViewActivity extends NodeViewActivity {
       startActivity(Intent.createChooser(sharingIntent,"_share_:"));
     });
 
+    // Initialize Attachments
+    initShowAttachments();
 
 
 
@@ -262,6 +265,12 @@ public class ToDoViewActivity extends NodeViewActivity {
 //      Toast.makeText(this, error, Toast.LENGTH_LONG).show();
 //    }
 //  }
+
+  /** Return the node to add attachments to */
+  @Override
+  public Node getNodeForAttachments() {
+    return toDoItem;
+  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent intent) {

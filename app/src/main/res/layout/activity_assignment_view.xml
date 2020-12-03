@@ -6,18 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:padding="@dimen/left_and_right_gutters"
     tools:context=".nodeViews.AssignmentViewActivity"
-    android:id="@+id/createAssignmentLayout">
+    android:id="@+id/viewAssignmentLayout">
 
     <ScrollView
         android:id="@+id/assignment_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/left_and_right_gutters"
-        android:paddingRight="@dimen/left_and_right_gutters"
-        android:paddingTop="20dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/viewAssignmentWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -30,38 +29,78 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/assignment_name"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:text="@string/assignment__form__assignment_name" />
+                        android:text="@string/assignment__form__assignment_name"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="30sp" />
 
-                    <TextView
-                        android:id="@+id/students_or_class"
+                    <LinearLayout
+                        android:id="@+id/assignment__student_done"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:text="@string/assignment__form__user_class" />
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/assignment_completedCB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/assignment__student_done" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/assignment__teacher_marked"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/assignment_marked_CB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/assignment__teacher_marked" />
+
+                    </LinearLayout>
                 </LinearLayout>
-                <!-- Replace with model:
-                        https://www.tutlane.com/tutorial/android/android-datepicker-with-examples#divanded
-                        See section "Android Show DatePicker on EditText Click Example"
 
-                 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/students_or_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/assignment__form__user_class"
+                        android:textSize="20sp" />
+
+                    <TextView
                         android:id="@+id/dueDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="@string/assignment__form__due_date" />
+                        android:text="@string/assignment__form__due_date"
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -80,6 +119,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/assignment__form__view_todos"
                     android:textAllCaps="true"
+                    android:textSize="20sp"
+                    android:paddingBottom="@dimen/smallPadding"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -98,97 +139,26 @@
                 android:layout_marginBottom="30dp"
                 android:background="#c0c0c0" />
 
-            <CheckBox
-                android:id="@+id/assignment_completedCB"
+            <fragment
+                android:id="@+id/showAttachments"
+                android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/completed" />
-
-            <Button
-                android:id="@+id/auth_edit_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/form__edit_button"
-                android:visibility="invisible" />
-
-            <!--            <fragment-->
-<!--                android:id="@+id/showAttachments"-->
-<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="2dp"-->
-<!--                android:layout_marginLeft="15dp"-->
-<!--                android:layout_marginTop="30dp"-->
-<!--                android:layout_marginRight="15dp"-->
-<!--                android:layout_marginBottom="30dp"-->
-<!--                android:background="#c0c0c0" />-->
-
-
-            <!-- Start "AddAttachments Fragment". Migrate/Refactor later -->
-<!--            <fragment-->
-<!--                android:id="@+id/addAttachments"-->
-<!--                android:name="com.themusicians.musiclms.nodeForms.addAttachments.CreateFormAttachmentsFragment"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="2dp"-->
-<!--                android:layout_marginLeft="15dp"-->
-<!--                android:layout_marginTop="30dp"-->
-<!--                android:layout_marginRight="15dp"-->
-<!--                android:layout_marginBottom="30dp"-->
-<!--                android:background="#c0c0c0" />-->
-
-            <!-- End "AddAttachments" Fragment -->
-
-            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                tools:context=".ui.home.HomeFragment">-->
-
-            <!--                &lt;!&ndash; Dummy Element &ndash;&gt;-->
-
-            <!--                <Button-->
-            <!--                    android:id="@+id/addCommentButton"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:text="@string/attachment__add__comment"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintHorizontal_bias="1.0"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="parent"-->
-            <!--                    app:layout_constraintVertical_bias="0.0" />-->
-
-            <!--                <Button-->
-            <!--                    android:id="@+id/selectFile"-->
-            <!--                    android:layout_width="114dp"-->
-            <!--                    android:layout_height="47dp"-->
-            <!--                    android:text="@string/attachment__add__file"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/notification"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="@string/no_file_is_selected" />-->
-
-            <!--            <Button-->
-            <!--                android:id="@+id/upload"-->
-            <!--                android:layout_width="114dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="@string/upload" />-->
-
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
+
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/auth_edit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/edit_assignment"
+        android:text="@string/form__edit_button"
+        android:visibility="visible"
+        app:layout_anchor="@+id/assignment_wrapper"
+        app:layout_anchorGravity="end|bottom"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
