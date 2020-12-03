@@ -58,12 +58,17 @@
     <string name="attachment__form__zoomLabel">放大会议</string>
     <string name="attachment__form__scheduleZoomMeeting">安排ZOOM会议</string>
     <string name="form__delete_button">删除</string>
-    <string name="assignment__overview__user_label">布置人</string>
+    <string name="assignment__overview__user_label">受托人</string>
     <string name="title_activity_chat_landing">与他人聊天</string>
     <string name="title_activity_user_main_profile">用户资料</string>
     <string name="title_activity_login">登录</string>
     <string name="text_content">文本</string>
     <string name="action_Language">语言</string>
+    <string name="assignment__form__view_todos">待做</string>
+    <string name="form__view_button">查看</string>
+    <string name="title_activity_assignment_view">查看作业</string>
+    <string name="title_activity_to_do_item_view">查看待做项目</string>
+    <string name="completed">完成</string>
 
 
     <!-- Youtube -->
