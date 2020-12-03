@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,7 @@ import java.util.List;
 public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyViewHolder> {
 
   ArrayList<User> list;
-
+  ArrayList<String> addedList = new ArrayList<>();
   FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
   User currUser = new User(currentUser.getUid());
   Context context;
@@ -171,14 +172,27 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
   public void callDeleteUser(int position){
     DatabaseReference delete = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
-    delete.addListenerForSingleValueEvent(new ValueEventListener() {
+    delete.addChildEventListener(new ChildEventListener() {
       @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for(DataSnapshot ds : snapshot.getChildren()){
-          if(ds.getValue(String.class).equals(list.get(position).getId())) {
-            ds.getRef().removeValue();
-          }
+      public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        if(!snapshot.getValue(String.class).equals(list.get(position).getId())) {
+          addedList.add(snapshot.getValue(String.class));
         }
+      }
+
+      @Override
+      public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+      }
+
+      @Override
+      public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+      }
+
+      @Override
+      public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
       }
 
       @Override
@@ -187,6 +201,21 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
       }
     });
 
+    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        currUser = snapshot.getValue(User.class);
+
+        currUser.setAddedUsers(addedList);
+        currUser.save();
+        Toast.makeText(context, list.get(position).getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
 
   }
 }

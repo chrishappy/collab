@@ -27,17 +27,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/messageBox"
             android:background="@android:color/transparent"
-            android:hint="Type a message..."
-            android:layout_toLeftOf="@+id/sendMessage"
+            android:hint="@string/chat_type_a_message"
+            android:layout_toStartOf="@+id/sendMessage"
             android:layout_centerVertical="true"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sendMessage"
-            android:text="Send"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
+            android:text="@string/chat_send"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

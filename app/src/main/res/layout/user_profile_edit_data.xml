@@ -12,25 +12,28 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="204dp"
         android:ems="10"
-        android:hint="Enter New Name"
+        android:hint="@string/edit_enter_new_name"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toStartOf="@+id/confirmName"
-        app:layout_constraintHorizontal_bias="0.207"
+        app:layout_constraintHorizontal_bias="0.202"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/changeEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter New Email"
+        android:hint="@string/edit_enter_new_email"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toStartOf="@+id/confirmEmail"
         app:layout_constraintHorizontal_bias="0.202"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeName" />
+        app:layout_constraintTop_toBottomOf="@+id/changeName"
+        tools:ignore="TextFields" />
 
     <Button
         android:id="@+id/confirmName"
@@ -39,9 +42,11 @@
         android:layout_marginTop="204dp"
         android:layout_marginEnd="44dp"
         android:onClick="changeName"
-        android:text="Confirm"
+        android:text="@string/edit_confirm"
+        app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/confirmEmail"
@@ -49,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="44dp"
         android:onClick="changeEmail"
-        android:text="Confirm"
+        android:text="@string/edit_confirm"
         app:layout_constraintBottom_toTopOf="@+id/resetPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmName" />
@@ -58,23 +63,13 @@
         android:id="@+id/resetPassword"
         android:layout_width="316dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="108dp"
         android:onClick="changePassword"
-        android:text="Reset Password"
-        app:layout_constraintBottom_toTopOf="@+id/editDataBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/editDataBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:onClick="editDataBack"
-        android:text="Back"
+        android:text="@string/edit_reset_password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.907"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.748" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
