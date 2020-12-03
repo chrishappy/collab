@@ -44,6 +44,8 @@ public class User extends Node {
 
   private List<String> addedUsers;
 
+  private String viewUser;
+
   private String recentText;
 
   private Map<String, Boolean> relatedAssignments;
@@ -98,7 +100,17 @@ public class User extends Node {
     return getEntityDatabase().child(getId()).child(relatedAssignmentsName);
   }
 
+
+
   /** Fields setters and getters */
+  public String getViewUser() {
+    return viewUser;
+  }
+
+  public void setViewUser(String viewUser) {
+    this.viewUser = viewUser;
+  }
+
   public String getEmail() {
     return email;
   }
