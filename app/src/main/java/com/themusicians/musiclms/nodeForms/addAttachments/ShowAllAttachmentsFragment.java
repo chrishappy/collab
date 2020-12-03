@@ -2,6 +2,7 @@ package com.themusicians.musiclms.nodeForms.addAttachments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -47,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
+import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.SHOW_PDF;
 import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.editAllAttachments;
 
 /**
@@ -67,13 +69,12 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   private RecyclerView recyclerView;
   ShowAllAttachmentsAdapter showAllAttachmentsAdapter; // Create Object of the Adapter class
-  FirebaseDatabase mbase; // Create object of the Firebase Realtime Database
 
   /** The attachment to be edited or saved */
   protected AllAttachment attachment;
 
   // Where to find the attachments
-  private String parentNodeId;
+//  private String parentNodeId;
   private Node nodeToBeEdited;
 
   /** For Uploading a File */
@@ -83,14 +84,13 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   Uri pdfUri;
 
   FirebaseStorage storage; // used for upload files
-  FirebaseDatabase database; // used to store URLs of uploaded files
   ProgressDialog progressDialog;
 
   /** Receive the entity id of the attachment to edit */
   public static ShowAllAttachmentsFragment newInstance(String parentNodeId) {
     ShowAllAttachmentsFragment fragment = new ShowAllAttachmentsFragment();
     Bundle args = new Bundle();
-    args.putString(PARENT_NODE_ID, parentNodeId);
+//    args.putString(PARENT_NODE_ID, parentNodeId);
     fragment.setArguments(args);
     return fragment;
   }
@@ -102,9 +102,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (getArguments() != null) {
-      parentNodeId = getArguments().getString(PARENT_NODE_ID);
-    }
+//    if (getArguments() != null) {
+//      parentNodeId = getArguments().getString(PARENT_NODE_ID);
+//    }
 
     // The attachment for create attachment
     attachment = new AllAttachment();
@@ -136,9 +136,6 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-    // Generate the database
-    mbase = FirebaseDatabase.getInstance();
 
     View root = inflater.inflate(R.layout.fragment_show_attachments, container, false);
 
@@ -233,6 +230,19 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
         showCreateAttachmentPopup(clickedItem);
       break;
+
+      case SHOW_PDF:
+        String url = entityId;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent newIntent = Intent.createChooser(intent, "Open File");
+        try {
+          startActivity(newIntent);
+        } catch (ActivityNotFoundException e) {
+          Toast.makeText(getActivity(), "Unable to show pdf. Do you have a PDF reader installed?", Toast.LENGTH_SHORT).show();
+        }
+        break;
     }
   }
 
@@ -274,6 +284,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     saveAction.setOnClickListener(
         view -> {
           // Save the attachment
+          // attachment.setFileUploadUri(pdfUri); // Already saved immediately upon upload
           attachment.setComment(editComment.getText().toString());
           attachment.setStatus(true);
           attachment.setUid(currentUser.getUid());
@@ -353,7 +364,6 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     // Upload a file
     storage = FirebaseStorage.getInstance();
-    database = FirebaseDatabase.getInstance();
 
     selectFile = root.findViewById(R.id.selectFile);
     upload = root.findViewById(R.id.upload);

@@ -1,5 +1,8 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
+import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 /**
  * The adapter for the All Attachments pages
@@ -29,6 +33,7 @@ public class ShowAllAttachmentsAdapter
   private ItemClickListener itemClickListener;
 
   public final static String editAllAttachments = "editAllAttachments";
+  public final static String SHOW_PDF = "show_pdf";
 
   public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
     super(options);
@@ -41,8 +46,19 @@ public class ShowAllAttachmentsAdapter
   protected void onBindViewHolder(
       @NonNull AllAttachmentViewHolder holder, int position, @NonNull AllAttachment allAttachment) {
 
-    if (holder.comment != null && allAttachment.getComment() != null) {
+    assert holder.comment != null;
+
+    if (allAttachment.getComment() != null) {
       holder.comment.setText(allAttachment.getComment());
+    }
+
+    if (allAttachment.getFileUploadUri() != null) {
+      holder.fileDownload.setVisibility(View.VISIBLE);
+      holder.fileDownload.setOnClickListener(
+          view -> {
+            itemClickListener.onEditButtonClick(SHOW_PDF, allAttachment.getFileUploadUri(), null);
+          }
+      );
     }
 
     holder.editButton.setOnClickListener(
@@ -88,7 +104,7 @@ public class ShowAllAttachmentsAdapter
   // view (here "person.xml")
   static class AllAttachmentViewHolder extends RecyclerView.ViewHolder {
     TextView comment;
-    Button editButton;
+    Button fileDownload, editButton;
     ConstraintLayout allAttachmentWrapper;
 
     public AllAttachmentViewHolder(@NonNull View itemView) {
@@ -96,6 +112,7 @@ public class ShowAllAttachmentsAdapter
 
       allAttachmentWrapper = itemView.findViewById(R.id.allAttachmentWrapper);
       comment = itemView.findViewById(R.id.viewComment);
+      fileDownload = itemView.findViewById(R.id.attachmentDownloadFile);
       editButton = itemView.findViewById(R.id.edit_button);
     }
   }
