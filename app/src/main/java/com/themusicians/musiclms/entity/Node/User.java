@@ -94,6 +94,7 @@ public class User extends Node {
    *
    * @return database query
    */
+  @Exclude
   public DatabaseReference getRelatedAssignmentDbReference() {
     return getEntityDatabase().child(getId()).child(relatedAssignmentsName);
   }
