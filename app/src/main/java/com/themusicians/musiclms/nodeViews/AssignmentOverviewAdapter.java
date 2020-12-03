@@ -75,6 +75,7 @@ public class AssignmentOverviewAdapter
               });
     }
 
+
     if (assignment.getClassId() != null) {
       holder.userName.setText(assignment.getClassId());
     }
