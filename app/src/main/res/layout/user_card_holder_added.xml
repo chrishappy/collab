@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Name:"
-            android:textSize="25dp"
+            android:text="@string/name"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +35,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/placeholder"
-            android:textSize="25dp"
+            android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/placeName"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Email:"
+            android:text="@string/email"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/placeName" />
@@ -70,7 +70,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
 
-            android:text="Role:"
+            android:text="@string/role"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/placeEmail" />
@@ -98,6 +98,26 @@
             android:gravity="end">
 
             <Button
+                android:id="@+id/addedDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/delete"/>
+
+            <Button
+                android:id="@+id/addedViewUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/view"/>
+
+            <Button
                 android:id="@+id/addedChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +125,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:hint="Chat"/>
+                android:hint="@string/chat"/>
 
         </LinearLayout>
 

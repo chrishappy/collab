@@ -114,6 +114,15 @@ public class User extends Node {
   public void setRole(String role) {
     this.role = role;
   }
+  private String viewUser;
+
+  public String getViewUser() {
+    return viewUser;
+  }
+
+  public void setViewUser(String viewUser) {
+    this.viewUser = viewUser;
+  }
 
   public String getRecentText() {
     return recentText;

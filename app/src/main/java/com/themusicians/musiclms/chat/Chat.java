@@ -1,6 +1,7 @@
 package com.themusicians.musiclms.chat;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,7 +52,7 @@ public class Chat extends AppCompatActivity {
   String toMessageID, toMessageName;
   String userId;
   APIService apiService;
-  boolean notify = false;
+  boolean notify = true;
 
 
   @Override
@@ -103,10 +104,13 @@ public class Chat extends AppCompatActivity {
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
           sendMessage(currentUser.getUid(), toMessageID, msg);
+          sendNotification(toMessageID,currentUser.getUid(),msg);
+
         }
         textMessage.setText("");
       }
     });
+
 
     reference = FirebaseDatabase.getInstance().getReference().child("node__user");
     reference.addValueEventListener(new ValueEventListener() {
@@ -124,15 +128,18 @@ public class Chat extends AppCompatActivity {
       }
     });
 
+
     final String msg = textMessage.getText().toString();
+
     reference = FirebaseDatabase.getInstance().getReference("node__user").child(currentUser.getUid());
     reference.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         User user = dataSnapshot.getValue(User.class);
         if(notify){
-          sendNotification(toMessageID,user.getUid(),msg);
+          sendNotification(toMessageID,currentUser.getUid(),msg);
         }
+
         notify = false;
       }
 
@@ -151,16 +158,17 @@ public class Chat extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
-          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username,message,"new message",userId);
+          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
 
           Sender sender = new Sender(data, token.getToken());
 
           apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
             @Override
             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+              Log.d("random","randomness");
               if(response.code() == 200){
+
                 if(response.body().success !=1){
-                  // ask jerome names
                   Toast.makeText(Chat.this,"failed",Toast.LENGTH_SHORT).show();
                 }
               }
@@ -168,7 +176,7 @@ public class Chat extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MyResponse> call, Throwable t) {
-
+              Log.d("ran","rand");
             }
           });
 
@@ -181,6 +189,8 @@ public class Chat extends AppCompatActivity {
 
       }
     });
+
+
   }
 
   private void sendMessage(String sender, String receiver, String message){
@@ -192,6 +202,7 @@ public class Chat extends AppCompatActivity {
 
     reference.child("Chats").push().setValue(hashMap);
   }
+
 
   private void readMessages(String myId, String userId){
     chatList = new ArrayList<>();

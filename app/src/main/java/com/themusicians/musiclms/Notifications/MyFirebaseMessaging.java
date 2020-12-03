@@ -12,6 +12,9 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.themusicians.musiclms.chat.Chat;
@@ -40,7 +43,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         // line below was buggy
-        int j = Integer.parseInt(user.replaceAll("//D",""));
+        int j = Integer.parseInt(user.replaceAll("[//D]",""));
         Intent intent = new Intent(this, Chat.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
@@ -68,4 +71,24 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
 
     }
 
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        String refreshToken = FirebaseInstanceId.getInstance().getInstanceId().getResult().getToken();
+        if (refreshToken != null){
+            updateToken(refreshToken);
+        }
+    }
+
+    private void updateToken(String refreshToken) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+            Token token = new Token(refreshToken);
+            reference.child(firebaseUser.getUid()).setValue(token);
+        }
+    }
+
 }
+
+

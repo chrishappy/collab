@@ -14,7 +14,7 @@
         android:padding="10dp"
         app:queryHint="Find Teachers"
         android:layout_margin="5dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecycler"

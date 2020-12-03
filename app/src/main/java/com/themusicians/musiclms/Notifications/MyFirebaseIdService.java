@@ -1,4 +1,4 @@
-package com.themusicians.musiclms.Notifications;
+/*package com.themusicians.musiclms.Notifications;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,3 +29,4 @@ public class MyFirebaseIdService extends FirebaseInstanceIdService {
 ;
     }
 }
+*/
