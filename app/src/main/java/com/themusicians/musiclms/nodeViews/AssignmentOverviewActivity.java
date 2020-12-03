@@ -141,13 +141,13 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     userEntityDatabase = tempUser.getEntityDatabase();
     userEntityDatabase
             .child(userid)
+            .child("role")
             .addValueEventListener(
                     new ValueEventListener() {
                       @Override
                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String role =
-                                Objects.requireNonNull(snapshot.child("role").getValue()).toString();
-                        if(role.matches("teacher")){
+                        Object role = snapshot.getValue();
+                        if (role != null && role.toString().matches("teacher")){
                           fab.setVisibility(View.VISIBLE);
                         }
                       }

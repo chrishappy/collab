@@ -1,10 +1,10 @@
 package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -32,13 +32,13 @@ public class ToDoItem extends Node {
 
   protected List<String> recordingFeedback;
 
-  protected long toDoState;
+//  protected long toDoState;
 
   protected String attachedAssignment;
 
   private Assignment assignment;
 
-  protected Object TimeCompleted;
+  protected Object timeCompleted;
 
   /** The default constructor for Firebase + loadMultiple */
   public ToDoItem() {
@@ -93,13 +93,13 @@ public class ToDoItem extends Node {
     this.recordingFeedback = recordingFeedback;
   }
 
-  public long getToDoState() {
-    return toDoState;
-  }
-
-  public void setToDoState(long toDoState) {
-    this.toDoState = toDoState;
-  }
+//  public long getToDoState() {
+//    return toDoState;
+//  }
+//
+//  public void setToDoState(long toDoState) {
+//    this.toDoState = toDoState;
+//  }
 
   public String getAttachedAssignment() {
     return attachedAssignment;
@@ -110,11 +110,11 @@ public class ToDoItem extends Node {
   }
 
   public Object getTimeCompleted() {
-    return TimeCompleted;
+    return timeCompleted;
   }
 
   public void setTimeCompleted(Object timeCompleted) {
-    TimeCompleted = timeCompleted;
+    this.timeCompleted = timeCompleted;
   }
 
   @Override
@@ -128,6 +128,10 @@ public class ToDoItem extends Node {
 
   public void setcompleteToDo(boolean completeToDo) {
     this.completeToDo = completeToDo;
+
+    if (completeToDo) {
+      setTimeCompleted(ServerValue.TIMESTAMP);
+    }
 
     if (assignment == null) {
       assignment = new Assignment(getAttachedAssignment());

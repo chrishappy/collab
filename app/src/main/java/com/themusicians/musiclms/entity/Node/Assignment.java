@@ -133,6 +133,16 @@ public class Assignment extends Node {
     return getEntityDatabase().child(getId()).child(toDoIdsName);
   }
 
+  /**
+   * Add assignment to user on save
+   */
+  @Override
+  public void postSave() {
+    // Add assignment to user
+    User tempUser = new User(getUid());
+    tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+  }
+
   /** Settings and Getters */
   public List<String> getAssignees() {
     return assignees;
@@ -166,10 +176,7 @@ public class Assignment extends Node {
   }
 
   public void addToDoId(String toDoId) {
-    if (toDoIds == null) {
-      toDoIds = new HashMap<>();
-    }
-    toDoIds.put(toDoId, true);
+    getToDoIds().put(toDoId, true);
   }
 
   public void setToDoIds(Map<String, Boolean> toDoIds) {
@@ -184,7 +191,7 @@ public class Assignment extends Node {
     this.completeAssignment = completeAssignment;
   }
 
-  public void setCountOfTotalToDos(){ this.countOfTotalToDos = toDoIds.size(); }
+  public void setCountOfTotalToDos(){ this.countOfTotalToDos = getToDoIds().size(); }
 
   public int getCountOfTotalToDos(){ return countOfTotalToDos; }
 

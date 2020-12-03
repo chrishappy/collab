@@ -1,6 +1,9 @@
 package com.themusicians.musiclms.entity.Node;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @file Assignment.java
@@ -17,26 +20,8 @@ public class User extends Node {
 
   /**
    * The user's email
-   *
-   * @todo implement later
    */
   protected String email;
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getRole() {
-    return role;
-  }
-
-  public void setRole(String role) {
-    this.role = role;
-  }
 
   /**
    * Whether the user is a teacher, student
@@ -54,8 +39,16 @@ public class User extends Node {
    */
   protected List<String> techExperience;
 
-  /** Instruments */
+  /** Instruments the user plays or teaches */
   protected List<String> instruments;
+
+  private List<String> addedUsers;
+
+  private String recentText;
+
+  private Map<String, Boolean> relatedAssignments;
+
+  private static final String relatedAssignmentsName = "relatedAssignments";
 
   /**
    * The fields for the default Node
@@ -96,9 +89,31 @@ public class User extends Node {
     return type;
   }
 
-  /** Fields setters and getters */
+  /**
+   * Return the query to the related assignments
+   *
+   * @return database query
+   */
+  public DatabaseReference getRelatedAssignmentDbReference() {
+    return getEntityDatabase().child(getId()).child(relatedAssignmentsName);
+  }
 
-  private String recentText;
+  /** Fields setters and getters */
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
 
   public String getRecentText() {
     return recentText;
@@ -124,8 +139,6 @@ public class User extends Node {
     this.instruments = instruments;
   }
 
-  private List<String> addedUsers;
-
   public List<String> getAddedUsers() {
     return addedUsers;
   }
@@ -133,6 +146,4 @@ public class User extends Node {
   public void setAddedUsers(List<String> addedUsers) {
     this.addedUsers = addedUsers;
   }
-
-  /** */
 }

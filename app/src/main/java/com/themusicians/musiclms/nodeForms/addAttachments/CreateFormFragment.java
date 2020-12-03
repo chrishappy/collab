@@ -1,6 +1,8 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public abstract class CreateFormFragment extends Fragment {
@@ -22,4 +24,12 @@ public abstract class CreateFormFragment extends Fragment {
 
   /** Log tag for loading the assignment */
   public static final String LOAD_ENTITY_DATABASE_TAG = "Load Attachment To Edit";
+
+  /** Load the current user on start */
+  @Override
+  public void onStart() {
+    super.onStart();
+
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+  }
 }

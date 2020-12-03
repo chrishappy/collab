@@ -78,18 +78,26 @@ public abstract class Node extends Entity {
   }
 
   /**
+   * This function runs before saving an object
+   */
+  public void postSave() {}
+
+  /**
    * Save the Node to the Database
    *
    * @return whether it was successful or not
    */
   public boolean save() {
-    // Save the entity
-    writeEntity();
-
     // the entity is no longer new
     setIsNew(false);
 
-    return true;
+    // Save the entity
+    boolean result = writeEntity();
+
+    // Run actions afterwards
+    postSave();
+
+    return result;
   }
 
   /** @return Boolean */

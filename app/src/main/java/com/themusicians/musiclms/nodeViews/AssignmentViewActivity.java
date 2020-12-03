@@ -90,11 +90,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                     dueDate.setText(dateFormat.format(date));
                   }
 
-                  if (assignment.getcompleteAssignment() == true) {
-                    assignmentCheck.setChecked(true);
-                  }else{
-                    assignmentCheck.setChecked(false);
-                  }
+                  assignmentCheck.setChecked(assignment.getcompleteAssignment());
 
                   String userid = currentUser.getUid();
 
@@ -181,14 +177,16 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     String userid = currentUser.getUid();
 
-    if(assignment.getUid() == userid){
+    if(assignment.getUid() == userid) {
       editButton.setVisibility(View.VISIBLE);
     }
 
     editButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        startActivity(new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class));
+        Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
+        toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
+        startActivity(toEditAssignment);
       }
     });
 
@@ -267,6 +265,7 @@ public class AssignmentViewActivity extends NodeViewActivity
    */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
+
     assignment.save();
 
     // Save the user's current game state

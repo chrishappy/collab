@@ -276,14 +276,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    * @param node the entity to fetch attachments for
    */
   private void initShowAttachments(Node node) {
-
-//    getSupportFragmentManager().beginTransaction()
-//        .add(
-//            R.id.showAttachments,
-//            ShowAllAttachmentsFragment.newInstance(node.getId()),
-//            "ShowAllAttachmentsFragment")
-//        .commit();
-
     final FragmentManager fragmentManager = getSupportFragmentManager();
     final Fragment content = fragmentManager.findFragmentById(R.id.showAttachments);
     if (!(content instanceof ShowAllAttachmentsFragment)) {

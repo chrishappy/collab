@@ -229,6 +229,7 @@ public class ToDoViewActivity extends NodeViewActivity {
       Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
       sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title 2");
       sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, videoUri);
+      sharingIntent.setType("video/mp4");
       startActivity(Intent.createChooser(sharingIntent,"_share_:"));
     });
 
@@ -310,6 +311,7 @@ public class ToDoViewActivity extends NodeViewActivity {
     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title::");
     sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, uri);
+    sharingIntent.setType("video/mp4");
     startActivity(Intent.createChooser(sharingIntent,"_share_::"));
   }
 
