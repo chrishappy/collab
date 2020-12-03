@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:text="@string/signin_or_register_an_account_here"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#ff8800"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signin" />

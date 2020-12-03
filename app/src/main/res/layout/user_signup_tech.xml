@@ -121,6 +121,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="signUpFinish"
+        android:background="#ff8800"
+        android:textColor="#fff"
         android:text="Finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
