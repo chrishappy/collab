@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_name"
-        android:textColor="#ff8800"
+        android:textColor="#ff6347"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/addedUsers"
         app:layout_constraintEnd_toStartOf="@+id/searchUsers"

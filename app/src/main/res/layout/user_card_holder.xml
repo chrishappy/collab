@@ -30,7 +30,7 @@
         <TextView
             android:id="@+id/searchName"
             android:layout_width="0dp"
-            android:textColor="#ff8800"
+            android:textColor="#ff6347"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
