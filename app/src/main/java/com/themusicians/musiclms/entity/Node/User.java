@@ -1,6 +1,7 @@
 package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,9 @@ public class User extends Node {
 
   private List<String> addedUsers;
 
-  private String viewUser;
-
   private String recentText;
+
+  private String viewUser;
 
   private Map<String, Boolean> relatedAssignments;
 
@@ -96,21 +97,12 @@ public class User extends Node {
    *
    * @return database query
    */
+  @Exclude
   public DatabaseReference getRelatedAssignmentDbReference() {
     return getEntityDatabase().child(getId()).child(relatedAssignmentsName);
   }
 
-
-
   /** Fields setters and getters */
-  public String getViewUser() {
-    return viewUser;
-  }
-
-  public void setViewUser(String viewUser) {
-    this.viewUser = viewUser;
-  }
-
   public String getEmail() {
     return email;
   }
@@ -125,6 +117,14 @@ public class User extends Node {
 
   public void setRole(String role) {
     this.role = role;
+  }
+
+  public String getViewUser() {
+    return viewUser;
+  }
+
+  public void setViewUser(String viewUser) {
+    this.viewUser = viewUser;
   }
 
   public String getRecentText() {

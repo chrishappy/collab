@@ -78,7 +78,6 @@
     <string name="add_recording">Add Recording</string>
     <string name="add_recording_feedback__text">Add feedback text</string>
     <string name="add_recording_feedback__save">Save Feedback</string>
-    <string name="add_attachment">Add Attachment</string>
     <string name="user_preferred_name">Preferred Name</string>
     <string name="user_hi_i_am">Hi, I am ...</string>
     <string name="user_signup_email">Email</string>
@@ -96,8 +95,10 @@
     <string name="edit_name_confirm">Confirm</string>
     <string name="edit_confirm">Confirm</string>
     <string name="edit_reset_password">Reset Password</string>
-    <string name="chat_type_a_message">Type a message...</string>
+    <string name="chat_type_a_message">Type a message…</string>
     <string name="chat_send">Send</string>
+
+    <!-- User -->
     <string name="signin_login">Login</string>
     <string name="sign_in">Sign In</string>
     <string name="signin_or_register_an_account_here">or Register an account here</string>
@@ -111,8 +112,10 @@
     <string name="add_name">Name</string>
     <string name="add_new_users">Add New Users</string>
     <string name="user_profile__edit_data">Edit Data</string>
+
+    <!-- Attachments -->
+    <string name="add_attachment">Add Attachment</string>
     <string name="assignment_overview__user_profile">User Profile</string>
     <string name="assignment_overview__logout">Logout</string>
     <string name="attachment__pdf_ppload_preview">A file is selected : %s</string>
-    <string name="add_users">Add Users</string>
 </resources>
