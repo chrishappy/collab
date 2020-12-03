@@ -40,7 +40,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         // line below was buggy
-        int j = Integer.parseInt(user.replaceAll("",""));
+        int j = Integer.parseInt(user.replaceAll("[//D]",""));
         Intent intent = new Intent(this, Chat.class);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);

@@ -111,6 +111,7 @@ public class Chat extends AppCompatActivity {
       }
     });
 
+
     reference = FirebaseDatabase.getInstance().getReference().child("node__user");
     reference.addValueEventListener(new ValueEventListener() {
       @Override
@@ -127,7 +128,9 @@ public class Chat extends AppCompatActivity {
       }
     });
 
+
     final String msg = textMessage.getText().toString();
+
     reference = FirebaseDatabase.getInstance().getReference("node__user").child(currentUser.getUid());
     reference.addValueEventListener(new ValueEventListener() {
       @Override
@@ -186,6 +189,8 @@ public class Chat extends AppCompatActivity {
 
       }
     });
+
+
   }
 
   private void sendMessage(String sender, String receiver, String message){
@@ -197,6 +202,7 @@ public class Chat extends AppCompatActivity {
 
     reference.child("Chats").push().setValue(hashMap);
   }
+
 
   private void readMessages(String myId, String userId){
     chatList = new ArrayList<>();
