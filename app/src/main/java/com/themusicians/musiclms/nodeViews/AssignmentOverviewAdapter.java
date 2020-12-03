@@ -86,8 +86,11 @@ public class AssignmentOverviewAdapter
       holder.dueDate.setText(dateFormat.format(date));
     }
 
-    int amountOfProgress = assignment.getCountOfDoneToDos() / assignment.getCountOfTotalToDos();
-    holder.progressBar.setProgress(amountOfProgress);
+    int totalToDosCount = assignment.getCountOfTotalToDos();
+    if (totalToDosCount != 0) {
+      int amountOfProgress = assignment.getCountOfDoneToDos() / totalToDosCount;
+      holder.progressBar.setProgress(amountOfProgress);
+    }
 
 //    holder.editAssignment.setOnClickListener(
 //        view -> {
