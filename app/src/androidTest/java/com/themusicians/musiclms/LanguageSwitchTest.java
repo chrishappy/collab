@@ -41,50 +41,6 @@ public class LanguageSwitchTest {
 
     @Test
     public void languageSwitchTest() {
-        ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.toSignIn), withText("Already have an account? Login here"),
-                        childAtPosition(
-                                allOf(withId(R.id.background_signup),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                8),
-                        isDisplayed()));
-        appCompatTextView.perform(click());
-
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.myEmail),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("signup@test.com"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.myPassword),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("signup"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.signin), withText("Sign In"),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
         ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
