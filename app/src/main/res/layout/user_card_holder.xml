@@ -106,6 +106,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginEnd="16dp"
+                android:background="#ff6347"
+                android:textColor="#fff"
                 android:hint="@string/view"/>
 
             <Button
@@ -116,6 +118,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
+                android:background="#ff6347"
+                android:textColor="#fff"
                 android:hint="@string/add"/>
 
         </LinearLayout>
