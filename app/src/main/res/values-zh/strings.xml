@@ -6,9 +6,9 @@
     <string name="title_activity_signin">登录</string>
     <string name="prompt_email">电子邮箱</string>
     <string name="prompt_password">密码</string>
-    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="welcome">“欢迎"</string>
+    <string name="welcome">欢迎</string>
     <string name="invalid_username">无效的用户名</string>
     <string name="invalid_password">密码必须大于五个字符</string>
     <string name="login_failed">“登陆失败”</string>
@@ -124,6 +124,7 @@
     <string name="attachment__pdf_ppload_preview">一个文件已被选中: %s</string>
     <string name="channel_name">音乐学习管理系统</string>
     <string name="channel_description">聊天信息</string>
+    <string name="attachment__download_file">下载文件</string>
 
     <string name="hello">你好</string>
     <string name="please_add_comment">请输入你的评论</string>
@@ -136,7 +137,7 @@
     <string name="Email_">电子邮箱:</string>
     <string name="Role_">身份:</string>
     <string name="Add">添加</string>
-    <string name="Type_a_message">输入信息…</string>
+    <string name="Type_a_message">输入信息...</string>
     <string name="Send">发送</string>
     <string name="Enter_New_Name">输入新的名称</string>
     <string name="Enter_New_Email">输入新的电子邮箱</string>
