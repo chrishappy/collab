@@ -76,8 +76,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   @Override
   public void onStart() {
     super.onStart();
-    // Check if user is signed in (non-null) and update UI accordingly.
-    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    // Set current user
+    assignment.setUid(currentUser.getUid());
 
     // If we are editing an assignment
     final EditText AssignmentName = findViewById(R.id.assignment_name);
@@ -157,7 +158,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       assignment = new Assignment(editEntityId);
     } else {
       assignment = new Assignment();
-      assignment.setUid(currentUser.getUid());
     }
 
     setContentView(R.layout.activity_assignment_create_form);

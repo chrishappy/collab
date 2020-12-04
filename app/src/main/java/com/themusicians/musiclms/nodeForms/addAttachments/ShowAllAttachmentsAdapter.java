@@ -39,9 +39,6 @@ public class ShowAllAttachmentsAdapter
     super(options);
   }
 
-  // Function to bind the view in Card view(here
-  // "person.xml") iwth data in
-  // allAttachment class(here "person.class")
   @Override
   protected void onBindViewHolder(
       @NonNull AllAttachmentViewHolder holder, int position, @NonNull AllAttachment allAttachment) {
