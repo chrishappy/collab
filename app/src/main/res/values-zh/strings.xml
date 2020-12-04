@@ -6,7 +6,7 @@
     <string name="title_activity_signin">登录</string>
     <string name="prompt_email">电子邮箱</string>
     <string name="prompt_password">密码</string>
-    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">登录</string>
     <string name="welcome">“欢迎"</string>
     <string name="invalid_username">无效的用户名</string>
