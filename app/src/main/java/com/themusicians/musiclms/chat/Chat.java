@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.themusicians.musiclms.Notifications.Client;
 import com.themusicians.musiclms.Notifications.Data;
 import com.themusicians.musiclms.Notifications.MyResponse;
@@ -72,6 +73,8 @@ public class Chat extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
     linearLayoutManager.setStackFromEnd(true);
     recyclerView.setLayoutManager(linearLayoutManager);
+
+    updateToken(FirebaseInstanceId.getInstance().getToken());
 
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
@@ -156,15 +159,16 @@ public class Chat extends AppCompatActivity {
   private void sendNotification(String receiver, String username, String message){
     Log.d("test24","test24");
     // line below
-    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("recentText");
-
+    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("Tokens");
+    Log.d("test25",tokens.toString());
     Query query = tokens.orderByKey().equalTo(receiver);
+    Log.d("test27", String.valueOf(query));
     query.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
-          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"New Message",toMessageID);
+          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
 
           Sender sender = new Sender(data, token.getToken());
           Log.d("test26","test26");
@@ -173,7 +177,7 @@ public class Chat extends AppCompatActivity {
             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
               Log.d("random","randomness");
               if(response.code() == 200){
-                Log.d("test26","test26");
+
                 if(response.body().success !=1){
                   Toast.makeText(Chat.this,"failed",Toast.LENGTH_SHORT).show();
                 }
@@ -236,4 +240,12 @@ public class Chat extends AppCompatActivity {
       }
     });
   }
+  private void updateToken(String token){
+    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+    Token token1 = new Token(token);
+    reference.child(currentUser.getUid()).setValue(token1);
+
+
+  }
+
 }
