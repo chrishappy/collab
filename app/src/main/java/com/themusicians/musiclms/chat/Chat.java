@@ -155,7 +155,9 @@ public class Chat extends AppCompatActivity {
   }
   private void sendNotification(String receiver, String username, String message){
     Log.d("test24","test24");
-    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("recentText");
+    // line below
+    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("node__user");
+
     Query query = tokens.orderByKey().equalTo(receiver);
     query.addValueEventListener(new ValueEventListener() {
       @Override
@@ -163,7 +165,7 @@ public class Chat extends AppCompatActivity {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
           Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
-          Log.d("test25","test25");
+
           Sender sender = new Sender(data, token.getToken());
           Log.d("test26","test26");
           apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
