@@ -49,6 +49,8 @@ public class Assignment extends Node {
 
   protected int countOfDoneToDos = 0;
 
+  protected List<String> userID;
+
 //  protected Stack<String> todosID;
 
   /** The to do items attached to this assignment */
