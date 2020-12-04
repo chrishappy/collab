@@ -87,7 +87,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate() * 1000);
+                    Date date = new Date(assignment.getDueDate());
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
                   }

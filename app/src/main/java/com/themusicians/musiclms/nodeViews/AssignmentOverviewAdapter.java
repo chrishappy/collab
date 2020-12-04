@@ -82,7 +82,7 @@ public class AssignmentOverviewAdapter
     }
 
     if (assignment.getDueDate() != 0) {
-      Date date = new Date(assignment.getDueDate() * 1000);
+      Date date = new Date(assignment.getDueDate());
       DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
