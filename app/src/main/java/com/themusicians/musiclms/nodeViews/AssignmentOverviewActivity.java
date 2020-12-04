@@ -189,6 +189,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
     rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
     rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+    rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
+    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
 
     //set join adapter to your RecyclerView
     recyclerView.setAdapter(rvJoiner.getAdapter());
