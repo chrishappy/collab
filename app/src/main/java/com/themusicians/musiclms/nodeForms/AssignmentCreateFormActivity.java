@@ -104,7 +104,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate());
+                    Date date = new Date(assignment.getDueDate() * 1000);
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
                   }
@@ -251,7 +251,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               .setAction("Action", null)
               .show();
           // Due Date timestamp
-          long dueDateTimestamp = cldr.getTimeInMillis();
+          long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds(cldr.getTimeInMillis());
 
           assignment.setName(AssignmentName.getText().toString());
           assignment.setClassId(StudentOrClass.getText().toString());

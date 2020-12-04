@@ -53,7 +53,7 @@ public class AssignmentViewActivity extends NodeViewActivity
   private TextView StudentOrClass;
   private TextView dueDate;
   private CheckBox assignmentCheck;
-  //bprivate Button editButton;
+  //private Button editButton;
   FloatingActionButton fab = findViewById(R.id.editB);
 
   /** Create adapter for to do items */
@@ -87,7 +87,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate());
+                    Date date = new Date(assignment.getDueDate() * 1000);
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
                   }

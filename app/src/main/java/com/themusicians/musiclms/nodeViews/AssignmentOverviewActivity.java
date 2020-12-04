@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.UserLogin;
@@ -55,7 +56,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
   private RecyclerView recyclerView;
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek1;
-  AssignmentOverviewAdapter assignmentOverviewAdapterWeek2; // Create Object of the Adapter class
+  AssignmentOverviewAdapter assignmentOverviewAdapterWeek2;
+  AssignmentOverviewAdapter assignmentOverviewAdapterWeek3;// Create Object of the Adapter class
   DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   /**
@@ -172,25 +174,41 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
-    FirebaseRecyclerOptions<Assignment> options =
-        new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(mbase, Assignment.class).build();
 
+
+   long time= System.currentTimeMillis()/1000;
+    //long time = 1607035900;
+
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+    Query query1 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time).endAt(time+605000);
+    Query query2 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000).endAt(time+1210000);
+    Query query3 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000).endAt(time+1815000);
+
+    FirebaseRecyclerOptions<Assignment> options1 =
+            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query1, Assignment.class).build();
+    FirebaseRecyclerOptions<Assignment> options2 =
+            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
+    FirebaseRecyclerOptions<Assignment> options3 =
+            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
 
     // Create new Adapter
-    assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options1);
     assignmentOverviewAdapterWeek1.addItemClickListener(this);
 
-    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options2);
     assignmentOverviewAdapterWeek2.addItemClickListener(this);
+
+    assignmentOverviewAdapterWeek3 = new AssignmentOverviewAdapter(options2);
+    assignmentOverviewAdapterWeek3.addItemClickListener(this);
 
     RvJoiner rvJoiner = new RvJoiner();
 
     rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
     rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
     rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek2));
     rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek3));
 
     //set join adapter to your RecyclerView
     recyclerView.setAdapter(rvJoiner.getAdapter());
@@ -237,6 +255,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStart() {
     super.onStart();
     assignmentOverviewAdapterWeek1.startListening();
+    assignmentOverviewAdapterWeek2.startListening();
+    assignmentOverviewAdapterWeek3.startListening();
 
 
   }
@@ -247,6 +267,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStop() {
     super.onStop();
     assignmentOverviewAdapterWeek1.stopListening();
+    assignmentOverviewAdapterWeek2.startListening();
+    assignmentOverviewAdapterWeek3.startListening();
   }
 
   @Override
