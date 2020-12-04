@@ -31,57 +31,13 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddUsersTest {
+public class UserChatTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void addUsersTest() {
-        ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.toSignIn), withText("Already have an account? Login here"),
-                        childAtPosition(
-                                allOf(withId(R.id.background_signup),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                8),
-                        isDisplayed()));
-        appCompatTextView.perform(click());
-
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.myEmail),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("signup@test.com"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.myPassword),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("signup"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.signin), withText("Sign In"),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
+    public void userChatTest() {
         ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
@@ -113,36 +69,37 @@ public class AddUsersTest {
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.searchUsers), withText("Add new users"),
+                allOf(withId(R.id.addedChat),
                         childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
+                                allOf(withId(R.id.actionsButtons2),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                6)),
+                                2),
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.searchAdd),
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.messageBox),
                         childAtPosition(
-                                allOf(withId(R.id.actionsButtons),
+                                allOf(withId(R.id.bottom),
                                         childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("Hi"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.sendMessage), withText("Send"),
+                        childAtPosition(
+                                allOf(withId(R.id.bottom),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                1)),
                                 1),
                         isDisplayed()));
         appCompatButton4.perform(click());
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.searchAdd),
-                        childAtPosition(
-                                allOf(withId(R.id.actionsButtons),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                1),
-                        isDisplayed()));
-        appCompatButton5.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -176,26 +133,6 @@ public class AddUsersTest {
                                 1),
                         isDisplayed()));
         appCompatImageButton3.perform(click());
-
-        ViewInteraction overflowMenuButton2 = onView(
-                allOf(withContentDescription("More options"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton2.perform(click());
-
-        ViewInteraction appCompatTextView3 = onView(
-                allOf(withId(R.id.title), withText("Logout"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatTextView3.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
