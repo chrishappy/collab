@@ -87,7 +87,6 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
             reference.child(firebaseUser.getUid()).setValue(token);
         }
     }
-
 }
 
 
