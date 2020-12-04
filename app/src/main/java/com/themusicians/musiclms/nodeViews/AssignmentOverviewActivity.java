@@ -35,6 +35,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import su.j2e.rvjoiner.JoinableAdapter;
+import su.j2e.rvjoiner.JoinableLayout;
+import su.j2e.rvjoiner.RvJoiner;
+
 /**
  * Displays the assignments
  *
@@ -50,7 +54,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
-  AssignmentOverviewAdapter assignmentOverviewAdapter; // Create Object of the Adapter class
+  AssignmentOverviewAdapter assignmentOverviewAdapterWeek1;
+  AssignmentOverviewAdapter assignmentOverviewAdapterWeek2; // Create Object of the Adapter class
   DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   /**
@@ -71,7 +76,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
 
-    ItemTouchHelper itemTouchHelper =
+    ItemTouchHelper itemTouchHelper1 =
         new ItemTouchHelper(
             new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
               @Override
@@ -93,7 +98,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
                 DataSnapshot snapshot =
-                    assignmentOverviewAdapter.getSnapshots().getSnapshot(position);
+                    assignmentOverviewAdapterWeek1.getSnapshots().getSnapshot(position);
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:
@@ -102,7 +107,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                         .show();
 
                     tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
-                    assignmentOverviewAdapter.notifyItemRemoved(position);
+                    assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
                     break;
 
                   case ItemTouchHelper.RIGHT:
@@ -113,20 +118,80 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                 }
 
                 // Remove item from backing list here
-                assignmentOverviewAdapter.notifyDataSetChanged();
+                assignmentOverviewAdapterWeek1.notifyDataSetChanged();
               }
             });
-    itemTouchHelper.attachToRecyclerView(recyclerView);
+    itemTouchHelper1.attachToRecyclerView(recyclerView);
+
+    ItemTouchHelper itemTouchHelper2 =
+            new ItemTouchHelper(
+                    new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                      @Override
+                      public boolean onMove(
+                              @NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                      }
+
+                      /**
+                       * To Delete on swipe:
+                       * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
+                       *
+                       * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
+                       * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                       */
+                      @Override
+                      public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        int position = viewHolder.getAdapterPosition();
+                        DataSnapshot snapshot =
+                                assignmentOverviewAdapterWeek2.getSnapshots().getSnapshot(position);
+
+                        switch (swipeDir) {
+                          case ItemTouchHelper.LEFT:
+                            Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null)
+                                    .show();
+
+                            tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
+                            assignmentOverviewAdapterWeek2.notifyItemRemoved(position);
+                            break;
+
+                          case ItemTouchHelper.RIGHT:
+                            Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null)
+                                    .show();
+                            break;
+                        }
+
+                        // Remove item from backing list here
+                        assignmentOverviewAdapterWeek2.notifyDataSetChanged();
+                      }
+                    });
+    itemTouchHelper2.attachToRecyclerView(recyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
     FirebaseRecyclerOptions<Assignment> options =
         new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(mbase, Assignment.class).build();
 
+
     // Create new Adapter
-    assignmentOverviewAdapter = new AssignmentOverviewAdapter(options);
-    assignmentOverviewAdapter.addItemClickListener(this);
-    recyclerView.setAdapter(assignmentOverviewAdapter);
+    assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapterWeek1.addItemClickListener(this);
+
+    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options);
+    assignmentOverviewAdapterWeek2.addItemClickListener(this);
+
+    RvJoiner rvJoiner = new RvJoiner();
+
+    rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
+    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+    rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
+    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+
+    //set join adapter to your RecyclerView
+    recyclerView.setAdapter(rvJoiner.getAdapter());
 
     // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
@@ -169,7 +234,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   @Override
   protected void onStart() {
     super.onStart();
-    assignmentOverviewAdapter.startListening();
+    assignmentOverviewAdapterWeek1.startListening();
 
 
   }
@@ -179,7 +244,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   @Override
   protected void onStop() {
     super.onStop();
-    assignmentOverviewAdapter.stopListening();
+    assignmentOverviewAdapterWeek1.stopListening();
   }
 
   @Override

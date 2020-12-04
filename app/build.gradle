@@ -71,6 +71,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test:rules:1.3.1-alpha02'
 
+    //Grouping assignment
+    implementation 'su.j2e:rv-joiner:1.0.9'
+
 }
 
 buildscript {
@@ -80,6 +83,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.android.tools.build:gradle:2.3.0'
     }
 }
 
