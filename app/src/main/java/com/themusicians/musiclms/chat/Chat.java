@@ -156,7 +156,7 @@ public class Chat extends AppCompatActivity {
   private void sendNotification(String receiver, String username, String message){
     Log.d("test24","test24");
     // line below
-    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("node__user");
+    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("recentText");
 
     Query query = tokens.orderByKey().equalTo(receiver);
     query.addValueEventListener(new ValueEventListener() {
@@ -173,7 +173,7 @@ public class Chat extends AppCompatActivity {
             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
               Log.d("random","randomness");
               if(response.code() == 200){
-
+                Log.d("test26","test26");
                 if(response.body().success !=1){
                   Toast.makeText(Chat.this,"failed",Toast.LENGTH_SHORT).show();
                 }
