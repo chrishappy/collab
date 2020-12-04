@@ -3,7 +3,7 @@
     <string name="title_activity_signin">Sign In</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -15,7 +15,7 @@
     <string name="or">Or</string>
     <string name="already_an_user_click_here_to_be_redirected_to_login_page">Already An User click here to be redirected to login page</string>
     <string name="create_account">Create account</string>
-    <string name="user__signup__Im_a">"I'm a..."</string>
+    <string name="user__signup__Im_a">"I'm a…"</string>
 
     <string name="title_activity_assignment_create_form">Create Assignment</string>
     <string name="assignment__form__user_class">Student To Assign</string>
@@ -39,7 +39,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="attachment_dialog__add__comment">Add a comment</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="placeholder">PLACEHOLDER</string>
     <string name="assignment__overview__author_label">Author:</string>
@@ -78,6 +78,42 @@
     <string name="add_recording">Add Recording</string>
     <string name="add_recording_feedback__text">Add feedback text</string>
     <string name="add_recording_feedback__save">Save Feedback</string>
+    <string name="hello">hello</string>
+    <string name="please_add_comment">Please enter your comment</string>
+    <string name="comment">comment</string>
+    <string name="please_add_file">Please add file</string>
+    <string name="Write_a_message">Write a message...</string>
+    <string name="user_name">Name</string>
+    <string name="Add_New_Users">Add new users</string>
+    <string name="Name_">Name:</string>
+    <string name="Email_">Email:</string>
+    <string name="Role_">Role:</string>
+    <string name="Add">Add</string>
+    <string name="Type_a_message">Type a message...</string>
+    <string name="Send">Send</string>
+    <string name="Enter_New_Name">Enter new name</string>
+    <string name="Enter_New_Email">Enter new email</string>
+    <string name="Confirm">Confirm</string>
+    <string name="Reset_Password">Reset Password</string>
+    <string name="Back">Back</string>
+    <string name="Edit_Data">Edit Data</string>
+    <string name="Enter_instruments_here">Enter instruments here</string>
+    <string name="or_Register_an_account_here">or Register an account here</string>
+    <string name="Preferred_Name">Preferred Name</string>
+    <string name="Hi">Hi, I am ...</string>
+    <string name="Teacher">Teacher</string>
+    <string name="Student">Student</string>
+    <string name="Select_Role">Select A Role To Continue</string>
+    <string name="have_account">Already have an account? Login here</string>
+    <string name="experience">I have experience ...</string>
+    <string name="Sending">Sending a text message</string>
+    <string name="Phone">Making a Phone call</string>
+    <string name="Zoom">Joining a Zoom call</string>
+    <string name="Schedule_Zoom">Schedule a Zoom call</string>
+    <string name="Watching_YouTube">Watching a YouTube video</string>
+    <string name="Uploading_YouTube">Uploading a YouTube video</string>
+    <string name="Finish">Finish</string>
+    <string name="Logout">Logout</string>
     <string name="user_preferred_name">Preferred Name</string>
     <string name="user_hi_i_am">Hi, I am ...</string>
     <string name="user_signup_email">Email</string>
@@ -118,5 +154,4 @@
     <string name="assignment_overview__user_profile">User Profile</string>
     <string name="assignment_overview__logout">Logout</string>
     <string name="attachment__pdf_ppload_preview">A file is selected : %s</string>
-    <string name="add_users">add users</string>
 </resources>

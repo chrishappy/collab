@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="toSearchUsers"
-        android:text="@string/add_new_users"
+        android:text="@string/Add_New_Users"
         app:layout_constraintBottom_toTopOf="@+id/addedUsers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

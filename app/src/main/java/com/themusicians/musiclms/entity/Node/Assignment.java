@@ -40,6 +40,8 @@ public class Assignment extends Node {
 
   protected int countOfDoneToDos = 0;
 
+  protected List<String> userID;
+
 //  protected Stack<String> todosID;
 
   protected Map<String, Boolean> toDoIds;
@@ -145,7 +147,14 @@ public class Assignment extends Node {
 
   /** Settings and Getters */
   public List<String> getAssignees() {
+    if (assignees == null) {
+      assignees = new LinkedList<>();
+    }
     return assignees;
+  }
+
+  public void addAssignees(String assignees) {
+    getAssignees().add(assignees);
   }
 
   public void setAssignees(List<String> assignees) {

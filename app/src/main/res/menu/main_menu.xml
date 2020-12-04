@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/userprofile"
-        android:title="@string/assignment_overview__user_profile"
+        android:title="@string/title_activity_user_main_profile"
         app:showAsAction="never"/>
 
 <!--    <item android:id="@+id/createassignment"-->
-<!--        android:title="Create Assignment"-->
+<!--        android:title="@string/title_activity_assignment_create_form"-->
 <!--        app:showAsAction="never"/>-->
 
     <item android:id="@+id/logout"
-        android:title="@string/assignment_overview__logout"
+        android:title="@string/Logout"
         app:showAsAction="never"/>
 
 

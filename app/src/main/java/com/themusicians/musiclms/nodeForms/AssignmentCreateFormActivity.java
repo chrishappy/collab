@@ -27,6 +27,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
@@ -163,32 +165,30 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     final MultiAutoCompleteTextView StudentOrClass = findViewById(R.id.students_or_class);
     final EditText dueDate = findViewById(R.id.dueDate);
 
+    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
     // Show user auto complete
     // Create a new ArrayAdapter with your context and the simple layout for the dropdown menu
     // provided by Android
-    final ArrayAdapter<String> autoComplete =
-        new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-    // Child the root before all the push() keys are found and add a ValueEventListener()
-    tempUser
-        .getEntityDatabase()
-        .addValueEventListener(
-            new ValueEventListener() {
-              @Override
-              public void onDataChange(DataSnapshot dataSnapshot) {
-                // Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's
-                // inside the method.
-                for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
-                  // Get the suggestion by childing the key of the string you want to get.
+      final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line);
+      //Child the root before all the push() keys are found and add a ValueEventListener()
+      tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+              //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+              for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
+                  //Get the suggestion by childing the key of the string you want to get.
                   String suggestion = suggestionSnapshot.child("name").getValue(String.class);
-                  // Add the retrieved string to the list
+                  //Add the retrieved string to the list
                   autoComplete.add(suggestion);
-                }
               }
-
-              @Override
-              public void onCancelled(DatabaseError databaseError) {}
-            });
-    StudentOrClass.setAdapter(autoComplete);
+          }
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+          }
+      });
+      StudentOrClass.setAdapter(autoComplete);
+      StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);
