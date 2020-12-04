@@ -73,7 +73,7 @@ public abstract class Node extends Entity {
    * <p>Assumes assignment has an id
    */
   @Exclude
-  public DatabaseReference getAttachmentsReference() {
+  public DatabaseReference getAttachmentsKeyReference() {
     return getEntityDatabase().child(getId()).child(attachmentName);
   }
 

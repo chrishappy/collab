@@ -157,7 +157,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       assignment = new Assignment(editEntityId);
     } else {
       assignment = new Assignment();
+      assignment.setUid(currentUser.getUid());
     }
+
     setContentView(R.layout.activity_assignment_create_form);
 
     // Get fields
@@ -257,9 +259,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           assignment.setClassId(StudentOrClass.getText().toString());
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
-          assignment.setUid(currentUser.getUid());
           assignment.setCountOfTotalToDos();
-          //            assignment.setAttachmentIds( null );
           assignment.save();
 
           finish();
@@ -341,7 +341,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
-    assignment.setUid(currentUser.getUid());
     assignment.save();
 
     // Save the user's current game state
@@ -362,9 +361,30 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
           if (assignment.getToDoIds().get(toDoId) == null) {
-            assignment.addToDoId(toDoId);
-//            assignment.pushToDos(toDoId);
-            assignment.save();
+            assignment
+                .getToDoItemsKeyQuery()
+                .child(toDoId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                    boolean isComplete = (Boolean) dataSnapshot.getValue();
+
+                    assignment.addToDoId(toDoId, isComplete);
+                    assignment.save();
+
+                    Log.w(LOAD_ENTITY_DATABASE_TAG, "update to do item successful");
+                  }
+
+                  @Override
+                  public void onCancelled(@NotNull DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(
+                        LOAD_ENTITY_DATABASE_TAG,
+                        "update to do item failed",
+                        databaseError.toException());
+
+                  }
+                });
 
             // Display notification
             Snackbar.make(

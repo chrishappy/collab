@@ -34,8 +34,6 @@ import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /**
  * Used to create and update assignments node entities
  *
@@ -95,7 +93,7 @@ public class ToDoViewActivity extends NodeViewActivity {
                   toDoItemName.setText(toDoItem.getName());
 
                   // Set checked
-                  toDoCheck.setChecked(toDoItem.getcompleteToDo());
+                  toDoCheck.setChecked(toDoItem.getCompleteToDo());
 
                   seekToButton.setOnClickListener(v -> {
                     Toast.makeText(ToDoViewActivity.this, "Seek Button clicked. Time:", Toast.LENGTH_LONG).show();
@@ -178,7 +176,7 @@ public class ToDoViewActivity extends NodeViewActivity {
     // To Do Checkbox
     toDoCheck = findViewById(R.id.complete_to_do_itemCB);
     toDoCheck.setOnClickListener(view -> {
-      toDoItem.setcompleteToDo(toDoCheck.isChecked());
+      toDoItem.setCompleteToDo(toDoCheck.isChecked());
       toDoItem.save();
     });
 

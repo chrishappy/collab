@@ -81,6 +81,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   FirebaseStorage storage; // used for upload files
   ProgressDialog progressDialog;
 
+  /** The Save Attachment Button */
+  private Button addAttachment;
+
   /** Receive the entity id of the attachment to edit */
   public static ShowAllAttachmentsFragment newInstance(String parentNodeId) {
     ShowAllAttachmentsFragment fragment = new ShowAllAttachmentsFragment();
@@ -113,8 +116,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   @Override
   public void onStart() {
     super.onStart();
-    if (nodeToBeEdited.getId() != null) {
+    if (nodeToBeEdited != null && nodeToBeEdited.getId() != null) {
       initShowAttachmentRecyclerView();
+      addAttachment.setVisibility(View.VISIBLE);
       showAllAttachmentsAdapter.startListening();
     }
   }
@@ -135,8 +139,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     View root = inflater.inflate(R.layout.fragment_show_attachments, container, false);
 
     // Add attachment
-    final Button addAttachment = root.findViewById(R.id.add_attachment_button);
-//    final NestedScrollView scrollContainer = root.findViewById(R.id.attachmentContainer);
+    addAttachment = root.findViewById(R.id.add_attachment_button);
     addAttachment.setOnClickListener(view -> {
       showCreateAttachmentPopup(addAttachment);
     });
@@ -196,11 +199,10 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
             });
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
-    AllAttachment tempAllAttachment = new AllAttachment();
     FirebaseRecyclerOptions<AllAttachment> options =
         new FirebaseRecyclerOptions.Builder<AllAttachment>()
-            .setQuery(tempAllAttachment.getEntityDatabase(), AllAttachment.class)
-//            .setIndexedQuery(nodeToBeEdited.getAttachmentsReference(), tempAllAttachment.getEntityDatabase(), AllAttachment.class)
+//            .setQuery(tempAllAttachment.getEntityDatabase(), AllAttachment.class)
+            .setIndexedQuery(nodeToBeEdited.getAttachmentsKeyReference(), attachment.getEntityDatabase(), AllAttachment.class)
             .build();
 
     // Create new Adapter
@@ -287,8 +289,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
           // Add the attachment to the node
           nodeToBeEdited
-              .addAttachmentId(attachment.getId())
-              .save();
+              .getAttachmentsKeyReference()
+              .child(attachment.getId())
+              .setValue(true);
 
           // Display notification
           String saveMessage = (editEntityId != null) ? "Attachment updated" : "Attachment Saved";

@@ -48,22 +48,13 @@ public class ToDoAssignmentFormAdapter
           }
         };
 
-    if (toDoItem.getcompleteToDo() == true) {
-      holder.toDoCheck.setChecked(true);
-    }else{
-      holder.toDoCheck.setChecked(false);
-    }
-
+    // Set up the checkbox for to items
+    holder.toDoCheck.setChecked(toDoItem.getCompleteToDo());
     holder.toDoCheck.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (holder.toDoCheck.isChecked()){
-          toDoItem.setcompleteToDo(true);
-          toDoItem.save();
-        }else{
-          toDoItem.setcompleteToDo(false);
-          toDoItem.save();
-        }
+        toDoItem.setCompleteToDo(holder.toDoCheck.isChecked());
+        toDoItem.save();
       }
     });
 

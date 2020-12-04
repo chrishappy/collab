@@ -33,7 +33,7 @@ public class ShowAllAttachmentsAdapter
   private ItemClickListener itemClickListener;
 
   public final static String editAllAttachments = "editAllAttachments";
-  public final static String SHOW_PDF = "show_pdf";
+  public final static String SHOW_PDF = "SHOW_PDF";
 
   public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
     super(options);

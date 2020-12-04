@@ -78,7 +78,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     ItemTouchHelper itemTouchHelper1 =
         new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT /*| ItemTouchHelper.RIGHT */) {
               @Override
               public boolean onMove(
                   @NonNull RecyclerView recyclerView,
@@ -100,21 +100,20 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                 DataSnapshot snapshot =
                     assignmentOverviewAdapterWeek1.getSnapshots().getSnapshot(position);
 
-                switch (swipeDir) {
-                  case ItemTouchHelper.LEFT:
-                    Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
+                if (swipeDir == ItemTouchHelper.LEFT) {
+                  Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
+                      .setAction("Action", null)
+                      .show();
 
                     tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
                     assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
-                    break;
+//                    break;
 
-                  case ItemTouchHelper.RIGHT:
-                    Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
+//                  case ItemTouchHelper.RIGHT:
+//                    Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
                 }
 
                 // Remove item from backing list here

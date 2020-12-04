@@ -149,8 +149,10 @@ public class Assignment extends Node {
   @Override
   public void postSave() {
     // Add assignment to user
-    User tempUser = new User(getUid());
-    tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+    if (getUid() != null) {
+      User tempUser = new User(getUid());
+      tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+    }
   }
 
   /**
@@ -247,6 +249,10 @@ public class Assignment extends Node {
 
   public void addToDoId(String toDoId) {
     getToDoIds().put(toDoId, true);
+  }
+
+  public void addToDoId(String toDoId, Boolean completed) {
+    getToDoIds().put(toDoId, completed);
   }
 
   public void setToDoIds(Map<String, Boolean> toDoIds) {

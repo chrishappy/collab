@@ -32,6 +32,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Used to create and update assignments node entities
@@ -101,7 +102,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   assignmentMarked.setChecked(assignment.getAssignmentMarked());
 
                   // If the author/teacher, show edit + marked checkbox
-                  if (assignment.getUid().matches(currentUser.getUid())) {
+                  if (Objects.equals(assignment.getUid(), currentUser.getUid())) {
                     editButton.setVisibility(View.VISIBLE);
 
                     if (assignment.getAssignmentComplete()) {
