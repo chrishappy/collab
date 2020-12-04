@@ -75,9 +75,9 @@ public class AssignmentOverviewAdapter
               });
     }
 
-    if (assignment.getClassId() != null) {
+    /*if (assignment.getClassId() != null) {
       holder.userName.setText(assignment.getClassId());
-    }
+    }*/
 
     if (assignment.getDueDate() != 0) {
       Date date = new Date(assignment.getDueDate() * 1000);
@@ -138,7 +138,7 @@ public class AssignmentOverviewAdapter
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
       dueDate = itemView.findViewById(R.id.dueDate);
-      userName = itemView.findViewById(R.id.userName);
+      //userName = itemView.findViewById(R.id.userName);
 
       // editAssignment = itemView.findViewById(R.id.edit_button);
       // viewAssignment = itemView.findViewById(R.id.view_button);

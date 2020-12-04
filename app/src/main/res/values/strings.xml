@@ -118,5 +118,5 @@
     <string name="assignment_overview__user_profile">User Profile</string>
     <string name="assignment_overview__logout">Logout</string>
     <string name="attachment__pdf_ppload_preview">A file is selected : %s</string>
-    <string name="add_users">add_users</string>
+    <string name="add_users">add users</string>
 </resources>

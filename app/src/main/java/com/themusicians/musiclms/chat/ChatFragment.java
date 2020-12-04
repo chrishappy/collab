@@ -68,9 +68,7 @@ public class ChatFragment extends Fragment {
                   userList.add(chat.getSender());
                 }
               }
-
           }
-
           @Override
           public void onCancelled(@NonNull DatabaseError error) {
 
@@ -78,7 +76,6 @@ public class ChatFragment extends Fragment {
         });
         updateToken(FirebaseInstanceId.getInstance().getToken());
         return view;
-
     }
 
     private void updateToken(String token){
