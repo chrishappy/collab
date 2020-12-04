@@ -40,6 +40,8 @@ public class Assignment extends Node {
 
   protected int countOfDoneToDos = 0;
 
+  protected List<String> userID;
+
 //  protected Stack<String> todosID;
 
   protected Map<String, Boolean> toDoIds;

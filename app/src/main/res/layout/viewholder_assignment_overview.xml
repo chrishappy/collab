@@ -70,7 +70,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
 
-            android:text="@string/assignment__form__due_date"
+            android:text="Due Date"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/authorNameLabel" />
@@ -158,9 +158,10 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/actionsButtons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userName" />
+            app:layout_constraintTop_toBottomOf="@+id/dueDate" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -52,7 +53,8 @@ public class AssignmentViewActivity extends NodeViewActivity
   private TextView StudentOrClass;
   private TextView dueDate;
   private CheckBox assignmentCheck;
-  private Button editButton;
+  //bprivate Button editButton;
+  FloatingActionButton fab = findViewById(R.id.editB);
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
@@ -95,7 +97,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   String userid = currentUser.getUid();
 
                   if(assignment.getUid().matches(userid)){
-                    editButton.setVisibility(View.VISIBLE);
+                    fab.setVisibility(View.VISIBLE);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
@@ -160,7 +162,8 @@ public class AssignmentViewActivity extends NodeViewActivity
     StudentOrClass = findViewById(R.id.students_or_class);
     dueDate = findViewById(R.id.dueDate);
     assignmentCheck = findViewById(R.id.assignment_completedCB);
-    editButton = findViewById(R.id.auth_edit_button);
+    //editButton = findViewById(R.id.auth_edit_button);
+    fab = findViewById(R.id.editB);
 
     assignmentCheck.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -178,10 +181,10 @@ public class AssignmentViewActivity extends NodeViewActivity
     String userid = currentUser.getUid();
 
     if(assignment.getUid() == userid) {
-      editButton.setVisibility(View.VISIBLE);
+      fab.setVisibility(View.VISIBLE);
     }
 
-    editButton.setOnClickListener(new View.OnClickListener() {
+    fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
