@@ -82,7 +82,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(firebaseUser.getUid()).child("recentText");
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("node__user");
             Token token = new Token(refreshToken);
             reference.child(firebaseUser.getUid()).setValue(token);
         }
