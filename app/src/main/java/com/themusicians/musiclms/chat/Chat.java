@@ -164,7 +164,7 @@ public class Chat extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for(DataSnapshot snapshot :dataSnapshot.getChildren()){
           Token token = snapshot.getValue(Token.class);
-          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
+          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"New Message",toMessageID);
 
           Sender sender = new Sender(data, token.getToken());
           Log.d("test26","test26");
