@@ -77,7 +77,7 @@ public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
     feedbackTime.setOnClickListener(view -> {
       itemClickListener.onToDoRecordingFeedbackClick("feedbackTimeclicked", Integer.decode(feedbackParts[2]), position);
     });
-    feedbackText.setText(feedbackParts[3]);
+    feedbackText.setText(feedbackParts[1]);
 
     // Return the completed view to render on screen
     return convertView;
