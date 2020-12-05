@@ -423,7 +423,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 //    progressDialog.setProgress(0);
 //    progressDialog.show();
 
-    final String fileName = System.currentTimeMillis() + "";
+    final String fileName = System.currentTimeMillis() + ".pdf";
     StorageReference storageReference = storage.getReference();
 
     storageReference

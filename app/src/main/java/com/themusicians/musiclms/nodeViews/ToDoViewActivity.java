@@ -417,7 +417,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 //        cursor.close();
 //    }
 //    return null;
-//  }
+//
 
   /**
    * When clicking an item of the feedback

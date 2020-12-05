@@ -54,6 +54,8 @@ public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
     String feedback = getItem(position);
     String[] feedbackParts = feedback.split("|", 2);
     String[] timeParts;
+
+    // Calculate time from 23:01
     if (feedbackParts.length == 2) {
       timeParts = feedbackParts[1].split(":", 2);
     }
