@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.themusicians.musiclms.Notifications.Client;
 import com.themusicians.musiclms.Notifications.Data;
 import com.themusicians.musiclms.Notifications.MyResponse;
@@ -76,9 +75,6 @@ public class Chat extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
     linearLayoutManager.setStackFromEnd(true);
     recyclerView.setLayoutManager(linearLayoutManager);
-
-    updateToken(FirebaseInstanceId.getInstance().getToken());
-
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,7 +105,6 @@ public class Chat extends AppCompatActivity {
         notify = true;
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
-          Log.d("test1","test12");
           sendMessage(currentUser.getUid(), toMessageID, msg);
 //          sendNotification(toMessageID,currentUser.getUid(),msg);
 
@@ -184,10 +179,8 @@ public class Chat extends AppCompatActivity {
    * @param message the message to send
    */
   private void sendNotification(String receiver, String username, String message){
-//    Log.d("test24","test24");
-//    // line below
-//    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("Tokens");
-//    Log.d("test25",tokens.toString());
+
+//    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
 //    Query query = tokens.orderByKey().equalTo(receiver);
 //    Log.d("test27", String.valueOf(query));
 //    query.addValueEventListener(new ValueEventListener() {

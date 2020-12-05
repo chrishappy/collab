@@ -176,11 +176,11 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
             if (isNew == false) {
               Toast.makeText(
                 context,
-                list.get(position).getName() + " is already added",
+                list.get(position).getName() + context.getString(R.string.already_added),
                 Toast.LENGTH_SHORT)
                 .show();
             } else if (list.get(position).getId().equals(currUser.getId())) {
-              Toast.makeText(context, "Cannot add self", Toast.LENGTH_SHORT).show();
+              Toast.makeText(context, R.string.cannot_add, Toast.LENGTH_SHORT).show();
             } else {
               /** Adds currentUser to the added user */
               other = new User(list.get(position).getId());
@@ -252,7 +252,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
               currUser.setAddedUsers(userList);
               currUser.save();
               Toast.makeText(
-                context, list.get(position).getName() + " added", Toast.LENGTH_SHORT)
+                context, list.get(position).getName() + context.getString(R.string.added), Toast.LENGTH_SHORT)
                 .show();
             }
           }

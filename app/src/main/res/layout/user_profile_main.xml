@@ -29,7 +29,17 @@
             android:text="@string/action_Language"
             android:background="#ff6347"
             android:textColor="#fff"
-            android:layout_margin="20dp"/>
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/toAnalysis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_analysis"
+            android:background="#ff6347"
+            android:textColor="#fff"
+            android:onClick="toAnalysis"
+            android:layout_marginRight="10dp"/>
 
         <Button
             android:id="@+id/toEditData"

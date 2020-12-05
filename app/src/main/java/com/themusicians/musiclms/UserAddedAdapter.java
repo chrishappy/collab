@@ -208,7 +208,7 @@ public class UserAddedAdapter extends RecyclerView.Adapter<UserAddedAdapter.MyVi
 
         currUser.setAddedUsers(addedList);
         currUser.save();
-        Toast.makeText(context, list.get(position).getName() + " has been deleted.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, list.get(position).getName() + context.getString(R.string.user_deleted), Toast.LENGTH_SHORT).show();
       }
 
       @Override
