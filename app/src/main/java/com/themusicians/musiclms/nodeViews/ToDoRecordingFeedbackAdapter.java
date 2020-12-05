@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,15 +53,16 @@ public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
   public View getView(int position, View convertView, ViewGroup parent) {
     // Get the data item for this position
     String feedback = getItem(position);
-    String[] feedbackParts = feedback.split("|", 2);
-    String[] timeParts;
+    String[] feedbackParts = feedback.split(" [|] ", 2);
+    String[] timeParts = feedbackParts[0].split("[:]", 2);
+    String feedbackPart = "";
 
-    // Calculate time from 23:01
-    if (feedbackParts.length == 2) {
-      timeParts = feedbackParts[1].split(":", 2);
+    if (timeParts.length != 2 || feedbackParts.length != 2) {
+      timeParts = new String[]{"xx", "xx"};
+      feedbackPart = getContext().getString(R.string.to_do_view__error_feedback);
     }
     else {
-      timeParts = new String[]{"00", "00"};
+      feedbackPart = feedbackParts[1];
     }
 
     // Check if an existing view is being reused, otherwise inflate the view
@@ -69,15 +71,19 @@ public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
     }
 
     // Lookup view for data population
-    TextView feedbackTime = convertView.findViewById(R.id.recording_feedback__time);
-    TextView feedbackText = convertView.findViewById(R.id.recording_feedback__text);
+    final TextView feedbackTime = convertView.findViewById(R.id.recording_feedback__time);
+    final TextView feedbackText = convertView.findViewById(R.id.recording_feedback__text);
 
     // Populate the data into the template view using the data object
     feedbackTime.setText(String.format("%s:%s", timeParts[0], timeParts[1]));
+    feedbackText.setText(feedbackPart);
+
+    // On item click
+    final LinearLayout feedbackLayout = convertView.findViewById(R.id.recording_feedback);
+    int timeToSkip = (Integer.decode(timeParts[0]) * 60) + Integer.decode(timeParts[1]);
     feedbackTime.setOnClickListener(view -> {
-      itemClickListener.onToDoRecordingFeedbackClick("feedbackTimeclicked", Integer.decode(feedbackParts[2]), position);
+      itemClickListener.onToDoRecordingFeedbackClick("feedbackTimeClicked", timeToSkip, position);
     });
-    feedbackText.setText(feedbackParts[1]);
 
     // Return the completed view to render on screen
     return convertView;

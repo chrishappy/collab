@@ -288,10 +288,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
           attachment.save();
 
           // Add the attachment to the node
-          nodeToBeEdited
-              .getAttachmentsKeyReference()
-              .child(attachment.getId())
-              .setValue(true);
+          nodeToBeEdited.addAttachmentIdDirectlyToDatabase(attachment.getId());
 
           // Display notification
           String saveMessage = (editEntityId != null) ? "Attachment updated" : "Attachment Saved";

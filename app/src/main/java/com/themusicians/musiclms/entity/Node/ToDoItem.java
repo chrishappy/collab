@@ -42,6 +42,12 @@ public class ToDoItem extends Node {
 
   protected Object timeCompleted;
 
+  /**
+   * For saving recordings
+   */
+  public static final String feedbackFormat = "%02d:%02d | %s";
+
+
   /** The default constructor for Firebase + loadMultiple */
   public ToDoItem() {
     super();
@@ -124,6 +130,13 @@ public class ToDoItem extends Node {
     }
 
     return recordingFeedback;
+  }
+
+  public void addRecordingFeedback(int timeInSeconds, String feedback){
+    int minutes = timeInSeconds / 60;
+    int seconds = timeInSeconds % 60;
+
+    addRecordingFeedback(String.format(feedbackFormat, minutes, seconds, feedback));
   }
 
   public void addRecordingFeedback(String recordingFeedbackString) {

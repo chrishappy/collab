@@ -152,7 +152,7 @@
     <string name="user_profile__edit_data">Edit Data</string>
 
     <!-- Attachments -->
-    <string name="add_attachment">Add Attachment</string>
+    <string name="add_attachment">+ Attachment</string>
     <string name="assignment_overview__user_profile">User Profile</string>
     <string name="assignment_overview__logout">Logout</string>
     <string name="attachment__pdf_ppload_preview">A file is selected : %s</string>
@@ -188,4 +188,6 @@
     <string name="user_deleted"> has been deleted.</string>
     <string name="cannot_add">Cannot add self</string>
     <string name="added"> added</string>
+    <string name="to_do_item__change_recording">Change Recording</string>
+    <string name="to_do_view__error_feedback">Error parsing feedback</string>
 </resources>

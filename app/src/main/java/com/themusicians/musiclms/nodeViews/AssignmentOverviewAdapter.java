@@ -91,7 +91,10 @@ public class AssignmentOverviewAdapter
     int totalToDosCount = assignment.getCountOfTotalToDos();
     if (totalToDosCount != 0) {
       int amountOfProgress = assignment.getCountOfDoneToDos() / totalToDosCount;
-      holder.progressBar.setProgress(amountOfProgress);
+      holder.progressBar.setProgress(amountOfProgress * 100, true);
+    }
+    else {
+      holder.progressBar.setProgress(20, true);
     }
 
 //    holder.editAssignment.setOnClickListener(
