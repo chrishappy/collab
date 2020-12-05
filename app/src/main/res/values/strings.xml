@@ -72,12 +72,13 @@
     <string name="completed">Completed</string>
 
     <!-- Youtube -->
+    <string name="addYoutubeUrl">YouTube Url</string>
+    <string name="shareVideo">Share Video to Youtube</string>
     <string name="player_error">Error initializing YouTube player: %s</string>
-    <string name="seek_to">Jump To</string>
+    <string name="seek_to">Go</string>
     <string name="seek_to_hint">Seconds</string>
     <string name="add_recording">Add Recording</string>
     <string name="add_recording_feedback__text">Add feedback text</string>
-    <string name="add_recording_feedback__save">Save Feedback</string>
     <string name="hello">hello</string>
     <string name="please_add_comment">Please enter your comment</string>
     <string name="comment">comment</string>
@@ -137,6 +138,7 @@
     <!-- User -->
     <string name="signin_login">Login</string>
     <string name="sign_in">Sign In</string>
+    <string name="add_users">Add Users</string>
     <string name="signin_or_register_an_account_here">or Register an account here</string>
     <string name="name">Name:</string>
     <string name="email">Email:</string>
@@ -160,7 +162,30 @@
     <string name="edit_assignment">Edit Assignment</string>
     <string name="assignment__student_done">Done?</string>
     <string name="assignment__teacher_marked">Marked?</string>
-    <string name="Due_in_One_Week">Due in One Week</string>
+    <string name="Due_in_One_Week">Due in One or Less Weeks</string>
     <string name="Due_in_Two_Week">Due in Two Weeks</string>
     <string name="Due_in_Three_Week">Due in Three or More Weeks</string>
+    <string name="user_analysis">Analysis</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="email_password">Enter your email to receive password reset link</string>
+    <string name="error_link">Error! Reset link not sent</string>
+    <string name="link_sent">Resent link sent to email</string>
+    <string name="no_instrument">No instrument entered</string>
+    <string name="already_added"> is already added</string>
+    <string name="instrument_added">Instrument added</string>
+    <string name="email_updated">Email updated</string>
+    <string name="name_updated">Name updated</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="key">Key</string>
+    <string name="user_created">User Created</string>
+    <string name="email_error">Email is Required.</string>
+    <string name="password_error">Password is Required</string>
+    <string name="password_length_error">Password must be more than 5 characters</string>
+    <string name="name_error">Name is Required</string>
+    <string name="name_created">User Created</string>
+    <string name="error">Error</string>
+    <string name="user_deleted"> has been deleted.</string>
+    <string name="cannot_add">Cannot add self</string>
+    <string name="added"> added</string>
 </resources>

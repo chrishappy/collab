@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
+import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,6 +42,8 @@ import java.util.Objects;
 // database contents in a Recycler View
 public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
 
+  private ItemClickListener itemClickListener;
+
   public ToDoRecordingFeedbackAdapter(Context context, @NonNull List<String> items) {
     super(context, 0, items);
   }
@@ -51,6 +54,8 @@ public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
     String feedback = getItem(position);
     String[] feedbackParts = feedback.split("|", 2);
     String[] timeParts;
+
+    // Calculate time from 23:01
     if (feedbackParts.length == 2) {
       timeParts = feedbackParts[1].split(":", 2);
     }
@@ -69,10 +74,25 @@ public class ToDoRecordingFeedbackAdapter extends ArrayAdapter<String> {
 
     // Populate the data into the template view using the data object
     feedbackTime.setText(String.format("%s:%s", timeParts[0], timeParts[1]));
+    feedbackTime.setOnClickListener(view -> {
+      itemClickListener.onToDoRecordingFeedbackClick("feedbackTimeclicked", Integer.decode(feedbackParts[2]), position);
+    });
     feedbackText.setText(feedbackParts[3]);
 
     // Return the completed view to render on screen
     return convertView;
+  }
 
+  /**
+   * Allow users to click the edit button
+   *
+   * <p>From: https://stackoverflow.com/questions/39551313/
+   */
+  public interface ItemClickListener {
+    void onToDoRecordingFeedbackClick(String type, int time, int position);
+  }
+
+  public void addItemClickListener(ItemClickListener listener) {
+    itemClickListener = listener;
   }
 }

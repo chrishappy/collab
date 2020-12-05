@@ -36,6 +36,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/sendMessage"
             android:text="@string/chat_send"
+            android:background="#ff6347"
+            android:textColor="#fff"
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>

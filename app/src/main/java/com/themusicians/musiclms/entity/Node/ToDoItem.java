@@ -1,5 +1,7 @@
 package com.themusicians.musiclms.entity.Node;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -65,7 +67,9 @@ public class ToDoItem extends Node {
    */
   @Override
   public void postSave() {
-    updateAttachedAssignment();
+    if (getAttachedAssignment() != null) {
+      updateAttachedAssignment();
+    }
   }
 
   /**
@@ -73,7 +77,11 @@ public class ToDoItem extends Node {
    */
   @Exclude
   public Assignment getAttachedAssignmentEntity() {
-    return (assignment == null) ? new Assignment(getAttachedAssignment()) : assignment;
+    if (assignment == null) {
+      assignment = new Assignment(getAttachedAssignment());
+    }
+    Log.w("testing", "Assignment id is: " + assignment.getId());
+    return assignment;
   }
 
   /**
@@ -111,15 +119,15 @@ public class ToDoItem extends Node {
 
   /** The recording feedback fields */
   public List<String> getRecordingFeedback() {
-    return recordingFeedback;
-  }
-
-  public void addRecordingFeedback(String recordingFeedbackString) {
     if (this.recordingFeedback == null) {
       recordingFeedback = new ArrayList<>();
     }
 
-    recordingFeedback.add(recordingFeedbackString);
+    return recordingFeedback;
+  }
+
+  public void addRecordingFeedback(String recordingFeedbackString) {
+    getRecordingFeedback().add(recordingFeedbackString);
     Collections.sort(recordingFeedback);
   }
 

@@ -74,7 +74,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user email is empty
            */
           if (TextUtils.isEmpty(email)) {
-            newEmail.setError("Email is Required.");
+            newEmail.setError(getString(R.string.email_error));
             return;
           }
 
@@ -82,7 +82,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user password is empty
            */
           if (TextUtils.isEmpty(password)) {
-            newPassword.setError("Password is Required");
+            newPassword.setError(getString(R.string.password_error));
             return;
           }
 
@@ -90,7 +90,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user password is at least 6 characters
            */
           if (password.length() < 6) {
-            newPassword.setError("Password must be more than 5 characters");
+            newPassword.setError(getString(R.string.password_length_error));
             return;
           }
 
@@ -98,7 +98,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user name is empty
            */
           if (TextUtils.isEmpty(name)) {
-            newName.setError("Name is Required");
+            newName.setError(getString(R.string.name_error));
             return;
           }
 
@@ -130,12 +130,12 @@ public class SignUp extends AppCompatActivity {
                           FirebaseDatabase.getInstance().getReference().child("node__isTeacher");
                       reference.child(currentUser.getUid()).setValue(true);
 
-                      Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(SignUp.this, R.string.user_created, Toast.LENGTH_SHORT).show();
                       setContentView(R.layout.user_signup_tech);
                     } else {
                       Toast.makeText(
                               SignUp.this,
-                              "Error" + task.getException().getMessage(),
+                              getString(R.string.error) + task.getException().getMessage(),
                               Toast.LENGTH_SHORT)
                           .show();
                     }
@@ -155,7 +155,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user email is empty
            */
           if (TextUtils.isEmpty(email)) {
-            newEmail.setError("Email is Required.");
+            newEmail.setError(getString(R.string.email_error));
             return;
           }
 
@@ -163,7 +163,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user password is empty
            */
           if (TextUtils.isEmpty(password)) {
-            newPassword.setError("Password is Required");
+            newPassword.setError(getString(R.string.password_error));
             return;
           }
 
@@ -171,7 +171,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user password is at least 6 characters
            */
           if (password.length() < 6) {
-            newPassword.setError("Password must be more than 5 characters");
+            newPassword.setError(getString(R.string.password_length_error));
             return;
           }
 
@@ -179,7 +179,7 @@ public class SignUp extends AppCompatActivity {
            * Checks if user name is empty
            */
           if (TextUtils.isEmpty(name)) {
-            newName.setError("Name is Required");
+            newName.setError(getString(R.string.name_error));
             return;
           }
 
@@ -207,12 +207,12 @@ public class SignUp extends AppCompatActivity {
                       newUser.setRole("student");
                       newUser.save();
 
-                      Toast.makeText(SignUp.this, "User Created", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(SignUp.this, R.string.name_created, Toast.LENGTH_SHORT).show();
                       setContentView(R.layout.user_signup_tech);
                     } else {
                       Toast.makeText(
                               SignUp.this,
-                              "Error" + task.getException().getMessage(),
+                              getString(R.string.error) + task.getException().getMessage(),
                               Toast.LENGTH_SHORT)
                           .show();
                     }
