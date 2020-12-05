@@ -340,6 +340,12 @@ public class UserProfile extends AppCompatActivity {
     startActivity(toAssignmentOverview);
   }
 
+  /** Redirects user to User Analysis */
+  public void toAnalysis(View view) {
+    Intent toUserAnalysis = new Intent(this, UserAnalysis.class);
+    startActivity(toUserAnalysis);
+  }
+
   /** Shifan's code */
   private void showChangeLanguageDialog() {
       final String[] listItems = {"English", "简体中文"};
@@ -404,5 +410,6 @@ public class UserProfile extends AppCompatActivity {
       String language = prefs.getString("My_Lang", "");
       setLocale(language);
   }
+
   /**End of Shifan's code */
 }

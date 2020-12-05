@@ -20,7 +20,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.PointValue;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
@@ -169,6 +172,25 @@ public class AssignmentViewActivity extends NodeViewActivity
       @Override
       public void onClick(View v) {
         if(assignmentCheck.isChecked()){
+          DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
+
+          String id = reference.push().getKey();
+
+
+          reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+              int x = (int) snapshot.getChildrenCount();
+
+              PointValue pointValue = new PointValue(x,y);
+              reference.child(id).setValue(pointValue);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+          });
           assignment.setcompleteAssignment(true);
           assignment.save();
         }else{
