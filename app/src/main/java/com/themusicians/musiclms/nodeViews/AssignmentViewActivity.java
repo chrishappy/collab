@@ -1,13 +1,11 @@
 package com.themusicians.musiclms.nodeViews;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -26,16 +24,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.PointValue;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
-import com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity;
+
 import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Used to create and update assignments node entities
@@ -55,9 +55,14 @@ public class AssignmentViewActivity extends NodeViewActivity
   private TextView AssignmentName;
   private TextView StudentOrClass;
   private TextView dueDate;
-  private CheckBox assignmentCheck;
-  //bprivate Button editButton;
-  FloatingActionButton fab = findViewById(R.id.editB);
+  private FloatingActionButton editButton;
+
+  /** Checkbox fields */
+  private LinearLayout assignmentCompleteWrapper;
+  private CheckBox assignmentComplete;
+
+  private LinearLayout assignmentMarkedWrapper;
+  private CheckBox assignmentMarked;
 
   /** Create adapter for to do items */
   ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
@@ -95,12 +100,20 @@ public class AssignmentViewActivity extends NodeViewActivity
                     dueDate.setText(dateFormat.format(date));
                   }
 
-                  assignmentCheck.setChecked(assignment.getcompleteAssignment());
+                  // Set checkboxes
+                  assignmentComplete.setChecked(assignment.getAssignmentComplete());
+                  assignmentMarked.setChecked(assignment.getAssignmentMarked());
 
-                  String userid = currentUser.getUid();
+                  // If the author/teacher, show edit + marked checkbox
+                  if (Objects.equals(assignment.getUid(), currentUser.getUid())) {
+                    editButton.setVisibility(View.VISIBLE);
 
-                  if(assignment.getUid().matches(userid)){
-                    fab.setVisibility(View.VISIBLE);
+                    if (assignment.getAssignmentComplete()) {
+                      assignmentMarkedWrapper.setVisibility(View.VISIBLE);
+                    }
+                  }
+                  else { // must be student
+                    assignmentCompleteWrapper.setVisibility(View.VISIBLE);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
@@ -123,7 +136,7 @@ public class AssignmentViewActivity extends NodeViewActivity
         "There was a problem loading this Assignment",
         Toast.LENGTH_LONG)
         .show();;
-  }
+    }
 
     // For after creating the first to do item
     if (toDoItemsAdapter == null) {
@@ -164,59 +177,40 @@ public class AssignmentViewActivity extends NodeViewActivity
     AssignmentName = findViewById(R.id.assignment_name);
     StudentOrClass = findViewById(R.id.students_or_class);
     dueDate = findViewById(R.id.dueDate);
-    assignmentCheck = findViewById(R.id.assignment_completedCB);
-    //editButton = findViewById(R.id.auth_edit_button);
-    fab = findViewById(R.id.editB);
+    editButton = findViewById(R.id.auth_edit_button);
 
-    assignmentCheck.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if(assignmentCheck.isChecked()){
-          DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
+    // Checkbox wrappers for visibility
+    assignmentCompleteWrapper = findViewById(R.id.assignment__student_done);
+    assignmentMarkedWrapper = findViewById(R.id.assignment__teacher_marked);
 
-          String id = reference.push().getKey();
-
-
-          reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-              int x = (int) snapshot.getChildrenCount();
-
-              PointValue pointValue = new PointValue(x,y);
-              reference.child(id).setValue(pointValue);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-          });
-          assignment.setcompleteAssignment(true);
-          assignment.save();
-        }else{
-          assignment.setcompleteAssignment(false);
-          assignment.save();
-        }
-      }
+    // Checkboxes: assignment complete or marked
+    assignmentComplete = findViewById(R.id.assignment_completedCB);
+    assignmentComplete.setOnClickListener(v -> {
+      assignment.setAssignmentComplete(assignmentComplete.isChecked());
+      assignment.save();
     });
 
-    String userid = currentUser.getUid();
+    assignmentMarked = findViewById(R.id.assignment_marked_CB);
+    assignmentMarked.setOnClickListener(v -> {
+      assignment.setAssignmentMarked(assignmentMarked.isChecked());
+      assignment.save();
+    });
 
-    if(assignment.getUid() == userid) {
-      fab.setVisibility(View.VISIBLE);
-    }
-
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
-        toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
-        startActivity(toEditAssignment);
-      }
+    // Floating edit button
+    editButton.setOnClickListener(v -> {
+      Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
+      toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
+      startActivity(toEditAssignment);
     });
 
     // Load the to do tasks
     initToDoItemsList();
+  }
+
+  /** Return the node to add attachments to */
+  @Override
+  public Node getNodeForAttachments() {
+    return assignment;
   }
 
   /** Create the to do items list */

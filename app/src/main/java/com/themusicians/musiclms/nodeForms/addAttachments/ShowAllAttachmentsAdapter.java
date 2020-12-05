@@ -33,15 +33,12 @@ public class ShowAllAttachmentsAdapter
   private ItemClickListener itemClickListener;
 
   public final static String editAllAttachments = "editAllAttachments";
-  public final static String SHOW_PDF = "show_pdf";
+  public final static String SHOW_PDF = "SHOW_PDF";
 
   public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
     super(options);
   }
 
-  // Function to bind the view in Card view(here
-  // "person.xml") iwth data in
-  // allAttachment class(here "person.class")
   @Override
   protected void onBindViewHolder(
       @NonNull AllAttachmentViewHolder holder, int position, @NonNull AllAttachment allAttachment) {

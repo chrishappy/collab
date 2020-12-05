@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.themusicians.musiclms.Notifications.Client;
 import com.themusicians.musiclms.Notifications.Data;
 import com.themusicians.musiclms.Notifications.MyResponse;
@@ -77,8 +76,6 @@ public class Chat extends AppCompatActivity {
     linearLayoutManager.setStackFromEnd(true);
     recyclerView.setLayoutManager(linearLayoutManager);
 
-    updateToken(FirebaseInstanceId.getInstance().getToken());
-
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,11 +106,9 @@ public class Chat extends AppCompatActivity {
         notify = true;
         String msg = textMessage.getText().toString();
         if(!msg.equals("")){
-          Log.d("test1","test12");
           sendMessage(currentUser.getUid(), toMessageID, msg);
+//          sendNotification(toMessageID,currentUser.getUid(),msg);
 
-          sendNotification(toMessageID,currentUser.getUid(),msg);
-          Log.d("test2","test22");
         }
         textMessage.setText("");
       }
@@ -144,9 +139,10 @@ public class Chat extends AppCompatActivity {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         User user = dataSnapshot.getValue(User.class);
-        if(notify){
-          sendNotification(toMessageID,currentUser.getUid(),msg);
-          Log.d("test23","test23");
+        assert user != null;
+
+        if (notify) {
+          sendNotification(user.getUid(), currentUser.getDisplayName(), msg);
         }
 
         notify = false;
@@ -176,50 +172,52 @@ public class Chat extends AppCompatActivity {
 //  }
 
 
-
+  /**
+   * Stub for sending a notification
+   * @param receiver the uid of the person receiving the message
+   * @param username the current user's uid
+   * @param message the message to send
+   */
   private void sendNotification(String receiver, String username, String message){
-    Log.d("test24","test24");
-    // line below
-    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference().child("Tokens");
-    Log.d("test25",tokens.toString());
-    Query query = tokens.orderByKey().equalTo(receiver);
-    Log.d("test27", String.valueOf(query));
-    query.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        for(DataSnapshot snapshot :dataSnapshot.getChildren()){
-          Token token = snapshot.getValue(Token.class);
-          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
 
-          Sender sender = new Sender(data, token.getToken());
-          Log.d("test26","test26");
-          apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
-            @Override
-            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-              Log.d("random","randomness");
-              if(response.code() == 200){
-
-                if(response.body().success !=1){
-                  Toast.makeText(Chat.this,"failed",Toast.LENGTH_SHORT).show();
-                }
-              }
-            }
-
-            @Override
-            public void onFailure(Call<MyResponse> call, Throwable t) {
-              Log.d("ran","rand");
-            }
-          });
-
-
-        }
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
+//    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+//    Query query = tokens.orderByKey().equalTo(receiver);
+//    query.addValueEventListener(new ValueEventListener() {
+//      @Override
+//      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//        for(DataSnapshot snapshot :dataSnapshot.getChildren()){
+//          Token token = snapshot.getValue(Token.class);
+//          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
+//
+//          Sender sender = new Sender(data, token.getToken());
+//
+//          apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
+//            @Override
+//            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+//              Log.d("random","randomness");
+//              if(response.code() == 200){
+//
+//                if(response.body().success !=1){
+//                  Toast.makeText(Chat.this,"failed",Toast.LENGTH_SHORT).show();
+//                }
+//              }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MyResponse> call, Throwable t) {
+//              Log.d("ran","rand");
+//            }
+//          });
+//
+//
+//        }
+//      }
+//
+//      @Override
+//      public void onCancelled(@NonNull DatabaseError error) {
+//
+//      }
+//    });
 
 
   }

@@ -69,15 +69,16 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    * @return the node we are editing
    */
   @Override
-  public Node getNode() {
+  public Node getNodeForAttachments() {
     return assignment;
   }
 
   @Override
   public void onStart() {
     super.onStart();
-    // Check if user is signed in (non-null) and update UI accordingly.
-    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    // Set current user
+    assignment.setUid(currentUser.getUid());
 
     // If we are editing an assignment
     final EditText AssignmentName = findViewById(R.id.assignment_name);
@@ -158,6 +159,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     } else {
       assignment = new Assignment();
     }
+
     setContentView(R.layout.activity_assignment_create_form);
 
     // Get fields
@@ -217,7 +219,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     initToDoItemsList();
 
     // Show attachments
-    initShowAttachments(assignment);
+    initShowAttachments();
 
     // Show attachments edit form
 //    initCreateAttachments(assignment);
@@ -257,9 +259,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           assignment.setClassId(StudentOrClass.getText().toString());
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
-          assignment.setUid(currentUser.getUid());
           assignment.setCountOfTotalToDos();
-          //            assignment.setAttachmentIds( null );
           assignment.save();
 
           finish();
@@ -268,51 +268,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           String saveMessage = (editEntityId != null) ? "Assignment updated" : "Assignment Saved";
           Snackbar.make(view, saveMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         });
-  }
-
-  /**
-   * Populate the showAttachment fragment
-   *
-   * @param node the entity to fetch attachments for
-   */
-  private void initShowAttachments(Node node) {
-    final FragmentManager fragmentManager = getSupportFragmentManager();
-    final Fragment content = fragmentManager.findFragmentById(R.id.showAttachments);
-    if (!(content instanceof ShowAllAttachmentsFragment)) {
-      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      fragmentTransaction.add(
-          R.id.showAttachments,
-          ShowAllAttachmentsFragment.newInstance(node.getId()),
-          "ShowAllAttachmentsFragment");
-      fragmentTransaction.commitAllowingStateLoss();
-    }
-  }
-
-  /**
-   * Populate the addAttachment fragment
-   *
-   * @param node the entity to add attachments to
-   */
-  private void initCreateAttachments(Node node) {
-//    getSupportFragmentManager().beginTransaction()
-//        .add(
-//            R.id.addAttachments,
-//            CreateFormAttachmentsFragment.newInstance(node.getId()),
-//            "CreateFormAttachmentsFragment")
-//        .commit();
-
-    /*
-    final FragmentManager fragmentManager = getSupportFragmentManager();
-    final Fragment content = fragmentManager.findFragmentById(R.id.addAttachments);
-    if (!(content instanceof CreateFormAttachmentsFragment)) {
-      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      fragmentTransaction.add(
-          R.id.addAttachments,
-          CreateFormAttachmentsFragment.newInstance(node.getId(), CreateFormAttachmentsFragment.CREATE_ATTACHMENT),
-          "addAttachments");
-      fragmentTransaction.commitAllowingStateLoss();
-    }
-    /* */
   }
 
   /** Create the to do items list */
@@ -386,7 +341,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
    */
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
-    assignment.setUid(currentUser.getUid());
     assignment.save();
 
     // Save the user's current game state
@@ -407,9 +361,30 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
 
           if (assignment.getToDoIds().get(toDoId) == null) {
-            assignment.addToDoId(toDoId);
-//            assignment.pushToDos(toDoId);
-            assignment.save();
+            assignment
+                .getToDoItemsKeyQuery()
+                .child(toDoId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                    boolean isComplete = (Boolean) dataSnapshot.getValue();
+
+                    assignment.addToDoId(toDoId, isComplete);
+                    assignment.save();
+
+                    Log.w(LOAD_ENTITY_DATABASE_TAG, "update to do item successful");
+                  }
+
+                  @Override
+                  public void onCancelled(@NotNull DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w(
+                        LOAD_ENTITY_DATABASE_TAG,
+                        "update to do item failed",
+                        databaseError.toException());
+
+                  }
+                });
 
             // Display notification
             Snackbar.make(

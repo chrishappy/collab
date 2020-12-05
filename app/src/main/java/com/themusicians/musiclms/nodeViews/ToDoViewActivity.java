@@ -29,11 +29,10 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Used to create and update assignments node entities
@@ -94,7 +93,7 @@ public class ToDoViewActivity extends NodeViewActivity {
                   toDoItemName.setText(toDoItem.getName());
 
                   // Set checked
-                  toDoCheck.setChecked(toDoItem.getcompleteToDo());
+                  toDoCheck.setChecked(toDoItem.getCompleteToDo());
 
                   seekToButton.setOnClickListener(v -> {
                     Toast.makeText(ToDoViewActivity.this, "Seek Button clicked. Time:", Toast.LENGTH_LONG).show();
@@ -177,7 +176,7 @@ public class ToDoViewActivity extends NodeViewActivity {
     // To Do Checkbox
     toDoCheck = findViewById(R.id.complete_to_do_itemCB);
     toDoCheck.setOnClickListener(view -> {
-      toDoItem.setcompleteToDo(toDoCheck.isChecked());
+      toDoItem.setCompleteToDo(toDoCheck.isChecked());
       toDoItem.save();
     });
 
@@ -233,6 +232,8 @@ public class ToDoViewActivity extends NodeViewActivity {
       startActivity(Intent.createChooser(sharingIntent,"_share_:"));
     });
 
+    // Initialize Attachments
+    initShowAttachments();
 
 
 
@@ -262,6 +263,12 @@ public class ToDoViewActivity extends NodeViewActivity {
 //      Toast.makeText(this, error, Toast.LENGTH_LONG).show();
 //    }
 //  }
+
+  /** Return the node to add attachments to */
+  @Override
+  public Node getNodeForAttachments() {
+    return toDoItem;
+  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent intent) {

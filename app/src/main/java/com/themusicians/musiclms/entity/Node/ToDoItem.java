@@ -1,7 +1,7 @@
 package com.themusicians.musiclms.entity.Node;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +59,40 @@ public class ToDoItem extends Node {
     return getEntityType() + "__" + getType();
   }
 
-  /** Settings and Getters */
+
+  /**
+   * After save, add to do item to assignment
+   */
+  @Override
+  public void postSave() {
+    updateAttachedAssignment();
+  }
+
+  /**
+   * Get the assignment entity to save the to do item
+   */
+  @Exclude
+  public Assignment getAttachedAssignmentEntity() {
+    return (assignment == null) ? new Assignment(getAttachedAssignment()) : assignment;
+  }
+
+  /**
+   * Add or update the to do item on the attached assignment
+   */
+  public void updateAttachedAssignment() {
+    getAttachedAssignmentEntity()
+        .getToDoItemsKeyQuery()
+        .child(this.getId())
+        .setValue(getCompleteToDo());
+  }
+
+  /**
+   * Settings and Getters
+   *
+   * Required for Firebase
+   */
+
+  /** The Youtube recording related fields */
   public boolean getRequireRecording() {
     return requireRecording;
   }
@@ -76,6 +109,7 @@ public class ToDoItem extends Node {
     this.recordingYoutubeId = recordingYoutubeId;
   }
 
+  /** The recording feedback fields */
   public List<String> getRecordingFeedback() {
     return recordingFeedback;
   }
@@ -122,28 +156,12 @@ public class ToDoItem extends Node {
     return type;
   }
 
-  public boolean getcompleteToDo() {
+  public boolean getCompleteToDo() {
     return completeToDo;
   }
 
-  public void setcompleteToDo(boolean completeToDo) {
+  public void setCompleteToDo(boolean completeToDo) {
     this.completeToDo = completeToDo;
-
-    if (completeToDo) {
-      setTimeCompleted(ServerValue.TIMESTAMP);
-    }
-
-    if (assignment == null) {
-      assignment = new Assignment(getAttachedAssignment());
-    }
-
-    if (assignment.getId() != null) {
-      assignment
-          .getToDoItemsKeyQuery()
-          .child(this.getId())
-          .setValue(getcompleteToDo());
-      // get reference to: node__assignment/getAttachedAssignment()/toDoItems/MY_TODO_ID
-    }
   }
 
 }

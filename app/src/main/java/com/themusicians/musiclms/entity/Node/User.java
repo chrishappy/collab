@@ -99,7 +99,9 @@ public class User extends Node {
    */
   @Exclude
   public DatabaseReference getRelatedAssignmentDbReference() {
-    return getEntityDatabase().child(getId()).child(relatedAssignmentsName);
+    return getEntityDatabase()
+        .child(getId())
+        .child(relatedAssignmentsName);
   }
 
   /** Fields setters and getters */

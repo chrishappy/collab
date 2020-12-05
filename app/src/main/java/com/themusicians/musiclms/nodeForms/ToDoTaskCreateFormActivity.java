@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +44,9 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
   /** The assignment id to attach the to do item to */
   public static final String ACCEPT_ATTACHED_ASSIGNMENT_ID = "ACCEPT_ATTACHED_ASSIGNMENT_ID";
 
-  private String attachedAssignmeentId;
+  private String attachedAssignmentId;
+  private EditText toDoItemName;
+  private CheckBox requireRecording;
 
   /** The To Do Item object */
   ToDoItem toDoItem;
@@ -51,7 +55,9 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
    * @return the node we are editing
    */
   @Override
-  public Node getNode() {
+  public Node getNodeForAttachments() {
+    if (toDoItem == null) Log.w(LOAD_ENTITY_DATABASE_TAG, "todo item is null");
+
     return toDoItem;
   }
 
@@ -63,9 +69,6 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
 
     if (inEditMode) {
       // If we are editing an to do item
-      final EditText ToDoItemName = findViewById(R.id.to_do_item_name);
-      final CheckBox RequireRecording = findViewById(R.id.require_recording);
-
       toDoItem
           .getEntityDatabase()
           .child(editEntityId)
@@ -74,8 +77,11 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
-                  ToDoItemName.setText(toDoItem.getName());
-                  RequireRecording.setChecked(toDoItem.getRequireRecording());
+                  assert toDoItem != null;
+
+                  toDoItemName.setText(toDoItem.getName());
+                  requireRecording.setChecked(toDoItem.getRequireRecording());
+                  attachedAssignmentId = toDoItem.getAttachedAssignment();
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
                 }
@@ -101,7 +107,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
 
     // Load the attached assignment id
     Intent intent = getIntent();
-    attachedAssignmeentId = intent.getStringExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID);
+    attachedAssignmentId = intent.getStringExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID);
 
     if (inEditMode) {
       toDoItem = new ToDoItem(editEntityId);
@@ -110,15 +116,16 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     }
 
     // Get fields
-    final EditText ToDoItemName = findViewById(R.id.to_do_item_name);
-    final CheckBox RequireRecording = findViewById(R.id.require_recording);
+    toDoItemName = findViewById(R.id.to_do_item_name);
+    requireRecording = findViewById(R.id.require_recording);
+
+    // Initialize attachments
+    initShowAttachments();
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);
     assignmentCancel.setOnClickListener(
         view -> {
-          Snackbar.make(view, "To Do Item cancelled", Snackbar.LENGTH_LONG).show();
-
           Intent returnIntent = new Intent();
           setResult(Activity.RESULT_CANCELED, returnIntent);
           finish();
@@ -129,11 +136,11 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     assignmentSave.setOnClickListener(
         view -> {
           // Due Date timestamp
-          toDoItem.setAttachedAssignment(attachedAssignmeentId);
-          toDoItem.setName(ToDoItemName.getText().toString());
+          toDoItem.setAttachedAssignment(attachedAssignmentId);
+          toDoItem.setName(toDoItemName.getText().toString());
           toDoItem.setStatus(true);
           toDoItem.setUid(currentUser.getUid());
-          toDoItem.setRequireRecording(RequireRecording.isChecked());
+          toDoItem.setRequireRecording(requireRecording.isChecked());
           toDoItem.save();
 
           // Return To Do Item

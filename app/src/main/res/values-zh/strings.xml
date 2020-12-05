@@ -162,4 +162,5 @@
     <string name="Uploading_YouTube">上传YouTube视频</string>
     <string name="Finish">完成</string>
     <string name="Logout">登出</string>
+    <string name="edit_assignment">Edit Assignment</string>
 </resources>
