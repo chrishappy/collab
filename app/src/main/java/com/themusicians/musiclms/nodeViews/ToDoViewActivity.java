@@ -428,5 +428,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   @Override
   public void onToDoRecordingFeedbackClick(String type, int time, int position) {
     seekToInput.setText(time);
+    seekToButton.performClick();
   }
 }

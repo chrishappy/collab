@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/assignment_overview_wrapper"
-        android:background="#BEBEBE"
+        android:background="#eee"
         android:orientation="vertical">
 
         <TextView
@@ -26,7 +26,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="@string/placeholder"
-            android:textColor="#ff6347 "
+            android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

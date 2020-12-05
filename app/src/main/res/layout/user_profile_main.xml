@@ -40,7 +40,6 @@
             android:onClick="toEditData"
             android:text="@string/user_profile__edit_data" />
     </LinearLayout>
->>>>>>>>> Temporary merge branch 2
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"

@@ -136,6 +136,7 @@
     <!-- User -->
     <string name="signin_login">Login</string>
     <string name="sign_in">Sign In</string>
+    <string name="add_users">Add Users</string>
     <string name="signin_or_register_an_account_here">or Register an account here</string>
     <string name="name">Name:</string>
     <string name="email">Email:</string>
