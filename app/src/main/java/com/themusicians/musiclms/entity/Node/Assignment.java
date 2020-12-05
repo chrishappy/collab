@@ -4,6 +4,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
+import com.themusicians.musiclms.entity.Attachment.AllAttachment;
+import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -140,7 +142,10 @@ public class Assignment extends Node {
    */
   @Exclude
   public DatabaseReference getToDoItemsKeyQuery() {
-    return getEntityDatabase().child(getId()).child(toDoIdsName);
+    assert getId() != null;
+    return getEntityDatabase()
+        .child(getId())
+        .child(toDoIdsName);
   }
 
   /**
@@ -153,6 +158,20 @@ public class Assignment extends Node {
       User tempUser = new User(getUid());
       tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
     }
+  }
+
+  /**
+   * Delete the assignment to dos
+   */
+  @Override
+  public void delete() {
+    ToDoItem tempToDoItem = new ToDoItem(null);
+    for (String toDoId : getToDoIds().keySet()) {
+      tempToDoItem.setId(toDoId);
+      tempToDoItem.delete();
+    }
+
+    super.delete();
   }
 
   /**

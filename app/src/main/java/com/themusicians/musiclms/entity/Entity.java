@@ -97,17 +97,13 @@ public abstract class Entity implements EntityInterface {
 
   /** @return True if the data is correctly saved */
   @Override
-  public abstract boolean save();
+  public abstract void save();
 
   /**
    * Implements delete() Deletes the entity
-   *
-   * @return True if the data is correctly deleted
    */
   @Override
-  public boolean delete() {
-    return true;
-  }
+  public void delete() {  }
 
   /**
    * Get the id of the entity

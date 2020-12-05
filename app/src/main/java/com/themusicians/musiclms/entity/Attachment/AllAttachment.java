@@ -55,11 +55,10 @@ public class AllAttachment extends Attachment {
    * @return Whether the entity was saved or not
    */
   @Override
-  public boolean save() {
+  public void save() {
     super.save();
     // Save the file here
 
-    return true;
   }
 
   /** Comment setters and getters */

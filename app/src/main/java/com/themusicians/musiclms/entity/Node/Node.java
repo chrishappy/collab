@@ -5,11 +5,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ServerValue;
+import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,25 +83,21 @@ public abstract class Node extends Entity {
   public void postSave() {}
 
   /**
-   * Save the Node to the Database
-   *
-   * @return whether it was successful or not
+   * Save the Node
    */
-  public boolean save() {
+  public void save() {
     // the entity is no longer new
     setIsNew(false);
 
     // Save the entity
-    boolean result = writeEntity();
+    writeEntity();
 
     // Run actions afterwards
     postSave();
-
-    return result;
   }
 
-  /** @return Boolean */
-  private boolean writeEntity() {
+  /** Write to database */
+  private void writeEntity() {
 
     // Set default created time
     if (isNew && getCreated() == null) {
@@ -109,9 +105,9 @@ public abstract class Node extends Entity {
     }
 
     // Set default updated time
-    if (getUpdated() == null) {
+//    if (getUpdated() == null) {
       setUpdated(ServerValue.TIMESTAMP);
-    }
+//    }
 
     // If we're creating an Assignment
     if (getId() == null) {
@@ -122,7 +118,6 @@ public abstract class Node extends Entity {
       Log.println(Log.INFO, getEntityType() + "__" + getType(), "Update Entity: " + getId());
     }
 
-    final boolean[] result = {false};
     entityDatabase
         .child(getId())
         .setValue(
@@ -132,19 +127,32 @@ public abstract class Node extends Entity {
               public void onComplete(
                   DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {
-                  result[0] = false;
                   System.out.println(
                       "Entity data could not be saved " + databaseError.getMessage());
                 } else {
-                  result[0] = true;
                   System.out.println("Entity data saved successfully.");
                 }
               }
             });
 
     setIsNew(false);
+  }
 
-    return result[0];
+  /**
+   * Deletes the node attachments
+   *
+   */
+  @Override
+  public void delete() {
+    Attachment tempAttachment = new AllAttachment();
+    for (String attachmentId : getAttachmentIds().keySet()) {
+      tempAttachment.setId(attachmentId);
+      tempAttachment.delete();
+    }
+
+    getEntityDatabase().child(getId()).removeValue();
+
+    super.delete();
   }
 
   /** Setters and Getters */

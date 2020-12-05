@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: su.j2e:rv-joiner:1.0.9@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b474193ccbee0329e3c12741de4f30c/jetified-rv-joiner-1.0.9/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b474193ccbee0329e3c12741de4f30c/jetified-rv-joiner-1.0.9/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b474193ccbee0329e3c12741de4f30c/jetified-rv-joiner-1.0.9/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/su.j2e/rv-joiner/1.0.9/3a2ea29f540737928db2049e7a9f70303f1719ba/rv-joiner-1.0.9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/su.j2e/rv-joiner/1.0.9/bd6ce5e1022a42061df34e364dea2e3c5c1764a0/rv-joiner-1.0.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

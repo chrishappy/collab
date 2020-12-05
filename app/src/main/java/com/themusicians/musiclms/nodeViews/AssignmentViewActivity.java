@@ -114,9 +114,10 @@ public class AssignmentViewActivity extends NodeViewActivity
                       assignmentMarkedWrapper.setVisibility(View.VISIBLE);
                     }
                   }
-                  else { // must be student
+                  // TODO reenable afterwards
+//                  else { // must be student
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
-                  }
+//                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }

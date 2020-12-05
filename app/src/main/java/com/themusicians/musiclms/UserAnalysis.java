@@ -49,8 +49,10 @@ public class UserAnalysis extends AppCompatActivity {
     graphView.addSeries(series);
     GridLabelRenderer glr = graphView.getGridLabelRenderer();
     glr.setPadding(32);
+
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
+
     reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
     DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
     nameRef.addValueEventListener(new ValueEventListener() {
@@ -81,8 +83,8 @@ public class UserAnalysis extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
-          if(myName.equals(assignment.getClassId())){
-            x ++;
+          if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
+            x++;
             y = (long) assignment.getAssignmentCompleteTime() - (assignment.getDueDate()*1000);
 
             y = (long) (floor(((y/1000)/60)/60)/24);
@@ -113,7 +115,7 @@ public class UserAnalysis extends AppCompatActivity {
         for(DataSnapshot myDataSnapshot : snapshot.getChildren()){
           PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
           dp[index] = new DataPoint(pointValue.getxValue(), pointValue.getyValue());
-          index ++;
+          index++;
         }
 
         series.resetData(dp);

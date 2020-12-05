@@ -76,8 +76,8 @@ public interface EntityInterface {
   //    Object getField(String fieldName);
 
   /** @return True if the data is correctly saved */
-  boolean save();
+  void save();
 
   /** @return True if the data is correctly deleted */
-  boolean delete();
+  void delete();
 }

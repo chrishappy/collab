@@ -423,7 +423,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 //    progressDialog.setProgress(0);
 //    progressDialog.show();
 
-    final String fileName = System.currentTimeMillis() + "";
+    final String fileName = System.currentTimeMillis() + ".pdf";
     StorageReference storageReference = storage.getReference();
 
     storageReference
@@ -439,21 +439,13 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
                       String url = uri.toString();
 
                       attachment.setFileUploadUri(url);
+                      attachment.save();
 
-                      if (attachment.save()) {
-                        Toast.makeText(
-                            getActivity(),
-                            "File successfully uploaded",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                      }
-                      else {
-                        Toast.makeText(
-                            getActivity(),
-                            "File not successfully uploaded",
-                            Toast.LENGTH_SHORT)
-                            .show();
-                      }
+                      Toast.makeText(
+                          getActivity(),
+                          "File successfully uploaded",
+                          Toast.LENGTH_SHORT)
+                          .show();
 
                   });
             })

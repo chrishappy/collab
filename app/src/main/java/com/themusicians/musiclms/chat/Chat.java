@@ -75,7 +75,6 @@ public class Chat extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
     linearLayoutManager.setStackFromEnd(true);
     recyclerView.setLayoutManager(linearLayoutManager);
-
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -141,8 +140,9 @@ public class Chat extends AppCompatActivity {
         User user = dataSnapshot.getValue(User.class);
         assert user != null;
 
-        if (notify) {
-          sendNotification(user.getUid(), currentUser.getDisplayName(), msg);
+        if(notify){
+          sendNotification(toMessageID,currentUser.getUid(),msg);
+          Log.d("test23","test23");
         }
 
         notify = false;
@@ -182,6 +182,7 @@ public class Chat extends AppCompatActivity {
 
 //    DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
 //    Query query = tokens.orderByKey().equalTo(receiver);
+//    Log.d("test27", String.valueOf(query));
 //    query.addValueEventListener(new ValueEventListener() {
 //      @Override
 //      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -190,7 +191,7 @@ public class Chat extends AppCompatActivity {
 //          Data data = new Data(currentUser.getUid(),R.mipmap.ic_launcher,username+":"+message,"new message",toMessageID);
 //
 //          Sender sender = new Sender(data, token.getToken());
-//
+//          Log.d("test26","test26");
 //          apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
 //            @Override
 //            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
@@ -218,8 +219,6 @@ public class Chat extends AppCompatActivity {
 //
 //      }
 //    });
-
-
   }
 
   private void sendMessage(String sender, String receiver, String message){

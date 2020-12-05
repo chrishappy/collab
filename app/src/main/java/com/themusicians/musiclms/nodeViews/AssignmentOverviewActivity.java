@@ -61,6 +61,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   /**
+   * For loading and deleting assignments
+   */
+  Assignment tempAssignment;
+
+  /**
    * To Group elements, see this tutorial:
    * https://stackoverflow.com/questions/34848401/divide-elements-on-groups-in-recyclerview
    */
@@ -71,7 +76,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // Create a instance of the database and get
     // its reference
-    Assignment tempAssignment = new Assignment();
+    tempAssignment = new Assignment();
     mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
     recyclerView = findViewById(R.id.assignmentOverviewRecycler);
 
@@ -99,16 +104,16 @@ public class AssignmentOverviewActivity extends AppCompatActivity
               @Override
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                DataSnapshot snapshot =
-                    assignmentOverviewAdapterWeek1.getSnapshots().getSnapshot(position);
+                tempAssignment =
+                    assignmentOverviewAdapterWeek1.getSnapshots().getSnapshot(position).getValue(Assignment.class);
 
                 if (swipeDir == ItemTouchHelper.LEFT) {
                   Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
                       .setAction("Action", null)
                       .show();
 
-                    tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
-                    assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
+                  tempAssignment.delete();
+                  assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
 //                    break;
 
 //                  case ItemTouchHelper.RIGHT:
@@ -117,9 +122,6 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 //                        .show();
 //                    break;
                 }
-
-                // Remove item from backing list here
-                assignmentOverviewAdapterWeek1.notifyDataSetChanged();
               }
             });
     itemTouchHelper1.attachToRecyclerView(recyclerView);
@@ -179,9 +181,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     //long time = 1607035900;
 
     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    Query query1 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time).endAt(time+605000);
+    Query query1 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(0).endAt(time+605000);
     Query query2 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000).endAt(time+1210000);
-    Query query3 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000).endAt(time+1815000);
+    Query query3 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000);//.endAt(time+1815000);
 
     FirebaseRecyclerOptions<Assignment> options1 =
             new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query1, Assignment.class).build();

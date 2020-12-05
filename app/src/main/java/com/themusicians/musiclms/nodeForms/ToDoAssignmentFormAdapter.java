@@ -24,8 +24,8 @@ public class ToDoAssignmentFormAdapter
     extends FirebaseRecyclerAdapter<
         ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
 
-  private ItemClickListener itemClickListener;
-
+  private ItemClickListener itemClickListener
+;
   public ToDoAssignmentFormAdapter(@NonNull FirebaseRecyclerOptions<ToDoItem> options) {
     super(options);
   }

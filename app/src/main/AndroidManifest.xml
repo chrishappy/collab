@@ -11,6 +11,21 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <!-- All queries for ToDoViewActivity currently -->
+    <!-- Source: https://stackoverflow.com/a/64204646 -->
+    <queries>
+        <!-- WebView -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+
+        <!-- Camera -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:debuggable="true"
@@ -89,9 +104,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Notifications -->
-        <service
-            android:name=".Notifications.MyFirebaseMessaging"
+        </activity>
+
+        <!-- Notifications -->
+        <service android:name=".Notifications.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -103,7 +119,7 @@
 <!--            android:enabled="true"-->
 <!--            android:exported="true">-->
 <!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
 <!--            </intent-filter>-->
 <!--        </service>-->
     </application>
