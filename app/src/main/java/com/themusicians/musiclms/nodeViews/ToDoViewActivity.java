@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -48,7 +49,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   /** Fields */
   private TextView toDoItemName;
   private CheckBox toDoCheck;
-  private VideoView recordingVideo;
 
   /** For video recording */
   static final int REQUEST_VIDEO_CAPTURE = 1;
@@ -76,7 +76,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   private static final String youtubeUrlRegexPattern = ".*(?:youtu.be/|v/|u/\\w/|embed/|e/|watch\\?v=)([^#&?\\s]{11}).*";
   private LinearLayout youtubeRecordingLayout;
   private EditText addYoutubeUrl;
-  private Button saveYoutubeUrl;
   private Uri recordingVideoUri;
   private Button addRecording;
   private boolean alreadyInitAddRecording;
@@ -158,7 +157,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
      Record Video
      */
     youtubeRecordingLayout = findViewById(R.id.youtube_recorder_wrapper);
-    recordingVideo = findViewById(R.id.tempRecordingVideo);
     addRecording = findViewById(R.id.add_recording_video);
     addYoutubeUrl = findViewById(R.id.addYoutubeUrl);
 
@@ -287,6 +285,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     addYoutubeUrl.addTextChangedListener(new TextWatcher() {
       public void afterTextChanged(Editable youtubeUrlEditable) {
         String youtubeId = getYoutubeIdFromUrl(youtubeUrlEditable.toString());
+
         if (youtubeId != null) {
           toDoItem.setRecordingYoutubeId(youtubeId);
           toDoItem.save();
@@ -323,6 +322,15 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
       recordingFeedbackListView.setAdapter(recordingFeedbackAdapter);
     }
   }
+
+//  private void calculateHeightOfRecordingFeedbackAdapter() {
+//    if(recordingFeedbackAdapter.getCount() > 5){
+//      View item = recordingFeedbackAdapter.getView(0, null, recordingFeedbackListView);
+//      item.measure(0, 0);
+//      ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (5.5 * item.getMeasuredHeight()));
+//      recordingFeedbackListView.setLayoutParams(params);
+//    }
+//  }
 
   /**
    * Initialize the youtube video player
@@ -430,10 +438,24 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
     sharingIntent.setType("video/*");
     sharingIntent.setPackage("com.google.android.youtube");
-    sharingIntent.putExtra(Intent.EXTRA_TITLE, "Description");
-    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title 2");
+    sharingIntent.putExtra(Intent.EXTRA_TITLE, "Testing Title 2");
+    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Description of youtube video");
     sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, videoUri);
     startActivity(Intent.createChooser(sharingIntent,"Share To:"));
+  }
+
+  /**
+   * Open Zoom Meeting
+   *
+   * Source: https://stackoverflow.com/q/63717072
+   * Author: Mithun Sarker Shuvro (https://stackoverflow.com/users/3887432)
+   */
+  private void launchZoomUrl(String meetingId, String meetingPasscode) {
+    Uri zoomUri = Uri.parse(String.format("zoomus://zoom.us/join?confno=%s&pwd=%s", meetingId, meetingPasscode));
+    Intent intent = new Intent(Intent.ACTION_VIEW, zoomUri);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+      startActivity(intent);
+    }
   }
 
   /*

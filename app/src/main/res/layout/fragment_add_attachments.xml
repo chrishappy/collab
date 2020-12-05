@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/left_and_right_gutters"
-    android:paddingRight="@dimen/left_and_right_gutters" >
+    android:layout_margin="@dimen/left_and_right_gutters"
+    android:padding="@dimen/smallPadding">
 
     <!-- Dummy Element -->
     <LinearLayout
@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="20dp"
         android:paddingBottom="20dp"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".attachmentDialogs.AddCommentDialogFragment" >

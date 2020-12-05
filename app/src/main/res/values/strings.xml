@@ -161,7 +161,7 @@
     <string name="attachment__download_file">Download File</string>
     <string name="edit_assignment">Edit Assignment</string>
     <string name="assignment__student_done">Done?</string>
-    <string name="assignment__teacher_marked">Marked?</string>
+    <string name="assignment__teacher_marked">Mark?</string>
     <string name="Due_in_One_Week">Due in One or Less Weeks</string>
     <string name="Due_in_Two_Week">Due in Two Weeks</string>
     <string name="Due_in_Three_Week">Due in Three or More Weeks</string>

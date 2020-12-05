@@ -19,6 +19,11 @@ public class AllAttachment extends Attachment {
   /** File Fields */
   protected String fileUploadUri;
 
+  /** Zoom Fields */
+  protected String zoomId;
+
+  protected String zoomPassword;
+
   /** Default constructor */
   public AllAttachment() {
     super();
@@ -77,5 +82,22 @@ public class AllAttachment extends Attachment {
 
   public void setFileUploadUri(String fileUploadUri) {
     this.fileUploadUri = fileUploadUri;
+  }
+
+  /** Zoom Setters and Getters */
+  public String getZoomId() {
+    return zoomId;
+  }
+
+  public void setZoomId(String zoomId) {
+    this.zoomId = zoomId;
+  }
+
+  public String getZoomPassword() {
+    return zoomPassword;
+  }
+
+  public void setZoomPassword(String zoomPassword) {
+    this.zoomPassword = zoomPassword;
   }
 }

@@ -46,17 +46,6 @@
                         android:layout_marginBottom="30dp"
                         android:textSize="25sp" />
 
-                    <VideoView
-                        android:id="@+id/tempRecordingVideo"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp" />
-
-                    <Button
-                        android:id="@+id/tempButton2"
-                        android:text="@string/shareVideo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -98,11 +87,12 @@
                         android:layout_gravity="end"
                         android:text="@string/to_do_item__change_recording" />
 
-                    <LinearLayout
-                        android:id="@+id/youtube_recording_placeholder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
+<!--                    In case we want to add youtube video programmically-->
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/youtube_recording_placeholder"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
+<!--                    </LinearLayout>-->
 
                     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                         android:id="@+id/youtube_player_view"
@@ -164,7 +154,7 @@
                     <ListView
                         android:id="@+id/recordingFeedbackListView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
 
                 </LinearLayout>
 
