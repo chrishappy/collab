@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -183,6 +185,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                   String suggestion = suggestionSnapshot.child("name").getValue(String.class);
                   //Add the retrieved string to the list
                   autoComplete.add(suggestion);
+                  //assignment.addAssignees(suggestion);
               }
           }
           @Override
@@ -191,6 +194,14 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       });
       StudentOrClass.setAdapter(autoComplete);
       StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+      StudentOrClass.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              String item = (String)parent.getItemAtPosition(position);
+              assignment.addAssignees(item);
+
+          }
+      });
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);
