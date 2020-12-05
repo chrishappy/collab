@@ -13,27 +13,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center">
-    <Button
-        android:id="@+id/toAddUsers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="toAddUser"
-        android:text="@string/profile_add_users" />
+        <Button
+            android:id="@+id/toAddUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="toAddUser"
+            android:background="#ff6347"
+            android:textColor="#fff"
+            android:text="@string/add_users" />
 
-    <Button
-        android:id="@+id/changeMyLang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:text="@string/action_Language" />
+        <Button
+            android:id="@+id/changeMyLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_Language"
+            android:background="#ff6347"
+            android:textColor="#fff"
+            android:layout_margin="20dp"/>
 
-    <Button
-        android:id="@+id/toEditData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="toEditData"
-        android:text="@string/profile_edit_data" />
+        <Button
+            android:id="@+id/toEditData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#ff6347"
+            android:textColor="#fff"
+            android:onClick="toEditData"
+            android:text="@string/user_profile__edit_data" />
     </LinearLayout>
+>>>>>>>>> Temporary merge branch 2
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/enterInstruments"
@@ -42,19 +49,21 @@
         android:hint="@string/profile_enter_instruments_here"
         app:layout_constraintBottom_toTopOf="@+id/InstrumentList"
         app:layout_constraintEnd_toStartOf="@+id/addButton"
-        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_email"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/addButton"
-        android:layout_width="77dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:background="#ff6347"
         android:text="@string/profile_add"
+        android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/InstrumentList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_email"
         app:layout_constraintVertical_bias="1.0" />
@@ -85,11 +94,13 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text=""
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/user_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        android:textColor="#ff6347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.594" />

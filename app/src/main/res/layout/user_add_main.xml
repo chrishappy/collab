@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_name"
+        android:textColor="#ff6347"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/addedUsers"
         app:layout_constraintEnd_toStartOf="@+id/searchUsers"
@@ -30,6 +31,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="#ff6347"
+        android:textColor="#fff"
         app:layout_constraintVertical_bias="1.0" />
 
     <SearchView

@@ -42,7 +42,6 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
         String body = remoteMessage.getData().get("body");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        // line below was buggy
         int j = Integer.parseInt(user.replaceAll("[//D]",""));
         Intent intent = new Intent(this, Chat.class);
         Bundle bundle = new Bundle();
@@ -83,12 +82,11 @@ public class MyFirebaseMessaging extends FirebaseMessagingService{
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Tokens");
             Token token = new Token(refreshToken);
             reference.child(firebaseUser.getUid()).setValue(token);
         }
     }
-
 }
 
 
