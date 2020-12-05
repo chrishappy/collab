@@ -73,11 +73,10 @@
 
     <!-- Youtube -->
     <string name="player_error">Error initializing YouTube player: %s</string>
-    <string name="seek_to">Jump To</string>
+    <string name="seek_to">Go</string>
     <string name="seek_to_hint">Seconds</string>
     <string name="add_recording">Add Recording</string>
     <string name="add_recording_feedback__text">Add feedback text</string>
-    <string name="add_recording_feedback__save">Save Feedback</string>
     <string name="hello">hello</string>
     <string name="please_add_comment">Please enter your comment</string>
     <string name="comment">comment</string>
@@ -160,7 +159,9 @@
     <string name="edit_assignment">Edit Assignment</string>
     <string name="assignment__student_done">Done?</string>
     <string name="assignment__teacher_marked">Marked?</string>
-    <string name="Due_in_One_Week">Due in One Week</string>
+    <string name="Due_in_One_Week">Due in One or Less Weeks</string>
     <string name="Due_in_Two_Week">Due in Two Weeks</string>
     <string name="Due_in_Three_Week">Due in Three or More Weeks</string>
+    <string name="addYoutubeUrl">YouTube Url</string>
+    <string name="shareVideo">Share Video to Youtube</string>
 </resources>

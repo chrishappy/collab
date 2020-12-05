@@ -108,6 +108,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     // Load the attached assignment id
     Intent intent = getIntent();
     attachedAssignmentId = intent.getStringExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID);
+    assert attachedAssignmentId != null;
 
     if (inEditMode) {
       toDoItem = new ToDoItem(editEntityId);

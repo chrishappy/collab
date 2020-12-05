@@ -60,7 +60,6 @@ dependencies {
 //    implementation 'org.testng:testng:6.9.6'
 
     // notifications
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
 

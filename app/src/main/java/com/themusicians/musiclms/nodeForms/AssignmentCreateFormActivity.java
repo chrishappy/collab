@@ -229,9 +229,15 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     final Button addTask = findViewById(R.id.todoAddItem);
     addTask.setOnClickListener(
         view -> {
-          Intent intent =
+          // To generate a id if necessary
+          if (assignment.getId() == null) {
+            assignment.save();
+          }
+
+          Intent toAddToDoIntent =
               new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
-          startActivityForResult(intent, REQUEST_TODO_ENTITY);
+          toAddToDoIntent.putExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID, assignment.getId());
+          startActivityForResult(toAddToDoIntent, REQUEST_TODO_ENTITY);
         });
 
     // Cancel the Assignment
@@ -426,7 +432,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
         Intent toEditToDoItem =
             new Intent(AssignmentCreateFormActivity.this, ToDoTaskCreateFormActivity.class);
         toEditToDoItem.putExtra(ACCEPT_ENTITY_ID, entityId);
-        toEditToDoItem.putExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID, entityId);
+        toEditToDoItem.putExtra(ACCEPT_ATTACHED_ASSIGNMENT_ID, assignment.getId());
         startActivityForResult(toEditToDoItem, REQUEST_TODO_ENTITY);
         break;
 

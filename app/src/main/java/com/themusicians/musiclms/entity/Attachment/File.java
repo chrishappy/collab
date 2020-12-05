@@ -45,11 +45,10 @@ public class File extends Attachment {
    * @return Whether the entity was saved or not
    */
   @Override
-  public boolean save() {
+  public void save() {
     super.save();
     // Save the file here
 
-    return true;
   }
 
   /** The setters and getters for where the file is stored */
