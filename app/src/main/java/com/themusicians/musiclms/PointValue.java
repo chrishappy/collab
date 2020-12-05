@@ -1,12 +1,13 @@
 package com.themusicians.musiclms;
 
 public class PointValue {
-  int xValue, yValue;
+  int xValue;
+  long yValue;
 
   public PointValue() {
   }
 
-  public PointValue(int xValue, int yValue) {
+  public PointValue(int xValue, long yValue) {
     this.xValue = xValue;
     this.yValue = yValue;
   }
@@ -19,11 +20,11 @@ public class PointValue {
     this.xValue = xValue;
   }
 
-  public int getyValue() {
+  public long getyValue() {
     return yValue;
   }
 
-  public void setyValue(int yValue) {
+  public void setyValue(long yValue) {
     this.yValue = yValue;
   }
 }

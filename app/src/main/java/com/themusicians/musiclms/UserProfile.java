@@ -153,19 +153,19 @@ public class UserProfile extends AppCompatActivity {
                        */
                       if (instrumentName.isEmpty()) {
                         Toast.makeText(
-                                UserProfile.this, "No instrument entered", Toast.LENGTH_SHORT)
+                                UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
                             .show();
                       } else if (isNew == false) {
                         Toast.makeText(
                                 UserProfile.this,
-                                instrumentName.toLowerCase() + " is already added",
+                                instrumentName.toLowerCase() + getString(R.string.already_added),
                                 Toast.LENGTH_SHORT)
                             .show();
                       } else {
                         instruments.add(instrumentName);
                         currUser.setInstruments(instruments);
                         currUser.save();
-                        Toast.makeText(UserProfile.this, "Instrument added", Toast.LENGTH_SHORT)
+                        Toast.makeText(UserProfile.this, R.string.instrument_added, Toast.LENGTH_SHORT)
                             .show();
                         reInput = false;
                       }
@@ -275,7 +275,7 @@ public class UserProfile extends AppCompatActivity {
         .child("name")
         .setValue(name)
         .addOnSuccessListener(
-            aVoid -> Toast.makeText(UserProfile.this, "Name updated", Toast.LENGTH_SHORT).show());
+            aVoid -> Toast.makeText(UserProfile.this, R.string.name_updated, Toast.LENGTH_SHORT).show());
   }
 
   /** Updates user email in Firebase */
@@ -288,7 +288,7 @@ public class UserProfile extends AppCompatActivity {
     currentUser
         .updateEmail(email)
         .addOnSuccessListener(
-            aVoid -> Toast.makeText(UserProfile.this, "Email updated", Toast.LENGTH_SHORT).show());
+            aVoid -> Toast.makeText(UserProfile.this, R.string.email_updated, Toast.LENGTH_SHORT).show());
   }
 
   /** Updates user password in Firebase through email verification */
@@ -299,12 +299,12 @@ public class UserProfile extends AppCompatActivity {
     EditText resetMail = new EditText(view.getContext());
     AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder((view.getContext()));
 
-    passwordResetDialog.setTitle("Reset Password");
-    passwordResetDialog.setMessage("Enter your email to receive password reset link");
+    passwordResetDialog.setTitle(R.string.reset_password);
+    passwordResetDialog.setMessage(R.string.email_password);
     passwordResetDialog.setView(resetMail);
 
     passwordResetDialog.setPositiveButton(
-        "Yes",
+        R.string.yes,
         (dialog, which) -> {
           String mail = resetMail.getText().toString();
           fAuth
@@ -312,18 +312,18 @@ public class UserProfile extends AppCompatActivity {
               .addOnSuccessListener(
                   aVoid ->
                       Toast.makeText(
-                              UserProfile.this, "Resent link sent to email", Toast.LENGTH_SHORT)
+                              UserProfile.this, R.string.link_sent, Toast.LENGTH_SHORT)
                           .show())
               .addOnFailureListener(
                   e ->
                       Toast.makeText(
                               UserProfile.this,
-                              "Error! Reset link not sent" + e.getMessage(),
+                              getString(R.string.error_link) + e.getMessage(),
                               Toast.LENGTH_SHORT)
                           .show());
         });
 
-    passwordResetDialog.setNegativeButton("No", (dialog, which) -> {});
+    passwordResetDialog.setNegativeButton(R.string.no, (dialog, which) -> {});
 
     passwordResetDialog.create().show();
   }

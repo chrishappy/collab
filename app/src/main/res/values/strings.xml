@@ -165,4 +165,26 @@
     <string name="Due_in_Two_Week">Due in Two Weeks</string>
     <string name="Due_in_Three_Week">Due in Three or More Weeks</string>
     <string name="user_analysis">Analysis</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="email_password">Enter your email to receive password reset link</string>
+    <string name="error_link">Error! Reset link not sent</string>
+    <string name="link_sent">Resent link sent to email</string>
+    <string name="no_instrument">No instrument entered</string>
+    <string name="already_added"> is already added</string>
+    <string name="instrument_added">Instrument added</string>
+    <string name="email_updated">Email updated</string>
+    <string name="name_updated">Name updated</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="key">Key</string>
+    <string name="user_created">User Created</string>
+    <string name="email_error">Email is Required.</string>
+    <string name="password_error">Password is Required</string>
+    <string name="password_length_error">Password must be more than 5 characters</string>
+    <string name="name_error">Name is Required</string>
+    <string name="name_created">User Created</string>
+    <string name="error">Error</string>
+    <string name="user_deleted"> has been deleted.</string>
+    <string name="cannot_add">Cannot add self</string>
+    <string name="added"> added</string>
 </resources>
