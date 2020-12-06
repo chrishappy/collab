@@ -83,8 +83,9 @@ public class UserAnalysisStudent extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
-          //if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
+          if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
             Log.w("debug assignment id", String.valueOf(assignment.getAssignmentCompleteTime()));
+
             x++;
             y = (long) assignment.getAssignmentCompleteTime() - assignment.getDueDate();
 
@@ -92,7 +93,7 @@ public class UserAnalysisStudent extends AppCompatActivity {
             PointValue pointValue = new PointValue(x,y);
             String id = reference.push().getKey();
             reference.child(id).setValue(pointValue);
-         //}
+          }
         }
       }
 
