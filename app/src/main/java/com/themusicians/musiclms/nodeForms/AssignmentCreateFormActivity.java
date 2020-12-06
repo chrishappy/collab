@@ -198,7 +198,24 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
               String item = (String)parent.getItemAtPosition(position);
-              assignment.addAssignees(item);
+              tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(DataSnapshot dataSnapshot) {
+                      //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+                      for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
+                          //Get the suggestion by childing the key of the string you want to get.
+                          String suggestion = suggestionSnapshot.child("name").getValue(String.class);
+                          //Add the retrieved string to the list
+                         if(suggestion.equals(item)){
+                             assignment.addAssignees(suggestionSnapshot.child("id").getValue(String.class));
+                         }
+                          //assignment.addAssignees(suggestion);
+                      }
+                  }
+                  @Override
+                  public void onCancelled(DatabaseError databaseError) {
+                  }
+              });
 
           }
       });
