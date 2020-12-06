@@ -166,7 +166,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
       dispatchTakeVideoIntent();
     });
 
-
     /*
      Play Video
      */
@@ -215,10 +214,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   public Node getNodeForAttachments() {
     return toDoItem;
   }
-
-//  protected Provider getYouTubePlayerProvider() {
-//    return youTubeView;
-//  }
 
   /**
    * Helper functions for toggle displays of recording player vs add recording

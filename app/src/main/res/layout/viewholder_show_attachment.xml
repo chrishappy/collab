@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="@dimen/listItemSmallVerticalMargin"
     android:scrollbars="vertical"
     android:backgroundTint="@color/listItemLightBk">
@@ -40,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:textSize="16sp"
                     android:text="@string/placeholder"/>
 
             </LinearLayout>
@@ -60,10 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/attachment__download_file"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:text="@string/attachment__download_file"/>
 
                 <Button
                     android:id="@+id/zoomOpenMeeting"
@@ -71,10 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/attachment__open_zoom"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:text="@string/attachment__open_zoom"/>
 
             </LinearLayout>
         </LinearLayout>

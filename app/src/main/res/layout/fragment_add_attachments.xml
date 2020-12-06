@@ -8,6 +8,16 @@
     android:padding="@dimen/left_and_right_gutters"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/addAttachmentText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/add_attachment_literal"
+        android:layout_marginEnd="20dp"/>
+
     <!-- Dummy Element -->
     <LinearLayout
         android:id="@+id/commentAttachment"
@@ -29,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:hint="@string/please_add_comment" />
+                android:hint="@string/please_add_comment"
+                android:importantForAutofill="no" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

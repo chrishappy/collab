@@ -5,11 +5,15 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,6 +97,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     fragment.setArguments(args);
 
     fragment.nodeToBeEdited = nodeToBeEdited;
+    Log.w("debugMissingNode", "id3 is: " + nodeToBeEdited.getId());
     return fragment;
   }
 
@@ -228,7 +233,10 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
 
-    PopupWindow popupWindow = new PopupWindow(popupView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    // Calculate size
+    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+    PopupWindow popupWindow = new PopupWindow(popupView, width - 100, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     // Set up all the fields
     initCreateAttachment(popupView, popupWindow);
@@ -310,6 +318,14 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
                   if (attachment.getFileUri() != null) {
                     pdfUri = Uri.parse(attachment.getFileUri());
                     setPdfFileUploaded(attachment.getFileUri());
+                  }
+
+                  if (attachment.getZoomId() != null) {
+                    zoomMeeting.setText(attachment.getZoomId());
+                  }
+
+                  if (attachment.getZoomPassword() != null) {
+                    zoomMeeting.setText(attachment.getZoomPassword());
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAttachment:onDataChange");

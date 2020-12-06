@@ -10,6 +10,7 @@ import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -155,10 +156,19 @@ public class Assignment extends Node {
    */
   @Override
   public void postSave() {
+
+    User tempUser = new User();
     // Add assignment to user
     if (getUid() != null) {
-      User tempUser = new User(getUid());
+      tempUser.setId(getUid());
       tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+    }
+
+    if (getAssignees() != null && !getAssignees().isEmpty()) {
+      for (String assignee : getAssignees()) {
+        tempUser.setId(assignee);
+        tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+      }
     }
   }
 
@@ -176,8 +186,6 @@ public class Assignment extends Node {
     }
 
     super.delete();
-
-    Log.w("Assignment", "Deleted Assignment: " + getId());
   }
 
   /**
@@ -218,7 +226,6 @@ public class Assignment extends Node {
   }
 
   public java.util.Map<String, String> getAssignmentCompleteTime() {
-
     if (getAssignmentComplete()) {
       return ServerValue.TIMESTAMP;
     }

@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
+    android:layout_marginVertical="@dimen/listItemSmallVerticalMargin"
     android:scrollbars="vertical">
 
 
@@ -75,27 +73,33 @@
 
             <Button
                 android:id="@+id/searchViewUser"
+                style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+                android:background="#eee"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
-                android:background="@color/orangePrimary"
                 android:hint="@string/view"
                 android:textColor="#fff" />
 
             <Button
                 android:id="@+id/searchAdd"
+                style="@android:style/Widget.Material.Light.Button.Borderless.Small"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
-                android:background="@color/orangePrimary"
-                android:textColor="#fff"
-                android:hint="@string/add"/>
+                android:background="@color/colorPrimaryLight"
+                android:hint="@string/add"
+                android:textColor="#fff" />
 
         </LinearLayout>
 

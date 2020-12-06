@@ -155,7 +155,7 @@
     <string name="toast__attachment__file_failed">File Upload was not sucessful</string>
     <string name="attachment__upload_file">Upload</string>
     <string name="attachment__remove_file">Remove</string>
-    <string name="attachment__download_file">Open Assignment Pdf</string>
+    <string name="attachment__download_file">Open Pdf</string>
     <string name="attachment__form__file_label">Upload PDF</string>
     <string name="attachment__add__file">Select PDF</string>
     <string name="no_file_is_selected">No PDF selected</string>
@@ -214,5 +214,6 @@
     <string name="action_duplicate">Duplicate</string>
     <string name="action_edit">Edit</string>
     <string name="analysis">Analysis</string>
+    <string name="add_attachment_literal">Add Attachment</string>
 
 </resources>

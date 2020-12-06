@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/nav_header_height" />
+            android:paddingBottom="@dimen/nav_footer_height" />
 
     </LinearLayout>
 

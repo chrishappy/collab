@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -116,12 +117,17 @@ public class AssignmentViewActivity extends NodeViewActivity
                       assignmentMarkedWrapper.setVisibility(View.VISIBLE);
                       assignmentCompleteWrapper.setVisibility(View.GONE);
                     }
+                    else {
+                      assignmentMarkedWrapper.setVisibility(View.GONE);
+                      assignmentCompleteWrapper.setVisibility(View.GONE);
+                    }
                   }
                   // TODO reenable afterwards
-//                  else { // must be student
-                  assignmentMarkedWrapper.setVisibility(View.GONE);
+                  else { // must be student
+                    editButton.setVisibility(View.GONE);
+                    assignmentMarkedWrapper.setVisibility(View.GONE);
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
-//                  }
+                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
@@ -284,6 +290,10 @@ public class AssignmentViewActivity extends NodeViewActivity
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
     toDoItemsAdapter.addItemClickListener(this);
+
+    LinearLayoutManager llm = new LinearLayoutManager(this);
+    llm.setOrientation(LinearLayoutManager.VERTICAL);
+    toDoItemsRecyclerView.setLayoutManager(llm);
     toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
   }
 
