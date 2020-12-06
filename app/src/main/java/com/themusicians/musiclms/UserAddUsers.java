@@ -39,6 +39,7 @@ public class UserAddUsers<button> extends AppCompatActivity {
   ArrayList<User> addedList;
   RecyclerView addedRecycler;
   SearchView searchView;
+  BottomNavigationView bottomNavigationView;
 
   BottomNavigationView bottomNavigationView;
 
@@ -54,6 +55,11 @@ public class UserAddUsers<button> extends AppCompatActivity {
     reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
     addedRecycler = findViewById(R.id.addedRecycler);
     searchView = findViewById(R.id.addedSearch);
+
+
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_2);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // display name
     currUser = new User(currentUser.getUid());
@@ -210,6 +216,24 @@ public class UserAddUsers<button> extends AppCompatActivity {
     addedRecycler.setAdapter(userAddedAdapter);
   }
 
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+      switch (item.getItemId()){
+        case R.id.page_1:
+          Intent toAssignmentOverview = new Intent(UserAddUsers.this, AssignmentOverviewActivity.class);
+          startActivity(toAssignmentOverview);
+          return true;
+        case R.id.page_2:
+          Intent toUserProfile = new Intent(UserAddUsers.this, UserProfile.class);
+          startActivity(toUserProfile);
+          return true;
+      }
+
+      return true;
+    }
+  };
 
   /** Redirects to search for Users */
   public void toSearchUsers(View view) {
