@@ -82,7 +82,7 @@ public class UserAnalysisTeacher extends AppCompatActivity {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
           if(currentUser.getUid().equals(assignment.getUid()) && assignment.getAssignmentCompleteTime() != null){
-            y = (long)assignment.getAssignmentCompleteTime() - (assignment.getDueDate()*1000);
+            y = (long)assignment.getAssignmentCompleteTimeLong() - (assignment.getDueDate()*1000);
 
             y = (long) (floor(((y/1000)/60)/60)/24);
 

@@ -87,7 +87,7 @@ public class UserAnalysisStudent extends AppCompatActivity {
             Log.w("debug assignment id", String.valueOf(assignment.getAssignmentCompleteTime()));
 
             x++;
-            y = (long) assignment.getAssignmentCompleteTime() - assignment.getDueDate();
+            y = (long) assignment.getAssignmentCompleteTimeLong() - assignment.getDueDate();
 
             y = (long) (floor(((y/1000)/60)/60)/24);
             PointValue pointValue = new PointValue(x,y);
