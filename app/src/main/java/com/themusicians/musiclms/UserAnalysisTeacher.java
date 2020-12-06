@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,6 +24,9 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.Math.floor;
 
@@ -37,7 +41,8 @@ public class UserAnalysisTeacher extends AppCompatActivity {
   String myName;
   long x;
   long y;
-  ArrayList<Long> xs;
+  ArrayList<Long> store;
+  Map<Long, Long> xs;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +54,10 @@ public class UserAnalysisTeacher extends AppCompatActivity {
     graphView.addSeries(series);
     GridLabelRenderer glr = graphView.getGridLabelRenderer();
     glr.setPadding(32);
-    graphView.getViewport().setMinX(0);
-    graphView.getViewport().setMinY(0);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
-    xs = new ArrayList<>();
+    xs = new HashMap<>();
+    store = new ArrayList<>();
 
     reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
     DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
@@ -82,49 +86,34 @@ public class UserAnalysisTeacher extends AppCompatActivity {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
           if(currentUser.getUid().equals(assignment.getUid()) && assignment.getAssignmentCompleteTime() != null){
-            y = (long)assignment.getAssignmentCompleteTimeLong() - (assignment.getDueDate()*1000);
+            y = (long)assignment.getAssignmentCompleteTimeLong() - assignment.getDueDate();
 
             y = (long) (floor(((y/1000)/60)/60)/24);
 
-            xs.add(y);
+            store.add(y);
+
           }
         }
 
-        reference.addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-            for(int i = 0; i < xs.size(); i ++){
-              int count = 1;
-              for(int j = i+1; j < xs.size(); j++){
-                if(xs.get(i) == xs.get(j)){
-                  count++;
-                }
-              }
+        Collections.sort(store);
 
-              boolean add = true;
-
-              for(DataSnapshot ds : snapshot.getChildren()){
-                if(xs.get(i) == ds.getValue(PointValue.class).getxValue()){
-                  add = false;
-                }
-              }
-
-              if(add) {
-                PointValue pointValue = new PointValue(xs.get(i), (long) count);
-                String id = reference.push().getKey();
-                reference.child(id).setValue(pointValue);
-              }
+        for(int i = 0; i < store.size(); i ++){
+          long count = 1;
+          for(int j = i+1; j < store.size(); j++){
+            if(store.get(i) == store.get(j)){
+              count++;
             }
           }
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {
+          if(xs.get(store.get(i)) == null) {
+            xs.put(store.get(i), count);
           }
-        });
+        }
 
-
-
-
-
+        for(int i = 0; i < xs.size(); i ++){
+          PointValue pointValue = new PointValue(store.get(i), xs.get(store.get(i)));
+          String id = reference.push().getKey();
+          reference.child(id).setValue(pointValue);
+        }
       }
 
       @Override

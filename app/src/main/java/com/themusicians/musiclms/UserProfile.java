@@ -356,7 +356,7 @@ public class UserProfile extends NodeViewActivity {
   /** Redirects user to User Analysis */
   public void toAnalysis(View view) {
     Intent toUserAnalysis;
-    if(currUser.getRole().equals("student")){
+    if(currUser.getRole().equals("Student")){
       toUserAnalysis = new Intent(this, UserAnalysisStudent.class);
     } else {
       toUserAnalysis = new Intent(this, UserAnalysisTeacher.class);
