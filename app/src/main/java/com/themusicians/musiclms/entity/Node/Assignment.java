@@ -223,10 +223,13 @@ public class Assignment extends Node {
 
   public void setAssignmentComplete(boolean assignmentComplete) {
     this.assignmentComplete = assignmentComplete;
+
+//    assignmentCompleteTime = (long) ServerValue.TIMESTAMP;
   }
 
   public java.util.Map<String, String> getAssignmentCompleteTime() {
     if (getAssignmentComplete()) {
+      //TODO replace with proper
       return ServerValue.TIMESTAMP;
     }
     else {

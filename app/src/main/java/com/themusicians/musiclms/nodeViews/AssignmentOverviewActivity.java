@@ -99,7 +99,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     long time= System.currentTimeMillis();
     long week = 605000000;
-    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
+//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
     FirebaseRecyclerOptions<Assignment> options1 =
         new FirebaseRecyclerOptions.Builder<Assignment>()
             .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
