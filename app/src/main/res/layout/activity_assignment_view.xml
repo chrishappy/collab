@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/assignment__form__assignment_name"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="30sp"
+                        android:textSize="@dimen/header_text__primary"
                         android:layout_weight="1"/>
 
                     <LinearLayout

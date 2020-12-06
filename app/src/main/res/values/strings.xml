@@ -66,8 +66,8 @@
     <string name="addYoutubeUrl">YouTube Url</string>
     <string name="shareVideo">Share Video to Youtube</string>
     <string name="player_error">Error initializing YouTube player: %s</string>
-    <string name="seek_to">Go</string>
-    <string name="seek_to_hint">Seconds</string>
+    <string name="seek_to">(Go)</string>
+    <string name="seek_to_hint">Time</string>
     <string name="add_recording">Add Recording</string>
     <string name="add_recording_feedback__text">Add feedback text</string>
     <string name="hello">hello</string>

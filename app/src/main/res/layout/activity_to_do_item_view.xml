@@ -5,9 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginVertical="@dimen/activity_vertical_margin"
-    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-    android:fitsSystemWindows="true"
     tools:context=".nodeForms.ToDoTaskCreateFormActivity"
     android:id="@+id/createToDoTaskLayout">
 
@@ -15,15 +12,9 @@
         android:id="@+id/to_do_item_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/left_and_right_gutters"
-        android:paddingRight="@dimen/left_and_right_gutters"
-        tools:showIn="@layout/activity_to_do_item_create_form">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        android:padding="@dimen/activity_vertical_margin"
+        tools:showIn="@layout/activity_to_do_item_create_form"
+        android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,8 +26,8 @@
                     android:id="@+id/to_do_item_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/header_text__primary"
                     android:layout_weight="1"
                     android:text="@string/to_do_item__form__name" />
 
@@ -137,12 +128,14 @@
                     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                         android:id="@+id/youtube_player_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"/>
 
                     <LinearLayout
                         android:id="@+id/add_recording_feedback"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -163,11 +156,13 @@
 
                         <Button
                             android:id="@+id/seek_to_button"
+                            style="@android:style/Widget.Material.Light.Button.Borderless"
                             android:layout_width="50dp"
-                            android:layout_marginEnd="10dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/seek_to"
-                            android:layout_weight="0"/>
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="0"
+                            android:padding="0dp"
+                            android:text="@string/seek_to" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -224,7 +219,6 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-        </LinearLayout>
 
     </LinearLayout>
 

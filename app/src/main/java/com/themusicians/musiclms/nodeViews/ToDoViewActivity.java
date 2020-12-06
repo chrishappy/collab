@@ -313,6 +313,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
         @Override
         public void onReady(@NonNull YouTubePlayer youTubePlayer) {
           youTubePlayer.loadVideo(videoId, 0);
+          youTubePlayer.pause();
 
           seekToButton.setOnClickListener(view -> {
             int skipToSecs = Integer.parseInt(seekToInput.getText().toString());
@@ -327,16 +328,23 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
          * On pause, move focus to feedback text
          */
         public void onStateChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlayerState state) {
-          if (state == PlayerConstants.PlayerState.PAUSED) {
-            /*
-             * Set focus back to addFeedback
-             * --------
-             * Source: https://stackoverflow.com/a/8991563
-             * Author: David Merriman (https://stackoverflow.com/u/1106671)
-             */
-            addFeedback.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(addFeedback, InputMethodManager.SHOW_IMPLICIT);
+          switch (state) {
+            case PAUSED:
+              /*
+               * Set focus back to addFeedback
+               * --------
+               * Source: https://stackoverflow.com/a/8991563
+               * Author: David Merriman (https://stackoverflow.com/u/1106671)
+               */
+              addFeedback.requestFocus();
+              InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+              imm.showSoftInput(addFeedback, InputMethodManager.SHOW_IMPLICIT);
+              break;
+
+            case ENDED:
+              youTubePlayer.seekTo(0);
+              youTubePlayer.pause();
+              break;
           }
         }
 
