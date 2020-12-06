@@ -24,8 +24,8 @@ public class ToDoAssignmentFormAdapter
     extends FirebaseRecyclerAdapter<
         ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
 
-  private ItemClickListener itemClickListener
-;
+  private ItemClickListener itemClickListener;
+
   public ToDoAssignmentFormAdapter(@NonNull FirebaseRecyclerOptions<ToDoItem> options) {
     super(options);
   }
@@ -59,7 +59,7 @@ public class ToDoAssignmentFormAdapter
     });
 
     holder.toDoName.setOnClickListener(editToDoItemListener);
-    holder.editButton.setOnClickListener(editToDoItemListener);
+    holder.toDoWrapper.setOnClickListener(editToDoItemListener);
   }
 
   // Function to tell the class about the Card view (here
@@ -78,7 +78,7 @@ public class ToDoAssignmentFormAdapter
   // view (here "person.xml")
   static class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
     TextView toDoName;
-    Button editButton;
+//    Button editButton;
     CheckBox toDoCheck;
     ConstraintLayout toDoWrapper;
 
@@ -86,7 +86,7 @@ public class ToDoAssignmentFormAdapter
       super(itemView);
 
       toDoName = itemView.findViewById(R.id.toDoName);
-      editButton = itemView.findViewById(R.id.edit_button);
+//      editButton = itemView.findViewById(R.id.edit_button);
       toDoWrapper = itemView.findViewById(R.id.toDoAssignmentFormWrapper);
       toDoCheck = itemView.findViewById(R.id.to_do_item_completed);
     }

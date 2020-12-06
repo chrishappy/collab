@@ -3,8 +3,6 @@ package com.themusicians.musiclms.nodeViews;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -23,7 +21,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * The adapter for the Assignment Form pages
@@ -56,18 +53,36 @@ public class AssignmentOverviewAdapter
     holder.assignmentName.setText(assignment.getName());
 
     if (assignment.getUid() != null) {
-      User tempUser = new User();
+      final User tempUser = new User();
       userEntityDatabase = tempUser.getEntityDatabase();
       userEntityDatabase
           .child(assignment.getUid())
-          .child("name")
           .addValueEventListener(
               new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  Object name = snapshot.getValue();
-                  if (name != null) {
-                    holder.authorName.setText(name.toString());
+                  User tempUser = snapshot.getValue(User.class);
+                  assert tempUser != null;
+
+                  if (tempUser.getName() != null) {
+                    holder.authorName.setText(tempUser.getName());
+                  }
+
+                  if (tempUser.getId() == assignment.getUpdated()){ // is teacher/author of assignment
+                    if (assignment.getAssignmentMarked()) {
+                      holder.isDoneCheckBox.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                      holder.isDoneCheckBox.setVisibility(View.INVISIBLE);
+                    }
+                  }
+                  else { // Is a student
+                    if (assignment.getAssignmentComplete()) {
+                      holder.isDoneCheckBox.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                      holder.isDoneCheckBox.setVisibility(View.INVISIBLE);
+                    }
                   }
                 }
 
@@ -83,7 +98,7 @@ public class AssignmentOverviewAdapter
     }*/
 
     if (assignment.getDueDate() != 0) {
-      Date date = new Date(assignment.getDueDate() * 1000);
+      Date date = new Date(assignment.getDueDate() );
       DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
@@ -131,20 +146,21 @@ public class AssignmentOverviewAdapter
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
-    TextView assignmentName, authorName, dueDate, userName;
+    TextView assignmentName, authorName, dueDate, isDoneCheckBox;
     ProgressBar progressBar;
 //    Button editAssignment, viewAssignment;
     ConstraintLayout wrapper;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
-
       wrapper = itemView.findViewById(R.id.assignment_overview_wrapper);
 
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
       progressBar = itemView.findViewById(R.id.progressBar2);
       dueDate = itemView.findViewById(R.id.dueDate);
+      isDoneCheckBox = itemView.findViewById(R.id.assignment_overview__is_done);
+
       //userName = itemView.findViewById(R.id.userName);
 
       // editAssignment = itemView.findViewById(R.id.edit_button);

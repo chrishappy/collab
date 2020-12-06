@@ -162,5 +162,12 @@
     <string name="Uploading_YouTube">上传YouTube视频</string>
     <string name="Finish">完成</string>
     <string name="Logout">登出</string>
-    <string name="edit_assignment">Edit Assignment</string>
+    <string name="edit_assignment">编辑作业</string>
+    <string name="Due_in_One_Week">在一周或更短内截至</string>
+    <string name="Due_in_Two_Week">在两周或更短内截止</string>
+    <string name="Due_in_Three_Week">在三周或更久内截至</string>
+    <string name="user_analysis">分析</string>
+    <string name="assignment__student_done">已完成?</string>
+    <string name="assignment__teacher_marked">已评分?</string>
+    <string name="add_users">添加用户</string>
 </resources>

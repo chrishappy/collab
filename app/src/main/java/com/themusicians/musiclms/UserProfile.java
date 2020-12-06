@@ -50,7 +50,7 @@ import java.util.Locale;
  * @since Nov 10, 2020
  * @todo View user info
  */
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends NodeViewActivity {
 
   protected TextView myName, myEmail, newName, newEmail;
   protected FirebaseUser currentUser;
@@ -95,7 +95,7 @@ public class UserProfile extends AppCompatActivity {
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // Initialize Attachments
-    //initShowAttachments(R.id.showAttachments);
+    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
 
     /*
      * Instrument list
@@ -146,7 +146,8 @@ public class UserProfile extends AppCompatActivity {
           }
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {}
+          public void onCancelled(@NonNull DatabaseError error) {
+          }
         });
 
     /* Saves user instruments in Firebase */
@@ -176,13 +177,13 @@ public class UserProfile extends AppCompatActivity {
                        */
                       if (instrumentName.isEmpty()) {
                         Toast.makeText(
-                                UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
+                            UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
                             .show();
                       } else if (isNew == false) {
                         Toast.makeText(
-                                UserProfile.this,
-                                instrumentName.toLowerCase() + getString(R.string.already_added),
-                                Toast.LENGTH_SHORT)
+                            UserProfile.this,
+                            instrumentName.toLowerCase() + getString(R.string.already_added),
+                            Toast.LENGTH_SHORT)
                             .show();
                       } else {
                         instruments.add(instrumentName);
@@ -197,7 +198,8 @@ public class UserProfile extends AppCompatActivity {
               }
 
               @Override
-              public void onCancelled(@NonNull DatabaseError error) {}
+              public void onCancelled(@NonNull DatabaseError error) {
+              }
             });
 
     /*
@@ -229,7 +231,7 @@ public class UserProfile extends AppCompatActivity {
           /**
            * Updates instrument list if instrument is changed
            *
-           * @param snapshot data snapshot to fetch data from Firebase
+           * @param snapshot          data snapshot to fetch data from Firebase
            * @param previousChildName
            */
           @Override
@@ -254,24 +256,26 @@ public class UserProfile extends AppCompatActivity {
 
           @Override
           public void onChildMoved(
-              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+          }
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {}
+          public void onCancelled(@NonNull DatabaseError error) {
+          }
         });
 
-          /** Shifan's code */
-          ActionBar actionBar = getSupportActionBar();
-          actionBar.setTitle(getResources().getString(R.string.app_name));
+    /** Shifan's code */
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setTitle(getResources().getString(R.string.app_name));
 
-          Button changeLang = findViewById(R.id.changeMyLang);
-          changeLang.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  showChangeLanguageDialog();
-              }
-          });
-          /** End of Shifan's code */
+    Button changeLang = findViewById(R.id.changeMyLang);
+    changeLang.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        showChangeLanguageDialog();
+      }
+    });
+    /** End of Shifan's code */
   }
 
   /** Redirects User to Editing data */
@@ -442,6 +446,15 @@ public class UserProfile extends AppCompatActivity {
       SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
       String language = prefs.getString("My_Lang", "");
       setLocale(language);
+  }
+
+  /**
+   * Lo
+   * @return
+   */
+  @Override
+  public Node getNodeForAttachments() {
+    return currUser;
   }
 
   /**End of Shifan's code */

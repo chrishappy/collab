@@ -80,6 +80,10 @@ dependencies {
     //Grouping assignment
     implementation 'su.j2e:rv-joiner:1.0.9'
 
+    // Fix W/ConnectionTracker: Exception thrown while unbinding: java.lang.IllegalArgumentException:
+    // https://stackoverflow.com/a/64747325
+//    implementation 'com.google.android.gms:play-services-basement:17.5.0'
+
 }
 
 buildscript {

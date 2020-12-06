@@ -22,10 +22,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:text="@string/placeholder"
             android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -74,11 +74,21 @@
                 android:textSize="15sp"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/progressBar2"/>
-
-
-
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/assignment_overview__is_done"
+            style="@android:style/Widget.Holo.Light.Button.Small"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="9dp"
+            android:layout_marginBottom="9dp"
+            android:visibility="visible"
+            android:background="@drawable/fui_ic_check_circle_black_128dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
