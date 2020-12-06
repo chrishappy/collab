@@ -45,7 +45,7 @@ import retrofit2.Response;
  *
  * @contributors Harveer Khangura
  * @author Jerome Lau
- * @since Nov 10, 2020
+ * @since Nov 24, 2020
  */
 
 public class Chat extends AppCompatActivity {

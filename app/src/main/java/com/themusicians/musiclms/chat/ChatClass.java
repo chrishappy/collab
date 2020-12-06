@@ -6,7 +6,7 @@ import android.widget.SearchView;
  * Class for chat information
  *
  * @author Jerome Lau
- * @since Nov 25, 2020
+ * @since Nov 24, 2020
  *
  */
 
