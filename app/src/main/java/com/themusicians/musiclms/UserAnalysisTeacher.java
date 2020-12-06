@@ -38,7 +38,7 @@ public class UserAnalysisTeacher extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.user_analysis_student);
+    setContentView(R.layout.user_analysis_teacher);
 
   }
 

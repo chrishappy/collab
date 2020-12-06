@@ -144,13 +144,13 @@ public abstract class Node extends Entity {
    */
   @Override
   public void delete() {
-    Attachment tempAttachment = new AllAttachment();
-    for (String attachmentId : getAttachmentIds().keySet()) {
-      tempAttachment.setId(attachmentId);
-      tempAttachment.delete();
+    if (getAttachmentIds() != null && !getAttachmentIds().isEmpty()) {
+      Attachment tempAttachment = new AllAttachment();
+      for (String attachmentId : getAttachmentIds().keySet()) {
+        tempAttachment.setId(attachmentId);
+        tempAttachment.delete();
+      }
     }
-
-    getEntityDatabase().child(getId()).removeValue();
 
     super.delete();
   }
@@ -167,16 +167,24 @@ public abstract class Node extends Entity {
   }
 
   public Map<String, Boolean> getAttachmentIds() {
-    return attachmentIds;
-  }
-
-  public Node addAttachmentId(String attachmentId) {
     if (attachmentIds == null) {
       attachmentIds = new HashMap<>();
     }
 
-    if (attachmentIds.get(attachmentId) == null) {
-      attachmentIds.put(attachmentId, true);
+    return attachmentIds;
+  }
+
+  public void addAttachmentIdDirectlyToDatabase(String attachmentId) {
+    getAttachmentsKeyReference()
+        .child(attachmentId)
+        .setValue(true);
+
+    addAttachmentId(attachmentId);
+  }
+
+  public Node addAttachmentId(String attachmentId) {
+    if (getAttachmentIds().get(attachmentId) == null) {
+      getAttachmentIds().put(attachmentId, true);
     }
 
     return this;

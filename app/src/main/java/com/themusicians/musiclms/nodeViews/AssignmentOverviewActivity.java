@@ -120,13 +120,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
                   tempAssignment.delete();
                   assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
-//                    break;
-
-//                  case ItemTouchHelper.RIGHT:
-//                    Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null)
-//                        .show();
-//                    break;
+                  assignmentOverviewAdapterWeek1.notifyDataSetChanged();
                 }
               }
             });
@@ -225,14 +219,12 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-    String userid = currentUser.getUid();
-
     DatabaseReference userEntityDatabase;
 
     User tempUser = new User();
     userEntityDatabase = tempUser.getEntityDatabase();
     userEntityDatabase
-            .child(userid)
+            .child(currentUser.getUid())
             .child("role")
             .addValueEventListener(
                     new ValueEventListener() {
@@ -288,8 +280,6 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     assignmentOverviewAdapterWeek1.startListening();
     assignmentOverviewAdapterWeek2.startListening();
     assignmentOverviewAdapterWeek3.startListening();
-
-
   }
 
   // Function to tell the app to stop getting

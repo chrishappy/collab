@@ -24,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +42,7 @@ import com.themusicians.musiclms.nodeForms.NodeActivity;
 import org.jetbrains.annotations.NotNull;
 
 import static android.app.Activity.RESULT_OK;
+import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.OPEN_ZOOM;
 import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.SHOW_PDF;
 import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.editAllAttachments;
 
@@ -69,17 +69,19 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   protected AllAttachment attachment;
 
   // Where to find the attachments
-//  private String parentNodeId;
   private Node nodeToBeEdited;
 
   /** For Uploading a File */
-  Button selectFile, upload;
-
-  TextView notification;
+  FirebaseStorage storage; // used for upload files
+  StorageReference storageReference;
+  ProgressDialog progressDialog;
   Uri pdfUri;
 
-  FirebaseStorage storage; // used for upload files
-  ProgressDialog progressDialog;
+  TextView fileNotification;
+  Button selectFile, uploadFile, removeFile;
+
+  /** For Zoom Meetings */
+  TextView zoomMeeting, zoomPasscode;
 
   /** The Save Attachment Button */
   private Button addAttachment;
@@ -121,6 +123,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
       addAttachment.setVisibility(View.VISIBLE);
       showAllAttachmentsAdapter.startListening();
     }
+    else {
+      addAttachment.setVisibility(View.GONE);
+    }
   }
 
   // Function to tell the app to stop getting
@@ -152,56 +157,8 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   private void initShowAttachmentRecyclerView() {
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-    ItemTouchHelper itemTouchHelper =
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
-
-              /**
-               * To Delete on swipe:
-               * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
-               *
-               * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
-               * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-               */
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                //        AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment =
-                // (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
-
-                switch (swipeDir) {
-                  case ItemTouchHelper.LEFT:
-                    Snackbar.make(recyclerView, "Attachment swiped left", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-
-                    int position = viewHolder.getAdapterPosition();
-                    // assignmentOverviewAdapter.deleteAssignment(position);
-                    break;
-
-                  case ItemTouchHelper.RIGHT:
-                    Snackbar.make(recyclerView, "Attachment swiped right", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-                }
-
-                // Remove item from backing list here
-                showAllAttachmentsAdapter.notifyDataSetChanged();
-              }
-            });
-    itemTouchHelper.attachToRecyclerView(recyclerView);
-
     FirebaseRecyclerOptions<AllAttachment> options =
         new FirebaseRecyclerOptions.Builder<AllAttachment>()
-//            .setQuery(tempAllAttachment.getEntityDatabase(), AllAttachment.class)
             .setIndexedQuery(nodeToBeEdited.getAttachmentsKeyReference(), attachment.getEntityDatabase(), AllAttachment.class)
             .build();
 
@@ -214,14 +171,14 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   /**
    * Run this function when clicking the edit button in the adapter
    *
-   * @param entityId
+   * @param passedString this could be an entity, a pdf url, or zoom meeting info
    */
   @Override
-  public void onEditButtonClick(String type, String entityId, View clickedItem) {
+  public void onButtonClick(String type, String passedString, View clickedItem) {
     switch (type) {
       case editAllAttachments:
 
-        editEntityId = entityId;
+        editEntityId = passedString;
         inEditMode = true;
         attachment.setId( editEntityId );
 
@@ -229,9 +186,8 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
       break;
 
       case SHOW_PDF:
-        String url = entityId;
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(url), "application/pdf");
+        intent.setDataAndType(Uri.parse(passedString), "application/pdf");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Intent newIntent = Intent.createChooser(intent, "Open File");
         try {
@@ -240,6 +196,18 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
           Toast.makeText(getActivity(), "Unable to show pdf. Do you have a PDF reader installed?", Toast.LENGTH_SHORT).show();
         }
         break;
+
+      case OPEN_ZOOM:
+        String[] zoomParts = passedString.split(" ", 2);
+
+        if (zoomParts.length == 2) {
+          if (!launchZoomUrl(zoomParts[0], zoomParts[1])) {
+            Toast.makeText(getActivity(), "Unable to open Zoom. Do you have the app installed?", Toast.LENGTH_SHORT).show();
+          }
+        }
+        else {
+          Toast.makeText(getActivity(), "Unable to open Zoom. Please try editing attachment and including details again.", Toast.LENGTH_SHORT).show();
+        }
     }
   }
 
@@ -274,7 +242,11 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void initCreateAttachment(View root, PopupWindow popup) {
     final EditText editComment = root.findViewById(R.id.editComment);
 
+    // Initiate the upload files
     initUploadFile(root);
+
+    // Initialize the Zoom fields
+    initZoomMeeting(root);
 
     // Save the data
     final Button saveAction = root.findViewById(R.id.saveAction);
@@ -283,15 +255,14 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
           // Save the attachment
           // attachment.setFileUploadUri(pdfUri); // Already saved immediately upon upload
           attachment.setComment(editComment.getText().toString());
+          attachment.setZoomId(zoomMeeting.getText().toString());
+          attachment.setZoomPasscode(zoomPasscode.getText().toString());
           attachment.setStatus(true);
           attachment.setUid(currentUser.getUid());
           attachment.save();
 
           // Add the attachment to the node
-          nodeToBeEdited
-              .getAttachmentsKeyReference()
-              .child(attachment.getId())
-              .setValue(true);
+          nodeToBeEdited.addAttachmentIdDirectlyToDatabase(attachment.getId());
 
           // Display notification
           String saveMessage = (editEntityId != null) ? "Attachment updated" : "Attachment Saved";
@@ -326,6 +297,11 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
                   if (attachment.getComment() != null) {
                     editComment.setText(attachment.getComment());
                   }
+                  
+                  if (attachment.getFileUri() != null) {
+                    pdfUri = Uri.parse(attachment.getFileUri());
+                    setPdfFileUploaded(attachment.getFileUri());
+                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAttachment:onDataChange");
                 }
@@ -353,16 +329,28 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   }
 
   /**
+   * Add a zoom meeting
+   */
+  private void initZoomMeeting(View root) {
+    zoomMeeting = root.findViewById(R.id.zoomMeeting);
+    zoomPasscode = root.findViewById(R.id.zoomPasscode);
+  }
+
+  /**
    * Upload a file
    */
   private void initUploadFile(View root) {
 
     // Upload a file
     storage = FirebaseStorage.getInstance();
+    storageReference = storage.getReference(attachment.getBaseTable());
 
+    // Buttons
     selectFile = root.findViewById(R.id.selectFile);
-    upload = root.findViewById(R.id.upload);
-    notification = root.findViewById(R.id.notification);
+    uploadFile = root.findViewById(R.id.uploadFile);
+    removeFile = root.findViewById(R.id.removeFile);
+
+    fileNotification = root.findViewById(R.id.notification);
 
     selectFile.setOnClickListener(
         view -> {
@@ -378,18 +366,21 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
            selectPdf();
         });
 
-    upload.setOnClickListener(
+    uploadFile.setOnClickListener(
         view -> {
           if(pdfUri != null) {
-            Log.w("uploadFile()", "begin upload");
             uploadFile(pdfUri);
-            Log.w("uploadFile()", "done upload");
-
           }
           else {
             Toast.makeText(getActivity(), "Select a file", Toast.LENGTH_SHORT).show();
           }
         });
+    
+    removeFile.setOnClickListener(
+        view -> {
+          removeFile();
+        }
+    );
   }
 
   /** Ask user permission to get PDF */
@@ -410,40 +401,67 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     startActivityForResult(intent, 86);
   }
 
+  /**
+   * Remove file from attachment and delete from database
+   */
+  private void removeFile() {
+    String fileUrl = pdfUri.toString();
+
+    storage.getReferenceFromUrl(fileUrl)
+        .delete()
+        .addOnSuccessListener(
+            taskSnapshot -> {
+              Toast.makeText(
+                  getActivity(),
+                  getContext().getString(R.string.toast__attachment__file_delete_successful),
+                  Toast.LENGTH_SHORT)
+                  .show();
+
+        })
+        .addOnFailureListener(
+            e -> {
+              Toast.makeText(
+                  getActivity(),
+                  getContext().getString(R.string.toast__attachment__file_delete_failed),
+                  Toast.LENGTH_SHORT)
+                  .show();
+            });
+  }
+
   /*
    * Not working function to upload a pdf
    *
    * @param pdfUri the file to upload
    */
-  private void uploadFile(Uri pdfUri) {
+  private void uploadFile(@NonNull Uri pdfUri) {
 
-//    progressDialog = new ProgressDialog(getActivity());
-//    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//    progressDialog.setTitle("Uploading file...");
-//    progressDialog.setProgress(0);
-//    progressDialog.show();
+    progressDialog = new ProgressDialog(getActivity());
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    progressDialog.setTitle("Uploading file...");
+    progressDialog.setProgress(0);
+    progressDialog.show();
 
     final String fileName = System.currentTimeMillis() + ".pdf";
-    StorageReference storageReference = storage.getReference();
 
     storageReference
-        .child(attachment.getBaseTable())
+        .child(currentUser.getUid())
         .child(fileName)
         .putFile(pdfUri)
         .addOnSuccessListener(
             taskSnapshot -> {
 
+              progressDialog.dismiss();
+
               Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
               task.addOnSuccessListener(
-                  uri -> {
-                      String url = uri.toString();
-
-                      attachment.setFileUploadUri(url);
+                  downloadUrl -> {
+                      attachment.setFileUri(pdfUri.toString());
+                      attachment.setDownloadFileUri(downloadUrl.toString());
                       attachment.save();
 
                       Toast.makeText(
                           getActivity(),
-                          "File successfully uploaded",
+                          getContext().getString(R.string.toast__attachment__file_successful),
                           Toast.LENGTH_SHORT)
                           .show();
 
@@ -452,21 +470,36 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
         .addOnFailureListener(
             e -> Toast.makeText(
                 getActivity(),
-                "File not successfully uploaded",
+                getContext().getString(R.string.toast__attachment__file_failed),
                 Toast.LENGTH_SHORT)
-                .show());
-//        .addOnProgressListener(
-//            taskSnapshot -> {
-//
-//              int currentProgress =
-//                  (int)
-//                      (100
-//                          * taskSnapshot.getBytesTransferred()
-//                          / taskSnapshot.getTotalByteCount());
-//              progressDialog.setProgress(currentProgress);
-//            });
+                .show())
+        .addOnProgressListener(
+            taskSnapshot -> {
+              int currentProgress =
+                  (int)
+                      (100
+                          * taskSnapshot.getBytesTransferred()
+                          / taskSnapshot.getTotalByteCount());
+              progressDialog.setProgress(currentProgress);
+            });
   }
 
+  /**
+   * Open Zoom Meeting
+   *
+   * Source: https://stackoverflow.com/q/63717072
+   * Author: Mithun Sarker Shuvro (https://stackoverflow.com/users/3887432)
+   */
+  private boolean launchZoomUrl(String meetingId, String meetingPasscode) {
+    Uri zoomUri = Uri.parse(String.format("zoomus://zoom.us/join?confno=%s&pwd=%s", meetingId, meetingPasscode));
+    Intent intent = new Intent(Intent.ACTION_VIEW, zoomUri);
+    if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+      startActivity(intent);
+      return true;
+    }
+    return false;
+  }
+  
   /**
    * Process selected pdf for upload
    */
@@ -474,10 +507,28 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == 86 && resultCode == RESULT_OK && data!= null ){
       pdfUri = data.getData();
-      String pathUrl = data.getData().getLastPathSegment();
-      notification.setText(String.format(getString(R.string.attachment__pdf_ppload_preview), pathUrl));
+      String pathUrl = pdfUri.getLastPathSegment();
+      if (pathUrl != null) {
+        setPdfFileSelected(pathUrl);
+      }
     } else{
       Toast.makeText(getActivity(),"Please select a file",Toast.LENGTH_SHORT).show();
     }
+  }
+  
+  private void setPdfFileSelected(@NonNull String fileName) {
+    fileNotification.setText(String.format(getString(R.string.attachment__pdf_ppload_preview), fileName));
+
+    selectFile.setVisibility(View.GONE);
+    uploadFile.setVisibility(View.VISIBLE);
+    removeFile.setVisibility(View.GONE);
+  }
+  
+  private void setPdfFileUploaded(@NonNull String fileName) {
+    fileNotification.setText(String.format(getString(R.string.attachment__pdf_ppload_preview), fileName));
+
+    selectFile.setVisibility(View.GONE);
+    uploadFile.setVisibility(View.GONE);
+    removeFile.setVisibility(View.VISIBLE);
   }
 }

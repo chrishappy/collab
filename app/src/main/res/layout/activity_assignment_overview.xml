@@ -5,19 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_gravity="start"
     tools:context=".nodeViews.AssignmentOverviewActivity">
 
-    <ScrollView
-        android:id="@+id/assignmentsContainer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/assignmentsContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/assignmentOverviewRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </ScrollView>
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -34,12 +36,13 @@
         android:id="@+id/createAssignment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
         android:visibility="visible"
+        app:tint="@color/white"
         app:backgroundTint="@color/colorPrimary"
-        app:layout_anchor="@+id/assignmentsContainer"
-        app:layout_anchorGravity="end|top"
+        app:layout_anchor="@id/assignmentsContainer"
+        app:layout_anchorGravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="@color/white" />
+        android:contentDescription="@string/assignment_overview__add_assignment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

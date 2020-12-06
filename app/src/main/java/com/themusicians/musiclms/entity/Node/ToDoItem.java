@@ -8,6 +8,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Assignment.java
@@ -24,7 +25,7 @@ public class ToDoItem extends Node {
   /**
    * The fields for the To Do Item
    *
-   * <p>Public properties will be automatically saved by Firebase Private will not
+   * <p>Public properties will be automatically saved by Firebase
    */
   protected boolean requireRecording;
 
@@ -41,6 +42,12 @@ public class ToDoItem extends Node {
   private Assignment assignment;
 
   protected Object timeCompleted;
+
+  /**
+   * For saving recordings
+   */
+  public static final String feedbackFormat = "%02d:%02d | %s";
+
 
   /** The default constructor for Firebase + loadMultiple */
   public ToDoItem() {
@@ -119,11 +126,18 @@ public class ToDoItem extends Node {
 
   /** The recording feedback fields */
   public List<String> getRecordingFeedback() {
-    if (this.recordingFeedback == null) {
+    if (recordingFeedback == null) {
       recordingFeedback = new ArrayList<>();
     }
 
     return recordingFeedback;
+  }
+
+  public void addRecordingFeedback(String feedback, int timeInSeconds){
+    int minutes = timeInSeconds / 60;
+    int seconds = timeInSeconds % 60;
+
+    addRecordingFeedback(String.format(Locale.CANADA, feedbackFormat, minutes, seconds, feedback));
   }
 
   public void addRecordingFeedback(String recordingFeedbackString) {

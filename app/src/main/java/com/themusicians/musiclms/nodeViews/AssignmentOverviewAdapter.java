@@ -88,18 +88,14 @@ public class AssignmentOverviewAdapter
       holder.dueDate.setText(dateFormat.format(date));
     }
 
-    int totalToDosCount = assignment.getCountOfTotalToDos();
-    if (totalToDosCount != 0) {
-      int amountOfProgress = assignment.getCountOfDoneToDos() / totalToDosCount;
-      holder.progressBar.setProgress(amountOfProgress);
+    double amountOfProgress = 0;
+    if (assignment.getCountOfTotalToDos() != 0) {
+      amountOfProgress = (double) assignment.getCountOfDoneToDos() / assignment.getCountOfTotalToDos();
     }
-
-//    holder.editAssignment.setOnClickListener(
-//        view -> {
-//          if (itemClickListener != null) {
-//            itemClickListener.onButtonClick("editAssignment", assignment.getId());
-//          }
-//        });
+    if (amountOfProgress == 0) { // Always show some progress
+      amountOfProgress = 0.05;
+    }
+    holder.progressBar.setProgress((int) (amountOfProgress * 100), true);
 
     holder.wrapper.setOnClickListener(
         view -> {

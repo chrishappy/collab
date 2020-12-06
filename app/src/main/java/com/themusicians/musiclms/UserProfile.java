@@ -33,8 +33,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
+import com.themusicians.musiclms.nodeViews.NodeViewActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +45,7 @@ import java.util.Locale;
 /**
  * Display the user information and link to chat page
  *
- * @contributors Harveer Khangura, Shifan He
+ * @contributors Harveer Khangura, Shifan He, Nathan Tsai
  * @author Jerome Lau
  * @since Nov 10, 2020
  * @todo View user info
@@ -61,12 +64,18 @@ public class UserProfile extends AppCompatActivity {
   protected User currUser;
   BottomNavigationView bottomNavigationView;
 
+
+  /** The node that has the attachments */
+  /*@Override
+  public Node getNodeForAttachments() {
+    return currUser;
+  }*/
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    /*Shifan's code */
+    // For translation (Shifan)
     loadLocale();
-    /* End of Shifan's code*/
 
     setContentView(R.layout.user_profile_main);
 
@@ -85,6 +94,12 @@ public class UserProfile extends AppCompatActivity {
     bottomNavigationView.setSelectedItemId(R.id.page_2);
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
+    // Initialize Attachments
+    //initShowAttachments(R.id.showAttachments);
+
+    /*
+     * Instrument list
+     */
     newInstrument = findViewById(R.id.enterInstruments);
     addInstrument = findViewById(R.id.addButton);
     instruments = new ArrayList<>();
@@ -339,7 +354,7 @@ public class UserProfile extends AppCompatActivity {
     Intent toUserAnalysis;
     if(currUser.getRole().equals("student")){
       toUserAnalysis = new Intent(this, UserAnalysisStudent.class);
-    }else {
+    } else {
       toUserAnalysis = new Intent(this, UserAnalysisTeacher.class);
     }
     startActivity(toUserAnalysis);

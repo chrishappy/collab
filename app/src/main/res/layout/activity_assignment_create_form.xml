@@ -142,7 +142,7 @@
                 android:background="#c0c0c0" />
 
             <fragment
-                android:id="@+id/showAttachments"
+                android:id="@+id/showAttachments__assignments"
                 android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

@@ -5,8 +5,14 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="left_and_right_gutters">20dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="header_text__primary">30sp</dimen>
+
+    <!-- Custom -->
+    <dimen name="left_and_right_gutters">20dp</dimen>
     <dimen name="smallPadding">10dp</dimen>
+    <dimen name="listItemSmallVerticalMargin">8dp</dimen>
 </resources>

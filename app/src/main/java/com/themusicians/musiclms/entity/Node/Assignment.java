@@ -1,5 +1,7 @@
 package com.themusicians.musiclms.entity.Node;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -165,13 +167,17 @@ public class Assignment extends Node {
    */
   @Override
   public void delete() {
-    ToDoItem tempToDoItem = new ToDoItem(null);
-    for (String toDoId : getToDoIds().keySet()) {
-      tempToDoItem.setId(toDoId);
-      tempToDoItem.delete();
+    if (getToDoIds() != null && !getToDoIds().isEmpty()) {
+      ToDoItem tempToDoItem = new ToDoItem(null);
+      for (String toDoId : getToDoIds().keySet()) {
+        tempToDoItem.setId(toDoId);
+        tempToDoItem.delete();
+      }
     }
 
     super.delete();
+
+    Log.w("Assignment", "Deleted Assignment: " + getId());
   }
 
   /**
@@ -191,7 +197,9 @@ public class Assignment extends Node {
   }
 
   public void addAssignees(String assignees) {
-    getAssignees().add(assignees);
+    if (!getAssignees().contains(assignees)) {
+      getAssignees().add(assignees);
+    }
   }
 
   public void setAssignees(List<String> assignees) {
@@ -281,12 +289,10 @@ public class Assignment extends Node {
   /**
    * For calculating the student's progress
    */
-  public void setCountOfTotalToDos(){ this.countOfTotalToDos = getToDoIds().size(); }
+  @Exclude
+  public int getCountOfTotalToDos(){ return getToDoIds().size(); }
 
-  public int getCountOfTotalToDos(){ return countOfTotalToDos; }
-
-//  public void addCountOfDoneToDos(){ this.countOfDoneToDos++; }
-
+  @Exclude
   public int getCountOfDoneToDos(){
     countOfDoneToDos = 0;
 

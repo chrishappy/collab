@@ -6,4 +6,6 @@
     <color name="red">#C71C0F</color>
     <color name="white">#FFF</color>
     <color name="grey">#808080</color>
+    <color name="listItemLightBk">#eee</color>
+    <color name="orangePrimary">#ff6347</color>
 </resources>

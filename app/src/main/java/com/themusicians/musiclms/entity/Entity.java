@@ -103,7 +103,9 @@ public abstract class Entity implements EntityInterface {
    * Implements delete() Deletes the entity
    */
   @Override
-  public void delete() {  }
+  public void delete() {
+    getEntityDatabase().child(getId()).removeValue();
+  }
 
   /**
    * Get the id of the entity

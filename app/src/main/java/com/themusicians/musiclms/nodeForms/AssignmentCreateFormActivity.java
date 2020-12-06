@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -183,6 +185,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                   String suggestion = suggestionSnapshot.child("name").getValue(String.class);
                   //Add the retrieved string to the list
                   autoComplete.add(suggestion);
+                  //assignment.addAssignees(suggestion);
               }
           }
           @Override
@@ -191,6 +194,33 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       });
       StudentOrClass.setAdapter(autoComplete);
       StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+      // @TODO Add ids rather than matching display name
+      StudentOrClass.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              String item = (String)parent.getItemAtPosition(position);
+              tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(DataSnapshot dataSnapshot) {
+                      //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+                      for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
+                          //Get the suggestion by childing the key of the string you want to get.
+                          String suggestion = suggestionSnapshot.child("name").getValue(String.class);
+                          //Add the retrieved string to the list
+                         if(suggestion.equals(item)){
+                             assignment.addAssignees(suggestionSnapshot.child("id").getValue(String.class));
+                         }
+                          //assignment.addAssignees(suggestion);
+                      }
+                  }
+                  @Override
+                  public void onCancelled(DatabaseError databaseError) {
+                  }
+              });
+
+          }
+      });
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);
@@ -219,7 +249,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     initToDoItemsList();
 
     // Show attachments
-    initShowAttachments();
+    initShowAttachments(R.id.showAttachments__assignments);
 
     // Show attachments edit form
 //    initCreateAttachments(assignment);
@@ -265,7 +295,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           assignment.setClassId(StudentOrClass.getText().toString());
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
-          assignment.setCountOfTotalToDos();
           assignment.save();
 
           finish();

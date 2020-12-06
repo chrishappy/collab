@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".nodeForms.ToDoTaskCreateFormActivity"
     android:id="@+id/createToDoTaskLayout">
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/to_do_item_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/left_and_right_gutters"
-        android:paddingRight="@dimen/left_and_right_gutters"
-        tools:showIn="@layout/activity_to_do_item_create_form">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        tools:showIn="@layout/activity_to_do_item_create_form"
+        android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/to_do_item_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/header_text__primary"
+                    android:layout_weight="1"
+                    android:text="@string/to_do_item__form__name" />
+
+                <LinearLayout
+                    android:id="@+id/todo_item__teacher_marked"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="end"
+                    android:orientation="vertical"
+                    android:layout_weight="0">
+
+                    <CheckBox
+                        android:id="@+id/complete_to_do_itemCB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/assignment__student_done" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,17 +76,6 @@
                         android:layout_marginTop="30dp"
                         android:layout_marginBottom="30dp"
                         android:textSize="25sp" />
-
-                    <VideoView
-                        android:id="@+id/tempRecordingVideo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <Button
-                        android:id="@+id/tempButton2"
-                        android:text="@string/shareVideo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -83,80 +103,96 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/youtube_player_wrapper"
+                    android:id="@+id/youtube_player_and_recording_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <Button
+                        android:id="@+id/changeRecording"
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+                        android:textSize="10sp"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="@string/to_do_item__change_recording" />
+
+<!--                    In case we want to add youtube video programmically-->
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/youtube_recording_placeholder"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content">-->
+<!--                    </LinearLayout>-->
+
                     <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                         android:id="@+id/youtube_player_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"/>
 
                     <LinearLayout
-                        android:id="@+id/youtube_recording_wrapper"
+                        android:id="@+id/add_recording_feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/text_margin"
                         android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/seek_to_text"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/seek_to_input2"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/seek_to_hint"
+                                android:inputType="number"
+                                android:layout_weight="1"
+                                android:text="0"
+                                tools:ignore="HardcodedText" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/seek_to_button"
+                            style="@android:style/Widget.Material.Light.Button.Borderless"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:hint="@string/seek_to_hint"
-                            android:inputType="number"
-                            android:layout_weight="1"
-                            android:text="0" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:id="@+id/seek_to_button"
-                        android:layout_width="50dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/seek_to"
-                        android:layout_weight="0"/>
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="0"
+                            android:padding="0dp"
+                            android:text="@string/seek_to" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/add_recording_feedback__text"
-                            android:layout_width="match_parent"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/add_recording_feedback__text"/>
+                            android:layout_weight="1">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/add_recording_feedback__text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/add_recording_feedback__text"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <Button
-                        android:id="@+id/add_recording_feedback__save"
-                        android:text="@string/assignment__form__save"
-                        android:layout_weight="0"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"/>
+                        <Button
+                            android:id="@+id/add_recording_feedback__save"
+                            android:text="@string/assignment__form__save"
+                            android:layout_weight="0"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <ListView
-                    android:id="@+id/recordingFeedbackListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <LinearLayout
-                    android:id="@+id/add_recording_feedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recordingFeedbackListView"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:divider="@null"
+                            android:dividerHeight="0dp" />
 
                 </LinearLayout>
 
@@ -167,20 +203,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/to_do_item_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:text="@string/to_do_item__form__name" />
-                </LinearLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
@@ -190,31 +212,15 @@
                     android:layout_marginBottom="30dp"
                     android:background="#c0c0c0" />
 
-                <CheckBox
-                    android:id="@+id/complete_to_do_itemCB"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/completed" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="#c0c0c0" />
-
-                <fragment
-                    android:id="@+id/showAttachments"
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/showAttachments__to_do__view"
                     android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-        </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
 
     <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
@@ -227,4 +233,4 @@
 <!--        app:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</ScrollView>
