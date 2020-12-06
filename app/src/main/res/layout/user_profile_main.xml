@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#ff6347"
+            android:background="@color/orangePrimary"
             android:text="@string/action_Language"
             android:textColor="#fff" />
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:background="#ff6347"
+            android:background="@color/orangePrimary"
             android:onClick="toAnalysis"
             android:text="@string/user_analysis"
             android:textColor="#fff" />
@@ -55,7 +55,7 @@
             android:id="@+id/toEditData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ff6347"
+            android:background="@color/orangePrimary"
             android:onClick="toEditData"
             android:text="@string/user_profile__edit_data"
             android:textColor="#fff" />
@@ -79,7 +79,7 @@
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="40sp"
-        android:background="#ff6347"
+        android:background="@color/orangePrimary"
         android:text="@string/profile_add"
         android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/InstrumentList"
@@ -121,7 +121,7 @@
         app:layout_constraintBottom_toTopOf="@+id/user_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        android:textColor="#ff6347"
+        android:textColor="@color/orangePrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.594" />

@@ -24,7 +24,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/placeholder"
-            android:textColor="#ff6347"
+            android:textColor="@color/orangePrimary"
             android:textSize="25sp"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +81,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
-                android:background="#ff6347"
+                android:background="@color/orangePrimary"
                 android:hint="@string/view"
                 android:textColor="#fff" />
 
@@ -93,7 +93,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="12dp"
-                android:background="#ff6347"
+                android:background="@color/orangePrimary"
                 android:textColor="#fff"
                 android:hint="@string/add"/>
 
