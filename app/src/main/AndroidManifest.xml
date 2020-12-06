@@ -38,6 +38,9 @@
         <activity android:name=".UserAnalysisStudent"
             android:label="Analysis"
             android:parentActivityName=".UserProfile"/>
+        <activity android:name=".UserAnalysisTeacher"
+            android:label="Analysis"
+            android:parentActivityName=".UserProfile"/>
         <activity
             android:name=".UserSearchView"
             android:label="@string/view"
