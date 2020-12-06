@@ -41,7 +41,7 @@ public class Assignment extends Node {
   /** Whether this assignment is completed */
   protected boolean assignmentComplete;
 
-  protected Object assignmentCompleteTime;
+  protected Long assignmentCompleteTime;
 
   /** Whether this assignment is marked */
   protected boolean assignmentMarked;
@@ -215,17 +215,24 @@ public class Assignment extends Node {
 
   public void setAssignmentComplete(boolean assignmentComplete) {
     this.assignmentComplete = assignmentComplete;
+  }
+
+  public java.util.Map<String, String> getAssignmentCompleteTime() {
 
     if (getAssignmentComplete()) {
-      setAssignmentCompleteTime(ServerValue.TIMESTAMP);
+      return ServerValue.TIMESTAMP;
+    }
+    else {
+      return null;
     }
   }
 
-  public Object getAssignmentCompleteTime() {
+  @Exclude
+  public Long getAssignmentCompleteTimeLong() {
     return assignmentCompleteTime;
   }
 
-  public void setAssignmentCompleteTime(Object assignmentCompleteTime) {
+  public void setAssignmentCompleteTime(Long assignmentCompleteTime) {
     this.assignmentCompleteTime = assignmentCompleteTime;
   }
 
@@ -238,6 +245,10 @@ public class Assignment extends Node {
 
   public void setAssignmentMarked(boolean assignmentMarked) {
     this.assignmentMarked = assignmentMarked;
+
+    if (getAssignmentMarked()) {
+      setAssignmentMarkedTime(ServerValue.TIMESTAMP);
+    }
   }
 
   public Object getAssignmentMarkedTime() {
