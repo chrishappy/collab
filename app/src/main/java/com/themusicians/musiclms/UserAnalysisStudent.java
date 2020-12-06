@@ -1,17 +1,14 @@
 package com.themusicians.musiclms;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,13 +18,12 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.themusicians.musiclms.Notifications.Data;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
 
 import static java.lang.Math.floor;
 
-public class UserAnalysis extends AppCompatActivity {
+public class UserAnalysisStudent extends AppCompatActivity {
 
   DatabaseReference reference;
 
@@ -42,14 +38,15 @@ public class UserAnalysis extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.user_analysis);
+    setContentView(R.layout.user_analysis_student);
 
     graphView = findViewById(R.id.graphView);
     series = new LineGraphSeries();
     graphView.addSeries(series);
     GridLabelRenderer glr = graphView.getGridLabelRenderer();
     glr.setPadding(32);
-
+    graphView.getViewport().setMinX(0);
+    graphView.getViewport().setMinY(0);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
@@ -85,6 +82,7 @@ public class UserAnalysis extends AppCompatActivity {
           Assignment assignment = ds.getValue(Assignment.class);
           if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
             x++;
+
             y = (long) assignment.getAssignmentCompleteTime() - (assignment.getDueDate()*1000);
 
             y = (long) (floor(((y/1000)/60)/60)/24);
@@ -129,11 +127,12 @@ public class UserAnalysis extends AppCompatActivity {
   }
 
   public void readKey(View view) {
-    AlertDialog.Builder key = new AlertDialog.Builder(UserAnalysis.this);
+    AlertDialog.Builder key = new AlertDialog.Builder(UserAnalysisStudent.this);
     key.setTitle(R.string.key);
     key.setMessage("This graph represents the student's submission time relative to the due date. Each X value represents an assignment. The Y value 0 is the due date, all values above are how many days after the due date the assignment is submitted. All Y values below 0 are how early the student submits the assignment in days.");
 
     AlertDialog showKey = key.create();
     showKey.show();
   }
+
 }

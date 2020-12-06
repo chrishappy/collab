@@ -188,4 +188,9 @@
     <string name="user_deleted"> has been deleted.</string>
     <string name="cannot_add">Cannot add self</string>
     <string name="added"> added</string>
+    <string name="stats">Stats</string>
+    <string name="text_label_1">Assignment Overview</string>
+    <string name="text_label_2">User Profile</string>
+    <string name="text_label_3">Chat</string>
+
 </resources>

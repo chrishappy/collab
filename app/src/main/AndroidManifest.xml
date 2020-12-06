@@ -35,7 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode">
-        <activity android:name=".UserAnalysis"
+        <activity android:name=".UserAnalysisStudent"
             android:label="Analysis"
             android:parentActivityName=".UserProfile"/>
         <activity
