@@ -49,7 +49,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
   private CheckBox requireRecording;
 
   /** The To Do Item object */
-  ToDoItem toDoItem;
+  protected ToDoItem toDoItem;
 
   /**
    * @return the node we are editing

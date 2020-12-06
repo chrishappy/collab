@@ -41,7 +41,7 @@ import java.util.Locale;
 /**
  * Display the user information and link to chat page
  *
- * @contributors Harveer Khangura, Shifan He
+ * @contributors Harveer Khangura, Shifan He, Nathan Tsai
  * @author Jerome Lau
  * @since Nov 10, 2020
  * @todo View user info
@@ -70,9 +70,8 @@ public class UserProfile extends NodeViewActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    /*Shifan's code */
+    // For translation (Shifan)
     loadLocale();
-    /* End of Shifan's code*/
 
     setContentView(R.layout.user_profile_main);
 

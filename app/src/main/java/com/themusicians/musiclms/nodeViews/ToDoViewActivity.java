@@ -56,7 +56,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   static final int REQUEST_VIDEO_CAPTURE = 1;
 
   /** The To Do Item object */
-  ToDoItem toDoItem;
+  protected ToDoItem toDoItem;
 
   /**
    * Youtube Player

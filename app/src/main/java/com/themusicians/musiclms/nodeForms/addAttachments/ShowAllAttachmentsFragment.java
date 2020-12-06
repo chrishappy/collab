@@ -69,7 +69,6 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   protected AllAttachment attachment;
 
   // Where to find the attachments
-//  private String parentNodeId;
   private Node nodeToBeEdited;
 
   /** For Uploading a File */
