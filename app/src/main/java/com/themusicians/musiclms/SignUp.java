@@ -29,14 +29,10 @@ import java.util.List;
 /**
  * The activity that manages the user sign up
  *
- * <p>
- *
  * @contributor Harveer Khangura
  * @author Jerome Lau
  * @since Nov 3, 2020
- * @todo Authenticate users via Firebase
- * @todo Store miscellaneous user info in Firebase
- * @todo Proceed through sign up layouts
+ *
  */
 public class SignUp extends AppCompatActivity {
 
@@ -245,12 +241,12 @@ public class SignUp extends AppCompatActivity {
 
     List<String> TechExp = new ArrayList<String>();
 
-    String sT = "Can send Text";
-    String mC = "Can make Call";
-    String jZ = "Can join Zoom";
-    String sZ = "Can schedule Zoom";
-    String wY = "Can watch Youtube";
-    String uY = "Can upload Youtube";
+    String sT = getString(R.string.make_text);
+    String mC = getString(R.string.make_call);
+    String jZ = getString(R.string.join_zoom);
+    String sZ = getString(R.string.schedule_zoom);
+    String wY = getString(R.string.watch_youtube);
+    String uY = getString(R.string.upload_youtube);
 
     if (sendText.isChecked()) {
       TechExp.add(sT);

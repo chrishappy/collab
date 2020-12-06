@@ -2,6 +2,14 @@ package com.themusicians.musiclms.chat;
 
 import android.widget.SearchView;
 
+/**
+ * Class for chat information
+ *
+ * @author Jerome Lau
+ * @since Nov 25, 2020
+ *
+ */
+
 public class ChatClass {
 
   private String sender;

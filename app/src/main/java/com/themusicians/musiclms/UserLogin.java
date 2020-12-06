@@ -19,11 +19,10 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 /**
  * The user login page
  *
- * <p>@Contributors: Jerome Lau @Jerome Lau @Since Nov 4, 2020
+ * @contributors Jerome Lau
+ * @author: Jerome Lau
+ * @since Nov 4, 2020
  *
- * <p>--------------------------------
- *
- * @todo Login users via Firebase
  */
 public class UserLogin extends AppCompatActivity {
 
@@ -54,13 +53,13 @@ public class UserLogin extends AppCompatActivity {
 
             /** checks if user email is empty */
             if (TextUtils.isEmpty(email)) {
-              myEmail.setError("Email is Required.");
+              myEmail.setError(getString(R.string.email_error));
               return;
             }
 
             /** checks if user password is empty */
             if (TextUtils.isEmpty(password)) {
-              myPassword.setError("Password is Required");
+              myPassword.setError(getString(R.string.password_error));
               return;
             }
 
@@ -77,7 +76,7 @@ public class UserLogin extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                          Toast.makeText(UserLogin.this, "Login Successful", Toast.LENGTH_SHORT)
+                          Toast.makeText(UserLogin.this, R.string.login_successful, Toast.LENGTH_SHORT)
                               .show();
                           startActivity(
                               new Intent(
@@ -85,7 +84,7 @@ public class UserLogin extends AppCompatActivity {
                         } else {
                           Toast.makeText(
                                   UserLogin.this,
-                                  "Login Error" + task.getException().getMessage(),
+                                  getString(R.string.login_error) + task.getException().getMessage(),
                                   Toast.LENGTH_SHORT)
                               .show();
                         }

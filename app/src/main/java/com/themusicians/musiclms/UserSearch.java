@@ -23,9 +23,6 @@ import java.util.ArrayList;
  *
  * @author Jerome Lau
  * @since Nov 19, 2020
- * @todo Search for users
- * @todo Add users to User Profile
- * @todo Display searched users
  */
 public class UserSearch extends AppCompatActivity {
 

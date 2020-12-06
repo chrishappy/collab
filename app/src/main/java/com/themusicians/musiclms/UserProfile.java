@@ -43,12 +43,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Display the user information and link to chat page
+ * Display the user information
  *
  * @contributors Harveer Khangura, Shifan He, Nathan Tsai
  * @author Jerome Lau
  * @since Nov 10, 2020
- * @todo View user info
+ *
  */
 public class UserProfile extends NodeViewActivity {
 
@@ -364,6 +364,7 @@ public class UserProfile extends NodeViewActivity {
     startActivity(toUserAnalysis);
   }
 
+  /** Enables bottom navigation bar */
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @SuppressLint("NonConstantResourceId")
     @Override

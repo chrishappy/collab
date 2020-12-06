@@ -30,6 +30,14 @@ import java.util.Map;
 
 import static java.lang.Math.floor;
 
+/**
+ * Display the users submission analysis
+ *
+ * @contributors Nathan Tsai
+ * @author Jerome Lau
+ * @since Dec 3, 2020
+ *
+ */
 public class UserAnalysisTeacher extends AppCompatActivity {
 
   DatabaseReference reference;
@@ -38,7 +46,6 @@ public class UserAnalysisTeacher extends AppCompatActivity {
   GraphView graphView;
   LineGraphSeries series;
   User currUser;
-  String myName;
   long x;
   long y;
   ArrayList<Long> store;
@@ -60,23 +67,15 @@ public class UserAnalysisTeacher extends AppCompatActivity {
     store = new ArrayList<>();
 
     reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
-    DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
-    nameRef.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        myName = snapshot.getValue().toString();
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
 
     reference.removeValue();
     setListeners();
   }
 
+  /** Checks Firebase for assignments the teacher made
+   *  Gets time difference from submission and due date and counts how many
+   *  Stores in users chartTable
+   */
   private void setListeners() {
     DatabaseReference aRef = FirebaseDatabase.getInstance().getReference().child("node__assignment");
 
@@ -123,6 +122,7 @@ public class UserAnalysisTeacher extends AppCompatActivity {
     });
   }
 
+  /** Fetches data from Firebase and displays it in a graph */
   @Override
   protected void onStart() {
     super.onStart();
@@ -149,10 +149,11 @@ public class UserAnalysisTeacher extends AppCompatActivity {
     });
   }
 
+  /** Displays graph key */
   public void readKey(View view) {
     AlertDialog.Builder key = new AlertDialog.Builder(UserAnalysisTeacher.this);
     key.setTitle(R.string.key);
-    key.setMessage("This graph represents the student's submission time relative to the due date. Each X value represents an assignment. The Y value 0 is the due date, all values above are how many days after the due date the assignment is submitted. All Y values below 0 are how early the student submits the assignment in days.");
+    key.setMessage(R.string.teacher_key);
 
     AlertDialog showKey = key.create();
     showKey.show();

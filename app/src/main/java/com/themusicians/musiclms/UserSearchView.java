@@ -23,6 +23,14 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/**
+ * Display the viewed users information
+ *
+ * @author Jerome Lau
+ * @since Nov 28, 2020
+ *
+ */
+
 public class UserSearchView extends AppCompatActivity {
 
   protected TextView otherName, otherEmail;

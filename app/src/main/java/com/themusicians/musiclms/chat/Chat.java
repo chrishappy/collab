@@ -39,6 +39,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Displays the user chat
+ * <not implemented> notifications
+ *
+ * @contributors Harveer Khangura
+ * @author Jerome Lau
+ * @since Nov 10, 2020
+ */
+
 public class Chat extends AppCompatActivity {
 
   EditText textMessage;
@@ -75,6 +84,8 @@ public class Chat extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
     linearLayoutManager.setStackFromEnd(true);
     recyclerView.setLayoutManager(linearLayoutManager);
+
+    /** gets the user id of who the message is being sent to */
     toRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -99,6 +110,7 @@ public class Chat extends AppCompatActivity {
       }
     });
 
+    /** Sends message to Firebase */
     sendButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -221,6 +233,8 @@ public class Chat extends AppCompatActivity {
 //    });
   }
 
+
+  /** Sends chat information to Firebase */
   private void sendMessage(String sender, String receiver, String message){
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     HashMap<String, Object> hashMap = new HashMap<>();
@@ -232,6 +246,7 @@ public class Chat extends AppCompatActivity {
   }
 
 
+  /** Pulls chat information from Firebase and displays it */
   private void readMessages(String myId, String userId){
     chatList = new ArrayList<>();
 

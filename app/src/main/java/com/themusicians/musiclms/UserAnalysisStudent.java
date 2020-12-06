@@ -25,6 +25,14 @@ import com.themusicians.musiclms.entity.Node.User;
 
 import static java.lang.Math.floor;
 
+/**
+ * Display the users submission analysis
+ *
+ * @contributors Nathan Tsai
+ * @author Jerome Lau
+ * @since Dec 3, 2020
+ *
+ */
 public class UserAnalysisStudent extends AppCompatActivity {
 
   DatabaseReference reference;
@@ -52,6 +60,7 @@ public class UserAnalysisStudent extends AppCompatActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
+    /** Gets the users name as a reference */
     reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
     DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
     nameRef.addValueEventListener(new ValueEventListener() {
@@ -75,6 +84,10 @@ public class UserAnalysisStudent extends AppCompatActivity {
     setListeners();
   }
 
+  /** Checks Firebase for assignments the student has
+   *  Gets time difference from submission and due date
+   *  Stores in users chartTable
+   */
   private void setListeners() {
     DatabaseReference aRef = FirebaseDatabase.getInstance().getReference().child("node__assignment");
 
@@ -84,7 +97,6 @@ public class UserAnalysisStudent extends AppCompatActivity {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
           if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
-            Log.w("debug assignment id", String.valueOf(assignment.getAssignmentCompleteTime()));
 
             x++;
             y = (long) assignment.getAssignmentCompleteTimeLong() - assignment.getDueDate();
@@ -104,6 +116,7 @@ public class UserAnalysisStudent extends AppCompatActivity {
     });
   }
 
+  /** Fetches data from Firebase and displays it in a graph */
   @Override
   protected void onStart() {
     super.onStart();
@@ -130,10 +143,11 @@ public class UserAnalysisStudent extends AppCompatActivity {
     });
   }
 
+  /** Displays graph key */
   public void readKey(View view) {
     AlertDialog.Builder key = new AlertDialog.Builder(UserAnalysisStudent.this);
     key.setTitle(R.string.key);
-    key.setMessage("This graph represents the student's submission time relative to the due date. Each X value represents an assignment. The Y value 0 is the due date, all values above are how many days after the due date the assignment is submitted. All Y values below 0 are how early the student submits the assignment in days.");
+    key.setMessage(R.string.student_key);
 
     AlertDialog showKey = key.create();
     showKey.show();

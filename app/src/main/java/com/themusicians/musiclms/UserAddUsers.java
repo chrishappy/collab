@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class UserAddUsers<button> extends AppCompatActivity {
+public class UserAddUsers extends AppCompatActivity {
 
   protected User currUser;
   protected TextView myName;
@@ -189,6 +189,7 @@ public class UserAddUsers<button> extends AppCompatActivity {
     addedRecycler.setAdapter(userAddedAdapter);
   }
 
+  /** Enables bottom navigation bar */
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @SuppressLint("NonConstantResourceId")
     @Override
