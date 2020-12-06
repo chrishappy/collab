@@ -18,15 +18,11 @@ import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +33,6 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -249,7 +244,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     initToDoItemsList();
 
     // Show attachments
-    initShowAttachments(R.id.showAttachments__assignments);
+    initShowAttachments(R.id.showAttachments__assignments, "");
 
     // Show attachments edit form
 //    initCreateAttachments(assignment);

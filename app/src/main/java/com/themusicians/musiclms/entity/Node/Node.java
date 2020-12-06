@@ -9,6 +9,8 @@ import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ import java.util.Map;
  * @author Nathan Tsai
  * @since 2020-11-02
  */
-public abstract class Node extends Entity {
+public abstract class Node extends Entity implements Cloneable {
 
   /** The entity type. Must be final */
   protected final String entityType = "node";
@@ -46,6 +48,13 @@ public abstract class Node extends Entity {
   /** Constructor for an existing Node */
   public Node(String id) {
     super(id);
+  }
+
+  /** Clone */
+  @NotNull
+  @Override
+  public Object clone()  throws CloneNotSupportedException {
+    return super.clone();
   }
 
   /**

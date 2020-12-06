@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -87,7 +87,7 @@ public class UserProfile extends NodeViewActivity {
     currUser = new User(currentUser.getUid());
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments);
+    initShowAttachments(R.id.showAttachments, "user_profile");
 
     /*
      * Instrument list

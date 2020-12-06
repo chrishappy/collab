@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -121,7 +120,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     requireRecording = findViewById(R.id.require_recording);
 
     // Initialize attachments
-    initShowAttachments(R.id.showAttachments__to_do__create);
+    initShowAttachments(R.id.showAttachments__to_do__create, "todo__create");
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);

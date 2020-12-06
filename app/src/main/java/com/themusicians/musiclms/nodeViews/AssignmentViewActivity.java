@@ -13,17 +13,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.client.Firebase;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.themusicians.musiclms.PointValue;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
@@ -214,7 +210,7 @@ public class AssignmentViewActivity extends NodeViewActivity
     initToDoItemsList();
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__assignments);
+    initShowAttachments(R.id.showAttachments__assignments, "");
   }
 
   /** Return the node to add attachments to */

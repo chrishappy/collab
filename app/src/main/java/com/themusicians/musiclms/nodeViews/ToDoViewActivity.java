@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -208,7 +207,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     });
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__to_do__view);
+    initShowAttachments(R.id.showAttachments__to_do__view, "todo__view");
   }
 
   /** Return the node to add attachments to */

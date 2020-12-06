@@ -87,11 +87,17 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private Button addAttachment;
 
   /** Receive the entity id of the attachment to edit */
-  public static ShowAllAttachmentsFragment newInstance(String parentNodeId) {
+  public static ShowAllAttachmentsFragment newInstance(@NonNull Node nodeToBeEdited){
     ShowAllAttachmentsFragment fragment = new ShowAllAttachmentsFragment();
     Bundle args = new Bundle();
-//    args.putString(PARENT_NODE_ID, parentNodeId);
     fragment.setArguments(args);
+
+    try {
+      fragment.nodeToBeEdited = (Node) nodeToBeEdited.clone();
+      Log.w("debugMissingNode", "id3 is: " + nodeToBeEdited.getId());
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
+    }
     return fragment;
   }
 
@@ -110,7 +116,15 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     attachment = new AllAttachment();
 
     // The node to add attachments
-    nodeToBeEdited = ((NodeActivity) getActivity()).getNodeForAttachments();
+    if (nodeToBeEdited != null) {
+      Log.w("debugMissingNode", "id is: " + nodeToBeEdited.getId());
+    }
+    else {
+      nodeToBeEdited = ((NodeActivity) getActivity()).getNodeForAttachments();
+      if (nodeToBeEdited != null) {
+        Log.w("debugMissingNode", "id2 is: " + nodeToBeEdited.getId());
+      }
+    }
   }
 
   // Function to tell the app to start getting
