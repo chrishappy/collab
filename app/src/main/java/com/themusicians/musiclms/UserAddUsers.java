@@ -41,8 +41,6 @@ public class UserAddUsers<button> extends AppCompatActivity {
   SearchView searchView;
   BottomNavigationView bottomNavigationView;
 
-  BottomNavigationView bottomNavigationView;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -215,25 +213,6 @@ public class UserAddUsers<button> extends AppCompatActivity {
     UserAddedAdapter userAddedAdapter = new UserAddedAdapter(myAddedList, UserAddUsers.this);
     addedRecycler.setAdapter(userAddedAdapter);
   }
-
-  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-      switch (item.getItemId()){
-        case R.id.page_1:
-          Intent toAssignmentOverview = new Intent(UserAddUsers.this, AssignmentOverviewActivity.class);
-          startActivity(toAssignmentOverview);
-          return true;
-        case R.id.page_2:
-          Intent toUserProfile = new Intent(UserAddUsers.this, UserProfile.class);
-          startActivity(toUserProfile);
-          return true;
-      }
-
-      return true;
-    }
-  };
 
   /** Redirects to search for Users */
   public void toSearchUsers(View view) {

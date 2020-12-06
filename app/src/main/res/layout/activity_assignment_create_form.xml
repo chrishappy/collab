@@ -9,12 +9,19 @@
     tools:context=".nodeForms.AssignmentCreateFormActivity"
     android:id="@+id/createAssignmentLayout">
 
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/share_bac_dim_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#C0000000"-->
+<!--        android:visibility="invisible" >-->
+<!--    </RelativeLayout>-->
+
     <ScrollView
         android:id="@+id/assignment_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/left_and_right_gutters"
-        android:paddingRight="@dimen/left_and_right_gutters"
+        android:padding="@dimen/left_and_right_gutters"
         tools:context=".nodeForms.AssignmentCreateFormActivity">
 
         <LinearLayout

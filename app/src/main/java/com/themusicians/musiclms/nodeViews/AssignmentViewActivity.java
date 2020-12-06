@@ -122,11 +122,14 @@ public class AssignmentViewActivity extends NodeViewActivity
                       assignmentCompleteWrapper.setVisibility(View.GONE);
                     }
                   }
-                  // TODO reenable afterwards
                   else { // must be student
                     editButton.setVisibility(View.GONE);
                     assignmentMarkedWrapper.setVisibility(View.GONE);
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
+
+                    // Hide edit and delete functions
+                    // https://stackoverflow.com/a/32072318
+//                    final MenuItem editMenuItem = findItem(R.id.action_assignment_edit);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");

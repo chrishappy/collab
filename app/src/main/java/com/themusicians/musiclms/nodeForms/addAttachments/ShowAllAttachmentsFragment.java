@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -231,7 +232,8 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
    */
   public void showCreateAttachmentPopup(View anchorView) {
 
-    View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
+    final View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
+//    final RelativeLayout back_dim_layout = requireActivity().findViewById(R.id.share_bac_dim_layout);
 
     // Calculate size
     int width = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -248,6 +250,11 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     // Show Popup in the middle of the screen
     popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0); //.showAsDropDown(anchorView, 0, 10);
+//    back_dim_layout.setVisibility(View.VISIBLE);
+//
+//    popupWindow.setOnDismissListener(() -> {
+//      back_dim_layout.setVisibility(View.GONE);
+//    });
   }
 
   /**

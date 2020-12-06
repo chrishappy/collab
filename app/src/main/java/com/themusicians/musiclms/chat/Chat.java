@@ -84,6 +84,7 @@ public class Chat extends AppCompatActivity {
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
             toMessageName = snapshot.getValue(String.class);
+            setTitle(String.format(getString(R.string.activity__dynamic_chat_with_title), toMessageName));
           }
 
           @Override

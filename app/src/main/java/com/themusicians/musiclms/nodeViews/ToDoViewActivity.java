@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -279,6 +280,12 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
    */
   private void initRecordingFeedbackAdapter() {
     if (recordingFeedbackAdapter == null) {
+      // Set up layout manager
+      LinearLayoutManager llm = new LinearLayoutManager(this);
+      llm.setOrientation(LinearLayoutManager.VERTICAL);
+      recordingFeedbackListView.setLayoutManager(llm);
+
+      // Set up the adapter
       recordingFeedbackAdapter =
           new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
       recordingFeedbackAdapter.addItemClickListener(this);

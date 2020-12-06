@@ -215,5 +215,6 @@
     <string name="action_edit">Edit</string>
     <string name="analysis">Analysis</string>
     <string name="add_attachment_literal">Add Attachment</string>
+    <string name="activity__dynamic_chat_with_title">Chat with %s</string>
 
 </resources>

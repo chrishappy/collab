@@ -51,7 +51,7 @@ public abstract class NodeActivity extends AppCompatActivity {
       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
       fragmentTransaction.add(
           layoutId,
-          ShowAllAttachmentsFragment.newInstance(getNodeForAttachments()),
+          new ShowAllAttachmentsFragment(), //.newInstance(getNodeForAttachments()),
           "ShowAllAttachmentsFragment " + tagAddition);
       fragmentTransaction.commitAllowingStateLoss();
     }
