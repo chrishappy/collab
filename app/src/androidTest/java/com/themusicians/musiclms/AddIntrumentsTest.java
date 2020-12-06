@@ -31,13 +31,13 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserChatTest {
+public class AddIntrumentsTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void userChatTest() {
+    public void addIntrumentsTest() {
         ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
@@ -58,81 +58,65 @@ public class UserChatTest {
                         isDisplayed()));
         appCompatTextView2.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.toAddUsers), withText("Add Users"),
+        ViewInteraction textInputEditText = onView(
+                allOf(withId(R.id.enterInstruments),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
                                         0),
                                 0),
                         isDisplayed()));
+        textInputEditText.perform(replaceText("flute"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.addButton), withText("add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
         appCompatButton2.perform(click());
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.addedChat),
+        ViewInteraction textInputEditText2 = onView(
+                allOf(withId(R.id.enterInstruments),
                         childAtPosition(
-                                allOf(withId(R.id.actionsButtons2),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                2),
+                                childAtPosition(
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        textInputEditText2.perform(replaceText("piano"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.addButton), withText("add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.messageBox),
+        ViewInteraction textInputEditText3 = onView(
+                allOf(withId(R.id.enterInstruments),
                         childAtPosition(
-                                allOf(withId(R.id.bottom),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
+                                childAtPosition(
+                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
+                                        0),
                                 0),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("Hi"), closeSoftKeyboard());
+        textInputEditText3.perform(replaceText("guitar"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.sendMessage), withText("Send"),
+                allOf(withId(R.id.addButton), withText("add"),
                         childAtPosition(
-                                allOf(withId(R.id.bottom),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                1),
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
                         isDisplayed()));
         appCompatButton4.perform(click());
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
-
-        ViewInteraction appCompatImageButton3 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton3.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

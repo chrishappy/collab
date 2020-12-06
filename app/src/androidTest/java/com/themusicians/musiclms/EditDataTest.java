@@ -20,22 +20,25 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddInstrumentsTest {
+public class EditDataTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void addInstrumentsTest() {
+    public void editDataTest() {
         ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
@@ -56,38 +59,29 @@ public class AddInstrumentsTest {
                         isDisplayed()));
         appCompatTextView2.perform(click());
 
-        ViewInteraction textInputEditText = onView(
-                allOf(withId(R.id.enterInstruments),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textInputEditText.perform(replaceText("piano"), closeSoftKeyboard());
-
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.addButton), withText("add"),
+                allOf(withId(R.id.toEditData), withText("Edit Data"),
                         childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                6)),
+                                3),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        ViewInteraction textInputEditText2 = onView(
-                allOf(withId(R.id.enterInstruments),
+        ViewInteraction appCompatEditText7 = onView(
+                allOf(withId(R.id.changeName),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        textInputEditText2.perform(replaceText("guitar"), closeSoftKeyboard());
+        appCompatEditText7.perform(replaceText("UITest"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.addButton), withText("add"),
+                allOf(withId(R.id.confirmName), withText("Confirm"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -95,6 +89,46 @@ public class AddInstrumentsTest {
                                 2),
                         isDisplayed()));
         appCompatButton3.perform(click());
+
+        ViewInteraction appCompatEditText8 = onView(
+                allOf(withId(R.id.changeName), withText("UITest"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatEditText8.perform(pressImeActionButton());
+
+        ViewInteraction appCompatEditText9 = onView(
+                allOf(withId(R.id.changeEmail),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText9.perform(replaceText("signup@test.com"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.confirmEmail), withText("Confirm"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
+        ViewInteraction appCompatEditText10 = onView(
+                allOf(withId(R.id.changeEmail), withText("signup@test.com"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText10.perform(pressImeActionButton());
     }
 
     private static Matcher<View> childAtPosition(

@@ -5,9 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -22,6 +20,7 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -31,69 +30,25 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TryTest {
+public class Z_UserLogOutTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void tryTest() {
-        ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.toSignIn), withText("Already have an account? Login here"),
-                        childAtPosition(
-                                allOf(withId(R.id.background_signup),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                8),
-                        isDisplayed()));
-        appCompatTextView.perform(click());
-
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.myEmail),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("signup@test.com"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.myPassword),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("signup"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.signin), withText("Sign In"),
-                        childAtPosition(
-                                allOf(withId(R.id.container),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                4),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
+    public void userLogOutTest() {
         ViewInteraction overflowMenuButton = onView(
-                allOf(withId(R.id.action_settings),
+                allOf(withContentDescription("More options"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
                                         1),
                                 0),
                         isDisplayed()));
-        overflowMenuButton.perform(ViewActions.click());
+        overflowMenuButton.perform(click());
 
         ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.userprofile), withText("User Profile"),
+                allOf(withId(R.id.title), withText("Logout"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.content),

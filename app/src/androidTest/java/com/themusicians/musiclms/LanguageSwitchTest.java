@@ -64,9 +64,10 @@ public class LanguageSwitchTest {
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.changeMyLang), withText("Language"),
                         childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        0),
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                6)),
                                 1),
                         isDisplayed()));
         appCompatButton2.perform(click());
@@ -79,43 +80,13 @@ public class LanguageSwitchTest {
                 .atPosition(1);
         appCompatCheckedTextView.perform(click());
 
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("转到上一层级"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        ViewInteraction overflowMenuButton2 = onView(
-                allOf(withContentDescription("更多选项"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton2.perform(click());
-
-        ViewInteraction appCompatTextView3 = onView(
-                allOf(withId(R.id.title), withText("用户资料"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatTextView3.perform(click());
-
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.changeMyLang), withText("语言"),
                         childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        0),
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                6)),
                                 1),
                         isDisplayed()));
         appCompatButton3.perform(click());
@@ -127,27 +98,6 @@ public class LanguageSwitchTest {
                                 0)))
                 .atPosition(0);
         appCompatCheckedTextView2.perform(click());
-
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.toEditData), withText("Edit Data"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

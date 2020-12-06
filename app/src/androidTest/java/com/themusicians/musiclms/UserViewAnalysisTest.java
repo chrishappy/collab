@@ -20,23 +20,24 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserLogOutTest {
+public class UserViewAnalysisTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void userLogOutTest() {
+    public void userViewAnalysisTest() {
         ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
@@ -48,7 +49,7 @@ public class UserLogOutTest {
         overflowMenuButton.perform(click());
 
         ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("Logout"),
+                allOf(withId(R.id.title), withText("User Profile"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.content),
@@ -56,6 +57,28 @@ public class UserLogOutTest {
                                 0),
                         isDisplayed()));
         appCompatTextView2.perform(click());
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.toAnalysis), withText("Analysis"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                6)),
+                                2),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
+
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Navigate up"),
+                        childAtPosition(
+                                allOf(withId(R.id.action_bar),
+                                        childAtPosition(
+                                                withId(R.id.action_bar_container),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

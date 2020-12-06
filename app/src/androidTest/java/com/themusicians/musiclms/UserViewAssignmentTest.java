@@ -21,7 +21,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -30,21 +29,22 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserViewAssignmentsTest {
+public class UserViewAssignmentTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void userViewAssignmentsTest() {
+    public void userViewAssignmentTest() {
         ViewInteraction constraintLayout = onView(
                 allOf(withId(R.id.assignment_overview_wrapper),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.assignmentOverviewRecycler),
-                                        0),
-                                0)));
-        constraintLayout.perform(scrollTo(), click());
+                                        1),
+                                0),
+                        isDisplayed()));
+        constraintLayout.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -62,9 +62,10 @@ public class UserViewAssignmentsTest {
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.assignmentOverviewRecycler),
-                                        1),
-                                0)));
-        constraintLayout2.perform(scrollTo(), click());
+                                        3),
+                                0),
+                        isDisplayed()));
+        constraintLayout2.perform(click());
 
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -82,9 +83,10 @@ public class UserViewAssignmentsTest {
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.assignmentOverviewRecycler),
-                                        2),
-                                0)));
-        constraintLayout3.perform(scrollTo(), click());
+                                        5),
+                                0),
+                        isDisplayed()));
+        constraintLayout3.perform(click());
 
         ViewInteraction appCompatImageButton3 = onView(
                 allOf(withContentDescription("Navigate up"),
