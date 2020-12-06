@@ -142,7 +142,7 @@ public class ToDoItem extends Node {
 
   public void addRecordingFeedback(String recordingFeedbackString) {
     getRecordingFeedback().add(recordingFeedbackString);
-//    Collections.sort(recordingFeedback);
+    Collections.sort(recordingFeedback);
   }
 
   public void setRecordingFeedback(List<String> recordingFeedback) {

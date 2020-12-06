@@ -41,13 +41,13 @@ public abstract class NodeActivity extends AppCompatActivity {
   /**
    * Populate the showAttachment fragment
    */
-  protected void initShowAttachments() {
+  protected void initShowAttachments(int layoutId) {
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    final Fragment content = fragmentManager.findFragmentById(R.id.showAttachments);
+    final Fragment content = fragmentManager.findFragmentById(layoutId);
     if (!(content instanceof ShowAllAttachmentsFragment)) {
       final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
       fragmentTransaction.add(
-          R.id.showAttachments,
+          layoutId,
           ShowAllAttachmentsFragment.newInstance(getNodeForAttachments().getId()),
           "ShowAllAttachmentsFragment");
       fragmentTransaction.commitAllowingStateLoss();

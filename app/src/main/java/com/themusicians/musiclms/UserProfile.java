@@ -29,8 +29,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
+import com.themusicians.musiclms.nodeViews.NodeViewActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +46,7 @@ import java.util.Locale;
  * @since Nov 10, 2020
  * @todo View user info
  */
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends NodeViewActivity {
 
   protected TextView myName, myEmail, newName, newEmail;
   protected FirebaseUser currentUser;
@@ -56,6 +59,13 @@ public class UserProfile extends AppCompatActivity {
   protected ListView instrumentList;
   protected User currUser;
 
+
+
+  /** The node that has the attachments */
+  @Override
+  public Node getNodeForAttachments() {
+    return currUser;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +87,12 @@ public class UserProfile extends AppCompatActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
+    // Initialize Attachments
+    initShowAttachments(R.id.showAttachments);
+
+    /*
+     * Instrument list
+     */
     newInstrument = findViewById(R.id.enterInstruments);
     addInstrument = findViewById(R.id.addButton);
     instruments = new ArrayList<>();

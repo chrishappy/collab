@@ -6,19 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:layout_margin="@dimen/activity_vertical_margin"
+    android:layout_gravity="start"
     tools:context=".nodeViews.AssignmentOverviewActivity">
 
-    <ScrollView
-        android:id="@+id/assignmentsContainer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/assignmentsContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/assignmentOverviewRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </ScrollView>
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createAssignment"
@@ -30,6 +32,7 @@
         app:layout_anchor="@id/assignmentsContainer"
         app:layout_anchorGravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="@string/assignment_overview__add_assignment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -126,7 +126,7 @@
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/todoItemsRecyclerView"
+                    android:id="@+id/todoItemsRecyclerView2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -142,7 +142,7 @@
                 android:background="#c0c0c0" />
 
             <fragment
-                android:id="@+id/showAttachments"
+                android:id="@+id/showAttachments__assignments"
                 android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

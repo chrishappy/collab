@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,7 +70,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 
   /** Recording Feedback */
   private ToDoRecordingFeedbackAdapter recordingFeedbackAdapter;
-  private ListView recordingFeedbackListView;
+  private RecyclerView recordingFeedbackListView;
   private EditText feedbackText;
   private Button addFeedback;
 
@@ -173,7 +174,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     youtubePlayerAndFeedbackLayout = findViewById(R.id.youtube_player_and_recording_wrapper);
     changeYoutubeVideo = findViewById(R.id.changeRecording);
     youTubeView = findViewById(R.id.youtube_player_view);
-    seekToInput = findViewById(R.id.seek_to_input);
+    seekToInput = findViewById(R.id.seek_to_input2);
     seekToButton = findViewById(R.id.seek_to_button);
 
     // Load Youtube (for performance)
@@ -196,53 +197,19 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
       toDoItem.addRecordingFeedback(feedbackText.getText().toString(), timeOfFeedback);
       toDoItem.save();
 
-      if (recordingFeedbackAdapter != null ) {
+      if (recordingFeedbackAdapter != null) {
         // Update recording feedback
-        recordingFeedbackAdapter.clear();
-        recordingFeedbackAdapter.addAll(toDoItem.getRecordingFeedback());
-      }
-      else {
+//        recordingFeedbackAdapter.clear();
+        recordingFeedbackAdapter.notifyDataSetChanged();
+
+      } else {
         initRecordingFeedbackAdapter();
       }
     });
 
-
-    // Testing share video
-//    Button tempButton1 = findViewById(R.id.tempButton1);
-//    tempButton1.setOnClickListener(v -> {
-//      String videoPath = getDataColumn(getApplicationContext(), videoUri, null, null);
-//      uploadYoutubeVideo(videoPath);
-//    });
-
     // Initialize Attachments
-    initShowAttachments();
-
-//    final EditText seekToText = findViewById(R.id.seek_to_text);
-//    Button seekToButton = findViewById(R.id.seek_to_button);
-//    seekToButton.setOnClickListener(v -> {
-//      int skipToSecs = Integer.parseInt(seekToText.getText().toString());
-//      player.seekToMillis(skipToSecs * 1000);
-//    });
+    initShowAttachments(R.id.showAttachments__to_do__view);
   }
-
-//  @Override
-//  public void onInitializationSuccess(Provider provider, YouTubePlayer player, boolean wasRestored) {
-//    this.player = player;
-//
-//    if (!wasRestored) {
-//      player.cueVideo("fhWaJi1Hsfo"); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
-//    }
-//  }
-//
-//  @Override
-//  public void onInitializationFailure(Provider provider, YouTubeInitializationResult errorReason) {
-//    if (errorReason.isUserRecoverableError()) {
-//      errorReason.getErrorDialog(this, RECOVERY_REQUEST).show();
-//    } else {
-//      String error = String.format(getString(R.string.player_error), errorReason.toString());
-//      Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-//    }
-//  }
 
   /** Return the node to add attachments to */
   @Override
@@ -416,7 +383,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
    */
   @Override
   public void onToDoRecordingFeedbackClick(String type, int time, int position) {
-    seekToInput.setText(time);
+    seekToInput.setText(String.valueOf(time));
     seekToButton.performClick();
   }
 

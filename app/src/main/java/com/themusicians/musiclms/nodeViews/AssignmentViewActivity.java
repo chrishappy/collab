@@ -210,7 +210,11 @@ public class AssignmentViewActivity extends NodeViewActivity
     });
 
     // Load the to do tasks
+    toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView2);
     initToDoItemsList();
+
+    // Initialize Attachments
+    initShowAttachments(R.id.showAttachments__assignments);
   }
 
   /** Return the node to add attachments to */
@@ -226,7 +230,6 @@ public class AssignmentViewActivity extends NodeViewActivity
       return;
     }
 
-    toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
     toDoItemsRecyclerView.setLayoutManager(
         new GridLayoutManager(AssignmentViewActivity.this, 1));
     ItemTouchHelper itemTouchHelper =
@@ -243,8 +246,8 @@ public class AssignmentViewActivity extends NodeViewActivity
               @Override
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                //        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder swipedAssignment =
-                // (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
+                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
+                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
 
                 switch (swipeDir) {
                   case ItemTouchHelper.LEFT:

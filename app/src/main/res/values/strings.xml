@@ -204,4 +204,6 @@
     <string name="toast__attachment__file_delete_successful">File successfully deleted</string>
     <string name="toast__attachment__file_delete_failed">File Delete failed.</string>
     <string name="attachment__open_zoom">Open Meeting</string>
+    <string name="placeholder_date__sort">Dec. 30</string>
+    <string name="assignment_overview__add_assignment">Add Assignment</string>
 </resources>

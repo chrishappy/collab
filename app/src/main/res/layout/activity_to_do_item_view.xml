@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginVertical="@dimen/activity_vertical_margin"
+    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
     android:fitsSystemWindows="true"
     tools:context=".nodeForms.ToDoTaskCreateFormActivity"
     android:id="@+id/createToDoTaskLayout">
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/to_do_item_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/left_and_right_gutters"
         android:paddingRight="@dimen/left_and_right_gutters"
         tools:showIn="@layout/activity_to_do_item_create_form">
@@ -22,6 +24,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/to_do_item_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/to_do_item__form__name" />
+
+                <LinearLayout
+                    android:id="@+id/todo_item__teacher_marked"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="end"
+                    android:orientation="vertical"
+                    android:layout_weight="0">
+
+                    <CheckBox
+                        android:id="@+id/complete_to_do_itemCB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/assignment__student_done" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,13 +150,14 @@
                             android:layout_height="wrap_content">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/seek_to_input"
+                                android:id="@+id/seek_to_input2"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/seek_to_hint"
                                 android:inputType="number"
                                 android:layout_weight="1"
-                                android:text="0" />
+                                android:text="0"
+                                tools:ignore="HardcodedText" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -151,10 +192,12 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
 
-                    <ListView
-                        android:id="@+id/recordingFeedbackListView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recordingFeedbackListView"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:divider="@null"
+                            android:dividerHeight="0dp" />
 
                 </LinearLayout>
 
@@ -165,20 +208,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/to_do_item_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:text="@string/to_do_item__form__name" />
-                </LinearLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
@@ -188,23 +217,8 @@
                     android:layout_marginBottom="30dp"
                     android:background="#c0c0c0" />
 
-                <CheckBox
-                    android:id="@+id/complete_to_do_itemCB"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/completed" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="#c0c0c0" />
-
-                <fragment
-                    android:id="@+id/showAttachments"
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/showAttachments__to_do__view"
                     android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -212,7 +226,7 @@
             </LinearLayout>
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
 
     <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
@@ -225,4 +239,4 @@
 <!--        app:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</ScrollView>

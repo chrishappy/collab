@@ -197,7 +197,9 @@ public class Assignment extends Node {
   }
 
   public void addAssignees(String assignees) {
-    getAssignees().add(assignees);
+    if (!getAssignees().contains(assignees)) {
+      getAssignees().add(assignees);
+    }
   }
 
   public void setAssignees(List<String> assignees) {
@@ -287,12 +289,10 @@ public class Assignment extends Node {
   /**
    * For calculating the student's progress
    */
-  public void setCountOfTotalToDos(){ this.countOfTotalToDos = getToDoIds().size(); }
+  @Exclude
+  public int getCountOfTotalToDos(){ return getToDoIds().size(); }
 
-  public int getCountOfTotalToDos(){ return countOfTotalToDos; }
-
-//  public void addCountOfDoneToDos(){ this.countOfDoneToDos++; }
-
+  @Exclude
   public int getCountOfDoneToDos(){
     countOfDoneToDos = 0;
 

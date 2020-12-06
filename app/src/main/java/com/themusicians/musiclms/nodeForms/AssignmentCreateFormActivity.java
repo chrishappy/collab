@@ -194,6 +194,8 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       });
       StudentOrClass.setAdapter(autoComplete);
       StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+      // @TODO Add ids rather than matching display name
       StudentOrClass.setOnItemClickListener(new AdapterView.OnItemClickListener() {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -247,7 +249,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     initToDoItemsList();
 
     // Show attachments
-    initShowAttachments();
+    initShowAttachments(R.id.showAttachments__assignments);
 
     // Show attachments edit form
 //    initCreateAttachments(assignment);
@@ -293,7 +295,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           assignment.setClassId(StudentOrClass.getText().toString());
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
-          assignment.setCountOfTotalToDos();
           assignment.save();
 
           finish();

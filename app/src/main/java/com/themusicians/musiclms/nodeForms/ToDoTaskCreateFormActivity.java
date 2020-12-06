@@ -121,7 +121,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     requireRecording = findViewById(R.id.require_recording);
 
     // Initialize attachments
-    initShowAttachments();
+    initShowAttachments(R.id.showAttachments__to_do__create);
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);
