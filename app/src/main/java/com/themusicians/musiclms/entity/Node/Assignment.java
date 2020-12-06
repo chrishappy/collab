@@ -215,21 +215,22 @@ public class Assignment extends Node {
 
   public void setAssignmentComplete(boolean assignmentComplete) {
     this.assignmentComplete = assignmentComplete;
-
-    if (getAssignmentComplete()) {
-      setAssignmentCompleteTime(ServerValue.TIMESTAMP);
-    }
   }
 
   public java.util.Map<String, String> getAssignmentCompleteTime() {
-    return ServerValue.TIMESTAMP;
+
+    if (getAssignmentComplete()) {
+      return ServerValue.TIMESTAMP;
+    }
+    else {
+      return null;
+    }
   }
 
   @Exclude
   public Long getAssignmentCompleteTimeLong() {
     return assignmentCompleteTime;
   }
-
 
   public void setAssignmentCompleteTime(Long assignmentCompleteTime) {
     this.assignmentCompleteTime = assignmentCompleteTime;
