@@ -112,10 +112,12 @@ public class AssignmentViewActivity extends NodeViewActivity
 
                     if (assignment.getAssignmentComplete()) {
                       assignmentMarkedWrapper.setVisibility(View.VISIBLE);
+                      assignmentCompleteWrapper.setVisibility(View.GONE);
                     }
                   }
                   // TODO reenable afterwards
 //                  else { // must be student
+                  assignmentMarkedWrapper.setVisibility(View.GONE);
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
 //                  }
 

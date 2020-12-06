@@ -30,18 +30,19 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_marginLeft="15dp"
+            android:layout_height="2dp"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="15dp"
             android:background="#c0c0c0" />
 
         <Button
             android:id="@+id/add_attachment_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
             android:text="@string/add_attachment"/>
 
     </LinearLayout>

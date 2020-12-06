@@ -25,6 +25,8 @@ import com.themusicians.musiclms.Notifications.Data;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
 
+import static java.lang.Math.floor;
+
 public class UserAnalysis extends AppCompatActivity {
 
   DatabaseReference reference;
@@ -66,8 +68,6 @@ public class UserAnalysis extends AppCompatActivity {
     });
 
     reference.removeValue();
-    x = 0;
-    y = 0;
     PointValue pointValue = new PointValue(x,y);
     String id = reference.push().getKey();
     reference.child(id).setValue(pointValue);
@@ -87,7 +87,7 @@ public class UserAnalysis extends AppCompatActivity {
             x++;
             y = (long) assignment.getAssignmentCompleteTime() - (assignment.getDueDate()*1000);
 
-            y = (((y/1000)/60)/60)/24;
+            y = (long) (floor(((y/1000)/60)/60)/24);
             PointValue pointValue = new PointValue(x,y);
             String id = reference.push().getKey();
             reference.child(id).setValue(pointValue);

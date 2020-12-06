@@ -1,5 +1,7 @@
 package com.themusicians.musiclms.entity.Node;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -165,13 +167,17 @@ public class Assignment extends Node {
    */
   @Override
   public void delete() {
-    ToDoItem tempToDoItem = new ToDoItem(null);
-    for (String toDoId : getToDoIds().keySet()) {
-      tempToDoItem.setId(toDoId);
-      tempToDoItem.delete();
+    if (getToDoIds() != null && !getToDoIds().isEmpty()) {
+      ToDoItem tempToDoItem = new ToDoItem(null);
+      for (String toDoId : getToDoIds().keySet()) {
+        tempToDoItem.setId(toDoId);
+        tempToDoItem.delete();
+      }
     }
 
     super.delete();
+
+    Log.w("Assignment", "Deleted Assignment: " + getId());
   }
 
   /**

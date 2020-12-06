@@ -1,10 +1,6 @@
 package com.themusicians.musiclms.nodeViews;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,7 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -53,7 +49,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   /** Fields */
   private TextView toDoItemName;
   private CheckBox toDoCheck;
-  private VideoView recordingVideo;
 
   /** For video recording */
   static final int REQUEST_VIDEO_CAPTURE = 1;
@@ -62,16 +57,18 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   ToDoItem toDoItem;
 
   /**
-   * Youtube
+   * Youtube Player
    */
   private static final int RECOVERY_REQUEST = 1;
+  private LinearLayout youtubePlayerAndFeedbackLayout;
+  private Button changeYoutubeVideo;
   private YouTubePlayerView youTubeView;
-  private ListView recordingFeedbackListView;
   private Button seekToButton;
   private EditText seekToInput;
 
   /** Recording Feedback */
   private ToDoRecordingFeedbackAdapter recordingFeedbackAdapter;
+  private ListView recordingFeedbackListView;
   private EditText feedbackText;
   private Button addFeedback;
 
@@ -79,9 +76,9 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   private static final String youtubeUrlRegexPattern = ".*(?:youtu.be/|v/|u/\\w/|embed/|e/|watch\\?v=)([^#&?\\s]{11}).*";
   private LinearLayout youtubeRecordingLayout;
   private EditText addYoutubeUrl;
-  private Button saveYoutubeUrl;
   private Uri recordingVideoUri;
   private Button addRecording;
+  private boolean alreadyInitAddRecording;
 
   @Override
   public void onStart() {
@@ -108,35 +105,12 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
                   String youtubeId = toDoItem.getRecordingYoutubeId();
 
                   if (youtubeId == null) {
-                    //TODO Show "Add recording button"
-
-                    // After user input youtube url
-                    addYoutubeUrl.addTextChangedListener(new TextWatcher() {
-                      public void afterTextChanged(Editable youtubeUrlEditable) {
-                        String youtubeId = getYoutubeIdFromUrl(youtubeUrlEditable.toString());
-                        if (youtubeId != null) {
-                          toDoItem.setRecordingYoutubeId(youtubeId);
-                          toDoItem.save();
-
-                          // Hide add youtube URL
-                          youtubeRecordingLayout.setVisibility(View.GONE);
-
-                          initYoutubeVideo(youtubeId);
-                          Toast.makeText(ToDoViewActivity.this, "Youtube Video saved and loading", Toast.LENGTH_SHORT).show();
-                        } else {
-                          Toast.makeText(ToDoViewActivity.this, "We could not process the Youtube Url", Toast.LENGTH_LONG).show();
-                        }
-                      }
-
-                      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                      }
-
-                      public void onTextChanged(CharSequence s, int start, int before, int count) {
-                      }
-                    });
+                    hideYoutubeVideoAndRecordingFeedback();
+                    showAddYoutubeRecording();
                   }
                   else {
-                    initYoutubeVideo(youtubeId);
+                    showYoutubeVideoAndRecordingFeedback();
+                    hideAddYoutubeRecording();
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadToDoItem:onDataChange");
@@ -171,13 +145,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 
     // Get fields
     toDoItemName = findViewById(R.id.to_do_item_name);
-    seekToInput = findViewById(R.id.seek_to_text);
-    seekToButton = findViewById(R.id.seek_to_button);
-    recordingFeedbackListView = findViewById(R.id.recordingFeedbackListView);
-
-    // Load Youtube
-    youTubeView = findViewById(R.id.youtube_player_view);
-    getLifecycle().addObserver(youTubeView);
 
     // To Do Checkbox
     toDoCheck = findViewById(R.id.complete_to_do_itemCB);
@@ -187,26 +154,44 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     });
 
     /*
-     Add Youtube Video
+     Record Video
      */
     youtubeRecordingLayout = findViewById(R.id.youtube_recorder_wrapper);
+    addRecording = findViewById(R.id.add_recording_video);
     addYoutubeUrl = findViewById(R.id.addYoutubeUrl);
 
-    // View Recording feedback
-    // @todo Replace with clickable adapter
-    if (toDoItem.getRecordingFeedback() != null ) {
-      recordingFeedbackAdapter =
-          new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
-      recordingFeedbackAdapter.addItemClickListener(this);
-      recordingFeedbackListView.setAdapter(recordingFeedbackAdapter);
-    }
+    addRecording.setOnClickListener(view -> {
+      dispatchTakeVideoIntent();
+    });
 
-    // Add Feedback for Recording
+
+    /*
+     Play Video
+     */
+    youtubePlayerAndFeedbackLayout = findViewById(R.id.youtube_player_and_recording_wrapper);
+    changeYoutubeVideo = findViewById(R.id.changeRecording);
+    youTubeView = findViewById(R.id.youtube_player_view);
+    seekToInput = findViewById(R.id.seek_to_text);
+    seekToButton = findViewById(R.id.seek_to_button);
+
+    // Load Youtube (for performance)
+    getLifecycle().addObserver(youTubeView);
+
+    changeYoutubeVideo.setOnClickListener(view -> {
+      showAddYoutubeRecording();
+      hideYoutubeVideoAndRecordingFeedback();
+    });
+
+    /*
+     Add Feedback for Recording
+     */
+    recordingFeedbackListView = findViewById(R.id.recordingFeedbackListView);
     feedbackText = findViewById(R.id.add_recording_feedback__text);
     addFeedback = findViewById(R.id.add_recording_feedback__save);
 
     addFeedback.setOnClickListener(view -> {
-      toDoItem.addRecordingFeedback("00:00 | " + feedbackText.getText().toString());
+      int timeOfFeedback = Integer.decode(seekToInput.getText().toString());
+      toDoItem.addRecordingFeedback(timeOfFeedback, feedbackText.getText().toString());
       toDoItem.save();
 
       if (recordingFeedbackAdapter != null ) {
@@ -215,19 +200,10 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
         recordingFeedbackAdapter.addAll(toDoItem.getRecordingFeedback());
       }
       else {
-        recordingFeedbackAdapter =
-            new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
-        recordingFeedbackAdapter.addItemClickListener(this);
-        recordingFeedbackListView.setAdapter(recordingFeedbackAdapter);
+        initRecordingFeedbackAdapter();
       }
     });
 
-    // Add Recording
-    recordingVideo = findViewById(R.id.tempRecordingVideo);
-    addRecording = findViewById(R.id.add_recording_video);
-    addRecording.setOnClickListener(view -> {
-      dispatchTakeVideoIntent();
-    });
 
     // Testing share video
 //    Button tempButton1 = findViewById(R.id.tempButton1);
@@ -235,15 +211,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 //      String videoPath = getDataColumn(getApplicationContext(), videoUri, null, null);
 //      uploadYoutubeVideo(videoPath);
 //    });
-
-    Button tempButton2 = findViewById(R.id.tempButton2);
-    tempButton2.setOnClickListener(v -> {
-      Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-      sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title 2");
-      sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, recordingVideoUri);
-      sharingIntent.setType("video/mp4");
-      startActivity(Intent.createChooser(sharingIntent,"_share_:"));
-    });
 
     // Initialize Attachments
     initShowAttachments();
@@ -281,34 +248,98 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     return toDoItem;
   }
 
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    super.onActivityResult(requestCode, resultCode, intent);
-
-//    if (requestCode == RECOVERY_REQUEST) {
-//      // Retry initialization if user performed a recovery action
-//      getYouTubePlayerProvider().initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
-//    }
-
-    if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-      recordingVideoUri = intent.getData();
-      recordingVideo.setVideoURI(recordingVideoUri);
-    }
-  }
-
 //  protected Provider getYouTubePlayerProvider() {
 //    return youTubeView;
 //  }
 
   /**
-   * Show the youtube video player
+   * Helper functions for toggle displays of recording player vs add recording
+   */
+  private void showAddYoutubeRecording() {
+    initAddRecording();
+    youtubeRecordingLayout.setVisibility(View.VISIBLE);
+  }
+
+  private void hideAddYoutubeRecording() {
+    youtubeRecordingLayout.setVisibility(View.GONE);
+  }
+
+  private void showYoutubeVideoAndRecordingFeedback() {
+    youtubePlayerAndFeedbackLayout.setVisibility(View.VISIBLE);
+
+    initYoutubeVideoAndRecordingFeedback(toDoItem.getRecordingYoutubeId());
+    initRecordingFeedbackAdapter();
+  }
+
+  private void hideYoutubeVideoAndRecordingFeedback() {
+    youtubePlayerAndFeedbackLayout.setVisibility(View.GONE);
+  }
+
+  /**
+   * Initialize add Recording
+   */
+  private void initAddRecording() {
+    if (alreadyInitAddRecording) {  return;  }
+
+    // After user input youtube url
+    addYoutubeUrl.addTextChangedListener(new TextWatcher() {
+      public void afterTextChanged(Editable youtubeUrlEditable) {
+        String youtubeId = getYoutubeIdFromUrl(youtubeUrlEditable.toString());
+
+        if (youtubeId != null) {
+          toDoItem.setRecordingYoutubeId(youtubeId);
+          toDoItem.save();
+
+          showYoutubeVideoAndRecordingFeedback();
+          hideAddYoutubeRecording();
+
+          Toast.makeText(ToDoViewActivity.this, "Youtube Video saved and loading", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(ToDoViewActivity.this, "We could not process the Youtube Url", Toast.LENGTH_LONG).show();
+        }
+      }
+
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+      }
+
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+      }
+    });
+
+    alreadyInitAddRecording = true;
+  }
+
+  /**
+   * Initialize the Recording Feedback adapter
+   *
+   * Assumes toDoItem.getRecordingFeedback() is not null
+   */
+  private void initRecordingFeedbackAdapter() {
+    if (recordingFeedbackAdapter == null) {
+      recordingFeedbackAdapter =
+          new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
+      recordingFeedbackAdapter.addItemClickListener(this);
+      recordingFeedbackListView.setAdapter(recordingFeedbackAdapter);
+    }
+  }
+
+//  private void calculateHeightOfRecordingFeedbackAdapter() {
+//    if(recordingFeedbackAdapter.getCount() > 5){
+//      View item = recordingFeedbackAdapter.getView(0, null, recordingFeedbackListView);
+//      item.measure(0, 0);
+//      ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (5.5 * item.getMeasuredHeight()));
+//      recordingFeedbackListView.setLayoutParams(params);
+//    }
+//  }
+
+  /**
+   * Initialize the youtube video player
    *
    * change addTextChanged Listener to getOnFocusChangeListener
    * https://stackoverflow.com/questions/8666380/android-evaluate-edittext-after-the-user-finishes-editing
    */
-  private void initYoutubeVideo(String videoId) {
-    if (videoId != null) {
-      youTubeView.setVisibility(View.VISIBLE);
+  private void initYoutubeVideoAndRecordingFeedback(@NonNull String videoId) {
+    // TODO programmatically create the youtube view to improve performance
 
       youTubeView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
         @Override
@@ -338,20 +369,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
           });
         }
       });
-    }
-  }
-
-  /**
-   * Record video
-   *
-   * See: https://developer.android.com/training/camera/videobasics
-   * For YT: https://www.sitepoint.com/using-the-youtube-api-to-embed-video-in-an-android-app/
-   */
-  private void dispatchTakeVideoIntent() {
-    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-    if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
-      startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
-    }
   }
 
   /**
@@ -372,27 +389,74 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     return null;
   }
 
+  /**
+   * When clicking an item of the feedback
+   * @param type the type of click
+   * @param time the time to skip youtube recording to
+   * @param position the position of the feedback
+   */
+  @Override
+  public void onToDoRecordingFeedbackClick(String type, int time, int position) {
+    seekToInput.setText(time);
+    seekToButton.performClick();
+  }
+
+  /**
+   * Record video
+   *
+   * See: https://developer.android.com/training/camera/videobasics
+   * For YT: https://www.sitepoint.com/using-the-youtube-api-to-embed-video-in-an-android-app/
+   */
+  private void dispatchTakeVideoIntent() {
+    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+    if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+      startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    super.onActivityResult(requestCode, resultCode, intent);
+
+//    if (requestCode == RECOVERY_REQUEST) {
+//      // Retry initialization if user performed a recovery action
+//      getYouTubePlayerProvider().initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
+//    }
+
+    if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+      recordingVideoUri = intent.getData();
+      uploadYoutubeVideo(recordingVideoUri);
+    }
+  }
+
   /*
    * Upload youtube video
    *
-   * not working
-   *
-   * @param videoPath the local(?) path of the video
+   * @param videoPath the uri of the video
    */
-//  private void uploadYoutubeVideo(String videoPath) {
-//    ContentValues content = new ContentValues(4);
-//    content.put(MediaStore.Video.VideoColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
-//    content.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
-//    content.put(MediaStore.Video.Media.DATA, videoPath);
-//    ContentResolver resolver = getBaseContext().getContentResolver();
-//    Uri uri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, content);
-//
-//    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-//    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Testing Title::");
-//    sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, uri);
-//    sharingIntent.setType("video/mp4");
-//    startActivity(Intent.createChooser(sharingIntent,"_share_::"));
-//  }
+  private void uploadYoutubeVideo(Uri videoUri) {
+    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+    sharingIntent.setType("video/*");
+    sharingIntent.setPackage("com.google.android.youtube");
+    sharingIntent.putExtra(Intent.EXTRA_TITLE, "Testing Title 2");
+    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Description of youtube video");
+    sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, videoUri);
+    startActivity(Intent.createChooser(sharingIntent,"Share To:"));
+  }
+
+  /**
+   * Open Zoom Meeting
+   *
+   * Source: https://stackoverflow.com/q/63717072
+   * Author: Mithun Sarker Shuvro (https://stackoverflow.com/users/3887432)
+   */
+  private void launchZoomUrl(String meetingId, String meetingPasscode) {
+    Uri zoomUri = Uri.parse(String.format("zoomus://zoom.us/join?confno=%s&pwd=%s", meetingId, meetingPasscode));
+    Intent intent = new Intent(Intent.ACTION_VIEW, zoomUri);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+      startActivity(intent);
+    }
+  }
 
   /*
    * Attempt to get upload youtube to work
@@ -419,15 +483,4 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 //    return null;
 //
 
-  /**
-   * When clicking an item of the feedback
-   * @param type the type of click
-   * @param time the time to skip youtube recording to
-   * @param position the position of the feedback
-   */
-  @Override
-  public void onToDoRecordingFeedbackClick(String type, int time, int position) {
-    seekToInput.setText(time);
-    seekToButton.performClick();
-  }
 }

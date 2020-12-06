@@ -121,6 +121,9 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
       addAttachment.setVisibility(View.VISIBLE);
       showAllAttachmentsAdapter.startListening();
     }
+    else {
+      addAttachment.setVisibility(View.GONE);
+    }
   }
 
   // Function to tell the app to stop getting
@@ -152,56 +155,8 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   private void initShowAttachmentRecyclerView() {
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-    ItemTouchHelper itemTouchHelper =
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
-
-              /**
-               * To Delete on swipe:
-               * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
-               *
-               * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
-               * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-               */
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                //        AssignmentOverviewAdapter.AssignmentsViewholder swipedAssignment =
-                // (AssignmentOverviewAdapter.AssignmentsViewholder) viewHolder;
-
-                switch (swipeDir) {
-                  case ItemTouchHelper.LEFT:
-                    Snackbar.make(recyclerView, "Attachment swiped left", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-
-                    int position = viewHolder.getAdapterPosition();
-                    // assignmentOverviewAdapter.deleteAssignment(position);
-                    break;
-
-                  case ItemTouchHelper.RIGHT:
-                    Snackbar.make(recyclerView, "Attachment swiped right", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-                }
-
-                // Remove item from backing list here
-                showAllAttachmentsAdapter.notifyDataSetChanged();
-              }
-            });
-    itemTouchHelper.attachToRecyclerView(recyclerView);
-
     FirebaseRecyclerOptions<AllAttachment> options =
         new FirebaseRecyclerOptions.Builder<AllAttachment>()
-//            .setQuery(tempAllAttachment.getEntityDatabase(), AllAttachment.class)
             .setIndexedQuery(nodeToBeEdited.getAttachmentsKeyReference(), attachment.getEntityDatabase(), AllAttachment.class)
             .build();
 
@@ -274,6 +229,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void initCreateAttachment(View root, PopupWindow popup) {
     final EditText editComment = root.findViewById(R.id.editComment);
 
+    // Initiate the upload files
     initUploadFile(root);
 
     // Save the data
@@ -288,10 +244,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
           attachment.save();
 
           // Add the attachment to the node
-          nodeToBeEdited
-              .getAttachmentsKeyReference()
-              .child(attachment.getId())
-              .setValue(true);
+          nodeToBeEdited.addAttachmentIdDirectlyToDatabase(attachment.getId());
 
           // Display notification
           String saveMessage = (editEntityId != null) ? "Attachment updated" : "Attachment Saved";
