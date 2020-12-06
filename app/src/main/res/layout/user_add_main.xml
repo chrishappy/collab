@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/commonLayoutHorizontalPadding"
+    android:paddingVertical="@dimen/commonLayoutVerticalPadding">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_name"
-        android:textColor="#ff6347"
+        android:textColor="@color/orangePrimary"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/addedUsers"
         app:layout_constraintEnd_toStartOf="@+id/searchUsers"
@@ -24,21 +25,21 @@
         android:id="@+id/searchUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/orangePrimary"
         android:onClick="toSearchUsers"
         android:text="@string/Add_New_Users"
+        android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/addedUsers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#ff6347"
-        android:textColor="#fff"
         app:layout_constraintVertical_bias="1.0" />
 
     <SearchView
         android:id="@+id/addedSearch"
         android:layout_width="match_parent"
-        android:layout_height="38dp"/>
+        android:layout_height="38dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/addedRecycler"

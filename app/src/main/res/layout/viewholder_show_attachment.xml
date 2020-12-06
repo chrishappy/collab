@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
+    android:layout_marginVertical="@dimen/listItemSmallVerticalMargin"
     android:scrollbars="vertical"
-    android:backgroundTint="@color/viewholderLightBk">
+    android:backgroundTint="@color/listItemLightBk">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

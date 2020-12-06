@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeViews;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -16,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 
@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -78,7 +79,8 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   private EditText addYoutubeUrl;
   private Uri recordingVideoUri;
   private Button addRecording;
-  private boolean alreadyInitAddRecording;
+  private boolean alreadyInitAddRecording = false;
+  private boolean alreadyInitYoutubeRecording = false;
 
   @Override
   public void onStart() {
@@ -171,7 +173,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     youtubePlayerAndFeedbackLayout = findViewById(R.id.youtube_player_and_recording_wrapper);
     changeYoutubeVideo = findViewById(R.id.changeRecording);
     youTubeView = findViewById(R.id.youtube_player_view);
-    seekToInput = findViewById(R.id.seek_to_text);
+    seekToInput = findViewById(R.id.seek_to_input);
     seekToButton = findViewById(R.id.seek_to_button);
 
     // Load Youtube (for performance)
@@ -191,7 +193,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 
     addFeedback.setOnClickListener(view -> {
       int timeOfFeedback = Integer.decode(seekToInput.getText().toString());
-      toDoItem.addRecordingFeedback(timeOfFeedback, feedbackText.getText().toString());
+      toDoItem.addRecordingFeedback(feedbackText.getText().toString(), timeOfFeedback);
       toDoItem.save();
 
       if (recordingFeedbackAdapter != null ) {
@@ -339,36 +341,53 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
    * https://stackoverflow.com/questions/8666380/android-evaluate-edittext-after-the-user-finishes-editing
    */
   private void initYoutubeVideoAndRecordingFeedback(@NonNull String videoId) {
-    // TODO programmatically create the youtube view to improve performance
-
+    if (!alreadyInitYoutubeRecording) {
       youTubeView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
         @Override
         public void onReady(@NonNull YouTubePlayer youTubePlayer) {
           youTubePlayer.loadVideo(videoId, 0);
 
-//          seekToInput.addTextChangedListener(new TextWatcher() {
-//            public void afterTextChanged(Editable youtubeSeekTime) {
-//              int skipToSecs = Integer.parseInt(seekToInput.getText().toString());
-//              youTubePlayer.seekTo(skipToSecs);
-//
-//              Toast.makeText(ToDoViewActivity.this, "Text: Player time changed to: " + skipToSecs, Toast.LENGTH_LONG).show();
-//            }
-//
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//          });
-
           seekToButton.setOnClickListener(view -> {
             int skipToSecs = Integer.parseInt(seekToInput.getText().toString());
             youTubePlayer.seekTo(skipToSecs);
+            youTubePlayer.pause();
 
             Toast.makeText(ToDoViewActivity.this, "Button: Player time changed to: " + skipToSecs, Toast.LENGTH_LONG).show();
           });
         }
+
+        /**
+         * On pause, move focus to feedback text
+         */
+        public void onStateChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlayerState state) {
+          if (state == PlayerConstants.PlayerState.PAUSED) {
+            /*
+             * Set focus back to addFeedback
+             * --------
+             * Source: https://stackoverflow.com/a/8991563
+             * Author: David Merriman (https://stackoverflow.com/u/1106671)
+             */
+            addFeedback.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(addFeedback, InputMethodManager.SHOW_IMPLICIT);
+          }
+        }
+
+        /** Update the seek text */
+        @Override
+        public void onCurrentSecond(@NonNull YouTubePlayer youTubePlayer, float second) {
+          seekToInput.setText(String.valueOf((int) second));
+        }
       });
+
+      alreadyInitYoutubeRecording = true;
+    }
+    else {
+      // Just update the video id
+      youTubeView.getYouTubePlayerWhenReady(youTubePlayer -> {
+        youTubePlayer.loadVideo(videoId, 0);
+      });
+    }
   }
 
   /**
