@@ -95,7 +95,7 @@ public class UserProfile extends NodeViewActivity {
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
+//    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
 
     /*
      * Instrument list

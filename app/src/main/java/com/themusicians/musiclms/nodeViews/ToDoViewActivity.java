@@ -207,7 +207,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     });
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__to_do__view, "todo__view");
+//    initShowAttachments(R.id.showAttachments__to_do__view, "todo__view");
   }
 
   /** Return the node to add attachments to */

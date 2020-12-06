@@ -156,7 +156,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                       @Override
                       public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Object role = snapshot.getValue();
-                        if (role != null && role.toString().matches("teacher")){
+                        if (role != null && role.toString().toLowerCase().matches("teacher")){
                           fab.setVisibility(View.VISIBLE);
                         }
                         else {
