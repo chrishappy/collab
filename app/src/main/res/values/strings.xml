@@ -210,5 +210,8 @@
     <string name="text_label_1">Assignment Overview</string>
     <string name="text_label_2">User Profile</string>
     <string name="text_label_3">Chat</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_duplicate">Duplicate</string>
+    <string name="action_edit">Edit</string>
 
 </resources>

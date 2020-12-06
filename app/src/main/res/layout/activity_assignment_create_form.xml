@@ -141,7 +141,7 @@
                 android:layout_marginBottom="30dp"
                 android:background="#c0c0c0" />
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/showAttachments__assignments"
                 android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
                 android:layout_width="match_parent"
