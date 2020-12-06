@@ -1,8 +1,12 @@
 package com.themusicians.musiclms.nodeViews;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -21,6 +25,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.UserLogin;
+import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
@@ -93,7 +99,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate() * 1000);
+                    Date date = new Date(assignment.getDueDate() );
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
                   }
@@ -297,6 +303,37 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     // Always call the superclass so it can save the view hierarchy state
     super.onSaveInstanceState(savedInstanceState);
+  }
+
+  /**
+   * Add delete button
+   */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_assignment_activity_options, menu);
+    return true;
+  }
+
+  @SuppressLint("NonConstantResourceId")
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_assignment_edit:
+        editButton.performClick();
+        return true;
+
+      case R.id.action_assignment_delete:
+        assignment.delete();
+        finish();
+        return true;
+//      case R.id.createassignment:
+//        Intent toCreateAssignment =
+//            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+//        startActivity(toCreateAssignment);
+//        return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   /** To handle saving a To Do item */

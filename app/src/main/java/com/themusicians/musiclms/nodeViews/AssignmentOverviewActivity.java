@@ -61,13 +61,13 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek1;
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek2;
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek3;// Create Object of the Adapter class
-  DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
   BottomNavigationView bottomNavigationView;
   /**
    * For loading and deleting assignments
    */
   Assignment tempAssignment;
+  User tempUser;
 
   /**
    * To Group elements, see this tutorial:
@@ -78,117 +78,36 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_assignment_overview);
 
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    assert currentUser != null;
+
     // Create a instance of the database and get
     // its reference
     tempAssignment = new Assignment();
-    mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
+    tempUser = new User(currentUser.getUid());
+
     recyclerView = findViewById(R.id.assignmentOverviewRecycler);
 
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
 
 
-
-    ItemTouchHelper itemTouchHelper1 =
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT /*| ItemTouchHelper.RIGHT */) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
-
-              /**
-               * To Delete on swipe:
-               * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
-               *
-               * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
-               * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-               */
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
-                tempAssignment =
-                    assignmentOverviewAdapterWeek1.getSnapshots().getSnapshot(position).getValue(Assignment.class);
-
-                if (swipeDir == ItemTouchHelper.LEFT) {
-                  Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
-                      .setAction("Action", null)
-                      .show();
-
-                  tempAssignment.delete();
-                  assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
-                  assignmentOverviewAdapterWeek1.notifyDataSetChanged();
-                }
-              }
-            });
-    itemTouchHelper1.attachToRecyclerView(recyclerView);
-
-    ItemTouchHelper itemTouchHelper2 =
-            new ItemTouchHelper(
-                    new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                      @Override
-                      public boolean onMove(
-                              @NonNull RecyclerView recyclerView,
-                              @NonNull RecyclerView.ViewHolder viewHolder,
-                              @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                      }
-
-                      /**
-                       * To Delete on swipe:
-                       * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
-                       *
-                       * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
-                       * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                       */
-                      @Override
-                      public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        int position = viewHolder.getAdapterPosition();
-                        DataSnapshot snapshot =
-                                assignmentOverviewAdapterWeek2.getSnapshots().getSnapshot(position);
-
-                        switch (swipeDir) {
-                          case ItemTouchHelper.LEFT:
-                            Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null)
-                                    .show();
-
-                            tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
-                            assignmentOverviewAdapterWeek2.notifyItemRemoved(position);
-                            break;
-
-                          case ItemTouchHelper.RIGHT:
-                            Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null)
-                                    .show();
-                            break;
-                        }
-
-                        // Remove item from backing list here
-                        assignmentOverviewAdapterWeek2.notifyDataSetChanged();
-                      }
-                    });
-    itemTouchHelper2.attachToRecyclerView(recyclerView);
+    DatabaseReference tempUserRelatedAssignments = tempUser.getRelatedAssignmentDbReference();
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
-
-
-   long time= System.currentTimeMillis()/1000;
-    //long time = 1607035900;
-
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    Query query1 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(0).endAt(time+605000);
-    Query query2 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000).endAt(time+1210000);
-    Query query3 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000);//.endAt(time+1815000);
-
+    long time= System.currentTimeMillis();
+    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+605000);
     FirebaseRecyclerOptions<Assignment> options1 =
-            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query1, Assignment.class).build();
+            new FirebaseRecyclerOptions.Builder<Assignment>()
+                .setQuery(query1, Assignment.class)
+                .build();
+
+    Query query2 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+605000).endAt(time+1210000);
     FirebaseRecyclerOptions<Assignment> options2 =
             new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
+
+    Query query3 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+605000);//.endAt(time+1815000);
     FirebaseRecyclerOptions<Assignment> options3 =
             new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
 
@@ -213,17 +132,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     //set join adapter to your RecyclerView
     recyclerView.setAdapter(rvJoiner.getAdapter());
+//    getItemTouchHelper(assignmentOverviewAdapterWeek1).attachToRecyclerView(recyclerView);
 
     // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
-
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-    DatabaseReference userEntityDatabase;
-
-    User tempUser = new User();
-    userEntityDatabase = tempUser.getEntityDatabase();
-    userEntityDatabase
+    tempUser.getEntityDatabase()
             .child(currentUser.getUid())
             .child("role")
             .addValueEventListener(
@@ -290,6 +203,44 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     assignmentOverviewAdapterWeek1.stopListening();
     assignmentOverviewAdapterWeek2.startListening();
     assignmentOverviewAdapterWeek3.startListening();
+  }
+
+  private ItemTouchHelper getItemTouchHelper(AssignmentOverviewAdapter adapter) {
+    return
+        new ItemTouchHelper(
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT /*| ItemTouchHelper.RIGHT */) {
+              @Override
+              public boolean onMove(
+                  @NonNull RecyclerView recyclerView,
+                  @NonNull RecyclerView.ViewHolder viewHolder,
+                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+              }
+
+              /**
+               * To Delete on swipe:
+               * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
+               *
+               * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
+               * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+               */
+              @Override
+              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                int position = viewHolder.getAdapterPosition() - 1;
+                tempAssignment =
+                    adapter.getSnapshots().getSnapshot(position).getValue(Assignment.class);
+
+                if (swipeDir == ItemTouchHelper.LEFT) {
+                  Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
+                      .setAction("Action", null)
+                      .show();
+
+                  tempAssignment.delete();
+                  adapter.notifyItemRemoved(position);
+                  adapter.notifyDataSetChanged();
+                }
+              }
+            });
   }
 
   @Override

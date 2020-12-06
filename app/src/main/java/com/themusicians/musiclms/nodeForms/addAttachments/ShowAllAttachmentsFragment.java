@@ -92,12 +92,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     Bundle args = new Bundle();
     fragment.setArguments(args);
 
-    try {
-      fragment.nodeToBeEdited = (Node) nodeToBeEdited.clone();
-      Log.w("debugMissingNode", "id3 is: " + nodeToBeEdited.getId());
-    } catch (CloneNotSupportedException e) {
-      e.printStackTrace();
-    }
+    fragment.nodeToBeEdited = nodeToBeEdited;
     return fragment;
   }
 

@@ -207,7 +207,7 @@
     <string name="placeholder_date__sort">Dec. 30</string>
     <string name="assignment_overview__add_assignment">Add Assignment</string>
     <string name="stats">Stats</string>
-    <string name="text_label_1">Assignment Overview</string>
+    <string name="text_label_1">Assignments</string>
     <string name="text_label_2">User Profile</string>
     <string name="text_label_3">Chat</string>
     <string name="action_delete">Delete</string>

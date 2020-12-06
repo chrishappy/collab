@@ -50,13 +50,6 @@ public abstract class Node extends Entity implements Cloneable {
     super(id);
   }
 
-  /** Clone */
-  @NotNull
-  @Override
-  public Object clone()  throws CloneNotSupportedException {
-    return super.clone();
-  }
-
   /**
    * @param id The fields for the default Entity
    * @return The List of the Entities

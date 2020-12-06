@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity">
+    <item android:id="@+id/action_assignment_edit"
+        android:title="@string/action_edit"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:iconTint="@color/grey"
+        android:orderInCategory="160"
+        app:showAsAction="ifRoom" />
+
+<!--    <item android:id="@+id/action_assignment_duplicate"-->
+<!--        android:title="@string/action_duplicate"-->
+<!--        android:orderInCategory="120"-->
+<!--        app:showAsAction="never" />-->
+
+    <item android:id="@+id/action_assignment_delete"
+        android:title="@string/action_delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:orderInCategory="140"
+        android:iconTint="@color/grey"
+        app:showAsAction="ifRoom" />
+</menu>

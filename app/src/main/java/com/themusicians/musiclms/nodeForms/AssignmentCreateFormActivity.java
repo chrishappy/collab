@@ -59,8 +59,10 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   /** Create recycler view for to do items */
   private RecyclerView toDoItemsRecyclerView;
 
+  private final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+
   /** Create adapter for to do items */
-  ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
+  private ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
 
   /**
    * @return the node we are editing
@@ -102,8 +104,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate() * 1000);
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+                    Date date = new Date(assignment.getDueDate());
                     dueDate.setText(dateFormat.format(date));
                   }
 
@@ -171,23 +172,25 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     // provided by Android
       final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line);
       //Child the root before all the push() keys are found and add a ValueEventListener()
-      tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
-              //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-              for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
-                  //Get the suggestion by childing the key of the string you want to get.
-                  String suggestion = suggestionSnapshot.child("name").getValue(String.class);
-                  //Add the retrieved string to the list
-                  autoComplete.add(suggestion);
-                  //assignment.addAssignees(suggestion);
-              }
-          }
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-          }
-      });
-      StudentOrClass.setAdapter(autoComplete);
+    tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+        //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+        for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
+          //Get the suggestion by childing the key of the string you want to get.
+          String suggestion = suggestionSnapshot.child("name").getValue(String.class);
+          //Add the retrieved string to the list
+          autoComplete.add(suggestion);
+          //assignment.addAssignees(suggestion);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NotNull DatabaseError databaseError) {
+      }
+    });
+
+    StudentOrClass.setAdapter(autoComplete);
       StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
       // @TODO Add ids rather than matching display name
@@ -197,7 +200,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               String item = (String)parent.getItemAtPosition(position);
               tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
                   @Override
-                  public void onDataChange(DataSnapshot dataSnapshot) {
+                  public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                       //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
                       for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
                           //Get the suggestion by childing the key of the string you want to get.
@@ -210,7 +213,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                       }
                   }
                   @Override
-                  public void onCancelled(DatabaseError databaseError) {
+                  public void onCancelled(@NotNull DatabaseError databaseError) {
                   }
               });
 
@@ -231,8 +234,8 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               new DatePickerDialog(
                   AssignmentCreateFormActivity.this,
                   (view, year1, monthOfYear, dayOfMonth) -> {
-                    dueDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
                     cldr.set(year1, monthOfYear, dayOfMonth);
+                    dueDate.setText(dateFormat.format(cldr.getTimeInMillis()));
                   },
                   year,
                   month,
@@ -284,7 +287,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               .setAction("Action", null)
               .show();
           // Due Date timestamp
-          long dueDateTimestamp = TimeUnit.MILLISECONDS.toSeconds(cldr.getTimeInMillis());
+          long dueDateTimestamp = cldr.getTimeInMillis();
 
           assignment.setName(AssignmentName.getText().toString());
           assignment.setClassId(StudentOrClass.getText().toString());
