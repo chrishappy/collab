@@ -444,20 +444,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     startActivity(Intent.createChooser(sharingIntent,"Share To:"));
   }
 
-  /**
-   * Open Zoom Meeting
-   *
-   * Source: https://stackoverflow.com/q/63717072
-   * Author: Mithun Sarker Shuvro (https://stackoverflow.com/users/3887432)
-   */
-  private void launchZoomUrl(String meetingId, String meetingPasscode) {
-    Uri zoomUri = Uri.parse(String.format("zoomus://zoom.us/join?confno=%s&pwd=%s", meetingId, meetingPasscode));
-    Intent intent = new Intent(Intent.ACTION_VIEW, zoomUri);
-    if (intent.resolveActivity(getPackageManager()) != null) {
-      startActivity(intent);
-    }
-  }
-
   /*
    * Attempt to get upload youtube to work
    */

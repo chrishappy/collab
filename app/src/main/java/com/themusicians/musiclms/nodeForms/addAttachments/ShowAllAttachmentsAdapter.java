@@ -1,8 +1,5 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +12,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
-import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 /**
  * The adapter for the All Attachments pages
@@ -34,6 +30,7 @@ public class ShowAllAttachmentsAdapter
 
   public final static String editAllAttachments = "editAllAttachments";
   public final static String SHOW_PDF = "SHOW_PDF";
+  public final static String OPEN_ZOOM = "OPEN_ZOOM";
 
   public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
     super(options);
@@ -49,19 +46,34 @@ public class ShowAllAttachmentsAdapter
       holder.comment.setText(allAttachment.getComment());
     }
 
-    if (allAttachment.getFileUploadUri() != null) {
+    if (allAttachment.getDownloadFileUri() != null) {
       holder.fileDownload.setVisibility(View.VISIBLE);
       holder.fileDownload.setOnClickListener(
           view -> {
-            itemClickListener.onEditButtonClick(SHOW_PDF, allAttachment.getFileUploadUri(), null);
+            itemClickListener.onButtonClick(SHOW_PDF, allAttachment.getDownloadFileUri(), null);
           }
       );
+    }
+    else {
+      holder.fileDownload.setVisibility(View.GONE);
+    }
+
+    if (allAttachment.getZoomId() != null) {
+      holder.zoomOpen.setVisibility(View.VISIBLE);
+      holder.zoomOpen.setOnClickListener(
+          view -> {
+            itemClickListener.onButtonClick(OPEN_ZOOM, allAttachment.getZoomId() + " " + allAttachment.getZoomPassword(), null);
+          }
+      );
+    }
+    else {
+      holder.zoomOpen.setVisibility(View.GONE);
     }
 
     holder.editButton.setOnClickListener(
         view -> {
           if (itemClickListener != null) {
-            itemClickListener.onEditButtonClick(editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
+            itemClickListener.onButtonClick(editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
           }
         });
 
@@ -101,7 +113,7 @@ public class ShowAllAttachmentsAdapter
   // view (here "person.xml")
   static class AllAttachmentViewHolder extends RecyclerView.ViewHolder {
     TextView comment;
-    Button fileDownload, editButton;
+    Button fileDownload, zoomOpen, editButton;
     ConstraintLayout allAttachmentWrapper;
 
     public AllAttachmentViewHolder(@NonNull View itemView) {
@@ -110,6 +122,7 @@ public class ShowAllAttachmentsAdapter
       allAttachmentWrapper = itemView.findViewById(R.id.allAttachmentWrapper);
       comment = itemView.findViewById(R.id.viewComment);
       fileDownload = itemView.findViewById(R.id.attachmentDownloadFile);
+      zoomOpen = itemView.findViewById(R.id.zoomOpenMeeting);
       editButton = itemView.findViewById(R.id.edit_button);
     }
   }
@@ -120,7 +133,7 @@ public class ShowAllAttachmentsAdapter
    * <p>From: https://stackoverflow.com/questions/39551313/
    */
   public interface ItemClickListener {
-    void onEditButtonClick(String type, String entityId, View clickedView);
+    void onButtonClick(String type, String entityId, View clickedView);
   }
 
   public void addItemClickListener(ItemClickListener listener) {

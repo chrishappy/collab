@@ -17,7 +17,9 @@ public class AllAttachment extends Attachment {
   protected String comment;
 
   /** File Fields */
-  protected String fileUploadUri;
+  protected String fileUri;
+
+  protected String downloadFileUri;
 
   /** Zoom Fields */
   protected String zoomId;
@@ -62,8 +64,17 @@ public class AllAttachment extends Attachment {
   @Override
   public void save() {
     super.save();
-    // Save the file here
+    // @Todo Save the file here
 
+  }
+  /**
+   * Delete the file
+   */
+  @Override
+  public void delete() {
+    // @Todo delete the file here
+
+    super.delete();
   }
 
   /** Comment setters and getters */
@@ -76,12 +87,20 @@ public class AllAttachment extends Attachment {
   }
 
   /** File setters and getters */
-  public String getFileUploadUri() {
-    return fileUploadUri;
+  public String getFileUri() {
+    return fileUri;
   }
 
-  public void setFileUploadUri(String fileUploadUri) {
-    this.fileUploadUri = fileUploadUri;
+  public void setFileUri(String fileUri) {
+    this.fileUri = fileUri;
+  }
+
+  public String getDownloadFileUri() {
+    return downloadFileUri;
+  }
+
+  public void setDownloadFileUri(String downloadFileUri) {
+    this.downloadFileUri = downloadFileUri;
   }
 
   /** Zoom Setters and Getters */
@@ -97,7 +116,7 @@ public class AllAttachment extends Attachment {
     return zoomPassword;
   }
 
-  public void setZoomPassword(String zoomPassword) {
+  public void setZoomPasscode(String zoomPassword) {
     this.zoomPassword = zoomPassword;
   }
 }

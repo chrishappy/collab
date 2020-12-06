@@ -35,27 +35,18 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="attachment__add__comment">Add Comment</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="attachment_dialog__add__comment">Add a comment</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="placeholder">PLACEHOLDER</string>
     <string name="assignment__overview__author_label">Author:</string>
     <string name="assignments__overview__name_label">Assignment Name</string>
     <string name="date_format__month_day">MMM d</string>
-    <string name="attachment__add__file">Add file</string>
+
     <string name="title_activity_to_do_item_create_form">Create ToDo Item</string>
     <string name="to_do_item__form__name">Name</string>
     <string name="to_do_item__form__require_recording">Require Recording</string>
     <string name="form__edit_button">Edit</string>
     <string name="user_profile_chat">Chat</string>
-    <string name="no_file_is_selected">no file is selected</string>
-    <string name="upload">Upload</string>
-    <string name="attachment__form__recording">Recording</string>
-    <string name="attachment__form__zoomLabel">Zoom Meeting</string>
-    <string name="attachment__form__scheduleZoomMeeting">Schedule Zoom Meeting</string>
     <string name="form__delete_button">Delete</string>
     <string name="assignment__overview__user_label">Assignee</string>
     <string name="title_activity_user_search">Search for Users</string>
@@ -82,7 +73,6 @@
     <string name="hello">hello</string>
     <string name="please_add_comment">Please enter your comment</string>
     <string name="comment">comment</string>
-    <string name="please_add_file">Please add file</string>
     <string name="Write_a_message">Write a message...</string>
     <string name="user_name">Name</string>
     <string name="Add_New_Users">Add new users</string>
@@ -155,10 +145,33 @@
     <string name="add_attachment">+ Attachment</string>
     <string name="assignment_overview__user_profile">User Profile</string>
     <string name="assignment_overview__logout">Logout</string>
-    <string name="attachment__pdf_ppload_preview">A file is selected : %s</string>
+    <string name="attachment__pdf_ppload_preview">%s selected.</string>
+    <string name="to_do_item__change_recording">Change Recording</string>
+    <string name="to_do_view__error_feedback">Error parsing feedback</string>
+    <string name="attachment__zoom_meeting">Meeting ID</string>
+    <string name="attachment__zoom_password">Meeting Password</string>
+    <string name="please_add_file">Please add file</string>
+    <string name="toast__attachment__file_successful">File successfully uploaded</string>
+    <string name="toast__attachment__file_failed">File Upload was not sucessful</string>
+    <string name="attachment__upload_file">Upload</string>
+    <string name="attachment__remove_file">Remove</string>
+    <string name="attachment__download_file">Open Assignment Pdf</string>
+    <string name="attachment__form__file_label">Upload PDF</string>
+    <string name="attachment__add__file">Select PDF</string>
+    <string name="no_file_is_selected">No PDF selected</string>
+    <string name="upload">Upload</string>
+    <string name="attachment__form__recording">Recording</string>
+    <string name="attachment__form__zoomLabel">Zoom Meeting</string>
+    <string name="attachment__form__scheduleZoomMeeting">Add Meeting</string>
+    <string name="attachment__add__comment">Add Comment</string>
+    <string name="attachment_dialog__add__comment">Add a comment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
     <string name="channel_name">Music LMS</string>
     <string name="channel_description">Chat Messages</string>
-    <string name="attachment__download_file">Download File</string>
     <string name="edit_assignment">Edit Assignment</string>
     <string name="assignment__student_done">Done?</string>
     <string name="assignment__teacher_marked">Mark?</string>
@@ -188,6 +201,7 @@
     <string name="user_deleted"> has been deleted.</string>
     <string name="cannot_add">Cannot add self</string>
     <string name="added"> added</string>
-    <string name="to_do_item__change_recording">Change Recording</string>
-    <string name="to_do_view__error_feedback">Error parsing feedback</string>
+    <string name="toast__attachment__file_delete_successful">File successfully deleted</string>
+    <string name="toast__attachment__file_delete_failed">File Delete failed.</string>
+    <string name="attachment__open_zoom">Open Meeting</string>
 </resources>

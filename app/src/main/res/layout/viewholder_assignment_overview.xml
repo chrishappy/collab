@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/assignment_overview_wrapper"
-        android:background="#eee"
+        android:background="@color/viewholderLightBk"
         android:orientation="vertical">
 
         <TextView
