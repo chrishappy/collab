@@ -12,13 +12,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/nav_header_height"
         android:id="@+id/assignmentsContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/assignmentOverviewRecycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/nav_header_height" />
 
     </LinearLayout>
 
