@@ -35,8 +35,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode">
+        <activity android:name=".UserAnalysisTeacher"
+            android:label="@string/analysis"
+            android:parentActivityName=".UserProfile"/>
         <activity android:name=".UserAnalysisStudent"
-            android:label="Analysis"
+            android:label="@string/analysis"
             android:parentActivityName=".UserProfile"/>
         <activity
             android:name=".UserSearchView"

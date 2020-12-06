@@ -5,7 +5,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,13 +34,13 @@ public class UserAnalysisStudent extends AppCompatActivity {
   LineGraphSeries series;
   User currUser;
   String myName;
-  int x;
+  long x;
   long y;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.user_analysis_student);
+    setContentView(R.layout.user_analysis);
 
     graphView = findViewById(R.id.graphView);
     series = new LineGraphSeries();
@@ -64,12 +66,13 @@ public class UserAnalysisStudent extends AppCompatActivity {
       }
     });
 
+    x=0;
+    y=0;
     reference.removeValue();
     PointValue pointValue = new PointValue(x,y);
     String id = reference.push().getKey();
     reference.child(id).setValue(pointValue);
     setListeners();
-
   }
 
   private void setListeners() {
@@ -80,17 +83,16 @@ public class UserAnalysisStudent extends AppCompatActivity {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
-          if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
-
+          //if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
+            Log.w("debug assignment id", String.valueOf(assignment.getAssignmentCompleteTime()));
             x++;
-
-            y = (long) assignment.getAssignmentCompleteTime() - (assignment.getDueDate()*1000);
+            y = (long) assignment.getAssignmentCompleteTime() - assignment.getDueDate();
 
             y = (long) (floor(((y/1000)/60)/60)/24);
             PointValue pointValue = new PointValue(x,y);
             String id = reference.push().getKey();
             reference.child(id).setValue(pointValue);
-          }
+         //}
         }
       }
 
