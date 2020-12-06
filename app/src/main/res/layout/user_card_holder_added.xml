@@ -16,133 +16,95 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/placeName"
+            android:id="@+id/searchName2"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/name"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/searchName2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/orangePrimary"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:maxLines="1"
+            android:layout_marginTop="12dp"
             android:ellipsize="end"
+            android:maxLines="1"
             android:text="@string/placeholder"
+            android:textColor="#ff6347"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/placeName"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/placeEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/email"
-            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeName" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/searchEmail2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="@string/placeholder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/placeEmail"
-            app:layout_constraintTop_toBottomOf="@+id/searchName2" />
-
-        <TextView
-            android:id="@+id/placeRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-
-            android:text="@string/role"
-            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/placeholder"
+            android:textColor="#000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/searchName2" />
 
         <TextView
             android:id="@+id/searchRole2"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
             android:text="@string/placeholder"
+            android:textColor="#000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/placeRole"
-            app:layout_constraintTop_toBottomOf="@+id/searchEmail2" />
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/searchEmail2"
+            app:layout_constraintTop_toBottomOf="@+id/searchName2" />
 
         <LinearLayout
             android:id="@+id/actionsButtons2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchRole2"
-            android:gravity="end">
+            app:layout_constraintTop_toBottomOf="@+id/searchRole2">
 
             <Button
                 android:id="@+id/addedDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/orangePrimary"
-                android:textColor="#fff"
-                android:hint="@string/delete"/>
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#ff6347"
+                android:hint="@string/delete"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/addedViewUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@color/orangePrimary"
-                android:textColor="#fff"
-                android:hint="@string/view"/>
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#ff6347"
+                android:hint="@string/view"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/addedChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/orangePrimary"
-                android:textColor="#fff"
-                android:hint="@string/chat"/>
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#ff6347"
+                android:hint="@string/chat"
+                android:textColor="#fff" />
 
         </LinearLayout>
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.themusicians.musiclms;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -20,7 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -46,7 +50,7 @@ import java.util.Locale;
  * @since Nov 10, 2020
  * @todo View user info
  */
-public class UserProfile extends NodeViewActivity {
+public class UserProfile extends AppCompatActivity {
 
   protected TextView myName, myEmail, newName, newEmail;
   protected FirebaseUser currentUser;
@@ -58,14 +62,14 @@ public class UserProfile extends NodeViewActivity {
   boolean reInput;
   protected ListView instrumentList;
   protected User currUser;
-
+  BottomNavigationView bottomNavigationView;
 
 
   /** The node that has the attachments */
-  @Override
+  /*@Override
   public Node getNodeForAttachments() {
     return currUser;
-  }
+  }*/
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,10 @@ public class UserProfile extends NodeViewActivity {
 
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
+
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_2);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // Initialize Attachments
     initShowAttachments(R.id.showAttachments, "user_profile");
@@ -266,15 +274,13 @@ public class UserProfile extends NodeViewActivity {
           /** End of Shifan's code */
   }
 
-  /** Redirects to add users */
-  public void toAddUser(View view) {
-    Intent toAdd = new Intent(this, UserAddUsers.class);
-    startActivity(toAdd);
-  }
-
   /** Redirects User to Editing data */
   public void toEditData(View view) {
     setContentView(R.layout.user_profile_edit_data);
+
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_2);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
   }
 
   /** Updates user name in Firebase */
@@ -343,23 +349,35 @@ public class UserProfile extends NodeViewActivity {
     passwordResetDialog.create().show();
   }
 
-  /** Redirects user to user profile page */
-  public void editDataBack(View view) {
-    Intent reload = new Intent(this, UserProfile.class);
-    startActivity(reload);
-  }
-
-  /** Redirects user to Assignment Overview */
-  public void backFromProfile(View view) {
-    Intent toAssignmentOverview = new Intent(this, AssignmentOverviewActivity.class);
-    startActivity(toAssignmentOverview);
-  }
-
   /** Redirects user to User Analysis */
   public void toAnalysis(View view) {
-    Intent toUserAnalysis = new Intent(this, UserAnalysis.class);
+    Intent toUserAnalysis;
+    if(currUser.getRole().equals("student")){
+      toUserAnalysis = new Intent(this, UserAnalysisStudent.class);
+    } else {
+      toUserAnalysis = new Intent(this, UserAnalysisTeacher.class);
+    }
     startActivity(toUserAnalysis);
   }
+
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+      switch (item.getItemId()){
+        case R.id.page_1:
+          Intent toAssignmentOverview = new Intent(UserProfile.this, AssignmentOverviewActivity.class);
+          startActivity(toAssignmentOverview);
+          return true;
+        case R.id.page_3:
+          Intent toChat = new Intent(UserProfile.this, UserAddUsers.class);
+          startActivity(toChat);
+          return true;
+      }
+
+      return true;
+    }
+  };
 
   /** Shifan's code */
   private void showChangeLanguageDialog() {

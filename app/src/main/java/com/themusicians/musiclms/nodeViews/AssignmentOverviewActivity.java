@@ -12,10 +12,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.SolverVariableValues;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.UserAddUsers;
 import com.themusicians.musiclms.UserLogin;
 import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
@@ -60,6 +63,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek3;// Create Object of the Adapter class
   DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
+  BottomNavigationView bottomNavigationView;
   /**
    * For loading and deleting assignments
    */
@@ -82,6 +86,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
+
+
 
     ItemTouchHelper itemTouchHelper1 =
         new ItemTouchHelper(
@@ -240,7 +246,31 @@ public class AssignmentOverviewActivity extends AppCompatActivity
               new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
           startActivity(redirectToAssignmentCreate);
         });
+
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_1);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
   }
+
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+      switch (item.getItemId()){
+        case R.id.page_2:
+          Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
+          startActivity(toUserProfile);
+          overridePendingTransition(0, 0);
+          return true;
+        case R.id.page_3:
+          Intent toChat = new Intent(AssignmentOverviewActivity.this, UserAddUsers.class);
+          startActivity(toChat);
+          return true;
+      }
+
+      return true;
+    }
+  };
 
   // Function to tell the app to start getting
   // data from database on starting of the activity
