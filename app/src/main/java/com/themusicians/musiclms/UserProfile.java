@@ -387,7 +387,7 @@ public class UserProfile extends NodeViewActivity {
   private void showChangeLanguageDialog() {
       final String[] listItems = {"English", "简体中文"};
       AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
-      mBuilder.setTitle("Choose Language...");
+      mBuilder.setTitle(R.string.user_profile__choose_language);
       mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialogInterface, int i) {

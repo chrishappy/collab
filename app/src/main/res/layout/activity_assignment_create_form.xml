@@ -86,6 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ems="10"
+                            android:focusable="false"
                             android:hint="@string/assignment__form__due_date" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -185,6 +186,7 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 

@@ -79,7 +79,7 @@ public abstract class NodeActivity extends AppCompatActivity {
         // set message, title, and icon
         .setTitle(R.string.delete)
         .setMessage(String.format(getString(R.string.delete_confirm_message), getNodeForAttachments().getName()))
-        .setIcon(R.drawable.ic_baseline_delete_24)
+        .setIcon(R.drawable.ic_baseline_delete_24__grey)
 
         .setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {

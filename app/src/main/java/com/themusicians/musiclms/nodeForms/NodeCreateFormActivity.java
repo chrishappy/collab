@@ -1,16 +1,16 @@
 package com.themusicians.musiclms.nodeForms;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
+import android.widget.EditText;
 
 import com.themusicians.musiclms.R;
+
+import java.util.LinkedList;
+import java.util.List;
 
 // import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 
@@ -59,14 +59,42 @@ public abstract class NodeCreateFormActivity extends NodeActivity {
   public boolean onPrepareOptionsMenu(Menu menu){
     super.onPrepareOptionsMenu(menu);
 
-    if (getNodeForAttachments().getId() == null) {
-      try {
-        menu.findItem(R.id.action_assignment_delete).setVisible(false);
-      }
-      catch(Exception e) {
-        Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
+    boolean isVisible = (getNodeForAttachments().getId() != null);
+    try {
+      menu.findItem(R.id.action_assignment_delete).setVisible(isVisible);
+    }
+    catch(Exception e) {
+      Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
+    }
+
+    return true;
+  }
+
+  /**
+   * List of Edit Text that can not be empty before saving
+   */
+  private final List<EditText> requiredEditTexts = new LinkedList<>();
+
+  /**
+   * Validate the form before save
+   */
+  public boolean validateForm() {
+    boolean result = true;
+
+    if (!requiredEditTexts.isEmpty()) {
+      for (EditText editText : requiredEditTexts) {
+        if (editText.getText() == null || TextUtils.isEmpty(editText.getText().toString())) {
+          String hint = editText.getHint() == null ? "" : editText.getHint().toString();
+          editText.setError(String.format(getString(R.string.node_create__empty_field_error), hint));
+          result = false;
+        }
       }
     }
-    return true;
+
+    return result;
+  }
+
+  public void addToRequired(EditText editTextThatMustBeFilled) {
+    requiredEditTexts.add(editTextThatMustBeFilled);
   }
 }

@@ -8,6 +8,8 @@ import android.view.Menu;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.nodeForms.NodeActivity;
 
+import java.util.Objects;
+
 /**
  * The class to be extended by node create forms
  *
@@ -47,13 +49,12 @@ public abstract class NodeViewActivity extends NodeActivity {
   public boolean onPrepareOptionsMenu(Menu menu){
     super.onPrepareOptionsMenu(menu);
 
-    if (getNodeForAttachments().getUid() == currentUser.getUid()) {
-      try {
-        menu.findItem(R.id.action_assignment_delete).setVisible(false);
-      }
-      catch(Exception e) {
-        Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
-      }
+    boolean isVisible = (Objects.equals(getNodeForAttachments().getUid(), currentUser.getUid()));
+    try {
+      menu.findItem(R.id.action_assignment_delete).setVisible(isVisible);
+    }
+    catch(Exception e) {
+      Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
     }
     return true;
   }

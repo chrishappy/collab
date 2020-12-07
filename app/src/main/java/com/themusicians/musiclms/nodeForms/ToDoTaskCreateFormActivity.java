@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -128,6 +129,9 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
     toDoItemName = findViewById(R.id.to_do_item_name);
     requireRecording = findViewById(R.id.require_recording);
 
+    // Make fields required
+    addToRequired(toDoItemName);
+
     // Initialize attachments
 //    initShowAttachments(R.id.showAttachments__to_do__create, "todo__create");
 
@@ -144,6 +148,12 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
     final Button assignmentSave = findViewById(R.id.saveAction);
     assignmentSave.setOnClickListener(
         view -> {
+
+          // TODO change save code to save() and put validate in there
+          if (!validateForm()) {
+            return;
+          }
+
           // Due Date timestamp
           toDoItem.setAttachedAssignment(attachedAssignmentId);
           toDoItem.setName(toDoItemName.getText().toString());
@@ -158,5 +168,17 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
           setResult(Activity.RESULT_OK, returnIntent);
           finish();
         });
+  }
+
+  /**
+   * Validate the form
+   */
+  @Override
+  public boolean validateForm() {
+    boolean result = true;
+
+    result = super.validateForm();
+
+    return result;
   }
 }

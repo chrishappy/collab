@@ -13,8 +13,7 @@
         android:id="@+id/to_do_item_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/left_and_right_gutters"
-        android:paddingRight="@dimen/left_and_right_gutters"
+        android:padding="@dimen/left_and_right_gutters"
         tools:showIn="@layout/activity_to_do_item_create_form">
 
         <LinearLayout
@@ -86,6 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="?attr/materialButtonOutlinedStyle"
+                    android:background="@color/colorPrimary"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 
