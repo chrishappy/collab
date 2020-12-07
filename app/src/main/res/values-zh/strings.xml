@@ -78,7 +78,7 @@
     <string name="seek_to">跳转至</string>
     <string name="seek_to_hint">秒</string>
     <string name="add_recording">添加录像</string>
-    <string name="add_recording_feedback__text">添加反馈文版</string>
+    <string name="add_recording_feedback__text">添加反馈文本</string>
     <string name="add_recording_feedback__save">保存反馈</string>
 
     <!-- User -->
