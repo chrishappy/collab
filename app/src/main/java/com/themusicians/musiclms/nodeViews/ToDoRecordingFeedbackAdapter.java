@@ -57,9 +57,8 @@ public class ToDoRecordingFeedbackAdapter extends RecyclerView.Adapter<ToDoRecor
   @NonNull
   @Override
   public ToDoRecordingFeedbackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recording_feedback,parent,false);
-    ToDoRecordingFeedbackViewHolder viewHolder=new ToDoRecordingFeedbackViewHolder(v);
-    return viewHolder;
+    View v= LayoutInflater.from(getContext()).inflate(R.layout.item_recording_feedback, parent,false);
+    return new ToDoRecordingFeedbackViewHolder(v);
   }
 
   @Override

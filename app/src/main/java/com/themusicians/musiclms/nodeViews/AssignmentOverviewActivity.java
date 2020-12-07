@@ -96,43 +96,55 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
+
     long time= System.currentTimeMillis();
-    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+605000);
+    long week = 605000000;
+//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
     FirebaseRecyclerOptions<Assignment> options1 =
-            new FirebaseRecyclerOptions.Builder<Assignment>()
-                .setQuery(query1, Assignment.class)
-                .build();
+        new FirebaseRecyclerOptions.Builder<Assignment>()
+            .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
+//            .setLifecycleOwner(this)
+            .build();
 
-    Query query2 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+605000).endAt(time+1210000);
-    FirebaseRecyclerOptions<Assignment> options2 =
-            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
-
-    Query query3 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+605000);//.endAt(time+1815000);
-    FirebaseRecyclerOptions<Assignment> options3 =
-            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
-
-    // Create new Adapter
+//    long time= System.currentTimeMillis();
+//    long week = 605000000;
+//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
+//    FirebaseRecyclerOptions<Assignment> options1 =
+//            new FirebaseRecyclerOptions.Builder<Assignment>()
+//                .setQuery(query1, Assignment.class)
+//                .build();
+//
+//    Query query2 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+week+1).endAt(time + week*2);
+//    FirebaseRecyclerOptions<Assignment> options2 =
+//            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
+//
+//    Query query3 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time + week*2 + 1);//.endAt(time+1815000);
+//    FirebaseRecyclerOptions<Assignment> options3 =
+//            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
+//
+//    // Create new Adapter
     assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options1);
     assignmentOverviewAdapterWeek1.addItemClickListener(this);
-
-    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options2);
-    assignmentOverviewAdapterWeek2.addItemClickListener(this);
-
-    assignmentOverviewAdapterWeek3 = new AssignmentOverviewAdapter(options2);
-    assignmentOverviewAdapterWeek3.addItemClickListener(this);
-
-    RvJoiner rvJoiner = new RvJoiner();
-
-    rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
-    rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek2));
-    rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek3));
-
-    //set join adapter to your RecyclerView
-    recyclerView.setAdapter(rvJoiner.getAdapter());
+//
+//    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options2);
+//    assignmentOverviewAdapterWeek2.addItemClickListener(this);
+//
+//    assignmentOverviewAdapterWeek3 = new AssignmentOverviewAdapter(options2);
+//    assignmentOverviewAdapterWeek3.addItemClickListener(this);
+//
+//    RvJoiner rvJoiner = new RvJoiner();
+//
+//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
+//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
+//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek2));
+//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
+//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek3));
+//
+//    //set join adapter to your RecyclerView
+//    recyclerView.setAdapter(rvJoiner.getAdapter());
 //    getItemTouchHelper(assignmentOverviewAdapterWeek1).attachToRecyclerView(recyclerView);
+    recyclerView.setAdapter(assignmentOverviewAdapterWeek1);
 
     // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
@@ -144,15 +156,17 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                       @Override
                       public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Object role = snapshot.getValue();
-                        if (role != null && role.toString().matches("teacher")){
+                        if (role != null && role.toString().toLowerCase().matches("teacher")){
                           fab.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                          fab.setVisibility(View.GONE);
                         }
                       }
 
                       @Override
                       public void onCancelled(@NonNull DatabaseError error) {}
                     });
-
     fab.setOnClickListener(
         view -> {
           Intent redirectToAssignmentCreate =
@@ -191,8 +205,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStart() {
     super.onStart();
     assignmentOverviewAdapterWeek1.startListening();
-    assignmentOverviewAdapterWeek2.startListening();
-    assignmentOverviewAdapterWeek3.startListening();
+//    assignmentOverviewAdapterWeek2.startListening();
+//    assignmentOverviewAdapterWeek3.startListening();
   }
 
   // Function to tell the app to stop getting
@@ -201,8 +215,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStop() {
     super.onStop();
     assignmentOverviewAdapterWeek1.stopListening();
-    assignmentOverviewAdapterWeek2.startListening();
-    assignmentOverviewAdapterWeek3.startListening();
+//    assignmentOverviewAdapterWeek2.startListening();
+//    assignmentOverviewAdapterWeek3.startListening();
   }
 
   private ItemTouchHelper getItemTouchHelper(AssignmentOverviewAdapter adapter) {

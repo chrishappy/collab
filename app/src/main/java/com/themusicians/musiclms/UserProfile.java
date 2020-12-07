@@ -95,7 +95,7 @@ public class UserProfile extends NodeViewActivity {
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
+//    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
 
     /*
      * Instrument list
@@ -388,7 +388,7 @@ public class UserProfile extends NodeViewActivity {
   private void showChangeLanguageDialog() {
       final String[] listItems = {"English", "简体中文"};
       AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
-      mBuilder.setTitle("Choose Language...");
+      mBuilder.setTitle(R.string.user_profile__choose_language);
       mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialogInterface, int i) {

@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeViews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,9 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +39,7 @@ import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,6 +105,10 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   assert toDoItem != null;
+
+                  // Check if user can delete to do item
+                  invalidateOptionsMenu();
+
                   toDoItemName.setText(toDoItem.getName());
 
                   // Set checked
@@ -166,7 +176,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
       dispatchTakeVideoIntent();
     });
 
-
     /*
      Play Video
      */
@@ -207,7 +216,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     });
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__to_do__view, "todo__view");
+//    initShowAttachments(R.id.showAttachments__to_do__view, "todo__view");
   }
 
   /** Return the node to add attachments to */
@@ -216,16 +225,15 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     return toDoItem;
   }
 
-//  protected Provider getYouTubePlayerProvider() {
-//    return youTubeView;
-//  }
-
   /**
    * Helper functions for toggle displays of recording player vs add recording
    */
   private void showAddYoutubeRecording() {
-    initAddRecording();
-    youtubeRecordingLayout.setVisibility(View.VISIBLE);
+    // Only show if recording is required or is the author
+    if (toDoItem.getRequireRecording()) {
+      initAddRecording();
+      youtubeRecordingLayout.setVisibility(View.VISIBLE);
+    }
   }
 
   private void hideAddYoutubeRecording() {
@@ -284,6 +292,12 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
    */
   private void initRecordingFeedbackAdapter() {
     if (recordingFeedbackAdapter == null) {
+      // Set up layout manager
+      LinearLayoutManager llm = new LinearLayoutManager(this);
+      llm.setOrientation(LinearLayoutManager.VERTICAL);
+      recordingFeedbackListView.setLayoutManager(llm);
+
+      // Set up the adapter
       recordingFeedbackAdapter =
           new ToDoRecordingFeedbackAdapter(this, toDoItem.getRecordingFeedback());
       recordingFeedbackAdapter.addItemClickListener(this);

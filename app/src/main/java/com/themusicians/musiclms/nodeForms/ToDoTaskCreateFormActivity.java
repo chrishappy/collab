@@ -1,13 +1,19 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,14 +28,15 @@ import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * Used to create and update To Do items Referenced from AssignmentCreateForm.java
  *
  * @author Nathan Tsai
  * @since Nov 13, 2020
  */
-public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
-    implements AddAttachmentDialogFragment.AddAttachmentDialogListener {
+public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
 
   /** The Firebase Auth Instance */
   private FirebaseUser currentUser;
@@ -78,6 +85,9 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   assert toDoItem != null;
 
+                  // Add delete menu action
+                  invalidateOptionsMenu();
+
                   toDoItemName.setText(toDoItem.getName());
                   requireRecording.setChecked(toDoItem.getRequireRecording());
                   attachedAssignmentId = toDoItem.getAttachedAssignment();
@@ -119,8 +129,11 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     toDoItemName = findViewById(R.id.to_do_item_name);
     requireRecording = findViewById(R.id.require_recording);
 
+    // Make fields required
+    addToRequired(toDoItemName);
+
     // Initialize attachments
-    initShowAttachments(R.id.showAttachments__to_do__create, "todo__create");
+//    initShowAttachments(R.id.showAttachments__to_do__create, "todo__create");
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);
@@ -135,6 +148,12 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
     final Button assignmentSave = findViewById(R.id.saveAction);
     assignmentSave.setOnClickListener(
         view -> {
+
+          // TODO change save code to save() and put validate in there
+          if (!validateForm()) {
+            return;
+          }
+
           // Due Date timestamp
           toDoItem.setAttachedAssignment(attachedAssignmentId);
           toDoItem.setName(toDoItemName.getText().toString());
@@ -151,23 +170,15 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity
         });
   }
 
+  /**
+   * Validate the form
+   */
   @Override
-  public void onDialogPositiveClick(DialogFragment dialog) {
-    // Get field from dialog
-    final EditText AssignmentName = (EditText) findViewById(R.id.assignment_name);
+  public boolean validateForm() {
+    boolean result = true;
 
-    Comment newComment = new Comment();
-    newComment.setComment(AssignmentName.getText().toString());
-    newComment.save();
-  }
+    result = super.validateForm();
 
-  @Override
-  public void onDialogNegativeClick(DialogFragment dialog) {
-    Snackbar.make(
-            findViewById(R.id.createAssignmentLayout),
-            "Comment Negative clicked",
-            Snackbar.LENGTH_LONG)
-        .setAction("Action", null)
-        .show();
+    return result;
   }
 }

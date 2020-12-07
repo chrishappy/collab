@@ -13,7 +13,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:onClick="readKey"
-        android:text="@string/key"
+        android:text="@string/info_about_graph"
         tools:ignore="OnClick"
         android:id="@+id/keybutton"/>
 

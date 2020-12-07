@@ -40,14 +40,6 @@ public class ToDoAssignmentFormAdapter
     // Set the to do item name
     holder.toDoName.setText(toDoItem.getName());
 
-    // Set the on click listener
-    View.OnClickListener editToDoItemListener =
-        view -> {
-          if (itemClickListener != null) {
-            itemClickListener.onButtonClick("editToDoAssignmentForm", toDoItem.getId());
-          }
-        };
-
     // Set up the checkbox for to items
     holder.toDoCheck.setChecked(toDoItem.getCompleteToDo());
     holder.toDoCheck.setOnClickListener(new View.OnClickListener() {
@@ -58,8 +50,17 @@ public class ToDoAssignmentFormAdapter
       }
     });
 
-    holder.toDoName.setOnClickListener(editToDoItemListener);
+    // Set the on click listener
+    View.OnClickListener editToDoItemListener =
+        view -> {
+          if (itemClickListener != null) {
+            itemClickListener.onButtonClick("editToDoAssignmentForm", toDoItem.getId());
+          }
+        };
+
     holder.toDoWrapper.setOnClickListener(editToDoItemListener);
+    holder.toDoName.setOnClickListener(editToDoItemListener);
+    holder.editButton.setOnClickListener(editToDoItemListener);
   }
 
   // Function to tell the class about the Card view (here
@@ -78,7 +79,7 @@ public class ToDoAssignmentFormAdapter
   // view (here "person.xml")
   static class ToDoAssignmentFormViewholder extends RecyclerView.ViewHolder {
     TextView toDoName;
-//    Button editButton;
+    Button editButton;
     CheckBox toDoCheck;
     ConstraintLayout toDoWrapper;
 
@@ -86,7 +87,7 @@ public class ToDoAssignmentFormAdapter
       super(itemView);
 
       toDoName = itemView.findViewById(R.id.toDoName);
-//      editButton = itemView.findViewById(R.id.edit_button);
+      editButton = itemView.findViewById(R.id.edit_button);
       toDoWrapper = itemView.findViewById(R.id.toDoAssignmentFormWrapper);
       toDoCheck = itemView.findViewById(R.id.to_do_item_completed);
     }

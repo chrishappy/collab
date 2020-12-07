@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -88,6 +89,9 @@ public class AssignmentViewActivity extends NodeViewActivity
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   assignment = dataSnapshot.getValue(Assignment.class);
 
+                  // Register options menu
+                  invalidateOptionsMenu();
+
                   assert assignment != null;
 
                   if (assignment.getName() != null) {
@@ -116,12 +120,20 @@ public class AssignmentViewActivity extends NodeViewActivity
                       assignmentMarkedWrapper.setVisibility(View.VISIBLE);
                       assignmentCompleteWrapper.setVisibility(View.GONE);
                     }
+                    else {
+                      assignmentMarkedWrapper.setVisibility(View.GONE);
+                      assignmentCompleteWrapper.setVisibility(View.GONE);
+                    }
                   }
-                  // TODO reenable afterwards
-//                  else { // must be student
-                  assignmentMarkedWrapper.setVisibility(View.GONE);
+                  else { // must be student
+                    editButton.setVisibility(View.GONE);
+                    assignmentMarkedWrapper.setVisibility(View.GONE);
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
-//                  }
+
+                    // Hide edit and delete functions
+                    // https://stackoverflow.com/a/32072318
+//                    final MenuItem editMenuItem = findItem(R.id.action_assignment_edit);
+                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
@@ -234,42 +246,42 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     toDoItemsRecyclerView.setLayoutManager(
         new GridLayoutManager(AssignmentViewActivity.this, 1));
-    ItemTouchHelper itemTouchHelper =
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
-
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
-                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
-
-                switch (swipeDir) {
-                  case ItemTouchHelper.LEFT:
-                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-
-                  case ItemTouchHelper.RIGHT:
-                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-                }
-
-                // Remove item from backing list here
-                toDoItemsAdapter.notifyDataSetChanged();
-              }
-            });
-    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+//    ItemTouchHelper itemTouchHelper =
+//        new ItemTouchHelper(
+//            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//              @Override
+//              public boolean onMove(
+//                  @NonNull RecyclerView recyclerView,
+//                  @NonNull RecyclerView.ViewHolder viewHolder,
+//                  @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//              }
+//
+//              @Override
+//              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+//
+//                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
+//                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
+//
+//                switch (swipeDir) {
+//                  case ItemTouchHelper.LEFT:
+//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
+//
+//                  case ItemTouchHelper.RIGHT:
+//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
+//                }
+//
+//                // Remove item from backing list here
+//                toDoItemsAdapter.notifyDataSetChanged();
+//              }
+//            });
+//    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
@@ -284,6 +296,10 @@ public class AssignmentViewActivity extends NodeViewActivity
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
     toDoItemsAdapter.addItemClickListener(this);
+
+    LinearLayoutManager llm = new LinearLayoutManager(this);
+    llm.setOrientation(LinearLayoutManager.VERTICAL);
+    toDoItemsRecyclerView.setLayoutManager(llm);
     toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
   }
 
@@ -303,37 +319,6 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     // Always call the superclass so it can save the view hierarchy state
     super.onSaveInstanceState(savedInstanceState);
-  }
-
-  /**
-   * Add delete button
-   */
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.menu_assignment_activity_options, menu);
-    return true;
-  }
-
-  @SuppressLint("NonConstantResourceId")
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.action_assignment_edit:
-        editButton.performClick();
-        return true;
-
-      case R.id.action_assignment_delete:
-        assignment.delete();
-        finish();
-        return true;
-//      case R.id.createassignment:
-//        Intent toCreateAssignment =
-//            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-//        startActivity(toCreateAssignment);
-//        return true;
-    }
-    return super.onOptionsItemSelected(item);
   }
 
   /** To handle saving a To Do item */

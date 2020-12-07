@@ -5,11 +5,15 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +65,6 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     implements ShowAllAttachmentsAdapter.ItemClickListener {
 
   private static final String PARENT_NODE_ID = "ACCEPT_ATTACHMENT_KEY_QUERY";
-  FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
   ShowAllAttachmentsAdapter showAllAttachmentsAdapter; // Create Object of the Adapter class
@@ -82,6 +86,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   /** For Zoom Meetings */
   TextView zoomMeeting, zoomPasscode;
+  Button zoomTutorialLink;
 
   /** The Save Attachment Button */
   private Button addAttachment;
@@ -93,6 +98,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     fragment.setArguments(args);
 
     fragment.nodeToBeEdited = nodeToBeEdited;
+    Log.w("debugMissingNode", "id3 is: " + nodeToBeEdited.getId());
     return fragment;
   }
 
@@ -172,7 +178,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
             .build();
 
     // Create new Adapter
-    showAllAttachmentsAdapter = new ShowAllAttachmentsAdapter(options);
+    showAllAttachmentsAdapter = new ShowAllAttachmentsAdapter(options, currentUser);
     showAllAttachmentsAdapter.addItemClickListener(this);
     recyclerView.setAdapter(showAllAttachmentsAdapter);
   }
@@ -226,9 +232,13 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
    */
   public void showCreateAttachmentPopup(View anchorView) {
 
-    View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
+    final View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
+//    final RelativeLayout back_dim_layout = requireActivity().findViewById(R.id.share_bac_dim_layout);
 
-    PopupWindow popupWindow = new PopupWindow(popupView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    // Calculate size
+    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+    PopupWindow popupWindow = new PopupWindow(popupView, width - 100, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     // Set up all the fields
     initCreateAttachment(popupView, popupWindow);
@@ -240,6 +250,11 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     // Show Popup in the middle of the screen
     popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0); //.showAsDropDown(anchorView, 0, 10);
+//    back_dim_layout.setVisibility(View.VISIBLE);
+//
+//    popupWindow.setOnDismissListener(() -> {
+//      back_dim_layout.setVisibility(View.GONE);
+//    });
   }
 
   /**
@@ -312,6 +327,14 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
                     setPdfFileUploaded(attachment.getFileUri());
                   }
 
+                  if (attachment.getZoomId() != null) {
+                    zoomMeeting.setText(attachment.getZoomId());
+                  }
+
+                  if (attachment.getZoomPassword() != null) {
+                    zoomMeeting.setText(attachment.getZoomPassword());
+                  }
+
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAttachment:onDataChange");
                 }
 
@@ -334,6 +357,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void closePopup(PopupWindow popupToClose) {
     editEntityId = null;
     inEditMode = false;
+    attachment.setId(null);
     popupToClose.dismiss();
   }
 
@@ -343,6 +367,13 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void initZoomMeeting(View root) {
     zoomMeeting = root.findViewById(R.id.zoomMeeting);
     zoomPasscode = root.findViewById(R.id.zoomPasscode);
+    zoomTutorialLink = root.findViewById(R.id.zoomTutorialLink);
+
+    zoomTutorialLink.setOnClickListener(view -> {
+      final String zoomTutorial = "https://support.zoom.us/hc/en-us/articles/201362413-How-Do-I-Schedule-Meetings-";
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(zoomTutorial));
+      startActivity(browserIntent);
+    });
   }
 
   /**

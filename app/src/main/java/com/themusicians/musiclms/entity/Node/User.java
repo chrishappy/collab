@@ -104,6 +104,15 @@ public class User extends Node {
         .child(relatedAssignmentsName);
   }
 
+  // For Firebase database
+  public Map<String, Boolean> getRelatedAssignments() {
+    return relatedAssignments;
+  }
+
+  public void setRelatedAssignments(Map<String, Boolean> relatedAssignments) {
+    this.relatedAssignments = relatedAssignments;
+  }
+
   /** Fields setters and getters */
   public String getEmail() {
     return email;

@@ -9,12 +9,19 @@
     tools:context=".nodeForms.AssignmentCreateFormActivity"
     android:id="@+id/createAssignmentLayout">
 
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/share_bac_dim_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#C0000000"-->
+<!--        android:visibility="invisible" >-->
+<!--    </RelativeLayout>-->
+
     <ScrollView
         android:id="@+id/assignment_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/left_and_right_gutters"
-        android:paddingRight="@dimen/left_and_right_gutters"
+        android:padding="@dimen/left_and_right_gutters"
         tools:context=".nodeForms.AssignmentCreateFormActivity">
 
         <LinearLayout
@@ -40,6 +47,7 @@
                             android:id="@+id/assignment_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:singleLine="true"
                             android:hint="@string/assignment__form__assignment_name" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,6 +63,7 @@
                             android:layout_height="wrap_content"
                             android:autofillHints="@string/app_name"
                             android:hint="@string/assignment__form__user_class"
+                            android:singleLine="true"
                             android:text="" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -79,6 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ems="10"
+                            android:focusable="false"
                             android:hint="@string/assignment__form__due_date" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -141,6 +151,15 @@
                 android:layout_marginBottom="30dp"
                 android:background="#c0c0c0" />
 
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/assignment__form__attachments"
+                android:textAllCaps="true"
+                android:paddingBottom="20dp"
+                android:textStyle="bold" />
+
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/showAttachments__assignments"
                 android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"
@@ -178,6 +197,7 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 
