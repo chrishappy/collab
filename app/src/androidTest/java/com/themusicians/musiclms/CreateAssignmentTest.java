@@ -29,22 +29,22 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserViewAssignmentTest {
+public class CreateAssignmentTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void userViewAssignmentTest() {
-        ViewInteraction constraintLayout = onView(
-                allOf(withId(R.id.assignment_overview_wrapper),
+    public void createAssignmentTest() {
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.createAssignment), withContentDescription("Add Assignment"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.assignmentOverviewRecycler),
-                                        1),
-                                0),
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
                         isDisplayed()));
-        constraintLayout.perform(click());
+        floatingActionButton.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -56,48 +56,6 @@ public class UserViewAssignmentTest {
                                 1),
                         isDisplayed()));
         appCompatImageButton.perform(click());
-
-        ViewInteraction constraintLayout2 = onView(
-                allOf(withId(R.id.assignment_overview_wrapper),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.assignmentOverviewRecycler),
-                                        3),
-                                0),
-                        isDisplayed()));
-        constraintLayout2.perform(click());
-
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
-
-        ViewInteraction constraintLayout3 = onView(
-                allOf(withId(R.id.assignment_overview_wrapper),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.assignmentOverviewRecycler),
-                                        5),
-                                0),
-                        isDisplayed()));
-        constraintLayout3.perform(click());
-
-        ViewInteraction appCompatImageButton3 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton3.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
