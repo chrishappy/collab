@@ -84,6 +84,8 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     assignment.setUid(currentUser.getUid());
 
     if (inEditMode) {
+      setTitle(R.string.assignment_edit_form);
+
       assignment
           .getEntityDatabase()
           .child(editEntityId)

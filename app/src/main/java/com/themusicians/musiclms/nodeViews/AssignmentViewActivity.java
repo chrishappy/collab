@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,9 +59,9 @@ public class AssignmentViewActivity extends NodeViewActivity
   private RecyclerView toDoItemsRecyclerView;
 
   /** Fields */
-  private TextView AssignmentName;
-  private TextView StudentOrClass;
-  private TextView dueDate;
+  private TextInputEditText AssignmentName;
+  private EditText StudentOrClass;
+  private TextInputEditText dueDate;
   private FloatingActionButton editButton;
 
   /** Checkbox fields */
@@ -88,10 +90,10 @@ public class AssignmentViewActivity extends NodeViewActivity
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   assignment = dataSnapshot.getValue(Assignment.class);
+                  assert assignment != null;
 
                   // Register options menu
                   invalidateOptionsMenu();
-                  assert assignment != null;
 
                   if (assignment.getName() != null) {
                     AssignmentName.setText(assignment.getName());

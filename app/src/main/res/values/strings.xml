@@ -264,5 +264,6 @@
     </string>
     <string name="assignment_overview__assignment_complete">Assignment is complete by student</string>
     <string name="assignment_overview__assignment_marked">Assignment is marked</string>
+    <string name="assignment_edit_form">Edit Assignment</string>
 
 </resources>
