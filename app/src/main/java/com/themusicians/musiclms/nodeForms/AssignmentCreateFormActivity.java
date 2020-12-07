@@ -137,20 +137,19 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                 final User authorUser =
                     dataSnapshot.child(currentUser.getUid()).getValue(User.class);
 
-                // Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's
-                // inside the method.
-                for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
-                  String userId = suggestionSnapshot.child("id").getValue(String.class);
+                if (authorUser != null && authorUser.getAddedUsers() != null && !authorUser.getAddedUsers().isEmpty()) {
+                  //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+                  for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
+                    String userId = suggestionSnapshot.child("id").getValue(String.class);
 
-                  //                        assert authorUser != null;
-                  if (authorUser
-                      .getAddedUsers()
-                      .contains(userId)) { // only add students associated with teacher
-                    String userName = suggestionSnapshot.child("name").getValue(String.class);
-                    assigneesAutoCompleteAdapter.add(userName);
+//                        assert authorUser != null;
+                    if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
+                      String userName = suggestionSnapshot.child("name").getValue(String.class);
+                      assigneesAutoCompleteAdapter.add(userName);
 
-                    // For when saving
-                    assigneeNameAndIdMap.put(userName, userId);
+                      // For when saving
+                      assigneeNameAndIdMap.put(userName,userId);
+                    }
                   }
                 }
               }
