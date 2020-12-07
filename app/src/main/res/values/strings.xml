@@ -241,7 +241,7 @@
     <string name="chat_tutorial">To send text, tap the message box where it says Type a message..., then type what you wish to send and press SEND. Got it?</string>
     <string name="youtube_tutorial">Youtube Tutorial</string>
     <string name="youtube_help">Need help uploading videos to youtube?</string>
-    <string name="assignment_overview__no_assignments_text">No Assignments yet yet.</string>
+    <string name="assignment_overview__no_assignments_text">No Assignments created yet.</string>
     <string name="assignment_overview__no_assignments_text__teacher">
         No assignments yet: let\'s create one!
 

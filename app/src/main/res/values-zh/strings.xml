@@ -227,7 +227,7 @@
     <string name="email_is_required">需要电子邮箱</string>
     <string name="addYoutubeUrl">YouTube链接</string>
     <string name="shareVideo">分享视频到YouTube</string>
-    <string name="assignment_overview__no_assignments_text">No Assignments created yet.</string>
+    <string name="assignment_overview__no_assignments_text">无已创建作业</string>
     <string name="assignment_overview__no_assignments_text__teacher">
         No assignments yet: let\'s create one!
 
@@ -248,4 +248,21 @@
         5. Find your teacher and under their name, click "Chat"
         6. Ask them for an assignment!
     </string>
+    <string name="login_successful">登陆成功</string>
+    <string name="login_error">登陆失败</string>
+    <string name="make_text">能够发送信息</string>
+    <string name="make_call">能够拨打电话</string>
+    <string name="join_zoom">能够加入Zoom会议</string>
+    <string name="schedule_zoom">能够创建Zoom会议</string>
+    <string name="watch_youtube">能够观看Youtube视频</string>
+    <string name="upload_youtube">能够上传Youtube视频</string>
+    <string name="student_key">This graph represents the student\'s submission time relative to the due date. Each X value represents an assignment. The Y value 0 is the due date, all values above are how many days after the due date the assignment is submitted. All Y values below 0 are how early the student submits the assignment in days.</string>
+    <string name="teacher_key">This graph represents the frequency of the student\'s submission time relative to the due date. Each X value represents days before and after an assignment has been submitted with X value 0 being the due date. The Y represent the quantity of assignments at each X value.</string>
+    <string name="texting_tutorial">信息发送教程</string>
+    <string name="not_again">不要再显示</string>
+    <string name="chat_tutorial">点击“输入信息”并输入想要发送的内容以发送</string>
+    <string name="youtube_tutorial">Youtube教程</string>
+    <string name="youtube_help">需要帮助上传视频到Youtube？</string>
+    <string name="assignment_overview__assignment_complete">作业已被学生完成</string>
+    <string name="assignment_overview__assignment_marked">作业已评分</string>
 </resources>
