@@ -87,6 +87,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   /** For Zoom Meetings */
   TextView zoomMeeting, zoomPasscode;
+  Button zoomTutorialLink;
 
   /** The Save Attachment Button */
   private Button addAttachment;
@@ -357,6 +358,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void closePopup(PopupWindow popupToClose) {
     editEntityId = null;
     inEditMode = false;
+    attachment.setId(null);
     popupToClose.dismiss();
   }
 
@@ -366,6 +368,12 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void initZoomMeeting(View root) {
     zoomMeeting = root.findViewById(R.id.zoomMeeting);
     zoomPasscode = root.findViewById(R.id.zoomPasscode);
+
+    zoomTutorialLink.setOnClickListener(view -> {
+      final String zoomTutorial = "https://support.zoom.us/hc/en-us/articles/201362413-How-Do-I-Schedule-Meetings-";
+      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(zoomTutorial));
+      startActivity(browserIntent);
+    });
   }
 
   /**

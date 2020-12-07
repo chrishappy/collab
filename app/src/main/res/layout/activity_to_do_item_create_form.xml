@@ -33,6 +33,7 @@
                         android:id="@+id/to_do_item_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:singleLine="true"
                         android:hint="@string/to_do_item__form__name" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,6 +41,8 @@
                     android:id="@+id/require_recording"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:visibility="gone"
                     android:text="@string/to_do_item__form__require_recording" />
             </LinearLayout>
 
@@ -65,7 +68,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="30dp"
-                android:background="#c0c0c0" />
+                android:background="#fff"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,17 +78,16 @@
 
                 <Button
                     android:id="@+id/cancelAction"
+                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:text="@string/assignment__form__cancel" />
 
                 <Button
                     android:id="@+id/saveAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:background="@color/colorPrimary"
+                    android:backgroundTint="@color/colorPrimary"
                     android:text="@string/assignment__form__save" />
             </LinearLayout>
 

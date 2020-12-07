@@ -150,6 +150,16 @@
                 android:layout_marginBottom="30dp"
                 android:background="#c0c0c0" />
 
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/assignment__form__attachments"
+                android:textAllCaps="true"
+                android:paddingBottom="20dp"
+                android:textStyle="bold" />
+
             <fragment
                 android:id="@+id/showAttachments__assignments"
                 android:name="com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsFragment"

@@ -44,7 +44,7 @@
 
     <string name="title_activity_to_do_item_create_form">Create ToDo Item</string>
     <string name="to_do_item__form__name">Name</string>
-    <string name="to_do_item__form__require_recording">Require Recording</string>
+    <string name="to_do_item__form__require_recording">Enable Recording</string>
     <string name="form__edit_button">Edit</string>
     <string name="user_profile_chat">Chat</string>
     <string name="form__delete_button">Delete</string>
@@ -220,5 +220,8 @@
     <string name="delete_confirm_message">Do you want to delete %s</string>
     <string name="node_create__empty_field_error">Field %s must not be empty.</string>
     <string name="user_profile__choose_language">Choose Language...</string>
+    <string name="assignment__form__attachments">Attachments</string>
+    <string name="add_attachment__zoom_tutorial">(Zoom Tutorial)</string>
+    <string name="info_about_graph">About Graph</string>
 
 </resources>

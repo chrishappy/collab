@@ -229,8 +229,11 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
    * Helper functions for toggle displays of recording player vs add recording
    */
   private void showAddYoutubeRecording() {
-    initAddRecording();
-    youtubeRecordingLayout.setVisibility(View.VISIBLE);
+    // Only show if recording is required or is the author
+    if (toDoItem.getRequireRecording()) {
+      initAddRecording();
+      youtubeRecordingLayout.setVisibility(View.VISIBLE);
+    }
   }
 
   private void hideAddYoutubeRecording() {
