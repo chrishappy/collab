@@ -223,5 +223,7 @@
     <string name="assignment__form__attachments">Attachments</string>
     <string name="add_attachment__zoom_tutorial">(Zoom Tutorial)</string>
     <string name="info_about_graph">About Graph</string>
+    <string name="email_is_required">Email is Required.</string>
+    <string name="password_is_required">Password is Required</string>
 
 </resources>

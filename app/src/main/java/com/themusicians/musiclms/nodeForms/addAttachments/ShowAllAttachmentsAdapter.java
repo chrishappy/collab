@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseUser;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 
@@ -32,8 +34,12 @@ public class ShowAllAttachmentsAdapter
   public final static String SHOW_PDF = "SHOW_PDF";
   public final static String OPEN_ZOOM = "OPEN_ZOOM";
 
-  public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options) {
+  public final FirebaseUser currentUser;
+
+  public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options, FirebaseUser currentUser) {
     super(options);
+
+    this.currentUser = currentUser;
   }
 
   @Override
@@ -58,7 +64,7 @@ public class ShowAllAttachmentsAdapter
       holder.fileDownload.setVisibility(View.GONE);
     }
 
-    if (allAttachment.getZoomId() != null) {
+    if (!TextUtils.isEmpty(allAttachment.getZoomId())) {
       holder.zoomOpen.setVisibility(View.VISIBLE);
       holder.zoomOpen.setOnClickListener(
           view -> {
@@ -70,19 +76,25 @@ public class ShowAllAttachmentsAdapter
       holder.zoomOpen.setVisibility(View.GONE);
     }
 
-    holder.editButton.setOnClickListener(
-        view -> {
-          if (itemClickListener != null) {
-            itemClickListener.onButtonClick(editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
-          }
-        });
+    if (currentUser.getUid() == allAttachment.getUid()) {
+      holder.editButton.setOnClickListener(
+          view -> {
+            if (itemClickListener != null) {
+              itemClickListener.onButtonClick(editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
+            }
+          });
 
-    holder.deleteButton.setOnClickListener(
-        view -> {
-          if (itemClickListener != null) {
-            allAttachment.delete();
-          }
-        });
+      holder.deleteButton.setOnClickListener(
+          view -> {
+            if (itemClickListener != null) {
+              allAttachment.delete();
+            }
+          });
+    }
+    else {
+      holder.editButton.setVisibility(View.GONE);
+      holder.deleteButton.setVisibility(View.GONE);
+    }
 
     /*
      * This section will be added to all Nodes. Please use variables to allow us

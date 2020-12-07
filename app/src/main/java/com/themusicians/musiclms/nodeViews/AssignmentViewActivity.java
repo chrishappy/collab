@@ -246,42 +246,42 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     toDoItemsRecyclerView.setLayoutManager(
         new GridLayoutManager(AssignmentViewActivity.this, 1));
-    ItemTouchHelper itemTouchHelper =
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
-
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
-                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
-
-                switch (swipeDir) {
-                  case ItemTouchHelper.LEFT:
-                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-
-                  case ItemTouchHelper.RIGHT:
-                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-                }
-
-                // Remove item from backing list here
-                toDoItemsAdapter.notifyDataSetChanged();
-              }
-            });
-    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+//    ItemTouchHelper itemTouchHelper =
+//        new ItemTouchHelper(
+//            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//              @Override
+//              public boolean onMove(
+//                  @NonNull RecyclerView recyclerView,
+//                  @NonNull RecyclerView.ViewHolder viewHolder,
+//                  @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//              }
+//
+//              @Override
+//              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+//
+//                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
+//                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
+//
+//                switch (swipeDir) {
+//                  case ItemTouchHelper.LEFT:
+//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
+//
+//                  case ItemTouchHelper.RIGHT:
+//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
+//                }
+//
+//                // Remove item from backing list here
+//                toDoItemsAdapter.notifyDataSetChanged();
+//              }
+//            });
+//    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data

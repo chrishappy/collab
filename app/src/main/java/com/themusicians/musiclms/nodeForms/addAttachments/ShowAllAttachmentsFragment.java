@@ -65,7 +65,6 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     implements ShowAllAttachmentsAdapter.ItemClickListener {
 
   private static final String PARENT_NODE_ID = "ACCEPT_ATTACHMENT_KEY_QUERY";
-  FirebaseAuth fAuth;
 
   private RecyclerView recyclerView;
   ShowAllAttachmentsAdapter showAllAttachmentsAdapter; // Create Object of the Adapter class
@@ -179,7 +178,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
             .build();
 
     // Create new Adapter
-    showAllAttachmentsAdapter = new ShowAllAttachmentsAdapter(options);
+    showAllAttachmentsAdapter = new ShowAllAttachmentsAdapter(options, currentUser);
     showAllAttachmentsAdapter.addItemClickListener(this);
     recyclerView.setAdapter(showAllAttachmentsAdapter);
   }
@@ -368,6 +367,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void initZoomMeeting(View root) {
     zoomMeeting = root.findViewById(R.id.zoomMeeting);
     zoomPasscode = root.findViewById(R.id.zoomPasscode);
+    zoomTutorialLink.findViewById(R.id.zoomTutorialLink);
 
     zoomTutorialLink.setOnClickListener(view -> {
       final String zoomTutorial = "https://support.zoom.us/hc/en-us/articles/201362413-How-Do-I-Schedule-Meetings-";
