@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.chat;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
@@ -165,6 +166,30 @@ public class Chat extends AppCompatActivity {
 
       }
     });
+
+    DatabaseReference tech = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("techExperience");
+    tech.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        boolean popup = true;
+        for (DataSnapshot ds : snapshot.getChildren()){
+          if(ds.getValue(String.class).equals("Can send Text")){
+            popup = false;
+          }
+        }
+        if(popup){
+          AlertDialog.Builder mBuilder = new AlertDialog.Builder(Chat.this);
+
+
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
   }
 
 //  private void createNotificationChannel() {
