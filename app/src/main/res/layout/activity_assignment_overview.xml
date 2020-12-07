@@ -23,6 +23,7 @@
             android:paddingBottom="@dimen/nav_footer_height" />
 
         <TextView
+            android:id="@+id/assignmentOverviewEmptyText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/assignment_overview__no_assignments_text"/>

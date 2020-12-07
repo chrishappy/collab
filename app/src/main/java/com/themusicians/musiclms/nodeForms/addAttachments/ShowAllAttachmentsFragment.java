@@ -85,8 +85,8 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   Button selectFile, uploadFile, removeFile;
 
   /** For Zoom Meetings */
-  TextView zoomMeeting, zoomPasscode;
-  Button zoomTutorialLink;
+  EditText zoomMeeting, zoomPasscode;
+  TextView zoomTutorialLink;
 
   /** The Save Attachment Button */
   private Button addAttachment;

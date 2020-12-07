@@ -1,34 +1,22 @@
 package com.themusicians.musiclms.nodeForms;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.attachmentDialogs.AddAttachmentDialogFragment;
-import com.themusicians.musiclms.entity.Attachment.Comment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * Used to create and update To Do items Referenced from AssignmentCreateForm.java

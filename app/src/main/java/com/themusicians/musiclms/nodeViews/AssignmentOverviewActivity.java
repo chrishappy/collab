@@ -84,29 +84,27 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
-
     DatabaseReference tempUserRelatedAssignments = tempUser.getRelatedAssignmentDbReference();
-
     FirebaseRecyclerOptions<Assignment> assignmentOverviewRecyclerOptions =
         new FirebaseRecyclerOptions.Builder<Assignment>()
             .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
             .build();
 
-    /**
-     * Split assignments by their due dates
-     */
     assignmentOverviewAdapter = new AssignmentOverviewAdapter(assignmentOverviewRecyclerOptions);
     // Allow adapter to handle clicks
     // See onButtonClick() below
     assignmentOverviewAdapter.addItemClickListener(this);
 
+    // The empty text
+    noAssignmentsTextView = findViewById(R.id.assignmentOverviewEmptyText);
+
     assignmentOverviewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       public void onItemRangeInserted(int positionStart, int itemCount) {
         if (itemCount == 0) {
-
+          noAssignmentsTextView.setVisibility(View.VISIBLE);
         }
         else {
-
+          noAssignmentsTextView.setVisibility(View.INVISIBLE);
         }
       }
     });

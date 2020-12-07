@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * Assignment.java
+ * Implements the To Do Item entity class
  *
- * @contributor
  * @author Nathan Tsai
  * @since Nov 13, 2020
  */
@@ -47,6 +48,14 @@ public class ToDoItem extends Node {
    * For saving recordings
    */
   public static final String feedbackFormat = "%02d:%02d | %s";
+
+  /**
+   * For processing youtube videos
+   *
+   * Source: https://stackoverflow.com/a/31940028
+   * Author: Jakki @ https://stackoverflow.com/u/2605766
+   */
+  private static final String youtubeUrlRegexPattern = ".*(?:youtu.be/|v/|u/\\w/|embed/|e/|watch\\?v=)([^#&?\\s]{11}).*";
 
 
   /** The default constructor for Firebase + loadMultiple */
@@ -184,6 +193,24 @@ public class ToDoItem extends Node {
 
   public void setCompleteToDo(boolean completeToDo) {
     this.completeToDo = completeToDo;
+  }
+
+  /**
+   * Extract a youtube url for its id
+   *
+   * Source: https://stackoverflow.com/a/31940028
+   * Author: Jakki @ https://stackoverflow.com/u/2605766
+   *
+   * @param youtubeUrl the url of the youtube video
+   * @return the youtube id
+   */
+  public static String getYoutubeIdFromUrl(String youtubeUrl) {
+    Pattern compiledPattern = Pattern.compile(youtubeUrlRegexPattern);
+    Matcher matcher = compiledPattern.matcher(youtubeUrl); //url is youtube url for which you want to extract the id.
+    if (matcher.find() && matcher.group(1) != null) {
+      return matcher.group(1);
+    }
+    return null;
   }
 
 }

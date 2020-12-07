@@ -83,7 +83,7 @@
             android:layout_height="30dp"
             android:layout_marginEnd="9dp"
             android:layout_marginBottom="9dp"
-            android:visibility="gone"
+            android:background="@color/fui_transparent"
             app:srcCompat="@drawable/ic_baseline_check_circle_outline_30"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2"
-            android:contentDescription="@string/assignment_overview__assignment_complete" />
+            android:contentDescription="@string/assignment_overview__assignment_marked" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

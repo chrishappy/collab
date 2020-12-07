@@ -87,7 +87,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   private Button addFeedback;
 
   /** Add & Store Recording fields */
-  private static final String youtubeUrlRegexPattern = ".*(?:youtu.be/|v/|u/\\w/|embed/|e/|watch\\?v=)([^#&?\\s]{11}).*";
   private LinearLayout youtubeRecordingLayout;
   private EditText addYoutubeUrl;
   private Uri recordingVideoUri;
@@ -330,7 +329,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     // After user input youtube url
     addYoutubeUrl.addTextChangedListener(new TextWatcher() {
       public void afterTextChanged(Editable youtubeUrlEditable) {
-        String youtubeId = getYoutubeIdFromUrl(youtubeUrlEditable.toString());
+        String youtubeId = ToDoItem.getYoutubeIdFromUrl(youtubeUrlEditable.toString());
 
         if (youtubeId != null) {
           toDoItem.setRecordingYoutubeId(youtubeId);
@@ -449,24 +448,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   }
 
   /**
-   * Parse a youtube url for its id
-   *
-   * Source: https://stackoverflow.com/a/31940028
-   * Author: Jakki @ https://stackoverflow.com/u/2605766
-   *
-   * @param youtubeUrl the url of the youtube video
-   * @return the youtube id
-   */
-  private String getYoutubeIdFromUrl(String youtubeUrl) {
-    Pattern compiledPattern = Pattern.compile(youtubeUrlRegexPattern);
-    Matcher matcher = compiledPattern.matcher(youtubeUrl); //url is youtube url for which you want to extract the id.
-    if (matcher.find() && matcher.group(1) != null) {
-      return matcher.group(1);
-    }
-    return null;
-  }
-
-  /**
    * When clicking an item of the feedback
    * @param type the type of click
    * @param time the time to skip youtube recording to
@@ -495,11 +476,6 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
     super.onActivityResult(requestCode, resultCode, intent);
 
-//    if (requestCode == RECOVERY_REQUEST) {
-//      // Retry initialization if user performed a recovery action
-//      getYouTubePlayerProvider().initialize(YoutubeConfig.YOUTUBE_API_KEY, this);
-//    }
-
     if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
       recordingVideoUri = intent.getData();
       uploadYoutubeVideo(recordingVideoUri);
@@ -520,30 +496,5 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
     sharingIntent.putExtra(android.content.Intent.EXTRA_STREAM, videoUri);
     startActivity(Intent.createChooser(sharingIntent,"Share To:"));
   }
-
-  /*
-   * Attempt to get upload youtube to work
-   */
-//  public static String getDataColumn(Context context, Uri uri, String selection,
-//                                     String[] selectionArgs) {
-//    Cursor cursor = null;
-//    final String column = MediaStore.MediaColumns.DATA;
-//    final String[] projection = {
-//        column
-//    };
-//
-//    try {
-//      cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-//          null);
-//      if (cursor != null && cursor.moveToFirst()) {
-//        final int column_index = cursor.getColumnIndexOrThrow(column);
-//        return cursor.getString(column_index);
-//      }
-//    } finally {
-//      if (cursor != null)
-//        cursor.close();
-//    }
-//    return null;
-//
 
 }
