@@ -210,6 +210,10 @@ public class Assignment extends Node {
     }
   }
 
+  public void reSetAssignees(){
+    assignees = new LinkedList<>();
+  }
+
   public void setAssignees(List<String> assignees) {
     this.assignees = assignees;
   }

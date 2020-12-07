@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -191,31 +192,32 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     });
 
     StudentOrClass.setAdapter(autoComplete);
-      StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+    StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-      // @TODO Add ids rather than matching display name
-      StudentOrClass.setOnItemClickListener((parent, view, position, id) -> {
-          String item = (String)parent.getItemAtPosition(position);
-          tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-              @Override
-              public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                  //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-                  for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
-                      //Get the suggestion by childing the key of the string you want to get.
-                      String suggestion = suggestionSnapshot.child("name").getValue(String.class);
-                      //Add the retrieved string to the list
-                     if(suggestion.equals(item)){
-                         assignment.addAssignees(suggestionSnapshot.child("id").getValue(String.class));
-                     }
-                      //assignment.addAssignees(suggestion);
-                  }
-              }
-              @Override
-              public void onCancelled(@NotNull DatabaseError databaseError) {
-              }
-          });
+    HashMap<String, String> assigneeID = new HashMap<String, String>();
 
+     tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+              //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+              for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
+                  //Get the suggestion by childing the key of the string you want to get.
+                  String name = suggestionSnapshot.child("name").getValue(String.class);
+                  //Add the retrieved string to the list
+
+                  String id = suggestionSnapshot.child("id").getValue(String.class);
+
+                  assigneeID.put(name,id);
+
+                  //assignment.addAssignees(suggestion);
+              }
+          }
+          @Override
+          public void onCancelled(@NotNull DatabaseError databaseError) {
+          }
       });
+
+
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);
@@ -288,7 +290,17 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           // Due Date timestamp
           long dueDateTimestamp = cldr.getTimeInMillis();
 
-          assignment.setName(AssignmentName.getText().toString());
+            String temp = StudentOrClass.getText().toString();
+            String[] assigneeNames = temp.split(", ");
+
+            assignment.reSetAssignees();
+
+            for(String name: assigneeNames){
+                String id=assigneeID.get(name);
+                assignment.addAssignees(id);
+            }
+
+            assignment.setName(AssignmentName.getText().toString());
           assignment.setClassId(StudentOrClass.getText().toString());
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
