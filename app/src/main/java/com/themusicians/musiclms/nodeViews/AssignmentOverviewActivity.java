@@ -97,7 +97,6 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // The empty text
     noAssignmentsTextView = findViewById(R.id.assignmentOverviewEmptyText);
-
     assignmentOverviewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
       public void onItemRangeInserted(int positionStart, int itemCount) {
         if (itemCount == 0) {

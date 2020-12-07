@@ -111,7 +111,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                   }
 
                   // Add autocomplete suggestions
-                  final User tempUser = new User(assignment.getUid());
+                  final User tempUser = new User();
 
                   //Child the root before all the push() keys are found and add a ValueEventListener()
                   tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
@@ -123,13 +123,14 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                       for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
                         String userId = suggestionSnapshot.child("id").getValue(String.class);
 
-                        if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
+//                        assert authorUser != null;
+//                        if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
                           String userName = suggestionSnapshot.child("name").getValue(String.class);
                           assigneesAutoCompleteAdapter.add(userName);
 
                           // For when saving
                           assigneeNameAndIdMap.put(userName,userId);
-                        }
+//                        }
                       }
                     }
 
@@ -151,6 +152,10 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                 }
               });
     }
+
+    // Show attachments
+    assignment.save();
+    initShowAttachments(R.id.showAttachments__assignments, "");
 
     // For after creating the first to do item
     if (toDoItemsAdapter == null) {
@@ -232,9 +237,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
     // Load the to do tasks
     initToDoItemsList();
-
-    // Show attachments
-    initShowAttachments(R.id.showAttachments__assignments, "");
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
