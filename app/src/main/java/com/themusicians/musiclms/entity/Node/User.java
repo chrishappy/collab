@@ -2,7 +2,6 @@ package com.themusicians.musiclms.entity.Node;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +18,7 @@ public class User extends Node {
   /** Set the type of Node. Must be final */
   protected final String type = "user";
 
-  /**
-   * The user's email
-   */
+  /** The user's email */
   protected String email;
 
   /**
@@ -99,9 +96,7 @@ public class User extends Node {
    */
   @Exclude
   public DatabaseReference getRelatedAssignmentDbReference() {
-    return getEntityDatabase()
-        .child(getId())
-        .child(relatedAssignmentsName);
+    return getEntityDatabase().child(getId()).child(relatedAssignmentsName);
   }
 
   // For Firebase database

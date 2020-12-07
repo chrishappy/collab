@@ -7,13 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.themusicians.musiclms.R;
@@ -47,9 +45,7 @@ public abstract class NodeActivity extends AppCompatActivity {
   /** Return the node we are editing */
   public abstract Node getNodeForAttachments();
 
-  /**
-   * Populate the showAttachment fragment
-   */
+  /** Populate the showAttachment fragment */
   protected void initShowAttachments(int layoutId, String tagAddition) {
     FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment content = fragmentManager.findFragmentById(layoutId);
@@ -59,11 +55,10 @@ public abstract class NodeActivity extends AppCompatActivity {
       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
       fragmentTransaction.add(
           layoutId,
-          new ShowAllAttachmentsFragment(), //.newInstance(getNodeForAttachments()),
+          new ShowAllAttachmentsFragment(), // .newInstance(getNodeForAttachments()),
           "ShowAllAttachmentsFragment " + tagAddition);
       fragmentTransaction.commitAllowingStateLoss();
-    }
-    else {
+    } else {
       Log.w("debugMissingNode", "the missing id: " + getNodeForAttachments().getId());
     }
   }
@@ -71,33 +66,34 @@ public abstract class NodeActivity extends AppCompatActivity {
   /**
    * Ask to Delete
    *
-   * Source: https://stackoverflow.com/a/11740348
+   * <p>Source: https://stackoverflow.com/a/11740348
    */
-  protected AlertDialog askToDeleteAttachmentNode()
-  {
+  protected AlertDialog askToDeleteAttachmentNode() {
     return new AlertDialog.Builder(this)
         // set message, title, and icon
         .setTitle(R.string.delete)
-        .setMessage(String.format(getString(R.string.delete_confirm_message), getNodeForAttachments().getName()))
+        .setMessage(
+            String.format(
+                getString(R.string.delete_confirm_message), getNodeForAttachments().getName()))
         .setIcon(R.drawable.ic_baseline_delete_24__grey)
-
-        .setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            getNodeForAttachments().delete();
-            dialog.dismiss();
-            finish();
-          }
-
-        })
-        .setNegativeButton(R.string.cancel, (dialog, which) -> {
-          dialog.dismiss();
-        })
+        .setPositiveButton(
+            R.string.Delete,
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int whichButton) {
+                getNodeForAttachments().delete();
+                dialog.dismiss();
+                finish();
+              }
+            })
+        .setNegativeButton(
+            R.string.cancel,
+            (dialog, which) -> {
+              dialog.dismiss();
+            })
         .create();
   }
 
-  /**
-   * Add delete button
-   */
+  /** Add delete button */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
@@ -114,5 +110,4 @@ public abstract class NodeActivity extends AppCompatActivity {
     }
     return super.onOptionsItemSelected(item);
   }
-
 }

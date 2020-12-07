@@ -1,14 +1,11 @@
 package com.themusicians.musiclms;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,7 +14,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
-
 import java.util.ArrayList;
 
 /**
@@ -46,8 +42,6 @@ public class UserSearch extends AppCompatActivity {
     searchRecycler = findViewById(R.id.searchRecycler);
     searchView = findViewById(R.id.searchView);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
   }
 
   /** On page start, display recycler view of searched users */
@@ -55,53 +49,63 @@ public class UserSearch extends AppCompatActivity {
   protected void onStart() {
 
     super.onStart();
-    DatabaseReference roleRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("role");
-    roleRef.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        role = snapshot.getValue(String.class);
+    DatabaseReference roleRef =
+        FirebaseDatabase.getInstance()
+            .getReference()
+            .child("node__user")
+            .child(currentUser.getUid())
+            .child("role");
+    roleRef.addValueEventListener(
+        new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            role = snapshot.getValue(String.class);
 
-        if (searchRef != null) {
-          searchRef.addValueEventListener(
-            new ValueEventListener() {
-              @Override
-              /**
-               * Fetch users from Firebase and add them to the search list
-               *
-               * @param snapshot data snapshot for gathering data from Firebase
-               */
-              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                  searchList = new ArrayList<>();
+            if (searchRef != null) {
+              searchRef.addValueEventListener(
+                  new ValueEventListener() {
+                    @Override
+                    /**
+                     * Fetch users from Firebase and add them to the search list
+                     *
+                     * @param snapshot data snapshot for gathering data from Firebase
+                     */
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                      if (snapshot.exists()) {
+                        searchList = new ArrayList<>();
 
-                  for (DataSnapshot ds : snapshot.getChildren()) {
-                    if(role.equals("Student") && ds.getValue(User.class).getRole().equals("Teacher") || role.equals("Teacher") && ds.getValue(User.class).getRole().equals("Student")) {
-                      searchList.add(ds.getValue(User.class));
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                          if (role.equals("Student")
+                                  && ds.getValue(User.class).getRole().equals("Teacher")
+                              || role.equals("Teacher")
+                                  && ds.getValue(User.class).getRole().equals("Student")) {
+                            searchList.add(ds.getValue(User.class));
+                          }
+                        }
+
+                        UserSearchAdapter searchAdapter =
+                            new UserSearchAdapter(searchList, UserSearch.this);
+                        searchRecycler.setAdapter(searchAdapter);
+                      }
                     }
-                  }
 
-                  UserSearchAdapter searchAdapter = new UserSearchAdapter(searchList, UserSearch.this);
-                  searchRecycler.setAdapter(searchAdapter);
-                }
-              }
+                    /**
+                     * Display message for error on fetching data from Firebase
+                     *
+                     * @param error
+                     */
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                      Toast.makeText(UserSearch.this, error.getMessage(), Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  });
+            }
+          }
 
-              /**
-               * Display message for error on fetching data from Firebase
-               *
-               * @param error
-               */
-              @Override
-              public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserSearch.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-              }
-            });
-        }
-      }
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
 
     /** Check if search bar is empty */
     if (searchView != null) {

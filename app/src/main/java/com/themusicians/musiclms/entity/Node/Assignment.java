@@ -1,16 +1,11 @@
 package com.themusicians.musiclms.entity.Node;
 
-import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ServerValue;
-import com.themusicians.musiclms.entity.Attachment.AllAttachment;
-import com.themusicians.musiclms.entity.Attachment.Attachment;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +53,7 @@ public class Assignment extends Node {
 
   protected List<String> userID;
 
-//  protected Stack<String> todosID;
+  //  protected Stack<String> todosID;
 
   /** The to do items attached to this assignment */
   protected Map<String, Boolean> toDoIds;
@@ -148,14 +143,10 @@ public class Assignment extends Node {
   @Exclude
   public DatabaseReference getToDoItemsKeyQuery() {
     assert getId() != null;
-    return getEntityDatabase()
-        .child(getId())
-        .child(toDoIdsName);
+    return getEntityDatabase().child(getId()).child(toDoIdsName);
   }
 
-  /**
-   * Add assignment to user on save
-   */
+  /** Add assignment to user on save */
   @Override
   public void postSave() {
 
@@ -188,9 +179,7 @@ public class Assignment extends Node {
     }
   }
 
-  /**
-   * Delete the assignment to dos
-   */
+  /** Delete the assignment to dos */
   @Override
   public void delete() {
     if (getToDoIds() != null && !getToDoIds().isEmpty()) {
@@ -207,12 +196,10 @@ public class Assignment extends Node {
   /**
    * Settings and Getters
    *
-   * Required for Firebase Database
+   * <p>Required for Firebase Database
    */
 
-  /**
-   * The users the assignment is given to
-   */
+  /** The users the assignment is given to */
   public List<String> getAssignees() {
     if (assignees == null) {
       assignees = new LinkedList<>();
@@ -226,7 +213,7 @@ public class Assignment extends Node {
     }
   }
 
-  public void resetAssigneesAndPrepareToRemoveOldAssignees(){
+  public void resetAssigneesAndPrepareToRemoveOldAssignees() {
     oldAssignees = new LinkedList<>(getAssignees());
 
     LinkedList<String> blankList = new LinkedList<>();
@@ -237,9 +224,7 @@ public class Assignment extends Node {
     this.assignees = assignees;
   }
 
-  /**
-   * For when the assignment is completed by student
-   */
+  /** For when the assignment is completed by student */
   public boolean getAssignmentComplete() {
     return assignmentComplete;
   }
@@ -247,15 +232,14 @@ public class Assignment extends Node {
   public void setAssignmentComplete(boolean assignmentComplete) {
     this.assignmentComplete = assignmentComplete;
 
-//    assignmentCompleteTime = (long) ServerValue.TIMESTAMP;
+    //    assignmentCompleteTime = (long) ServerValue.TIMESTAMP;
   }
 
   public java.util.Map<String, String> getAssignmentCompleteTime() {
     if (getAssignmentComplete()) {
-      //TODO replace with proper
+      // TODO replace with proper
       return ServerValue.TIMESTAMP;
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -269,9 +253,7 @@ public class Assignment extends Node {
     this.assignmentCompleteTime = assignmentCompleteTime;
   }
 
-  /**
-   * For when the teacher is finished marking the assignment
-   */
+  /** For when the teacher is finished marking the assignment */
   public boolean getAssignmentMarked() {
     return assignmentMarked;
   }
@@ -292,9 +274,7 @@ public class Assignment extends Node {
     this.assignmentMarkedTime = assignmentMarkedTime;
   }
 
-  /**
-   * Other
-   */
+  /** Other */
   public String getClassId() {
     return classId;
   }
@@ -330,14 +310,14 @@ public class Assignment extends Node {
     this.toDoIds = toDoIds;
   }
 
-  /**
-   * For calculating the student's progress
-   */
+  /** For calculating the student's progress */
   @Exclude
-  public int getCountOfTotalToDos(){ return getToDoIds().size(); }
+  public int getCountOfTotalToDos() {
+    return getToDoIds().size();
+  }
 
   @Exclude
-  public int getCountOfDoneToDos(){
+  public int getCountOfDoneToDos() {
     countOfDoneToDos = 0;
 
     for (Boolean isChecked : getToDoIds().values()) {
@@ -349,11 +329,11 @@ public class Assignment extends Node {
     return countOfDoneToDos;
   }
 
-//  public void pushToDos(String todoid) {
-//    if (this.todosID == null) {
-//      this.todosID = new Stack<String>();
-//    }
-//    this.todosID.push(todoid);
-//  }
+  //  public void pushToDos(String todoid) {
+  //    if (this.todosID == null) {
+  //      this.todosID = new Stack<String>();
+  //    }
+  //    this.todosID.push(todoid);
+  //  }
 
 }

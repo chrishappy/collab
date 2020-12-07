@@ -67,9 +67,7 @@ public class AllAttachment extends Attachment {
     // @Todo Save the file here
 
   }
-  /**
-   * Delete the file
-   */
+  /** Delete the file */
   @Override
   public void delete() {
     // @Todo delete the file here

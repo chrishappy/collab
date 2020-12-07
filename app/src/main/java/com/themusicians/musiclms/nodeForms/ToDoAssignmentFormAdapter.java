@@ -42,13 +42,14 @@ public class ToDoAssignmentFormAdapter
 
     // Set up the checkbox for to items
     holder.toDoCheck.setChecked(toDoItem.getCompleteToDo());
-    holder.toDoCheck.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        toDoItem.setCompleteToDo(holder.toDoCheck.isChecked());
-        toDoItem.save();
-      }
-    });
+    holder.toDoCheck.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            toDoItem.setCompleteToDo(holder.toDoCheck.isChecked());
+            toDoItem.save();
+          }
+        });
 
     // Set the on click listener
     View.OnClickListener editToDoItemListener =

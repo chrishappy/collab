@@ -4,34 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.entity.Node.Assignment;
-import com.themusicians.musiclms.entity.Node.User;
-import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 /**
  * The adapter for the Assignment Form pages
@@ -43,7 +21,8 @@ import java.util.Objects;
 // FirebaseRecyclerAdapter is a class provided by
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
-public class ToDoRecordingFeedbackAdapter extends RecyclerView.Adapter<ToDoRecordingFeedbackAdapter.ToDoRecordingFeedbackViewHolder> {
+public class ToDoRecordingFeedbackAdapter
+    extends RecyclerView.Adapter<ToDoRecordingFeedbackAdapter.ToDoRecordingFeedbackViewHolder> {
 
   private ItemClickListener itemClickListener;
   private final List<String> items;
@@ -56,8 +35,10 @@ public class ToDoRecordingFeedbackAdapter extends RecyclerView.Adapter<ToDoRecor
 
   @NonNull
   @Override
-  public ToDoRecordingFeedbackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    View v= LayoutInflater.from(getContext()).inflate(R.layout.item_recording_feedback, parent,false);
+  public ToDoRecordingFeedbackViewHolder onCreateViewHolder(
+      @NonNull ViewGroup parent, int viewType) {
+    View v =
+        LayoutInflater.from(getContext()).inflate(R.layout.item_recording_feedback, parent, false);
     return new ToDoRecordingFeedbackViewHolder(v);
   }
 
@@ -70,10 +51,9 @@ public class ToDoRecordingFeedbackAdapter extends RecyclerView.Adapter<ToDoRecor
     String feedbackPart = "";
 
     if (timeParts.length != 2 || feedbackParts.length != 2) {
-      timeParts = new String[]{"xx", "xx"};
+      timeParts = new String[] {"xx", "xx"};
       feedbackPart = getContext().getString(R.string.to_do_view__error_feedback);
-    }
-    else {
+    } else {
       feedbackPart = feedbackParts[1];
     }
 
@@ -84,9 +64,11 @@ public class ToDoRecordingFeedbackAdapter extends RecyclerView.Adapter<ToDoRecor
     // On item click
     int timeToSkip = (Integer.decode(timeParts[0]) * 60) + Integer.decode(timeParts[1]);
 
-    holder.feedbackLayout.setOnClickListener(view -> {
-      itemClickListener.onToDoRecordingFeedbackClick("feedbackTimeClicked", timeToSkip, position);
-    });
+    holder.feedbackLayout.setOnClickListener(
+        view -> {
+          itemClickListener.onToDoRecordingFeedbackClick(
+              "feedbackTimeClicked", timeToSkip, position);
+        });
   }
 
   private Context getContext() {

@@ -1,14 +1,11 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +38,8 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
   private String mode;
 
   /** Receive the entity id of the attachment to edit */
-  public static CreateFormAttachmentsFragment newInstance(String editEntityId, String editAttachmentMode) {
+  public static CreateFormAttachmentsFragment newInstance(
+      String editEntityId, String editAttachmentMode) {
     CreateFormAttachmentsFragment fragment = new CreateFormAttachmentsFragment();
     Bundle args = new Bundle();
     args.putString(ACCEPT_ENTITY_ID, editEntityId);
@@ -137,10 +135,10 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
   }
 
   /*
-     * Not working function to upload a pdf
-     *
-     * @param pdfUri the file to upload
-     */
+   * Not working function to upload a pdf
+   *
+   * @param pdfUri the file to upload
+   */
   /*
   private void uploadFile(Uri pdfUri) {
 
@@ -210,36 +208,36 @@ public class CreateFormAttachmentsFragment extends CreateFormFragment {
   }
    */
 
-//  /** Ask user permission to get PDF */
-//  @Override
-//  public void onRequestPermissionsResult(
-//      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//      selectPdf();
-//    } else {
-//      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT).show();
-//    }
-//  }
-//
-//  private void selectPdf() {
-//
-//    Intent intent = new Intent();
-//    intent.setType("application/pdf");
-//    intent.setAction(Intent.ACTION_GET_CONTENT);
-//    startActivityForResult(intent, 86);
-//  }
+  //  /** Ask user permission to get PDF */
+  //  @Override
+  //  public void onRequestPermissionsResult(
+  //      int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+  //    if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+  //      selectPdf();
+  //    } else {
+  //      Toast.makeText(getActivity(), "Please provide permission..", Toast.LENGTH_SHORT).show();
+  //    }
+  //  }
+  //
+  //  private void selectPdf() {
+  //
+  //    Intent intent = new Intent();
+  //    intent.setType("application/pdf");
+  //    intent.setAction(Intent.ACTION_GET_CONTENT);
+  //    startActivityForResult(intent, 86);
+  //  }
 
-//  @Override
-//  public void onEditButtonClick(String type, String entityId) {
-//    switch (type) {
-//      case editAllAttachments:
-//
-//        break;
-//
-//      default:
-//        throw new IllegalStateException("Unexpected value: " + type);
-//    }
-//  }
+  //  @Override
+  //  public void onEditButtonClick(String type, String entityId) {
+  //    switch (type) {
+  //      case editAllAttachments:
+  //
+  //        break;
+  //
+  //      default:
+  //        throw new IllegalStateException("Unexpected value: " + type);
+  //    }
+  //  }
 
   //  @Override
   //  public void onDialogPositiveClick(DialogFragment dialog) {

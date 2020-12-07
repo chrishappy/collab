@@ -33,7 +33,6 @@ public abstract class Attachment extends Entity {
    */
   public void save() {
     writeEntity();
-
   }
 
   /** @return Boolean */
@@ -98,11 +97,7 @@ public abstract class Attachment extends Entity {
     return entityType;
   }
 
-
-  /**
-   * Delete self
-   *
-   */
+  /** Delete self */
   @Override
   public void delete() {
     getEntityDatabase().child(getId()).removeValue();

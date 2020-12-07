@@ -1,10 +1,8 @@
 package com.themusicians.musiclms.entity.Node;
 
 import android.util.Log;
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +34,7 @@ public class ToDoItem extends Node {
 
   protected List<String> recordingFeedback;
 
-//  protected long toDoState;
+  //  protected long toDoState;
 
   protected String attachedAssignment;
 
@@ -44,19 +42,17 @@ public class ToDoItem extends Node {
 
   protected Object timeCompleted;
 
-  /**
-   * For saving recordings
-   */
+  /** For saving recordings */
   public static final String feedbackFormat = "%02d:%02d | %s";
 
   /**
    * For processing youtube videos
    *
-   * Source: https://stackoverflow.com/a/31940028
-   * Author: Jakki @ https://stackoverflow.com/u/2605766
+   * <p>Source: https://stackoverflow.com/a/31940028 Author: Jakki @
+   * https://stackoverflow.com/u/2605766
    */
-  private static final String youtubeUrlRegexPattern = ".*(?:youtu.be/|v/|u/\\w/|embed/|e/|watch\\?v=)([^#&?\\s]{11}).*";
-
+  private static final String youtubeUrlRegexPattern =
+      ".*(?:youtu.be/|v/|u/\\w/|embed/|e/|watch\\?v=)([^#&?\\s]{11}).*";
 
   /** The default constructor for Firebase + loadMultiple */
   public ToDoItem() {
@@ -77,10 +73,7 @@ public class ToDoItem extends Node {
     return getEntityType() + "__" + getType();
   }
 
-
-  /**
-   * After save, add to do item to assignment
-   */
+  /** After save, add to do item to assignment */
   @Override
   public void postSave() {
     if (getAttachedAssignment() != null) {
@@ -88,9 +81,7 @@ public class ToDoItem extends Node {
     }
   }
 
-  /**
-   * Get the assignment entity to save the to do item
-   */
+  /** Get the assignment entity to save the to do item */
   @Exclude
   public Assignment getAttachedAssignmentEntity() {
     if (assignment == null) {
@@ -100,9 +91,7 @@ public class ToDoItem extends Node {
     return assignment;
   }
 
-  /**
-   * Add or update the to do item on the attached assignment
-   */
+  /** Add or update the to do item on the attached assignment */
   public void updateAttachedAssignment() {
     getAttachedAssignmentEntity()
         .getToDoItemsKeyQuery()
@@ -113,7 +102,7 @@ public class ToDoItem extends Node {
   /**
    * Settings and Getters
    *
-   * Required for Firebase
+   * <p>Required for Firebase
    */
 
   /** The Youtube recording related fields */
@@ -142,7 +131,7 @@ public class ToDoItem extends Node {
     return recordingFeedback;
   }
 
-  public void addRecordingFeedback(String feedback, int timeInSeconds){
+  public void addRecordingFeedback(String feedback, int timeInSeconds) {
     int minutes = timeInSeconds / 60;
     int seconds = timeInSeconds % 60;
 
@@ -158,13 +147,13 @@ public class ToDoItem extends Node {
     this.recordingFeedback = recordingFeedback;
   }
 
-//  public long getToDoState() {
-//    return toDoState;
-//  }
-//
-//  public void setToDoState(long toDoState) {
-//    this.toDoState = toDoState;
-//  }
+  //  public long getToDoState() {
+  //    return toDoState;
+  //  }
+  //
+  //  public void setToDoState(long toDoState) {
+  //    this.toDoState = toDoState;
+  //  }
 
   public String getAttachedAssignment() {
     return attachedAssignment;
@@ -198,19 +187,20 @@ public class ToDoItem extends Node {
   /**
    * Extract a youtube url for its id
    *
-   * Source: https://stackoverflow.com/a/31940028
-   * Author: Jakki @ https://stackoverflow.com/u/2605766
+   * <p>Source: https://stackoverflow.com/a/31940028 Author: Jakki @
+   * https://stackoverflow.com/u/2605766
    *
    * @param youtubeUrl the url of the youtube video
    * @return the youtube id
    */
   public static String getYoutubeIdFromUrl(String youtubeUrl) {
     Pattern compiledPattern = Pattern.compile(youtubeUrlRegexPattern);
-    Matcher matcher = compiledPattern.matcher(youtubeUrl); //url is youtube url for which you want to extract the id.
+    Matcher matcher =
+        compiledPattern.matcher(
+            youtubeUrl); // url is youtube url for which you want to extract the id.
     if (matcher.find() && matcher.group(1) != null) {
       return matcher.group(1);
     }
     return null;
   }
-
 }

@@ -8,9 +8,6 @@ import com.google.firebase.database.ServerValue;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 import com.themusicians.musiclms.entity.Entity;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +29,7 @@ public abstract class Node extends Entity implements Cloneable {
    */
   protected String name;
 
-  protected final static String attachmentName = "attachmentIds";
+  protected static final String attachmentName = "attachmentIds";
 
   protected List<String> allowedAttachments;
 
@@ -79,14 +76,10 @@ public abstract class Node extends Entity implements Cloneable {
     return getEntityDatabase().child(getId()).child(attachmentName);
   }
 
-  /**
-   * This function runs before saving an object
-   */
+  /** This function runs before saving an object */
   public void postSave() {}
 
-  /**
-   * Save the Node
-   */
+  /** Save the Node */
   public void save() {
     // the entity is no longer new
     setIsNew(false);
@@ -107,9 +100,9 @@ public abstract class Node extends Entity implements Cloneable {
     }
 
     // Set default updated time
-//    if (getUpdated() == null) {
-      setUpdated(ServerValue.TIMESTAMP);
-//    }
+    //    if (getUpdated() == null) {
+    setUpdated(ServerValue.TIMESTAMP);
+    //    }
 
     // If we're creating an Assignment
     if (getId() == null) {
@@ -140,10 +133,7 @@ public abstract class Node extends Entity implements Cloneable {
     setIsNew(false);
   }
 
-  /**
-   * Deletes the node attachments
-   *
-   */
+  /** Deletes the node attachments */
   @Override
   public void delete() {
     if (getAttachmentIds() != null && !getAttachmentIds().isEmpty()) {
@@ -177,9 +167,7 @@ public abstract class Node extends Entity implements Cloneable {
   }
 
   public void addAttachmentIdDirectlyToDatabase(String attachmentId) {
-    getAttachmentsKeyReference()
-        .child(attachmentId)
-        .setValue(true);
+    getAttachmentsKeyReference().child(attachmentId).setValue(true);
 
     addAttachmentId(attachmentId);
   }

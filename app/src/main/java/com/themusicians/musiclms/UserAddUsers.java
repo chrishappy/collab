@@ -1,20 +1,19 @@
 package com.themusicians.musiclms;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,10 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
-
 import java.util.ArrayList;
-
-import static android.widget.Toast.LENGTH_SHORT;
 
 public class UserAddUsers extends AppCompatActivity {
 
@@ -51,10 +47,14 @@ public class UserAddUsers extends AppCompatActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     addedRef = FirebaseDatabase.getInstance().getReference().child("node__user");
-    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("addedUsers");
+    reference =
+        FirebaseDatabase.getInstance()
+            .getReference()
+            .child("node__user")
+            .child(currentUser.getUid())
+            .child("addedUsers");
     addedRecycler = findViewById(R.id.addedRecycler);
     searchView = findViewById(R.id.addedSearch);
-
 
     bottomNavigationView = findViewById(R.id.bottom_navigation);
     bottomNavigationView.setSelectedItemId(R.id.page_3);
@@ -89,89 +89,82 @@ public class UserAddUsers extends AppCompatActivity {
     super.onStart();
     if (addedRef != null) {
       addedRef.addValueEventListener(
-        new ValueEventListener() {
-          @Override
-          /**
-           * Fetch users from Firebase and add them to the search list
-           *
-           * @param snapshot data snapshot for gathering data from Firebase
-           */
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if (snapshot.exists()) {
-              addedList = new ArrayList<>();
-              UserAddedAdapter addedAdapter =
-                new UserAddedAdapter(addedList, UserAddUsers.this);
-              addedRecycler.setAdapter(addedAdapter);
+          new ValueEventListener() {
+            @Override
+            /**
+             * Fetch users from Firebase and add them to the search list
+             *
+             * @param snapshot data snapshot for gathering data from Firebase
+             */
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+              if (snapshot.exists()) {
+                addedList = new ArrayList<>();
+                UserAddedAdapter addedAdapter = new UserAddedAdapter(addedList, UserAddUsers.this);
+                addedRecycler.setAdapter(addedAdapter);
 
-              for (DataSnapshot ds : snapshot.getChildren()) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
 
-                reference.addChildEventListener(new ChildEventListener() {
-                  public void onChildAdded(@NonNull DataSnapshot Snapshot, @Nullable String previousChildName) {
-                    String value = Snapshot.getValue(String.class);
-                    if (ds.getValue(User.class).getId().equals(value)) {
-                      addedList.add(ds.getValue(User.class));
-                      addedAdapter.notifyDataSetChanged();
+                  reference.addChildEventListener(
+                      new ChildEventListener() {
+                        public void onChildAdded(
+                            @NonNull DataSnapshot Snapshot, @Nullable String previousChildName) {
+                          String value = Snapshot.getValue(String.class);
+                          if (ds.getValue(User.class).getId().equals(value)) {
+                            addedList.add(ds.getValue(User.class));
+                            addedAdapter.notifyDataSetChanged();
+                          }
+                        }
 
-                    }
-                  }
+                        @Override
+                        public void onChildChanged(
+                            @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
-                  @Override
-                  public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
 
-                  }
+                        @Override
+                        public void onChildMoved(
+                            @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
-                  @Override
-                  public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                  }
-
-                  @Override
-                  public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                  }
-
-                  @Override
-                  public void onCancelled(@NonNull DatabaseError error) {
-
-                  }
-                });
-
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                      });
+                }
               }
             }
-          }
 
-          /**
-           * Display message for error on fetching data from Firebase
-           *
-           * @param error
-           */
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-            Toast.makeText(UserAddUsers.this, error.getMessage(), LENGTH_SHORT).show();
-          }
-        });
+            /**
+             * Display message for error on fetching data from Firebase
+             *
+             * @param error
+             */
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+              Toast.makeText(UserAddUsers.this, error.getMessage(), LENGTH_SHORT).show();
+            }
+          });
     }
     /** Check if search bar is empty */
     if (searchView != null) {
       searchView.setOnQueryTextListener(
-        new SearchView.OnQueryTextListener() {
-          @Override
-          public boolean onQueryTextSubmit(String query) {
-            return false;
-          }
+          new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+              return false;
+            }
 
-          /**
-           * On search bar text changes, call search method
-           *
-           * @param newText Passes user input, newText, to search function
-           * @return false
-           */
-          @Override
-          public boolean onQueryTextChange(String newText) {
-            search(newText);
-            return false;
-          }
-        });
+            /**
+             * On search bar text changes, call search method
+             *
+             * @param newText Passes user input, newText, to search function
+             * @return false
+             */
+            @Override
+            public boolean onQueryTextChange(String newText) {
+              search(newText);
+              return false;
+            }
+          });
     }
   }
 
@@ -194,24 +187,26 @@ public class UserAddUsers extends AppCompatActivity {
   }
 
   /** Enables bottom navigation bar */
-  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-      switch (item.getItemId()){
-        case R.id.page_1:
-          Intent toAssignmentOverview = new Intent(UserAddUsers.this, AssignmentOverviewActivity.class);
-          startActivity(toAssignmentOverview);
-          return true;
-        case R.id.page_2:
-          Intent toUserProfile = new Intent(UserAddUsers.this, UserProfile.class);
-          startActivity(toUserProfile);
-          return true;
-      }
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+      new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+          switch (item.getItemId()) {
+            case R.id.page_1:
+              Intent toAssignmentOverview =
+                  new Intent(UserAddUsers.this, AssignmentOverviewActivity.class);
+              startActivity(toAssignmentOverview);
+              return true;
+            case R.id.page_2:
+              Intent toUserProfile = new Intent(UserAddUsers.this, UserProfile.class);
+              startActivity(toUserProfile);
+              return true;
+          }
 
-      return true;
-    }
-  };
+          return true;
+        }
+      };
 
   /** Redirects to search for Users */
   public void toSearchUsers(View view) {

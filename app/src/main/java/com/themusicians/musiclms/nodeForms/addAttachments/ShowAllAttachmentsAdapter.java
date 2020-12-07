@@ -26,17 +26,19 @@ import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
 public class ShowAllAttachmentsAdapter
-    extends FirebaseRecyclerAdapter<AllAttachment, ShowAllAttachmentsAdapter.AllAttachmentViewHolder> {
+    extends FirebaseRecyclerAdapter<
+        AllAttachment, ShowAllAttachmentsAdapter.AllAttachmentViewHolder> {
 
   private ItemClickListener itemClickListener;
 
-  public final static String editAllAttachments = "editAllAttachments";
-  public final static String SHOW_PDF = "SHOW_PDF";
-  public final static String OPEN_ZOOM = "OPEN_ZOOM";
+  public static final String editAllAttachments = "editAllAttachments";
+  public static final String SHOW_PDF = "SHOW_PDF";
+  public static final String OPEN_ZOOM = "OPEN_ZOOM";
 
   public final FirebaseUser currentUser;
 
-  public ShowAllAttachmentsAdapter(@NonNull FirebaseRecyclerOptions<AllAttachment> options, FirebaseUser currentUser) {
+  public ShowAllAttachmentsAdapter(
+      @NonNull FirebaseRecyclerOptions<AllAttachment> options, FirebaseUser currentUser) {
     super(options);
 
     this.currentUser = currentUser;
@@ -57,10 +59,8 @@ public class ShowAllAttachmentsAdapter
       holder.fileDownload.setOnClickListener(
           view -> {
             itemClickListener.onButtonClick(SHOW_PDF, allAttachment.getDownloadFileUri(), null);
-          }
-      );
-    }
-    else {
+          });
+    } else {
       holder.fileDownload.setVisibility(View.GONE);
     }
 
@@ -68,11 +68,10 @@ public class ShowAllAttachmentsAdapter
       holder.zoomOpen.setVisibility(View.VISIBLE);
       holder.zoomOpen.setOnClickListener(
           view -> {
-            itemClickListener.onButtonClick(OPEN_ZOOM, allAttachment.getZoomId() + " " + allAttachment.getZoomPassword(), null);
-          }
-      );
-    }
-    else {
+            itemClickListener.onButtonClick(
+                OPEN_ZOOM, allAttachment.getZoomId() + " " + allAttachment.getZoomPassword(), null);
+          });
+    } else {
       holder.zoomOpen.setVisibility(View.GONE);
     }
 
@@ -80,7 +79,8 @@ public class ShowAllAttachmentsAdapter
       holder.editButton.setOnClickListener(
           view -> {
             if (itemClickListener != null) {
-              itemClickListener.onButtonClick(editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
+              itemClickListener.onButtonClick(
+                  editAllAttachments, allAttachment.getId(), holder.allAttachmentWrapper);
             }
           });
 
@@ -90,8 +90,7 @@ public class ShowAllAttachmentsAdapter
               allAttachment.delete();
             }
           });
-    }
-    else {
+    } else {
       holder.editButton.setVisibility(View.GONE);
       holder.deleteButton.setVisibility(View.GONE);
     }
@@ -161,19 +160,10 @@ public class ShowAllAttachmentsAdapter
   }
 
   /**
-   *
-
-   case 86:
-   if (resultCode == RESULT_OK && data != null) {
-   pdfUri = data.getData();
-   String notificationText = "A file is selected : " + data.getData().getLastPathSegment();
-   notification.setText(notificationText);
-   } else {
-   Toast.makeText(
-   AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT)
-   .show();
-   }
-   break;
+   * case 86: if (resultCode == RESULT_OK && data != null) { pdfUri = data.getData(); String
+   * notificationText = "A file is selected : " + data.getData().getLastPathSegment();
+   * notification.setText(notificationText); } else { Toast.makeText(
+   * AssignmentCreateFormActivity.this, "Please select a file", Toast.LENGTH_SHORT) .show(); }
+   * break;
    */
-
 }

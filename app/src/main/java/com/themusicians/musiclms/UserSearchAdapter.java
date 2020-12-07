@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -44,11 +43,11 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
   User other;
 
   DatabaseReference userRef =
-    FirebaseDatabase.getInstance()
-      .getReference()
-      .child("node__user")
-      .child(currentUser.getUid())
-      .child("addedUsers");
+      FirebaseDatabase.getInstance()
+          .getReference()
+          .child("node__user")
+          .child(currentUser.getUid())
+          .child("addedUsers");
 
   /**
    * Initialize variables
@@ -61,37 +60,37 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
     this.list = list;
     /** Adds prior listed Firebase addedUsers to the added user list */
     userRef.addChildEventListener(
-      new ChildEventListener() {
-        @Override
-        public void onChildAdded(
-          @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-          /** Checks if user ID is already added */
-          boolean input = true;
-          String value = snapshot.getValue(String.class);
-          for (int i = 0; i < userList.size(); i++) {
-            if (value.equals(userList.get(i))) {
-              input = false;
+        new ChildEventListener() {
+          @Override
+          public void onChildAdded(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            /** Checks if user ID is already added */
+            boolean input = true;
+            String value = snapshot.getValue(String.class);
+            for (int i = 0; i < userList.size(); i++) {
+              if (value.equals(userList.get(i))) {
+                input = false;
+              }
+            }
+            if (input) {
+              userList.add(value);
             }
           }
-          if (input) {
-            userList.add(value);
-          }
-        }
 
-        @Override
-        public void onChildChanged(
-          @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+          @Override
+          public void onChildChanged(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+          @Override
+          public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
 
-        @Override
-        public void onChildMoved(
-          @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+          @Override
+          public void onChildMoved(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {}
-      });
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
   }
 
   // Function to tell the class about the Card view
@@ -100,7 +99,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
   @Override
   public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view =
-      LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card_holder, parent, false);
+        LayoutInflater.from(parent.getContext()).inflate(R.layout.user_card_holder, parent, false);
     return new MyViewHolder(view);
   }
   // Function to bind the view in Card view with data in
@@ -137,18 +136,19 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
     // Add button onClick
     public void onClick(int position) {
       addUser.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            callAddUser(position);
-          }
-        });
-      viewUser.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          callViewUser(position);
-        }
-      });
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              callAddUser(position);
+            }
+          });
+      viewUser.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              callViewUser(position);
+            }
+          });
     }
   }
 
@@ -159,126 +159,130 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
    */
   public void callAddUser(int position) {
     currUser
-      .getEntityDatabase()
-      .child(currentUser.getUid())
-      .addListenerForSingleValueEvent(
-        new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-            /** Checks if added user is new */
-            boolean isNew = true;
-            for (int i = 0; i < userList.size(); i++) {
-              if (list.get(position).getId(). equals(userList.get(i))) {
-                isNew = false;
+        .getEntityDatabase()
+        .child(currentUser.getUid())
+        .addListenerForSingleValueEvent(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                /** Checks if added user is new */
+                boolean isNew = true;
+                for (int i = 0; i < userList.size(); i++) {
+                  if (list.get(position).getId().equals(userList.get(i))) {
+                    isNew = false;
+                  }
+                }
+
+                if (isNew == false) {
+                  Toast.makeText(
+                          context,
+                          list.get(position).getName() + context.getString(R.string.already_added),
+                          Toast.LENGTH_SHORT)
+                      .show();
+                } else if (list.get(position).getId().equals(currUser.getId())) {
+                  Toast.makeText(context, R.string.cannot_add, Toast.LENGTH_SHORT).show();
+                } else {
+                  /** Adds currentUser to the added user */
+                  other = new User(list.get(position).getId());
+                  DatabaseReference addOther =
+                      FirebaseDatabase.getInstance()
+                          .getReference()
+                          .child("node__user")
+                          .child(other.getId())
+                          .child("addedUsers");
+                  addOther.addChildEventListener(
+                      new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(
+                            @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                          /** Checks if user ID is already added */
+                          boolean input = true;
+                          String value = snapshot.getValue(String.class);
+                          for (int i = 0; i < otherList.size(); i++) {
+                            if (value.equals(otherList.get(i))) {
+                              input = false;
+                            }
+                          }
+                          if (input) {
+                            otherList.add(value);
+                          }
+                        }
+
+                        @Override
+                        public void onChildChanged(
+                            @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+
+                        @Override
+                        public void onChildMoved(
+                            @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                      });
+
+                  other
+                      .getEntityDatabase()
+                      .child(other.getId())
+                      .addListenerForSingleValueEvent(
+                          new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                              boolean otherNew = true;
+                              for (int i = 0; i < otherList.size(); i++) {
+                                if (currentUser.getUid().equals(otherList.get(i))) {
+                                  otherNew = false;
+                                }
+                              }
+                              if (otherNew) {
+                                other = snapshot.getValue(User.class);
+                                otherList.add(currentUser.getUid());
+                                other.setAddedUsers(otherList);
+                                other.save();
+                              }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {}
+                          });
+
+                  /** Saves added users in Firebase */
+                  currUser = snapshot.getValue(User.class);
+                  userList.add(list.get(position).getId());
+                  currUser.setAddedUsers(userList);
+                  currUser.save();
+                  Toast.makeText(
+                          context,
+                          list.get(position).getName() + context.getString(R.string.added),
+                          Toast.LENGTH_SHORT)
+                      .show();
+                }
               }
-            }
 
-            if (isNew == false) {
-              Toast.makeText(
-                context,
-                list.get(position).getName() + context.getString(R.string.already_added),
-                Toast.LENGTH_SHORT)
-                .show();
-            } else if (list.get(position).getId().equals(currUser.getId())) {
-              Toast.makeText(context, R.string.cannot_add, Toast.LENGTH_SHORT).show();
-            } else {
-              /** Adds currentUser to the added user */
-              other = new User(list.get(position).getId());
-              DatabaseReference addOther = FirebaseDatabase.getInstance().getReference().child("node__user").child(other.getId()).child("addedUsers");
-              addOther.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                  /** Checks if user ID is already added */
-                  boolean input = true;
-                  String value = snapshot.getValue(String.class);
-                  for (int i = 0; i < otherList.size(); i++) {
-                    if (value.equals(otherList.get(i))) {
-                      input = false;
-                    }
-                  }
-                  if (input) {
-                    otherList.add(value);
-                  }
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-              });
-
-              other.getEntityDatabase().child(other.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  boolean otherNew = true;
-                  for (int i = 0; i < otherList.size(); i++) {
-                    if (currentUser.getUid().equals(otherList.get(i))) {
-                      otherNew = false;
-                    }
-                  }
-                  if(otherNew) {
-                    other = snapshot.getValue(User.class);
-                    otherList.add(currentUser.getUid());
-                    other.setAddedUsers(otherList);
-                    other.save();
-                  }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-              });
-
-
-              /** Saves added users in Firebase */
-              currUser = snapshot.getValue(User.class);
-              userList.add(list.get(position).getId());
-              currUser.setAddedUsers(userList);
-              currUser.save();
-              Toast.makeText(
-                context, list.get(position).getName() + context.getString(R.string.added), Toast.LENGTH_SHORT)
-                .show();
-            }
-          }
-
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {}
-        });
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {}
+            });
   }
 
-  /**
-   * On view user, view other users profile
-   */
-  public void callViewUser(int position){
-    currUser.getEntityDatabase().child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        currUser = snapshot.getValue(User.class);
-        currUser.setViewUser(list.get(position).getId());
-        currUser.save();
-      }
+  /** On view user, view other users profile */
+  public void callViewUser(int position) {
+    currUser
+        .getEntityDatabase()
+        .child(currentUser.getUid())
+        .addListenerForSingleValueEvent(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currUser = snapshot.getValue(User.class);
+                currUser.setViewUser(list.get(position).getId());
+                currUser.save();
+              }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error){
-
-      }
-    });
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {}
+            });
 
     Intent toView = new Intent(context, UserSearchView.class);
     context.startActivity(toView);

@@ -4,14 +4,12 @@ package com.themusicians.musiclms;
  *
  * @author Jerome Lau
  * @since Dec 2, 2020
- *
  */
 public class PointValue {
   long xValue;
   long yValue;
 
-  public PointValue() {
-  }
+  public PointValue() {}
 
   public PointValue(long xValue, long yValue) {
     this.xValue = xValue;

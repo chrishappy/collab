@@ -22,8 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +35,6 @@ import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import com.themusicians.musiclms.nodeViews.NodeViewActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +45,6 @@ import java.util.Locale;
  * @contributors Harveer Khangura, Shifan He, Nathan Tsai
  * @author Jerome Lau
  * @since Nov 10, 2020
- *
  */
 public class UserProfile extends NodeViewActivity {
 
@@ -63,7 +59,6 @@ public class UserProfile extends NodeViewActivity {
   protected ListView instrumentList;
   protected User currUser;
   BottomNavigationView bottomNavigationView;
-
 
   /** The node that has the attachments */
   /*@Override
@@ -95,7 +90,7 @@ public class UserProfile extends NodeViewActivity {
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // Initialize Attachments
-//    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
+    //    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
 
     /*
      * Instrument list
@@ -146,8 +141,7 @@ public class UserProfile extends NodeViewActivity {
           }
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-          }
+          public void onCancelled(@NonNull DatabaseError error) {}
         });
 
     /* Saves user instruments in Firebase */
@@ -176,20 +170,20 @@ public class UserProfile extends NodeViewActivity {
                        * Checks if instrument is empty
                        */
                       if (instrumentName.isEmpty()) {
-                        Toast.makeText(
-                            UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
+                        Toast.makeText(UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
                             .show();
                       } else if (isNew == false) {
                         Toast.makeText(
-                            UserProfile.this,
-                            instrumentName.toLowerCase() + getString(R.string.already_added),
-                            Toast.LENGTH_SHORT)
+                                UserProfile.this,
+                                instrumentName.toLowerCase() + getString(R.string.already_added),
+                                Toast.LENGTH_SHORT)
                             .show();
                       } else {
                         instruments.add(instrumentName);
                         currUser.setInstruments(instruments);
                         currUser.save();
-                        Toast.makeText(UserProfile.this, R.string.instrument_added, Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                                UserProfile.this, R.string.instrument_added, Toast.LENGTH_SHORT)
                             .show();
                         reInput = false;
                       }
@@ -198,8 +192,7 @@ public class UserProfile extends NodeViewActivity {
               }
 
               @Override
-              public void onCancelled(@NonNull DatabaseError error) {
-              }
+              public void onCancelled(@NonNull DatabaseError error) {}
             });
 
     /*
@@ -231,7 +224,7 @@ public class UserProfile extends NodeViewActivity {
           /**
            * Updates instrument list if instrument is changed
            *
-           * @param snapshot          data snapshot to fetch data from Firebase
+           * @param snapshot data snapshot to fetch data from Firebase
            * @param previousChildName
            */
           @Override
@@ -256,12 +249,10 @@ public class UserProfile extends NodeViewActivity {
 
           @Override
           public void onChildMoved(
-              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-          }
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-          }
+          public void onCancelled(@NonNull DatabaseError error) {}
         });
 
     /** Shifan's code */
@@ -269,12 +260,13 @@ public class UserProfile extends NodeViewActivity {
     actionBar.setTitle(getResources().getString(R.string.app_name));
 
     Button changeLang = findViewById(R.id.changeMyLang);
-    changeLang.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        showChangeLanguageDialog();
-      }
-    });
+    changeLang.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            showChangeLanguageDialog();
+          }
+        });
     /** End of Shifan's code */
   }
 
@@ -300,7 +292,8 @@ public class UserProfile extends NodeViewActivity {
         .child("name")
         .setValue(name)
         .addOnSuccessListener(
-            aVoid -> Toast.makeText(UserProfile.this, R.string.name_updated, Toast.LENGTH_SHORT).show());
+            aVoid ->
+                Toast.makeText(UserProfile.this, R.string.name_updated, Toast.LENGTH_SHORT).show());
   }
 
   /** Updates user email in Firebase */
@@ -309,11 +302,18 @@ public class UserProfile extends NodeViewActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String email = newEmail.getText().toString().trim();
 
-    FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("email").setValue(email);
+    FirebaseDatabase.getInstance()
+        .getReference()
+        .child("node__user")
+        .child(currentUser.getUid())
+        .child("email")
+        .setValue(email);
     currentUser
         .updateEmail(email)
         .addOnSuccessListener(
-            aVoid -> Toast.makeText(UserProfile.this, R.string.email_updated, Toast.LENGTH_SHORT).show());
+            aVoid ->
+                Toast.makeText(UserProfile.this, R.string.email_updated, Toast.LENGTH_SHORT)
+                    .show());
   }
 
   /** Updates user password in Firebase through email verification */
@@ -336,8 +336,7 @@ public class UserProfile extends NodeViewActivity {
               .sendPasswordResetEmail(mail)
               .addOnSuccessListener(
                   aVoid ->
-                      Toast.makeText(
-                              UserProfile.this, R.string.link_sent, Toast.LENGTH_SHORT)
+                      Toast.makeText(UserProfile.this, R.string.link_sent, Toast.LENGTH_SHORT)
                           .show())
               .addOnFailureListener(
                   e ->
@@ -356,7 +355,7 @@ public class UserProfile extends NodeViewActivity {
   /** Redirects user to User Analysis */
   public void toAnalysis(View view) {
     Intent toUserAnalysis;
-    if(currUser.getRole().equals("Student")){
+    if (currUser.getRole().equals("Student")) {
       toUserAnalysis = new Intent(this, UserAnalysisStudent.class);
     } else {
       toUserAnalysis = new Intent(this, UserAnalysisTeacher.class);
@@ -365,92 +364,100 @@ public class UserProfile extends NodeViewActivity {
   }
 
   /** Enables bottom navigation bar */
-  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-      switch (item.getItemId()){
-        case R.id.page_1:
-          Intent toAssignmentOverview = new Intent(UserProfile.this, AssignmentOverviewActivity.class);
-          startActivity(toAssignmentOverview);
-          return true;
-        case R.id.page_3:
-          Intent toChat = new Intent(UserProfile.this, UserAddUsers.class);
-          startActivity(toChat);
-          return true;
-      }
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+      new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+          switch (item.getItemId()) {
+            case R.id.page_1:
+              Intent toAssignmentOverview =
+                  new Intent(UserProfile.this, AssignmentOverviewActivity.class);
+              startActivity(toAssignmentOverview);
+              return true;
+            case R.id.page_3:
+              Intent toChat = new Intent(UserProfile.this, UserAddUsers.class);
+              startActivity(toChat);
+              return true;
+          }
 
-      return true;
-    }
-  };
+          return true;
+        }
+      };
 
   /** Shifan's code */
   private void showChangeLanguageDialog() {
-      final String[] listItems = {"English", "简体中文"};
-      AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
-      mBuilder.setTitle(R.string.user_profile__choose_language);
-      mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+    final String[] listItems = {"English", "简体中文"};
+    AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
+    mBuilder.setTitle(R.string.user_profile__choose_language);
+    mBuilder.setSingleChoiceItems(
+        listItems,
+        -1,
+        new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialogInterface, int i) {
-              if (i == 0){
-                  setLocale ("en");
-                  recreate();
-              }
-              else if (i == 1){
-                  setLocale ("zh");
-                  recreate();
-              }
+            if (i == 0) {
+              setLocale("en");
+              recreate();
+            } else if (i == 1) {
+              setLocale("zh");
+              recreate();
+            }
 
-              dialogInterface.dismiss();
+            dialogInterface.dismiss();
           }
-      });
+        });
 
-      AlertDialog mDialog = mBuilder.create();
-      mDialog.show();
+    AlertDialog mDialog = mBuilder.create();
+    mDialog.show();
   }
 
   @SuppressWarnings("deprecation")
-  public Locale getSystemLocaleLegacy(Configuration config){
-      return config.locale;
+  public Locale getSystemLocaleLegacy(Configuration config) {
+    return config.locale;
   }
 
   @TargetApi(Build.VERSION_CODES.N)
-  public Locale getSystemLocale(Configuration config){
-      return config.getLocales().get(0);
+  public Locale getSystemLocale(Configuration config) {
+    return config.getLocales().get(0);
   }
 
   @SuppressWarnings("deprecation")
-  public void setSystemLocaleLegacy(Configuration config, Locale locale){
-      config.locale = locale;
+  public void setSystemLocaleLegacy(Configuration config, Locale locale) {
+    config.locale = locale;
   }
 
   @TargetApi(Build.VERSION_CODES.N)
-  public void setSystemLocale(Configuration config, Locale locale){
-      config.setLocale(locale);
+  public void setSystemLocale(Configuration config, Locale locale) {
+    config.setLocale(locale);
   }
+
   private void setLocale(String lang) {
-      Locale locale = new Locale(lang);
-      Locale.setDefault(locale);
-      Configuration config = new Configuration();
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-          setSystemLocale(config, locale);
-      }else{
-          setSystemLocaleLegacy(config, locale);
-      }
-      getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-      SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
-      editor.putString("My_Lang", lang);
-      editor.apply();
+    Locale locale = new Locale(lang);
+    Locale.setDefault(locale);
+    Configuration config = new Configuration();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      setSystemLocale(config, locale);
+    } else {
+      setSystemLocaleLegacy(config, locale);
+    }
+    getBaseContext()
+        .getResources()
+        .updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+    SharedPreferences.Editor editor = getSharedPreferences("Settings", MODE_PRIVATE).edit();
+    editor.putString("My_Lang", lang);
+    editor.apply();
   }
 
-  public void loadLocale(){
-      SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
-      String language = prefs.getString("My_Lang", "");
-      setLocale(language);
+  public void loadLocale() {
+    SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
+    String language = prefs.getString("My_Lang", "");
+    setLocale(language);
   }
 
   /**
    * Lo
+   *
    * @return
    */
   @Override
@@ -458,5 +465,5 @@ public class UserProfile extends NodeViewActivity {
     return currUser;
   }
 
-  /**End of Shifan's code */
+  /** End of Shifan's code */
 }

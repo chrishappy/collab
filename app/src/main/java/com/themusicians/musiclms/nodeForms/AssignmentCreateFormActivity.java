@@ -1,5 +1,9 @@
 package com.themusicians.musiclms.nodeForms;
 
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.ACCEPT_ATTACHED_ASSIGNMENT_ID;
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
+import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -11,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,7 +26,6 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
-import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,10 +34,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.ACCEPT_ATTACHED_ASSIGNMENT_ID;
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
-import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Used to create and update assignments node entities
@@ -52,10 +51,11 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   /** Create recycler view for to do items */
   private RecyclerView toDoItemsRecyclerView;
 
-  private final static DateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.CANADA);
+  private static final DateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.CANADA);
 
   /** Fields to edit */
   private EditText AssignmentName;
+
   private MultiAutoCompleteTextView assigneesAutoComplete;
   private EditText dueDate;
 
@@ -68,9 +68,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   /** Create adapter for to do items */
   private ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
 
-  /**
-   * @return the node we are editing
-   */
+  /** @return the node we are editing */
   @Override
   public Node getNodeForAttachments() {
     return assignment;
@@ -129,31 +127,37 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     // Add assignee suggestions
     final User tempUser = new User();
 
-    //Child the root before all the push() keys are found and add a ValueEventListener()
-    tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-        final User authorUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
+    // Child the root before all the push() keys are found and add a ValueEventListener()
+    tempUser
+        .getEntityDatabase()
+        .addValueEventListener(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                final User authorUser =
+                    dataSnapshot.child(currentUser.getUid()).getValue(User.class);
 
-        //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-        for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
-          String userId = suggestionSnapshot.child("id").getValue(String.class);
+                // Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's
+                // inside the method.
+                for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
+                  String userId = suggestionSnapshot.child("id").getValue(String.class);
 
-//                        assert authorUser != null;
-          if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
-            String userName = suggestionSnapshot.child("name").getValue(String.class);
-            assigneesAutoCompleteAdapter.add(userName);
+                  //                        assert authorUser != null;
+                  if (authorUser
+                      .getAddedUsers()
+                      .contains(userId)) { // only add students associated with teacher
+                    String userName = suggestionSnapshot.child("name").getValue(String.class);
+                    assigneesAutoCompleteAdapter.add(userName);
 
-            // For when saving
-            assigneeNameAndIdMap.put(userName,userId);
-          }
-        }
-      }
+                    // For when saving
+                    assigneeNameAndIdMap.put(userName, userId);
+                  }
+                }
+              }
 
-      @Override
-      public void onCancelled(@NotNull DatabaseError databaseError) {
-      }
-    });
+              @Override
+              public void onCancelled(@NotNull DatabaseError databaseError) {}
+            });
 
     // Show attachments
     assignment.save();
@@ -207,7 +211,8 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     // Show user auto complete
     // Create a new ArrayAdapter with your context and the simple layout for the dropdown menu
     // provided by Android
-    assigneesAutoCompleteAdapter = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line);
+    assigneesAutoCompleteAdapter =
+        new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
     assigneesAutoComplete.setAdapter(assigneesAutoCompleteAdapter);
     assigneesAutoComplete.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
@@ -285,9 +290,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
           // Reset the assignees and prep for removal afterwards
           assignment.resetAssigneesAndPrepareToRemoveOldAssignees();
-          for (String studentId: assigneeNames){
-              String id = assigneeNameAndIdMap.get(studentId);
-              assignment.addAssignees(id);
+          for (String studentId : assigneeNames) {
+            String id = assigneeNameAndIdMap.get(studentId);
+            assignment.addAssignees(id);
           }
 
           assignment.setName(AssignmentName.getText().toString());
@@ -312,44 +317,49 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
     }
 
     toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView);
-//    toDoItemsRecyclerView.setLayoutManager(
-//        new GridLayoutManager(AssignmentCreateFormActivity.this, 1));
-//    ItemTouchHelper itemTouchHelper =
-//        new ItemTouchHelper(
-//            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//              @Override
-//              public boolean onMove(
-//                  @NonNull RecyclerView recyclerView,
-//                  @NonNull RecyclerView.ViewHolder viewHolder,
-//                  @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//              }
-//
-//              @Override
-//              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//
-//                //        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder swipedAssignment =
-//                // (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
-//
-//                switch (swipeDir) {
-//                  case ItemTouchHelper.LEFT:
-//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null)
-//                        .show();
-//                    break;
-//
-//                  case ItemTouchHelper.RIGHT:
-//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null)
-//                        .show();
-//                    break;
-//                }
-//
-//                // Remove item from backing list here
-//                toDoItemsAdapter.notifyDataSetChanged();
-//              }
-//            });
-//    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+    //    toDoItemsRecyclerView.setLayoutManager(
+    //        new GridLayoutManager(AssignmentCreateFormActivity.this, 1));
+    //    ItemTouchHelper itemTouchHelper =
+    //        new ItemTouchHelper(
+    //            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |
+    // ItemTouchHelper.RIGHT) {
+    //              @Override
+    //              public boolean onMove(
+    //                  @NonNull RecyclerView recyclerView,
+    //                  @NonNull RecyclerView.ViewHolder viewHolder,
+    //                  @NonNull RecyclerView.ViewHolder target) {
+    //                return false;
+    //              }
+    //
+    //              @Override
+    //              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir)
+    // {
+    //
+    //                //        ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder
+    // swipedAssignment =
+    //                // (ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder) viewHolder;
+    //
+    //                switch (swipeDir) {
+    //                  case ItemTouchHelper.LEFT:
+    //                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left",
+    // Snackbar.LENGTH_LONG)
+    //                        .setAction("Action", null)
+    //                        .show();
+    //                    break;
+    //
+    //                  case ItemTouchHelper.RIGHT:
+    //                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right",
+    // Snackbar.LENGTH_LONG)
+    //                        .setAction("Action", null)
+    //                        .show();
+    //                    break;
+    //                }
+    //
+    //                // Remove item from backing list here
+    //                toDoItemsAdapter.notifyDataSetChanged();
+    //              }
+    //            });
+    //    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
@@ -397,41 +407,41 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           assignment
               .getToDoItemsKeyQuery()
               .child(toDoId)
-              .addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                  boolean isComplete = (Boolean) dataSnapshot.getValue();
+              .addListenerForSingleValueEvent(
+                  new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                      boolean isComplete = (Boolean) dataSnapshot.getValue();
 
-                  assignment.addToDoId(toDoId, isComplete);
-                  assignment.save();
+                      assignment.addToDoId(toDoId, isComplete);
+                      assignment.save();
 
-                  Log.w(LOAD_ENTITY_DATABASE_TAG, "update to do item successful");
-                }
+                      Log.w(LOAD_ENTITY_DATABASE_TAG, "update to do item successful");
+                    }
 
-                @Override
-                public void onCancelled(@NotNull DatabaseError databaseError) {
-                  // Getting Post failed, log a message
-                  Log.w(
-                      LOAD_ENTITY_DATABASE_TAG,
-                      "update to do item failed",
-                      databaseError.toException());
-
-                }
-              });
+                    @Override
+                    public void onCancelled(@NotNull DatabaseError databaseError) {
+                      // Getting Post failed, log a message
+                      Log.w(
+                          LOAD_ENTITY_DATABASE_TAG,
+                          "update to do item failed",
+                          databaseError.toException());
+                    }
+                  });
 
           // Display notification
           Snackbar.make(
-              findViewById(R.id.createAssignmentLayout),
-              "To Do Item Saved",
-              Snackbar.LENGTH_LONG)
+                  findViewById(R.id.createAssignmentLayout),
+                  "To Do Item Saved",
+                  Snackbar.LENGTH_LONG)
               .setAction("Edit", null)
               .show();
         } else {
           // Display notification
           Snackbar.make(
-              findViewById(R.id.createAssignmentLayout),
-              "To Do Item Updated",
-              Snackbar.LENGTH_LONG)
+                  findViewById(R.id.createAssignmentLayout),
+                  "To Do Item Updated",
+                  Snackbar.LENGTH_LONG)
               .setAction("Edit", null)
               .show();
         }
@@ -461,9 +471,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       startActivityForResult(toEditToDoItem, REQUEST_TODO_ENTITY);
     } else {
       Toast.makeText(
-          AssignmentCreateFormActivity.this,
-          "No actions for onEditButton: " + type,
-          Toast.LENGTH_SHORT)
+              AssignmentCreateFormActivity.this,
+              "No actions for onEditButton: " + type,
+              Toast.LENGTH_SHORT)
           .show();
     }
   }

@@ -1,48 +1,36 @@
 package com.themusicians.musiclms.nodeViews;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
-import com.themusicians.musiclms.UserLogin;
-import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import com.themusicians.musiclms.nodeForms.ToDoAssignmentFormAdapter;
-
-import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Used to create and update assignments node entities
@@ -60,12 +48,14 @@ public class AssignmentViewActivity extends NodeViewActivity
 
   /** Fields */
   private TextInputEditText AssignmentName;
+
   private EditText StudentOrClass;
   private TextInputEditText dueDate;
   private FloatingActionButton editButton;
 
   /** Checkbox fields */
   private LinearLayout assignmentCompleteWrapper;
+
   private CheckBox assignmentComplete;
 
   private LinearLayout assignmentMarkedWrapper;
@@ -104,7 +94,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate() );
+                    Date date = new Date(assignment.getDueDate());
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
                   }
@@ -120,20 +110,19 @@ public class AssignmentViewActivity extends NodeViewActivity
                     if (assignment.getAssignmentComplete()) {
                       assignmentMarkedWrapper.setVisibility(View.VISIBLE);
                       assignmentCompleteWrapper.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                       assignmentMarkedWrapper.setVisibility(View.GONE);
                       assignmentCompleteWrapper.setVisibility(View.GONE);
                     }
-                  }
-                  else { // must be student
+                  } else { // must be student
                     editButton.setVisibility(View.GONE);
                     assignmentMarkedWrapper.setVisibility(View.GONE);
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
 
                     // Hide edit and delete functions
                     // https://stackoverflow.com/a/32072318
-//                    final MenuItem editMenuItem = findItem(R.id.action_assignment_edit);
+                    //                    final MenuItem editMenuItem =
+                    // findItem(R.id.action_assignment_edit);
                   }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
@@ -149,13 +138,13 @@ public class AssignmentViewActivity extends NodeViewActivity
                   // ...
                 }
               });
-    }
-    else {
-    Toast.makeText(
-        AssignmentViewActivity.this,
-        "There was a problem loading this Assignment",
-        Toast.LENGTH_LONG)
-        .show();;
+    } else {
+      Toast.makeText(
+              AssignmentViewActivity.this,
+              "There was a problem loading this Assignment",
+              Toast.LENGTH_LONG)
+          .show();
+      ;
     }
 
     // For after creating the first to do item
@@ -205,24 +194,27 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     // Checkboxes: assignment complete or marked
     assignmentComplete = findViewById(R.id.assignment_completedCB);
-    assignmentComplete.setOnClickListener(v -> {
-
-      assignment.setAssignmentComplete(assignmentComplete.isChecked());
-      assignment.save();
-    });
+    assignmentComplete.setOnClickListener(
+        v -> {
+          assignment.setAssignmentComplete(assignmentComplete.isChecked());
+          assignment.save();
+        });
 
     assignmentMarked = findViewById(R.id.assignment_marked_CB);
-    assignmentMarked.setOnClickListener(v -> {
-      assignment.setAssignmentMarked(assignmentMarked.isChecked());
-      assignment.save();
-    });
+    assignmentMarked.setOnClickListener(
+        v -> {
+          assignment.setAssignmentMarked(assignmentMarked.isChecked());
+          assignment.save();
+        });
 
     // Floating edit button
-    editButton.setOnClickListener(v -> {
-      Intent toEditAssignment = new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
-      toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
-      startActivity(toEditAssignment);
-    });
+    editButton.setOnClickListener(
+        v -> {
+          Intent toEditAssignment =
+              new Intent(AssignmentViewActivity.this, AssignmentCreateFormActivity.class);
+          toEditAssignment.putExtra(ACCEPT_ENTITY_ID, assignment.getId());
+          startActivity(toEditAssignment);
+        });
 
     // Load the to do tasks
     toDoItemsRecyclerView = findViewById(R.id.todoItemsRecyclerView2);
@@ -245,44 +237,48 @@ public class AssignmentViewActivity extends NodeViewActivity
       return;
     }
 
-    toDoItemsRecyclerView.setLayoutManager(
-        new GridLayoutManager(AssignmentViewActivity.this, 1));
-//    ItemTouchHelper itemTouchHelper =
-//        new ItemTouchHelper(
-//            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//              @Override
-//              public boolean onMove(
-//                  @NonNull RecyclerView recyclerView,
-//                  @NonNull RecyclerView.ViewHolder viewHolder,
-//                  @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//              }
-//
-//              @Override
-//              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-//
-//                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
-//                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
-//
-//                switch (swipeDir) {
-//                  case ItemTouchHelper.LEFT:
-//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null)
-//                        .show();
-//                    break;
-//
-//                  case ItemTouchHelper.RIGHT:
-//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null)
-//                        .show();
-//                    break;
-//                }
-//
-//                // Remove item from backing list here
-//                toDoItemsAdapter.notifyDataSetChanged();
-//              }
-//            });
-//    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+    toDoItemsRecyclerView.setLayoutManager(new GridLayoutManager(AssignmentViewActivity.this, 1));
+    //    ItemTouchHelper itemTouchHelper =
+    //        new ItemTouchHelper(
+    //            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT |
+    // ItemTouchHelper.RIGHT) {
+    //              @Override
+    //              public boolean onMove(
+    //                  @NonNull RecyclerView recyclerView,
+    //                  @NonNull RecyclerView.ViewHolder viewHolder,
+    //                  @NonNull RecyclerView.ViewHolder target) {
+    //                return false;
+    //              }
+    //
+    //              @Override
+    //              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir)
+    // {
+    //
+    //                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder
+    // swipedAssignment =
+    //                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
+    //
+    //                switch (swipeDir) {
+    //                  case ItemTouchHelper.LEFT:
+    //                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left",
+    // Snackbar.LENGTH_LONG)
+    //                        .setAction("Action", null)
+    //                        .show();
+    //                    break;
+    //
+    //                  case ItemTouchHelper.RIGHT:
+    //                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right",
+    // Snackbar.LENGTH_LONG)
+    //                        .setAction("Action", null)
+    //                        .show();
+    //                    break;
+    //                }
+    //
+    //                // Remove item from backing list here
+    //                toDoItemsAdapter.notifyDataSetChanged();
+    //              }
+    //            });
+    //    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
@@ -327,37 +323,37 @@ public class AssignmentViewActivity extends NodeViewActivity
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
-//    switch (requestCode) {
-//      case REQUEST_TODO_ENTITY:
-//        if (resultCode == Activity.RESULT_OK) {
-//          String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
-//
-//          if (assignment.getToDoIds().get(toDoId) == null) {
-//            assignment.addToDoId(toDoId);
-//            assignment.save();
-//
-//            // Display notification
-//            Snackbar.make(
-//                    findViewById(R.id.createAssignmentLayout),
-//                    "To Do Item Saved",
-//                    Snackbar.LENGTH_LONG)
-//                .setAction("Edit", null)
-//                .show();
-//          } else {
-//            // Display notification
-//            Snackbar.make(
-//                    findViewById(R.id.createAssignmentLayout),
-//                    "To Do Item Updated",
-//                    Snackbar.LENGTH_LONG)
-//                .setAction("Edit", null)
-//                .show();
-//          }
-//        }
-        //        if (resultCode == Activity.RESULT_CANCELED) {
-        // Write your code if there's no result
-        //        }
-//        break;
-//    }
+    //    switch (requestCode) {
+    //      case REQUEST_TODO_ENTITY:
+    //        if (resultCode == Activity.RESULT_OK) {
+    //          String toDoId = data.getStringExtra(RETURN_INTENT_TODO_ID);
+    //
+    //          if (assignment.getToDoIds().get(toDoId) == null) {
+    //            assignment.addToDoId(toDoId);
+    //            assignment.save();
+    //
+    //            // Display notification
+    //            Snackbar.make(
+    //                    findViewById(R.id.createAssignmentLayout),
+    //                    "To Do Item Saved",
+    //                    Snackbar.LENGTH_LONG)
+    //                .setAction("Edit", null)
+    //                .show();
+    //          } else {
+    //            // Display notification
+    //            Snackbar.make(
+    //                    findViewById(R.id.createAssignmentLayout),
+    //                    "To Do Item Updated",
+    //                    Snackbar.LENGTH_LONG)
+    //                .setAction("Edit", null)
+    //                .show();
+    //          }
+    //        }
+    //        if (resultCode == Activity.RESULT_CANCELED) {
+    // Write your code if there's no result
+    //        }
+    //        break;
+    //    }
   }
 
   /**
@@ -368,15 +364,14 @@ public class AssignmentViewActivity extends NodeViewActivity
   @Override
   public void onButtonClick(String type, String entityId) {
     if ("editToDoAssignmentForm".equals(type)) {
-      Intent toViewToDoItem =
-          new Intent(AssignmentViewActivity.this, ToDoViewActivity.class);
+      Intent toViewToDoItem = new Intent(AssignmentViewActivity.this, ToDoViewActivity.class);
       toViewToDoItem.putExtra(ACCEPT_ENTITY_ID, entityId);
       startActivity(toViewToDoItem);
     } else {
       Toast.makeText(
-          AssignmentViewActivity.this,
-          "No actions for onEditButton: " + type,
-          Toast.LENGTH_SHORT)
+              AssignmentViewActivity.this,
+              "No actions for onEditButton: " + type,
+              Toast.LENGTH_SHORT)
           .show();
     }
   }

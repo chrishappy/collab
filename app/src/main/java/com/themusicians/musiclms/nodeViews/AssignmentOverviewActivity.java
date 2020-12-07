@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -51,16 +50,16 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
   /** To show assignments */
   private RecyclerView recyclerView;
+
   private AssignmentOverviewAdapter assignmentOverviewAdapter;
   private TextView noAssignmentsTextView;
 
   /** The bottom navigation */
   private BottomNavigationView bottomNavigationView;
 
-  /**
-   * For loading and deleting assignments
-   */
+  /** For loading and deleting assignments */
   private Assignment tempAssignment;
+
   private User tempUser;
 
   /**
@@ -87,7 +86,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     DatabaseReference tempUserRelatedAssignments = tempUser.getRelatedAssignmentDbReference();
     FirebaseRecyclerOptions<Assignment> assignmentOverviewRecyclerOptions =
         new FirebaseRecyclerOptions.Builder<Assignment>()
-            .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
+            .setIndexedQuery(
+                tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
             .build();
 
     assignmentOverviewAdapter = new AssignmentOverviewAdapter(assignmentOverviewRecyclerOptions);
@@ -97,16 +97,16 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // The empty text
     noAssignmentsTextView = findViewById(R.id.assignmentOverviewEmptyText);
-    assignmentOverviewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-      public void onItemRangeInserted(int positionStart, int itemCount) {
-        if (itemCount == 0) {
-          noAssignmentsTextView.setVisibility(View.VISIBLE);
-        }
-        else {
-          noAssignmentsTextView.setVisibility(View.INVISIBLE);
-        }
-      }
-    });
+    assignmentOverviewAdapter.registerAdapterDataObserver(
+        new RecyclerView.AdapterDataObserver() {
+          public void onItemRangeInserted(int positionStart, int itemCount) {
+            if (itemCount == 0) {
+              noAssignmentsTextView.setVisibility(View.VISIBLE);
+            } else {
+              noAssignmentsTextView.setVisibility(View.INVISIBLE);
+            }
+          }
+        });
 
     recyclerView.setAdapter(assignmentOverviewAdapter);
 
@@ -115,27 +115,29 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 
     // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
-    tempUser.getEntityDatabase()
-            .child(currentUser.getUid())
-            .child("role")
-            .addValueEventListener(
-                    new ValueEventListener() {
-                      @Override
-                      public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Object role = snapshot.getValue();
-                        if (role != null && role.toString().toLowerCase().matches("teacher")){
-                          fab.setVisibility(View.VISIBLE);
-                          noAssignmentsTextView.setText(R.string.assignment_overview__no_assignments_text__teacher);
-                        }
-                        else {
-                          fab.setVisibility(View.GONE);
-                          noAssignmentsTextView.setText(R.string.assignment_overview__no_assignments_text__student);
-                        }
-                      }
+    tempUser
+        .getEntityDatabase()
+        .child(currentUser.getUid())
+        .child("role")
+        .addValueEventListener(
+            new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Object role = snapshot.getValue();
+                if (role != null && role.toString().toLowerCase().matches("teacher")) {
+                  fab.setVisibility(View.VISIBLE);
+                  noAssignmentsTextView.setText(
+                      R.string.assignment_overview__no_assignments_text__teacher);
+                } else {
+                  fab.setVisibility(View.GONE);
+                  noAssignmentsTextView.setText(
+                      R.string.assignment_overview__no_assignments_text__student);
+                }
+              }
 
-                      @Override
-                      public void onCancelled(@NonNull DatabaseError error) {}
-                    });
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {}
+            });
     fab.setOnClickListener(
         view -> {
           Intent redirectToAssignmentCreate =
@@ -148,25 +150,26 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
   }
 
-  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-      switch (item.getItemId()){
-        case R.id.page_2:
-          Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
-          startActivity(toUserProfile);
-          overridePendingTransition(0, 0);
-          return true;
-        case R.id.page_3:
-          Intent toChat = new Intent(AssignmentOverviewActivity.this, UserAddUsers.class);
-          startActivity(toChat);
-          return true;
-      }
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+      new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+          switch (item.getItemId()) {
+            case R.id.page_2:
+              Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
+              startActivity(toUserProfile);
+              overridePendingTransition(0, 0);
+              return true;
+            case R.id.page_3:
+              Intent toChat = new Intent(AssignmentOverviewActivity.this, UserAddUsers.class);
+              startActivity(toChat);
+              return true;
+          }
 
-      return true;
-    }
-  };
+          return true;
+        }
+      };
 
   // Function to tell the app to start getting
   // data from database on starting of the activity
@@ -174,8 +177,8 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStart() {
     super.onStart();
     assignmentOverviewAdapter.startListening();
-//    assignmentOverviewAdapterWeek2.startListening();
-//    assignmentOverviewAdapterWeek3.startListening();
+    //    assignmentOverviewAdapterWeek2.startListening();
+    //    assignmentOverviewAdapterWeek3.startListening();
   }
 
   // Function to tell the app to stop getting
@@ -184,46 +187,45 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   protected void onStop() {
     super.onStop();
     assignmentOverviewAdapter.stopListening();
-//    assignmentOverviewAdapterWeek2.startListening();
-//    assignmentOverviewAdapterWeek3.startListening();
+    //    assignmentOverviewAdapterWeek2.startListening();
+    //    assignmentOverviewAdapterWeek3.startListening();
   }
 
   private ItemTouchHelper getItemTouchHelper(AssignmentOverviewAdapter adapter) {
-    return
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT /*| ItemTouchHelper.RIGHT */) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
+    return new ItemTouchHelper(
+        new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT /*| ItemTouchHelper.RIGHT */) {
+          @Override
+          public boolean onMove(
+              @NonNull RecyclerView recyclerView,
+              @NonNull RecyclerView.ViewHolder viewHolder,
+              @NonNull RecyclerView.ViewHolder target) {
+            return false;
+          }
 
-              /**
-               * To Delete on swipe:
-               * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
-               *
-               * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
-               * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-               */
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition() - 1;
-                tempAssignment =
-                    adapter.getSnapshots().getSnapshot(position).getValue(Assignment.class);
+          /**
+           * To Delete on swipe:
+           * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
+           *
+           * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
+           * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+           */
+          @Override
+          public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            int position = viewHolder.getAdapterPosition() - 1;
+            tempAssignment =
+                adapter.getSnapshots().getSnapshot(position).getValue(Assignment.class);
 
-                if (swipeDir == ItemTouchHelper.LEFT) {
-                  Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
-                      .setAction("Action", null)
-                      .show();
+            if (swipeDir == ItemTouchHelper.LEFT) {
+              Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
+                  .setAction("Action", null)
+                  .show();
 
-                  tempAssignment.delete();
-                  adapter.notifyItemRemoved(position);
-                  adapter.notifyDataSetChanged();
-                }
-              }
-            });
+              tempAssignment.delete();
+              adapter.notifyItemRemoved(position);
+              adapter.notifyDataSetChanged();
+            }
+          }
+        });
   }
 
   @Override
@@ -247,11 +249,12 @@ public class AssignmentOverviewActivity extends AppCompatActivity
         Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
         startActivity(toUserProfile);
         return true;
-//      case R.id.createassignment:
-//        Intent toCreateAssignment =
-//            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-//        startActivity(toCreateAssignment);
-//        return true;
+        //      case R.id.createassignment:
+        //        Intent toCreateAssignment =
+        //            new Intent(AssignmentOverviewActivity.this,
+        // AssignmentCreateFormActivity.class);
+        //        startActivity(toCreateAssignment);
+        //        return true;
     }
     return super.onOptionsItemSelected(item);
   }

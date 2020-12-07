@@ -25,6 +25,6 @@ public class MainActivity extends AppCompatActivity {
       Intent redirectSignUp = new Intent(this, SignUp.class);
       startActivity(redirectSignUp);
     }
-//    setContentView(R.layout.activity_main);
+    //    setContentView(R.layout.activity_main);
   }
 }

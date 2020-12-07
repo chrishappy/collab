@@ -1,5 +1,10 @@
 package com.themusicians.musiclms.nodeForms.addAttachments;
 
+import static android.app.Activity.RESULT_OK;
+import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.OPEN_ZOOM;
+import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.SHOW_PDF;
+import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.editAllAttachments;
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -7,13 +12,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +23,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,7 +33,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -43,13 +42,7 @@ import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.nodeForms.NodeActivity;
-
 import org.jetbrains.annotations.NotNull;
-
-import static android.app.Activity.RESULT_OK;
-import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.OPEN_ZOOM;
-import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.SHOW_PDF;
-import static com.themusicians.musiclms.nodeForms.addAttachments.ShowAllAttachmentsAdapter.editAllAttachments;
 
 /**
  * Displays the AllAttachment
@@ -77,6 +70,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   /** For Uploading a File */
   FirebaseStorage storage; // used for upload files
+
   StorageReference storageReference;
   ProgressDialog progressDialog;
   Uri pdfUri;
@@ -86,13 +80,14 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   /** For Zoom Meetings */
   EditText zoomMeeting, zoomPasscode;
+
   TextView zoomTutorialLink;
 
   /** The Save Attachment Button */
   private Button addAttachment;
 
   /** Receive the entity id of the attachment to edit */
-  public static ShowAllAttachmentsFragment newInstance(@NonNull Node nodeToBeEdited){
+  public static ShowAllAttachmentsFragment newInstance(@NonNull Node nodeToBeEdited) {
     ShowAllAttachmentsFragment fragment = new ShowAllAttachmentsFragment();
     Bundle args = new Bundle();
     fragment.setArguments(args);
@@ -102,16 +97,14 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     return fragment;
   }
 
-  /**
-   * Set the arguments
-   */
+  /** Set the arguments */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-//    if (getArguments() != null) {
-//      parentNodeId = getArguments().getString(PARENT_NODE_ID);
-//    }
+    //    if (getArguments() != null) {
+    //      parentNodeId = getArguments().getString(PARENT_NODE_ID);
+    //    }
 
     // The attachment for create attachment
     attachment = new AllAttachment();
@@ -119,8 +112,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     // The node to add attachments
     if (nodeToBeEdited != null) {
       Log.w("debugMissingNode", "id is: " + nodeToBeEdited.getId());
-    }
-    else {
+    } else {
       nodeToBeEdited = ((NodeActivity) getActivity()).getNodeForAttachments();
       if (nodeToBeEdited != null) {
         Log.w("debugMissingNode", "id2 is: " + nodeToBeEdited.getId());
@@ -137,8 +129,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
       initShowAttachmentRecyclerView();
       addAttachment.setVisibility(View.VISIBLE);
       showAllAttachmentsAdapter.startListening();
-    }
-    else {
+    } else {
       addAttachment.setVisibility(View.GONE);
     }
   }
@@ -160,9 +151,10 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
     // Add attachment
     addAttachment = root.findViewById(R.id.add_attachment_button);
-    addAttachment.setOnClickListener(view -> {
-      showCreateAttachmentPopup(addAttachment);
-    });
+    addAttachment.setOnClickListener(
+        view -> {
+          showCreateAttachmentPopup(addAttachment);
+        });
 
     // Set recycler, but initiate in onStart()
     recyclerView = root.findViewById(R.id.attachmentsOverviewRecycler);
@@ -174,7 +166,10 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
     FirebaseRecyclerOptions<AllAttachment> options =
         new FirebaseRecyclerOptions.Builder<AllAttachment>()
-            .setIndexedQuery(nodeToBeEdited.getAttachmentsKeyReference(), attachment.getEntityDatabase(), AllAttachment.class)
+            .setIndexedQuery(
+                nodeToBeEdited.getAttachmentsKeyReference(),
+                attachment.getEntityDatabase(),
+                AllAttachment.class)
             .build();
 
     // Create new Adapter
@@ -192,13 +187,12 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   public void onButtonClick(String type, String passedString, View clickedItem) {
     switch (type) {
       case editAllAttachments:
-
         editEntityId = passedString;
         inEditMode = true;
-        attachment.setId( editEntityId );
+        attachment.setId(editEntityId);
 
         showCreateAttachmentPopup(clickedItem);
-      break;
+        break;
 
       case SHOW_PDF:
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -208,7 +202,11 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
         try {
           startActivity(newIntent);
         } catch (ActivityNotFoundException e) {
-          Toast.makeText(getActivity(), "Unable to show pdf. Do you have a PDF reader installed?", Toast.LENGTH_SHORT).show();
+          Toast.makeText(
+                  getActivity(),
+                  "Unable to show pdf. Do you have a PDF reader installed?",
+                  Toast.LENGTH_SHORT)
+              .show();
         }
         break;
 
@@ -217,28 +215,39 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
         if (zoomParts.length == 2) {
           if (!launchZoomUrl(zoomParts[0], zoomParts[1])) {
-            Toast.makeText(getActivity(), "Unable to open Zoom. Do you have the app installed?", Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                    getActivity(),
+                    "Unable to open Zoom. Do you have the app installed?",
+                    Toast.LENGTH_SHORT)
+                .show();
           }
-        }
-        else {
-          Toast.makeText(getActivity(), "Unable to open Zoom. Please try editing attachment and including details again.", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(
+                  getActivity(),
+                  "Unable to open Zoom. Please try editing attachment and including details again.",
+                  Toast.LENGTH_SHORT)
+              .show();
         }
     }
   }
 
   /**
    * Show the popup to create or edit an attachment
+   *
    * @param anchorView The view to display the popup under
    */
   public void showCreateAttachmentPopup(View anchorView) {
 
-    final View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
-//    final RelativeLayout back_dim_layout = requireActivity().findViewById(R.id.share_bac_dim_layout);
+    final View popupView =
+        LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_attachments, null);
+    //    final RelativeLayout back_dim_layout =
+    // requireActivity().findViewById(R.id.share_bac_dim_layout);
 
     // Calculate size
     int width = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-    PopupWindow popupWindow = new PopupWindow(popupView, width - 100, ViewGroup.LayoutParams.WRAP_CONTENT);
+    PopupWindow popupWindow =
+        new PopupWindow(popupView, width - 100, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     // Set up all the fields
     initCreateAttachment(popupView, popupWindow);
@@ -249,12 +258,13 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     popupWindow.setBackgroundDrawable(new ColorDrawable(Color.rgb(225, 225, 225)));
 
     // Show Popup in the middle of the screen
-    popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0); //.showAsDropDown(anchorView, 0, 10);
-//    back_dim_layout.setVisibility(View.VISIBLE);
-//
-//    popupWindow.setOnDismissListener(() -> {
-//      back_dim_layout.setVisibility(View.GONE);
-//    });
+    popupWindow.showAtLocation(
+        anchorView, Gravity.CENTER, 0, 0); // .showAsDropDown(anchorView, 0, 10);
+    //    back_dim_layout.setVisibility(View.VISIBLE);
+    //
+    //    popupWindow.setOnDismissListener(() -> {
+    //      back_dim_layout.setVisibility(View.GONE);
+    //    });
   }
 
   /**
@@ -321,7 +331,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
                   if (attachment.getComment() != null) {
                     editComment.setText(attachment.getComment());
                   }
-                  
+
                   if (attachment.getFileUri() != null) {
                     pdfUri = Uri.parse(attachment.getFileUri());
                     setPdfFileUploaded(attachment.getFileUri());
@@ -352,6 +362,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
 
   /**
    * After saving or canceling the popup, run this function
+   *
    * @param popupToClose the popup currently opened
    */
   private void closePopup(PopupWindow popupToClose) {
@@ -361,24 +372,22 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     popupToClose.dismiss();
   }
 
-  /**
-   * Add a zoom meeting
-   */
+  /** Add a zoom meeting */
   private void initZoomMeeting(View root) {
     zoomMeeting = root.findViewById(R.id.zoomMeeting);
     zoomPasscode = root.findViewById(R.id.zoomPasscode);
     zoomTutorialLink = root.findViewById(R.id.zoomTutorialLink);
 
-    zoomTutorialLink.setOnClickListener(view -> {
-      final String zoomTutorial = "https://support.zoom.us/hc/en-us/articles/201362413-How-Do-I-Schedule-Meetings-";
-      Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(zoomTutorial));
-      startActivity(browserIntent);
-    });
+    zoomTutorialLink.setOnClickListener(
+        view -> {
+          final String zoomTutorial =
+              "https://support.zoom.us/hc/en-us/articles/201362413-How-Do-I-Schedule-Meetings-";
+          Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(zoomTutorial));
+          startActivity(browserIntent);
+        });
   }
 
-  /**
-   * Upload a file
-   */
+  /** Upload a file */
   private void initUploadFile(View root) {
 
     // Upload a file
@@ -395,32 +404,28 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     selectFile.setOnClickListener(
         view -> {
           if (ContextCompat.checkSelfPermission(
-              requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                  requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
               == PackageManager.PERMISSION_GRANTED) {
             selectPdf();
           } else
             ActivityCompat.requestPermissions(
-                requireActivity(),
-                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
-                9);
-           selectPdf();
+                requireActivity(), new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 9);
+          selectPdf();
         });
 
     uploadFile.setOnClickListener(
         view -> {
-          if(pdfUri != null) {
+          if (pdfUri != null) {
             uploadFile(pdfUri);
-          }
-          else {
+          } else {
             Toast.makeText(getActivity(), "Select a file", Toast.LENGTH_SHORT).show();
           }
         });
-    
+
     removeFile.setOnClickListener(
         view -> {
           removeFile();
-        }
-    );
+        });
   }
 
   /** Ask user permission to get PDF */
@@ -441,29 +446,27 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     startActivityForResult(intent, 86);
   }
 
-  /**
-   * Remove file from attachment and delete from database
-   */
+  /** Remove file from attachment and delete from database */
   private void removeFile() {
     String fileUrl = pdfUri.toString();
 
-    storage.getReferenceFromUrl(fileUrl)
+    storage
+        .getReferenceFromUrl(fileUrl)
         .delete()
         .addOnSuccessListener(
             taskSnapshot -> {
               Toast.makeText(
-                  getActivity(),
-                  getContext().getString(R.string.toast__attachment__file_delete_successful),
-                  Toast.LENGTH_SHORT)
+                      getActivity(),
+                      getContext().getString(R.string.toast__attachment__file_delete_successful),
+                      Toast.LENGTH_SHORT)
                   .show();
-
-        })
+            })
         .addOnFailureListener(
             e -> {
               Toast.makeText(
-                  getActivity(),
-                  getContext().getString(R.string.toast__attachment__file_delete_failed),
-                  Toast.LENGTH_SHORT)
+                      getActivity(),
+                      getContext().getString(R.string.toast__attachment__file_delete_failed),
+                      Toast.LENGTH_SHORT)
                   .show();
             });
   }
@@ -489,37 +492,34 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
         .putFile(pdfUri)
         .addOnSuccessListener(
             taskSnapshot -> {
-
               progressDialog.dismiss();
 
               Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
               task.addOnSuccessListener(
                   downloadUrl -> {
-                      attachment.setFileUri(pdfUri.toString());
-                      attachment.setDownloadFileUri(downloadUrl.toString());
-                      attachment.save();
+                    attachment.setFileUri(pdfUri.toString());
+                    attachment.setDownloadFileUri(downloadUrl.toString());
+                    attachment.save();
 
-                      Toast.makeText(
-                          getActivity(),
-                          getContext().getString(R.string.toast__attachment__file_successful),
-                          Toast.LENGTH_SHORT)
-                          .show();
-
+                    Toast.makeText(
+                            getActivity(),
+                            getContext().getString(R.string.toast__attachment__file_successful),
+                            Toast.LENGTH_SHORT)
+                        .show();
                   });
             })
         .addOnFailureListener(
-            e -> Toast.makeText(
-                getActivity(),
-                getContext().getString(R.string.toast__attachment__file_failed),
-                Toast.LENGTH_SHORT)
-                .show())
+            e ->
+                Toast.makeText(
+                        getActivity(),
+                        getContext().getString(R.string.toast__attachment__file_failed),
+                        Toast.LENGTH_SHORT)
+                    .show())
         .addOnProgressListener(
             taskSnapshot -> {
               int currentProgress =
                   (int)
-                      (100
-                          * taskSnapshot.getBytesTransferred()
-                          / taskSnapshot.getTotalByteCount());
+                      (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
               progressDialog.setProgress(currentProgress);
             });
   }
@@ -527,11 +527,13 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   /**
    * Open Zoom Meeting
    *
-   * Source: https://stackoverflow.com/q/63717072
-   * Author: Mithun Sarker Shuvro (https://stackoverflow.com/users/3887432)
+   * <p>Source: https://stackoverflow.com/q/63717072 Author: Mithun Sarker Shuvro
+   * (https://stackoverflow.com/users/3887432)
    */
   private boolean launchZoomUrl(String meetingId, String meetingPasscode) {
-    Uri zoomUri = Uri.parse(String.format("zoomus://zoom.us/join?confno=%s&pwd=%s", meetingId, meetingPasscode));
+    Uri zoomUri =
+        Uri.parse(
+            String.format("zoomus://zoom.us/join?confno=%s&pwd=%s", meetingId, meetingPasscode));
     Intent intent = new Intent(Intent.ACTION_VIEW, zoomUri);
     if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
       startActivity(intent);
@@ -539,33 +541,33 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
     }
     return false;
   }
-  
-  /**
-   * Process selected pdf for upload
-   */
+
+  /** Process selected pdf for upload */
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == 86 && resultCode == RESULT_OK && data!= null ){
+    if (requestCode == 86 && resultCode == RESULT_OK && data != null) {
       pdfUri = data.getData();
       String pathUrl = pdfUri.getLastPathSegment();
       if (pathUrl != null) {
         setPdfFileSelected(pathUrl);
       }
-    } else{
-      Toast.makeText(getActivity(),"Please select a file",Toast.LENGTH_SHORT).show();
+    } else {
+      Toast.makeText(getActivity(), "Please select a file", Toast.LENGTH_SHORT).show();
     }
   }
-  
+
   private void setPdfFileSelected(@NonNull String fileName) {
-    fileNotification.setText(String.format(getString(R.string.attachment__pdf_ppload_preview), fileName));
+    fileNotification.setText(
+        String.format(getString(R.string.attachment__pdf_ppload_preview), fileName));
 
     selectFile.setVisibility(View.GONE);
     uploadFile.setVisibility(View.VISIBLE);
     removeFile.setVisibility(View.GONE);
   }
-  
+
   private void setPdfFileUploaded(@NonNull String fileName) {
-    fileNotification.setText(String.format(getString(R.string.attachment__pdf_ppload_preview), fileName));
+    fileNotification.setText(
+        String.format(getString(R.string.attachment__pdf_ppload_preview), fileName));
 
     selectFile.setVisibility(View.GONE);
     uploadFile.setVisibility(View.GONE);

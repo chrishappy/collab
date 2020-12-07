@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.nodeForms.NodeActivity;
-
 import java.util.Objects;
 
 /**
@@ -42,18 +40,15 @@ public abstract class NodeViewActivity extends NodeActivity {
     viewEntityId = intent.getStringExtra(ACCEPT_ENTITY_ID);
   }
 
-  /**
-   * Hide delete button if not the author of the node
-   */
+  /** Hide delete button if not the author of the node */
   @Override
-  public boolean onPrepareOptionsMenu(Menu menu){
+  public boolean onPrepareOptionsMenu(Menu menu) {
     super.onPrepareOptionsMenu(menu);
 
     boolean isVisible = (Objects.equals(getNodeForAttachments().getUid(), currentUser.getUid()));
     try {
       menu.findItem(R.id.action_assignment_delete).setVisible(isVisible);
-    }
-    catch(Exception e) {
+    } catch (Exception e) {
       Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
     }
     return true;

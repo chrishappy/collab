@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,9 +44,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
   /** The To Do Item object */
   protected ToDoItem toDoItem;
 
-  /**
-   * @return the node we are editing
-   */
+  /** @return the node we are editing */
   @Override
   public Node getNodeForAttachments() {
     if (toDoItem == null) Log.w(LOAD_ENTITY_DATABASE_TAG, "todo item is null");
@@ -121,7 +118,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
     addToRequired(toDoItemName);
 
     // Initialize attachments
-//    initShowAttachments(R.id.showAttachments__to_do__create, "todo__create");
+    //    initShowAttachments(R.id.showAttachments__to_do__create, "todo__create");
 
     // Cancel the Assignment
     final Button assignmentCancel = findViewById(R.id.cancelAction);
@@ -158,9 +155,7 @@ public class ToDoTaskCreateFormActivity extends NodeCreateFormActivity {
         });
   }
 
-  /**
-   * Validate the form
-   */
+  /** Validate the form */
   @Override
   public boolean validateForm() {
     boolean result = true;

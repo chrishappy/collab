@@ -72,12 +72,10 @@ public class AssignmentOverviewAdapter
                   if (assignment.getAssignmentMarked()) {
                     holder.isMarkedCheck.setVisibility(View.VISIBLE);
                     holder.isDoneCheck.setVisibility(View.GONE);
-                  }
-                  else if (assignment.getAssignmentComplete()) {
+                  } else if (assignment.getAssignmentComplete()) {
                     holder.isMarkedCheck.setVisibility(View.GONE);
                     holder.isDoneCheck.setVisibility(View.VISIBLE);
-                  }
-                  else {
+                  } else {
                     holder.isMarkedCheck.setVisibility(View.GONE);
                     holder.isDoneCheck.setVisibility(View.GONE);
                   }
@@ -88,9 +86,8 @@ public class AssignmentOverviewAdapter
               });
     }
 
-
     if (assignment.getDueDate() != 0) {
-      Date date = new Date(assignment.getDueDate() );
+      Date date = new Date(assignment.getDueDate());
       DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
@@ -98,9 +95,12 @@ public class AssignmentOverviewAdapter
     // Set the progress
     double amountOfProgress = 0;
     if (assignment.getCountOfTotalToDos() != 0) {
-      amountOfProgress = (double) assignment.getCountOfDoneToDos() / assignment.getCountOfTotalToDos();
+      amountOfProgress =
+          (double) assignment.getCountOfDoneToDos() / assignment.getCountOfTotalToDos();
     }
-    if (amountOfProgress == 0) {  amountOfProgress = 0.05;  } // Always show some progress
+    if (amountOfProgress == 0) {
+      amountOfProgress = 0.05;
+    } // Always show some progress
 
     holder.progressBar.setProgress((int) (amountOfProgress * 100), true);
 

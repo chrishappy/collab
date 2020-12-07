@@ -22,7 +22,6 @@ import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
  * @contributors Jerome Lau
  * @author: Jerome Lau
  * @since Nov 4, 2020
- *
  */
 public class UserLogin extends AppCompatActivity {
 
@@ -76,7 +75,8 @@ public class UserLogin extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                          Toast.makeText(UserLogin.this, R.string.login_successful, Toast.LENGTH_SHORT)
+                          Toast.makeText(
+                                  UserLogin.this, R.string.login_successful, Toast.LENGTH_SHORT)
                               .show();
                           startActivity(
                               new Intent(
@@ -84,7 +84,8 @@ public class UserLogin extends AppCompatActivity {
                         } else {
                           Toast.makeText(
                                   UserLogin.this,
-                                  getString(R.string.login_error) + task.getException().getMessage(),
+                                  getString(R.string.login_error)
+                                      + task.getException().getMessage(),
                                   Toast.LENGTH_SHORT)
                               .show();
                         }

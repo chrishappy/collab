@@ -1,14 +1,12 @@
 package com.themusicians.musiclms;
 
+import static java.lang.Math.floor;
+
+import android.os.Bundle;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,15 +21,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
 
-import static java.lang.Math.floor;
-
 /**
  * Display the users submission analysis
  *
  * @contributors Nathan Tsai
  * @author Jerome Lau
  * @since Dec 3, 2020
- *
  */
 public class UserAnalysisStudent extends AppCompatActivity {
 
@@ -61,59 +56,69 @@ public class UserAnalysisStudent extends AppCompatActivity {
     currUser = new User(currentUser.getUid());
 
     /** Gets the users name as a reference */
-    reference = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("chartTable");
-    DatabaseReference nameRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("name");
-    nameRef.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        myName = snapshot.getValue().toString();
-      }
+    reference =
+        FirebaseDatabase.getInstance()
+            .getReference()
+            .child("node__user")
+            .child(currentUser.getUid())
+            .child("chartTable");
+    DatabaseReference nameRef =
+        FirebaseDatabase.getInstance()
+            .getReference()
+            .child("node__user")
+            .child(currentUser.getUid())
+            .child("name");
+    nameRef.addValueEventListener(
+        new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            myName = snapshot.getValue().toString();
+          }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
 
-      }
-    });
-
-    x=0;
-    y=0;
+    x = 0;
+    y = 0;
     reference.removeValue();
-    PointValue pointValue = new PointValue(x,y);
+    PointValue pointValue = new PointValue(x, y);
     String id = reference.push().getKey();
     reference.child(id).setValue(pointValue);
     setListeners();
   }
 
-  /** Checks Firebase for assignments the student has
-   *  Gets time difference from submission and due date
-   *  Stores in users chartTable
+  /**
+   * Checks Firebase for assignments the student has Gets time difference from submission and due
+   * date Stores in users chartTable
    */
   private void setListeners() {
-    DatabaseReference aRef = FirebaseDatabase.getInstance().getReference().child("node__assignment");
+    DatabaseReference aRef =
+        FirebaseDatabase.getInstance().getReference().child("node__assignment");
 
-    aRef.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for(DataSnapshot ds : snapshot.getChildren()){
-          Assignment assignment = ds.getValue(Assignment.class);
-          if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
+    aRef.addValueEventListener(
+        new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            for (DataSnapshot ds : snapshot.getChildren()) {
+              Assignment assignment = ds.getValue(Assignment.class);
+              if (myName.equals(assignment.getClassId())
+                  && assignment.getAssignmentCompleteTime() != null) {
 
-            x++;
-            y = (long) assignment.getAssignmentCompleteTimeLong() - assignment.getDueDate();
+                x++;
+                y = (long) assignment.getAssignmentCompleteTimeLong() - assignment.getDueDate();
 
-            y = (long) (floor(((y/1000)/60)/60)/24);
-            PointValue pointValue = new PointValue(x,y);
-            String id = reference.push().getKey();
-            reference.child(id).setValue(pointValue);
+                y = (long) (floor(((y / 1000) / 60) / 60) / 24);
+                PointValue pointValue = new PointValue(x, y);
+                String id = reference.push().getKey();
+                reference.child(id).setValue(pointValue);
+              }
+            }
           }
-        }
-      }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
   }
 
   /** Fetches data from Firebase and displays it in a graph */
@@ -121,26 +126,25 @@ public class UserAnalysisStudent extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
 
-    reference.addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
-        int index = 0;
+    reference.addValueEventListener(
+        new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            DataPoint[] dp = new DataPoint[(int) snapshot.getChildrenCount()];
+            int index = 0;
 
-        for(DataSnapshot myDataSnapshot : snapshot.getChildren()){
-          PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
-          dp[index] = new DataPoint(pointValue.getxValue(), pointValue.getyValue());
-          index++;
-        }
+            for (DataSnapshot myDataSnapshot : snapshot.getChildren()) {
+              PointValue pointValue = myDataSnapshot.getValue(PointValue.class);
+              dp[index] = new DataPoint(pointValue.getxValue(), pointValue.getyValue());
+              index++;
+            }
 
-        series.resetData(dp);
-      }
+            series.resetData(dp);
+          }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {}
+        });
   }
 
   /** Displays graph key */
@@ -152,5 +156,4 @@ public class UserAnalysisStudent extends AppCompatActivity {
     AlertDialog showKey = key.create();
     showKey.show();
   }
-
 }
