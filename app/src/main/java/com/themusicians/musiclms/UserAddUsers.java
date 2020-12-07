@@ -56,7 +56,7 @@ public class UserAddUsers extends AppCompatActivity {
 
 
     bottomNavigationView = findViewById(R.id.bottom_navigation);
-    bottomNavigationView.setSelectedItemId(R.id.page_2);
+    bottomNavigationView.setSelectedItemId(R.id.page_3);
     bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
     // display name

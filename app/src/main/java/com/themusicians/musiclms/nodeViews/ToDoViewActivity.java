@@ -1,7 +1,9 @@
 package com.themusicians.musiclms.nodeViews;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,16 +31,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.chat.Chat;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,6 +94,10 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   private Button addRecording;
   private boolean alreadyInitAddRecording = false;
   private boolean alreadyInitYoutubeRecording = false;
+
+  /** Tech experience */
+  List<String> exp = new ArrayList<>();
+  int count = 0;
 
   @Override
   public void onStart() {
@@ -217,6 +228,65 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 
     // Initialize Attachments
 //    initShowAttachments(R.id.showAttachments__to_do__view, "todo__view");
+
+    /** Checks to see if user needs help with uploading youtube videos */
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    DatabaseReference tech = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("techExperience");
+
+    tech.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for(DataSnapshot ds : snapshot.getChildren()){
+          exp.add(ds.getValue(String.class));
+          count++;
+        }
+      }
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
+
+    tech.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        boolean popup = true;
+        for (DataSnapshot ds : snapshot.getChildren()){
+          if(ds.getValue(String.class).equals(getString(R.string.upload_youtube))){
+            popup = false;
+          }
+        }
+        if(popup){
+          final String [] listItems = {getString(R.string.youtube_help), getString(R.string.not_again)};
+          AlertDialog.Builder mBuilder = new AlertDialog.Builder(ToDoViewActivity.this);
+          mBuilder.setTitle(R.string.youtube_tutorial);
+          mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              if(which == 0){
+                Intent viewIntent =
+                  new Intent("android.intent.action.VIEW",
+                    Uri.parse("https://www.businessinsider.com/how-to-upload-a-video-to-youtube"));
+                startActivity(viewIntent);
+              }
+              if(which == 1){
+                tech.child(Integer.toString(count)).setValue(getString(R.string.upload_youtube));
+              }
+              dialog.dismiss();
+            }
+          });
+          AlertDialog mDialog = mBuilder.create();
+          mDialog.show();
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
   }
 
   /** Return the node to add attachments to */

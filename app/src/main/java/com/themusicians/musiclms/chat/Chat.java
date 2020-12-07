@@ -3,6 +3,7 @@ package com.themusicians.musiclms.chat;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,7 +67,9 @@ public class Chat extends AppCompatActivity {
   String userId;
   APIService apiService;
   boolean notify = true;
-
+  User currUser;
+  List<String> exp = new ArrayList<>();
+  int count = 0;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,7 @@ public class Chat extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
     linearLayoutManager.setStackFromEnd(true);
     recyclerView.setLayoutManager(linearLayoutManager);
+    currUser = new User(currentUser.getUid());
 
     /** gets the user id of who the message is being sent to */
     toRef.addValueEventListener(new ValueEventListener() {
@@ -96,7 +100,7 @@ public class Chat extends AppCompatActivity {
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
             toMessageName = snapshot.getValue(String.class);
-            setTitle(String.format(getString(R.string.activity__dynamic_chat_with_title), toMessageName));
+            //setTitle(String.format(getString(R.string.activity__dynamic_chat_with_title), toMessageName));
           }
 
           @Override
@@ -168,20 +172,16 @@ public class Chat extends AppCompatActivity {
       }
     });
 
+    /** Adds tech experience from firebase to list */
     DatabaseReference tech = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("techExperience");
     tech.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        boolean popup = true;
-        for (DataSnapshot ds : snapshot.getChildren()){
-          if(ds.getValue(String.class).equals("Can send Text")){
-            popup = false;
-          }
-        }
-        if(popup){
-          AlertDialog.Builder mBuilder = new AlertDialog.Builder(Chat.this);
 
 
+        for(DataSnapshot ds : snapshot.getChildren()){
+          exp.add(ds.getValue(String.class));
+          count++;
         }
       }
 
@@ -191,6 +191,40 @@ public class Chat extends AppCompatActivity {
       }
     });
 
+    /** Checks if user needs help with chatting */
+    tech.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        boolean popup = true;
+        for (DataSnapshot ds : snapshot.getChildren()){
+          if(ds.getValue(String.class).equals(getString(R.string.make_text))){
+            popup = false;
+          }
+        }
+        if(popup){
+          final String [] listItems = {getString(R.string.chat_tutorial)};
+          AlertDialog.Builder mBuilder = new AlertDialog.Builder(Chat.this);
+          mBuilder.setTitle(R.string.texting_tutorial);
+          mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              if(which == 0){
+                tech.child(Integer.toString(count)).setValue(getString(R.string.make_text));
+              }
+
+              dialog.dismiss();
+            }
+          });
+          AlertDialog mDialog = mBuilder.create();
+          mDialog.show();
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
   }
 
 //  private void createNotificationChannel() {

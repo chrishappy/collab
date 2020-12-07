@@ -236,5 +236,10 @@
     <string name="upload_youtube">Can upload Youtube</string>
     <string name="student_key">This graph represents the student\'s submission time relative to the due date. Each X value represents an assignment. The Y value 0 is the due date, all values above are how many days after the due date the assignment is submitted. All Y values below 0 are how early the student submits the assignment in days.</string>
     <string name="teacher_key">This graph represents the frequency of the student\'s submission time relative to the due date. Each X value represents days before and after an assignment has been submitted with X value 0 being the due date. The Y represent the quantity of assignments at each X value.</string>
+    <string name="texting_tutorial">Texting Tutorial</string>
+    <string name="not_again">Never Show Again</string>
+    <string name="chat_tutorial">To send text, tap the message box where it says Type a message..., then type what you wish to send and press SEND. Got it?</string>
+    <string name="youtube_tutorial">Youtube Tutorial</string>
+    <string name="youtube_help">Need help uploading videos to youtube?</string>
 
 </resources>
