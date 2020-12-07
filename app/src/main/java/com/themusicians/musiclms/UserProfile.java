@@ -1,5 +1,6 @@
 package com.themusicians.musiclms;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -58,14 +62,14 @@ public class UserProfile extends NodeViewActivity {
   boolean reInput;
   protected ListView instrumentList;
   protected User currUser;
-
+  BottomNavigationView bottomNavigationView;
 
 
   /** The node that has the attachments */
-  @Override
+  /*@Override
   public Node getNodeForAttachments() {
     return currUser;
-  }
+  }*/
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +90,12 @@ public class UserProfile extends NodeViewActivity {
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
     currUser = new User(currentUser.getUid());
 
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_2);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments);
+//    initShowAttachments(R.id.showAttachments__user_profile, "user_profile");
 
     /*
      * Instrument list
@@ -138,7 +146,8 @@ public class UserProfile extends NodeViewActivity {
           }
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {}
+          public void onCancelled(@NonNull DatabaseError error) {
+          }
         });
 
     /* Saves user instruments in Firebase */
@@ -168,13 +177,13 @@ public class UserProfile extends NodeViewActivity {
                        */
                       if (instrumentName.isEmpty()) {
                         Toast.makeText(
-                                UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
+                            UserProfile.this, R.string.no_instrument, Toast.LENGTH_SHORT)
                             .show();
                       } else if (isNew == false) {
                         Toast.makeText(
-                                UserProfile.this,
-                                instrumentName.toLowerCase() + getString(R.string.already_added),
-                                Toast.LENGTH_SHORT)
+                            UserProfile.this,
+                            instrumentName.toLowerCase() + getString(R.string.already_added),
+                            Toast.LENGTH_SHORT)
                             .show();
                       } else {
                         instruments.add(instrumentName);
@@ -189,7 +198,8 @@ public class UserProfile extends NodeViewActivity {
               }
 
               @Override
-              public void onCancelled(@NonNull DatabaseError error) {}
+              public void onCancelled(@NonNull DatabaseError error) {
+              }
             });
 
     /*
@@ -221,7 +231,7 @@ public class UserProfile extends NodeViewActivity {
           /**
            * Updates instrument list if instrument is changed
            *
-           * @param snapshot data snapshot to fetch data from Firebase
+           * @param snapshot          data snapshot to fetch data from Firebase
            * @param previousChildName
            */
           @Override
@@ -246,35 +256,35 @@ public class UserProfile extends NodeViewActivity {
 
           @Override
           public void onChildMoved(
-              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+          }
 
           @Override
-          public void onCancelled(@NonNull DatabaseError error) {}
+          public void onCancelled(@NonNull DatabaseError error) {
+          }
         });
 
-          /** Shifan's code */
-          ActionBar actionBar = getSupportActionBar();
-          actionBar.setTitle(getResources().getString(R.string.app_name));
+    /** Shifan's code */
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setTitle(getResources().getString(R.string.app_name));
 
-          Button changeLang = findViewById(R.id.changeMyLang);
-          changeLang.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                  showChangeLanguageDialog();
-              }
-          });
-          /** End of Shifan's code */
-  }
-
-  /** Redirects to add users */
-  public void toAddUser(View view) {
-    Intent toAdd = new Intent(this, UserAddUsers.class);
-    startActivity(toAdd);
+    Button changeLang = findViewById(R.id.changeMyLang);
+    changeLang.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        showChangeLanguageDialog();
+      }
+    });
+    /** End of Shifan's code */
   }
 
   /** Redirects User to Editing data */
   public void toEditData(View view) {
     setContentView(R.layout.user_profile_edit_data);
+
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_2);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
   }
 
   /** Updates user name in Firebase */
@@ -343,29 +353,41 @@ public class UserProfile extends NodeViewActivity {
     passwordResetDialog.create().show();
   }
 
-  /** Redirects user to user profile page */
-  public void editDataBack(View view) {
-    Intent reload = new Intent(this, UserProfile.class);
-    startActivity(reload);
-  }
-
-  /** Redirects user to Assignment Overview */
-  public void backFromProfile(View view) {
-    Intent toAssignmentOverview = new Intent(this, AssignmentOverviewActivity.class);
-    startActivity(toAssignmentOverview);
-  }
-
   /** Redirects user to User Analysis */
   public void toAnalysis(View view) {
-    Intent toUserAnalysis = new Intent(this, UserAnalysis.class);
+    Intent toUserAnalysis;
+    if(currUser.getRole().equals("Student")){
+      toUserAnalysis = new Intent(this, UserAnalysisStudent.class);
+    } else {
+      toUserAnalysis = new Intent(this, UserAnalysisTeacher.class);
+    }
     startActivity(toUserAnalysis);
   }
+
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+      switch (item.getItemId()){
+        case R.id.page_1:
+          Intent toAssignmentOverview = new Intent(UserProfile.this, AssignmentOverviewActivity.class);
+          startActivity(toAssignmentOverview);
+          return true;
+        case R.id.page_3:
+          Intent toChat = new Intent(UserProfile.this, UserAddUsers.class);
+          startActivity(toChat);
+          return true;
+      }
+
+      return true;
+    }
+  };
 
   /** Shifan's code */
   private void showChangeLanguageDialog() {
       final String[] listItems = {"English", "简体中文"};
       AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserProfile.this);
-      mBuilder.setTitle("Choose Language...");
+      mBuilder.setTitle(R.string.user_profile__choose_language);
       mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialogInterface, int i) {
@@ -424,6 +446,15 @@ public class UserProfile extends NodeViewActivity {
       SharedPreferences prefs = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
       String language = prefs.getString("My_Lang", "");
       setLocale(language);
+  }
+
+  /**
+   * Lo
+   * @return
+   */
+  @Override
+  public Node getNodeForAttachments() {
+    return currUser;
   }
 
   /**End of Shifan's code */

@@ -1,53 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-    android:layout_marginVertical="@dimen/activity_vertical_margin">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_name"
-        android:textColor="@color/orangePrimary"
-        android:textSize="30sp"
-        android:layout_marginBottom="@dimen/text_margin"
-        app:layout_constraintBottom_toTopOf="@+id/addedUsers"
-        app:layout_constraintEnd_toStartOf="@+id/searchUsers"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/searchUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/orangePrimary"
-        android:onClick="toSearchUsers"
-        android:text="@string/Add_New_Users"
-        android:textColor="#fff"
-        android:layout_marginBottom="@dimen/smallPadding"
-        app:layout_constraintBottom_toTopOf="@+id/addedUsers"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <SearchView
-        android:id="@+id/addedSearch"
-        android:layout_width="match_parent"
-        android:layout_height="38dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/addedRecycler"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        android:id="@+id/userAddMainLayout">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_name"
+            android:textColor="@color/orangePrimary"
+            android:textSize="30sp"
+            android:layout_marginBottom="@dimen/text_margin"
+            app:layout_constraintBottom_toTopOf="@+id/addedUsers"
+            app:layout_constraintEnd_toStartOf="@+id/searchUsers"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/searchUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orangePrimary"
+            android:onClick="toSearchUsers"
+            android:text="@string/Add_New_Users"
+            android:textColor="#fff"
+            android:layout_marginBottom="@dimen/smallPadding"
+            app:layout_constraintBottom_toTopOf="@+id/addedUsers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <SearchView
+            android:id="@+id/addedSearch"
+            android:layout_width="match_parent"
+            android:layout_height="38dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/addedRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/nav_footer_height" />
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/userAddMainLayout"
+        app:layout_anchorGravity="bottom|center"
+        android:background="@color/white"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemTextColor="@drawable/selector"
+        app:itemIconTint="@drawable/selector"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

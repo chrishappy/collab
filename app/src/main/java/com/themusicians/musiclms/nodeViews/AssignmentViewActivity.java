@@ -1,8 +1,12 @@
 package com.themusicians.musiclms.nodeViews;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -11,20 +15,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.client.Firebase;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.themusicians.musiclms.PointValue;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.UserLogin;
+import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
@@ -86,6 +89,9 @@ public class AssignmentViewActivity extends NodeViewActivity
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   assignment = dataSnapshot.getValue(Assignment.class);
 
+                  // Register options menu
+                  invalidateOptionsMenu();
+
                   assert assignment != null;
 
                   if (assignment.getName() != null) {
@@ -97,7 +103,7 @@ public class AssignmentViewActivity extends NodeViewActivity
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate() * 1000);
+                    Date date = new Date(assignment.getDueDate() );
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
                     dueDate.setText(dateFormat.format(date));
                   }
@@ -114,12 +120,20 @@ public class AssignmentViewActivity extends NodeViewActivity
                       assignmentMarkedWrapper.setVisibility(View.VISIBLE);
                       assignmentCompleteWrapper.setVisibility(View.GONE);
                     }
+                    else {
+                      assignmentMarkedWrapper.setVisibility(View.GONE);
+                      assignmentCompleteWrapper.setVisibility(View.GONE);
+                    }
                   }
-                  // TODO reenable afterwards
-//                  else { // must be student
-                  assignmentMarkedWrapper.setVisibility(View.GONE);
+                  else { // must be student
+                    editButton.setVisibility(View.GONE);
+                    assignmentMarkedWrapper.setVisibility(View.GONE);
                     assignmentCompleteWrapper.setVisibility(View.VISIBLE);
-//                  }
+
+                    // Hide edit and delete functions
+                    // https://stackoverflow.com/a/32072318
+//                    final MenuItem editMenuItem = findItem(R.id.action_assignment_edit);
+                  }
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
@@ -214,7 +228,7 @@ public class AssignmentViewActivity extends NodeViewActivity
     initToDoItemsList();
 
     // Initialize Attachments
-    initShowAttachments(R.id.showAttachments__assignments);
+    initShowAttachments(R.id.showAttachments__assignments, "");
   }
 
   /** Return the node to add attachments to */
@@ -232,42 +246,42 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     toDoItemsRecyclerView.setLayoutManager(
         new GridLayoutManager(AssignmentViewActivity.this, 1));
-    ItemTouchHelper itemTouchHelper =
-        new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-              @Override
-              public boolean onMove(
-                  @NonNull RecyclerView recyclerView,
-                  @NonNull RecyclerView.ViewHolder viewHolder,
-                  @NonNull RecyclerView.ViewHolder target) {
-                return false;
-              }
-
-              @Override
-              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
-                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
-
-                switch (swipeDir) {
-                  case ItemTouchHelper.LEFT:
-                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-
-                  case ItemTouchHelper.RIGHT:
-                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
-                    break;
-                }
-
-                // Remove item from backing list here
-                toDoItemsAdapter.notifyDataSetChanged();
-              }
-            });
-    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
+//    ItemTouchHelper itemTouchHelper =
+//        new ItemTouchHelper(
+//            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//              @Override
+//              public boolean onMove(
+//                  @NonNull RecyclerView recyclerView,
+//                  @NonNull RecyclerView.ViewHolder viewHolder,
+//                  @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//              }
+//
+//              @Override
+//              public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
+//
+//                //        ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder swipedAssignment =
+//                // (ToDoAssignmentFormAdapter.ToDoRecordingFeedbackViewHolder) viewHolder;
+//
+//                switch (swipeDir) {
+//                  case ItemTouchHelper.LEFT:
+//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped left", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
+//
+//                  case ItemTouchHelper.RIGHT:
+//                    Snackbar.make(toDoItemsRecyclerView, "ToDo swiped right", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null)
+//                        .show();
+//                    break;
+//                }
+//
+//                // Remove item from backing list here
+//                toDoItemsAdapter.notifyDataSetChanged();
+//              }
+//            });
+//    itemTouchHelper.attachToRecyclerView(toDoItemsRecyclerView);
 
     // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
     // data
@@ -282,6 +296,10 @@ public class AssignmentViewActivity extends NodeViewActivity
     // Create new Adapter
     toDoItemsAdapter = new ToDoAssignmentFormAdapter(toDoOptionsQuery);
     toDoItemsAdapter.addItemClickListener(this);
+
+    LinearLayoutManager llm = new LinearLayoutManager(this);
+    llm.setOrientation(LinearLayoutManager.VERTICAL);
+    toDoItemsRecyclerView.setLayoutManager(llm);
     toDoItemsRecyclerView.setAdapter(toDoItemsAdapter);
   }
 

@@ -10,6 +10,7 @@ import com.themusicians.musiclms.entity.Attachment.AllAttachment;
 import com.themusicians.musiclms.entity.Attachment.Attachment;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class Assignment extends Node {
   /** Whether this assignment is completed */
   protected boolean assignmentComplete;
 
-  protected Object assignmentCompleteTime;
+  protected Long assignmentCompleteTime;
 
   /** Whether this assignment is marked */
   protected boolean assignmentMarked;
@@ -155,10 +156,19 @@ public class Assignment extends Node {
    */
   @Override
   public void postSave() {
+
+    User tempUser = new User();
     // Add assignment to user
     if (getUid() != null) {
-      User tempUser = new User(getUid());
+      tempUser.setId(getUid());
       tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+    }
+
+    if (getAssignees() != null && !getAssignees().isEmpty()) {
+      for (String assignee : getAssignees()) {
+        tempUser.setId(assignee);
+        tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+      }
     }
   }
 
@@ -176,8 +186,6 @@ public class Assignment extends Node {
     }
 
     super.delete();
-
-    Log.w("Assignment", "Deleted Assignment: " + getId());
   }
 
   /**
@@ -202,6 +210,10 @@ public class Assignment extends Node {
     }
   }
 
+  public void reSetAssignees(){
+    assignees = new LinkedList<>();
+  }
+
   public void setAssignees(List<String> assignees) {
     this.assignees = assignees;
   }
@@ -216,16 +228,25 @@ public class Assignment extends Node {
   public void setAssignmentComplete(boolean assignmentComplete) {
     this.assignmentComplete = assignmentComplete;
 
+//    assignmentCompleteTime = (long) ServerValue.TIMESTAMP;
+  }
+
+  public java.util.Map<String, String> getAssignmentCompleteTime() {
     if (getAssignmentComplete()) {
-      setAssignmentCompleteTime(ServerValue.TIMESTAMP);
+      //TODO replace with proper
+      return ServerValue.TIMESTAMP;
+    }
+    else {
+      return null;
     }
   }
 
-  public Object getAssignmentCompleteTime() {
+  @Exclude
+  public Long getAssignmentCompleteTimeLong() {
     return assignmentCompleteTime;
   }
 
-  public void setAssignmentCompleteTime(Object assignmentCompleteTime) {
+  public void setAssignmentCompleteTime(Long assignmentCompleteTime) {
     this.assignmentCompleteTime = assignmentCompleteTime;
   }
 
@@ -238,6 +259,10 @@ public class Assignment extends Node {
 
   public void setAssignmentMarked(boolean assignmentMarked) {
     this.assignmentMarked = assignmentMarked;
+
+    if (getAssignmentMarked()) {
+      setAssignmentMarkedTime(ServerValue.TIMESTAMP);
+    }
   }
 
   public Object getAssignmentMarkedTime() {

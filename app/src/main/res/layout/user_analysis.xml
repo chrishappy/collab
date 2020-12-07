@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserAnalysis">
+    tools:context=".UserAnalysisStudent">
 
     <Button
         android:layout_width="wrap_content"
@@ -13,8 +13,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:onClick="readKey"
-        android:text="@string/key"
-        tools:ignore="OnClick" />
+        android:text="@string/info_about_graph"
+        tools:ignore="OnClick"
+        android:id="@+id/keybutton"/>
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphView"

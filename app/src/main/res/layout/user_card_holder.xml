@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
+    android:layout_marginVertical="@dimen/listItemSmallVerticalMargin"
     android:scrollbars="vertical">
 
 
@@ -16,84 +14,52 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/placeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/name"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/searchName"
-            android:layout_width="0dp"
-            android:textColor="@color/orangePrimary"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="@string/placeholder"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/placeName"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/placeEmail"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/placeholder"
+            android:textColor="@color/orangePrimary"
+            android:textSize="25sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/email"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeName" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/searchEmail"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:maxLines="1"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#000"
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/placeEmail"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
         <TextView
-            android:id="@+id/placeRole"
+            android:id="@+id/searchRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-
-            android:text="@string/role"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/placeEmail" />
-
-        <TextView
-            android:id="@+id/searchRole"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:maxLines="1"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#000"
             android:text="@string/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/placeRole"
-            app:layout_constraintTop_toBottomOf="@+id/searchEmail" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/searchEmail"
+            app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
         <LinearLayout
             android:id="@+id/actionsButtons"
@@ -102,31 +68,32 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchRole"
-            android:gravity="end">
+            android:orientation="horizontal"
+            android:gravity="start">
 
             <Button
                 android:id="@+id/searchViewUser"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginVertical="12dp"
                 android:layout_marginEnd="16dp"
-                android:background="@color/orangePrimary"
-                android:textColor="#fff"
-                android:hint="@string/view"/>
+                android:hint="@string/view" />
 
             <Button
                 android:id="@+id/searchAdd"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/orangePrimary"
-                android:textColor="#fff"
-                android:hint="@string/add"/>
+                android:backgroundTint="@color/colorPrimary"
+                android:hint="@string/add"
+                android:textColor="#fff" />
 
         </LinearLayout>
 

@@ -43,39 +43,7 @@ public interface EntityInterface {
    */
   List<Entity> loadMultiple(int[] id);
 
-  /**
-   * Set a bunch of properties dynamically
-   *
-   * @param valueMap The fields values for the Entity
-   * @return the Entity class
-   */
-  //    Entity setFields(Map<String, Object> valueMap);
-
-  /**
-   * Set a property dynamically
-   *
-   * @param fieldName The name of the property
-   * @param value The value to set it to.
-   * @return The Entity with value
-   */
-  //    Entity setField(String fieldName, Object value);
-
-  /**
-   * Get all properties dynamically
-   *
-   * @return a map of the the fields
-   */
-  //    Map<String, Object> getFields();
-
-  /**
-   * Get a property dynamically
-   *
-   * @param fieldName
-   * @return the value of the property
-   */
-  //    Object getField(String fieldName);
-
-  /** @return True if the data is correctly saved */
+  /** Save and write the entity to the database */
   void save();
 
   /** @return True if the data is correctly deleted */

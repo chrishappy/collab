@@ -95,7 +95,6 @@ public abstract class Entity implements EntityInterface {
   @Override
   public abstract List<Entity> loadMultiple(int[] id);
 
-  /** @return True if the data is correctly saved */
   @Override
   public abstract void save();
 

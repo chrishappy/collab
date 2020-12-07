@@ -2,6 +2,15 @@ package com.themusicians.musiclms.nodeForms;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.EditText;
+
+import com.themusicians.musiclms.R;
+
+import java.util.LinkedList;
+import java.util.List;
 
 // import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 
@@ -41,5 +50,50 @@ public abstract class NodeCreateFormActivity extends NodeActivity {
     if (editEntityId != null) {
       inEditMode = true;
     }
+  }
+
+  /**
+   * Hide delete button if not the author of the node
+   */
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu){
+    super.onPrepareOptionsMenu(menu);
+
+    boolean isVisible = (getNodeForAttachments().getId() != null);
+    try {
+      menu.findItem(R.id.action_assignment_delete).setVisible(isVisible);
+    }
+    catch(Exception e) {
+      Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
+    }
+
+    return true;
+  }
+
+  /**
+   * List of Edit Text that can not be empty before saving
+   */
+  private final List<EditText> requiredEditTexts = new LinkedList<>();
+
+  /**
+   * Validate the form before save
+   */
+  public boolean validateForm() {
+    boolean result = true;
+
+    if (!requiredEditTexts.isEmpty()) {
+      for (EditText editText : requiredEditTexts) {
+        if (editText.getText() == null || TextUtils.isEmpty(editText.getText().toString())) {
+          editText.setError(getString(R.string.node_create__empty_field_error));
+          result = false;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public void addToRequired(EditText editTextThatMustBeFilled) {
+    requiredEditTexts.add(editTextThatMustBeFilled);
   }
 }

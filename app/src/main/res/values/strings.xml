@@ -44,7 +44,7 @@
 
     <string name="title_activity_to_do_item_create_form">Create ToDo Item</string>
     <string name="to_do_item__form__name">Name</string>
-    <string name="to_do_item__form__require_recording">Require Recording</string>
+    <string name="to_do_item__form__require_recording">Enable Recording</string>
     <string name="form__edit_button">Edit</string>
     <string name="user_profile_chat">Chat</string>
     <string name="form__delete_button">Delete</string>
@@ -107,7 +107,7 @@
     <string name="Logout">Logout</string>
     <string name="user_preferred_name">Preferred Name</string>
     <string name="user_hi_i_am">Hi, I am ...</string>
-    <string name="user_signup_email">Email</string>
+    <string name="user_signup_email">Your email (or your parents)</string>
     <string name="user_signup_password">Password</string>
     <string name="user_signup_teacher">Teacher</string>
     <string name="user_signup_student">Student</string>
@@ -155,7 +155,7 @@
     <string name="toast__attachment__file_failed">File Upload was not sucessful</string>
     <string name="attachment__upload_file">Upload</string>
     <string name="attachment__remove_file">Remove</string>
-    <string name="attachment__download_file">Open Assignment Pdf</string>
+    <string name="attachment__download_file">Open Pdf</string>
     <string name="attachment__form__file_label">Upload PDF</string>
     <string name="attachment__add__file">Select PDF</string>
     <string name="no_file_is_selected">No PDF selected</string>
@@ -206,4 +206,24 @@
     <string name="attachment__open_zoom">Open Meeting</string>
     <string name="placeholder_date__sort">Dec. 30</string>
     <string name="assignment_overview__add_assignment">Add Assignment</string>
+    <string name="stats">Stats</string>
+    <string name="text_label_1">Assignments</string>
+    <string name="text_label_2">User Profile</string>
+    <string name="text_label_3">Chat</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_duplicate">Duplicate</string>
+    <string name="action_edit">Edit</string>
+    <string name="analysis">Analysis</string>
+    <string name="add_attachment_literal">Add Attachment</string>
+    <string name="activity__dynamic_chat_with_title">Chat with %s</string>
+    <string name="Delete">Delete</string>
+    <string name="delete_confirm_message">Are you sure you want to delete "%s"? This can not be undone.</string>
+    <string name="node_create__empty_field_error">Field can not be empty.</string>
+    <string name="user_profile__choose_language">Choose Language...</string>
+    <string name="assignment__form__attachments">Attachments</string>
+    <string name="add_attachment__zoom_tutorial">(Zoom Tutorial)</string>
+    <string name="info_about_graph">About Graph</string>
+    <string name="email_is_required">Email is Required.</string>
+    <string name="password_is_required">Password is Required</string>
+
 </resources>

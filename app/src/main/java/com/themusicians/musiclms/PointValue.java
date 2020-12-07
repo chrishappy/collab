@@ -1,22 +1,22 @@
 package com.themusicians.musiclms;
 
 public class PointValue {
-  int xValue;
+  long xValue;
   long yValue;
 
   public PointValue() {
   }
 
-  public PointValue(int xValue, long yValue) {
+  public PointValue(long xValue, long yValue) {
     this.xValue = xValue;
     this.yValue = yValue;
   }
 
-  public int getxValue() {
+  public long getxValue() {
     return xValue;
   }
 
-  public void setxValue(int xValue) {
+  public void setxValue(long xValue) {
     this.xValue = xValue;
   }
 

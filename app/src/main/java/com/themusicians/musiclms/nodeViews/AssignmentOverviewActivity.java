@@ -12,10 +12,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.SolverVariableValues;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
+import com.themusicians.musiclms.UserAddUsers;
 import com.themusicians.musiclms.UserLogin;
 import com.themusicians.musiclms.UserProfile;
 import com.themusicians.musiclms.entity.Node.Assignment;
@@ -58,12 +61,13 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek1;
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek2;
   AssignmentOverviewAdapter assignmentOverviewAdapterWeek3;// Create Object of the Adapter class
-  DatabaseReference mbase; // Create object of the Firebase Realtime Database
 
+  BottomNavigationView bottomNavigationView;
   /**
    * For loading and deleting assignments
    */
   Assignment tempAssignment;
+  User tempUser;
 
   /**
    * To Group elements, see this tutorial:
@@ -74,16 +78,149 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_assignment_overview);
 
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    assert currentUser != null;
+
     // Create a instance of the database and get
     // its reference
     tempAssignment = new Assignment();
-    mbase = FirebaseDatabase.getInstance().getReference(tempAssignment.getBaseTable());
+    tempUser = new User(currentUser.getUid());
+
     recyclerView = findViewById(R.id.assignmentOverviewRecycler);
 
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
 
-    ItemTouchHelper itemTouchHelper1 =
+
+    DatabaseReference tempUserRelatedAssignments = tempUser.getRelatedAssignmentDbReference();
+
+    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
+    // data
+
+    long time= System.currentTimeMillis();
+    long week = 605000000;
+//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
+    FirebaseRecyclerOptions<Assignment> options1 =
+        new FirebaseRecyclerOptions.Builder<Assignment>()
+            .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
+//            .setLifecycleOwner(this)
+            .build();
+
+//    long time= System.currentTimeMillis();
+//    long week = 605000000;
+//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
+//    FirebaseRecyclerOptions<Assignment> options1 =
+//            new FirebaseRecyclerOptions.Builder<Assignment>()
+//                .setQuery(query1, Assignment.class)
+//                .build();
+//
+//    Query query2 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+week+1).endAt(time + week*2);
+//    FirebaseRecyclerOptions<Assignment> options2 =
+//            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
+//
+//    Query query3 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time + week*2 + 1);//.endAt(time+1815000);
+//    FirebaseRecyclerOptions<Assignment> options3 =
+//            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
+//
+//    // Create new Adapter
+    assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options1);
+    assignmentOverviewAdapterWeek1.addItemClickListener(this);
+//
+//    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options2);
+//    assignmentOverviewAdapterWeek2.addItemClickListener(this);
+//
+//    assignmentOverviewAdapterWeek3 = new AssignmentOverviewAdapter(options2);
+//    assignmentOverviewAdapterWeek3.addItemClickListener(this);
+//
+//    RvJoiner rvJoiner = new RvJoiner();
+//
+//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
+//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
+//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
+//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek2));
+//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
+//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek3));
+//
+//    //set join adapter to your RecyclerView
+//    recyclerView.setAdapter(rvJoiner.getAdapter());
+//    getItemTouchHelper(assignmentOverviewAdapterWeek1).attachToRecyclerView(recyclerView);
+    recyclerView.setAdapter(assignmentOverviewAdapterWeek1);
+
+    // Set the action button to add a new assignment
+    FloatingActionButton fab = findViewById(R.id.createAssignment);
+    tempUser.getEntityDatabase()
+            .child(currentUser.getUid())
+            .child("role")
+            .addValueEventListener(
+                    new ValueEventListener() {
+                      @Override
+                      public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Object role = snapshot.getValue();
+                        if (role != null && role.toString().toLowerCase().matches("teacher")){
+                          fab.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                          fab.setVisibility(View.GONE);
+                        }
+                      }
+
+                      @Override
+                      public void onCancelled(@NonNull DatabaseError error) {}
+                    });
+    fab.setOnClickListener(
+        view -> {
+          Intent redirectToAssignmentCreate =
+              new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
+          startActivity(redirectToAssignmentCreate);
+        });
+
+    bottomNavigationView = findViewById(R.id.bottom_navigation);
+    bottomNavigationView.setSelectedItemId(R.id.page_1);
+    bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+  }
+
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+      switch (item.getItemId()){
+        case R.id.page_2:
+          Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
+          startActivity(toUserProfile);
+          overridePendingTransition(0, 0);
+          return true;
+        case R.id.page_3:
+          Intent toChat = new Intent(AssignmentOverviewActivity.this, UserAddUsers.class);
+          startActivity(toChat);
+          return true;
+      }
+
+      return true;
+    }
+  };
+
+  // Function to tell the app to start getting
+  // data from database on starting of the activity
+  @Override
+  protected void onStart() {
+    super.onStart();
+    assignmentOverviewAdapterWeek1.startListening();
+//    assignmentOverviewAdapterWeek2.startListening();
+//    assignmentOverviewAdapterWeek3.startListening();
+  }
+
+  // Function to tell the app to stop getting
+  // data from database on stoping of the activity
+  @Override
+  protected void onStop() {
+    super.onStop();
+    assignmentOverviewAdapterWeek1.stopListening();
+//    assignmentOverviewAdapterWeek2.startListening();
+//    assignmentOverviewAdapterWeek3.startListening();
+  }
+
+  private ItemTouchHelper getItemTouchHelper(AssignmentOverviewAdapter adapter) {
+    return
         new ItemTouchHelper(
             new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT /*| ItemTouchHelper.RIGHT */) {
               @Override
@@ -103,9 +240,9 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                */
               @Override
               public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
+                int position = viewHolder.getAdapterPosition() - 1;
                 tempAssignment =
-                    assignmentOverviewAdapterWeek1.getSnapshots().getSnapshot(position).getValue(Assignment.class);
+                    adapter.getSnapshots().getSnapshot(position).getValue(Assignment.class);
 
                 if (swipeDir == ItemTouchHelper.LEFT) {
                   Snackbar.make(recyclerView, "Assignment deleted.", Snackbar.LENGTH_LONG)
@@ -113,153 +250,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                       .show();
 
                   tempAssignment.delete();
-                  assignmentOverviewAdapterWeek1.notifyItemRemoved(position);
-                  assignmentOverviewAdapterWeek1.notifyDataSetChanged();
+                  adapter.notifyItemRemoved(position);
+                  adapter.notifyDataSetChanged();
                 }
               }
             });
-    itemTouchHelper1.attachToRecyclerView(recyclerView);
-
-    ItemTouchHelper itemTouchHelper2 =
-            new ItemTouchHelper(
-                    new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                      @Override
-                      public boolean onMove(
-                              @NonNull RecyclerView recyclerView,
-                              @NonNull RecyclerView.ViewHolder viewHolder,
-                              @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                      }
-
-                      /**
-                       * To Delete on swipe:
-                       * https://medium.com/@zackcosborn/step-by-step-recyclerview-swipe-to-delete-and-undo-7bbae1fce27e
-                       *
-                       * @param viewHolder cast to AssignmentOverviewAdapter.AssignmentsViewholder
-                       * @param swipeDir ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-                       */
-                      @Override
-                      public void onSwiped(@NotNull RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                        int position = viewHolder.getAdapterPosition();
-                        DataSnapshot snapshot =
-                                assignmentOverviewAdapterWeek2.getSnapshots().getSnapshot(position);
-
-                        switch (swipeDir) {
-                          case ItemTouchHelper.LEFT:
-                            Snackbar.make(recyclerView, "Assignment swiped left", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null)
-                                    .show();
-
-                            tempAssignment.getEntityDatabase().child(snapshot.getKey()).removeValue();
-                            assignmentOverviewAdapterWeek2.notifyItemRemoved(position);
-                            break;
-
-                          case ItemTouchHelper.RIGHT:
-                            Snackbar.make(recyclerView, "Assignment swiped right", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null)
-                                    .show();
-                            break;
-                        }
-
-                        // Remove item from backing list here
-                        assignmentOverviewAdapterWeek2.notifyDataSetChanged();
-                      }
-                    });
-    itemTouchHelper2.attachToRecyclerView(recyclerView);
-
-    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
-    // data
-
-
-   long time= System.currentTimeMillis()/1000;
-    //long time = 1607035900;
-
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    Query query1 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(0).endAt(time+605000);
-    Query query2 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000).endAt(time+1210000);
-    Query query3 = rootRef.child("node__assignment").orderByChild("dueDate").startAt(time+605000);//.endAt(time+1815000);
-
-    FirebaseRecyclerOptions<Assignment> options1 =
-            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query1, Assignment.class).build();
-    FirebaseRecyclerOptions<Assignment> options2 =
-            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
-    FirebaseRecyclerOptions<Assignment> options3 =
-            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
-
-    // Create new Adapter
-    assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options1);
-    assignmentOverviewAdapterWeek1.addItemClickListener(this);
-
-    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options2);
-    assignmentOverviewAdapterWeek2.addItemClickListener(this);
-
-    assignmentOverviewAdapterWeek3 = new AssignmentOverviewAdapter(options2);
-    assignmentOverviewAdapterWeek3.addItemClickListener(this);
-
-    RvJoiner rvJoiner = new RvJoiner();
-
-    rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
-    rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek2));
-    rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
-    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek3));
-
-    //set join adapter to your RecyclerView
-    recyclerView.setAdapter(rvJoiner.getAdapter());
-
-    // Set the action button to add a new assignment
-    FloatingActionButton fab = findViewById(R.id.createAssignment);
-
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-    DatabaseReference userEntityDatabase;
-
-    User tempUser = new User();
-    userEntityDatabase = tempUser.getEntityDatabase();
-    userEntityDatabase
-            .child(currentUser.getUid())
-            .child("role")
-            .addValueEventListener(
-                    new ValueEventListener() {
-                      @Override
-                      public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Object role = snapshot.getValue();
-                        if (role != null && role.toString().matches("teacher")){
-                          fab.setVisibility(View.VISIBLE);
-                        }
-                      }
-
-                      @Override
-                      public void onCancelled(@NonNull DatabaseError error) {}
-                    });
-
-    fab.setOnClickListener(
-        view -> {
-          Intent redirectToAssignmentCreate =
-              new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-          startActivity(redirectToAssignmentCreate);
-        });
-  }
-
-  // Function to tell the app to start getting
-  // data from database on starting of the activity
-  @Override
-  protected void onStart() {
-    super.onStart();
-    assignmentOverviewAdapterWeek1.startListening();
-    assignmentOverviewAdapterWeek2.startListening();
-    assignmentOverviewAdapterWeek3.startListening();
-  }
-
-  // Function to tell the app to stop getting
-  // data from database on stoping of the activity
-  @Override
-  protected void onStop() {
-    super.onStop();
-    assignmentOverviewAdapterWeek1.stopListening();
-    assignmentOverviewAdapterWeek2.startListening();
-    assignmentOverviewAdapterWeek3.startListening();
   }
 
   @Override

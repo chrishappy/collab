@@ -1,5 +1,14 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -41,16 +50,69 @@ public abstract class NodeActivity extends AppCompatActivity {
   /**
    * Populate the showAttachment fragment
    */
-  protected void initShowAttachments(int layoutId) {
-    final FragmentManager fragmentManager = getSupportFragmentManager();
-    final Fragment content = fragmentManager.findFragmentById(layoutId);
+  protected void initShowAttachments(int layoutId, String tagAddition) {
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    Fragment content = fragmentManager.findFragmentById(layoutId);
     if (!(content instanceof ShowAllAttachmentsFragment)) {
-      final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+      Log.w("debugMissingNode", "it's here! missing id: " + getNodeForAttachments().getId());
+
+      FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
       fragmentTransaction.add(
           layoutId,
-          ShowAllAttachmentsFragment.newInstance(getNodeForAttachments().getId()),
-          "ShowAllAttachmentsFragment");
+          new ShowAllAttachmentsFragment(), //.newInstance(getNodeForAttachments()),
+          "ShowAllAttachmentsFragment " + tagAddition);
       fragmentTransaction.commitAllowingStateLoss();
     }
+    else {
+      Log.w("debugMissingNode", "the missing id: " + getNodeForAttachments().getId());
+    }
   }
+
+  /**
+   * Ask to Delete
+   *
+   * Source: https://stackoverflow.com/a/11740348
+   */
+  protected AlertDialog askToDeleteAttachmentNode()
+  {
+    return new AlertDialog.Builder(this)
+        // set message, title, and icon
+        .setTitle(R.string.delete)
+        .setMessage(String.format(getString(R.string.delete_confirm_message), getNodeForAttachments().getName()))
+        .setIcon(R.drawable.ic_baseline_delete_24__grey)
+
+        .setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int whichButton) {
+            getNodeForAttachments().delete();
+            dialog.dismiss();
+            finish();
+          }
+
+        })
+        .setNegativeButton(R.string.cancel, (dialog, which) -> {
+          dialog.dismiss();
+        })
+        .create();
+  }
+
+  /**
+   * Add delete button
+   */
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_delete_activity_options, menu);
+    return true;
+  }
+
+  @SuppressLint("NonConstantResourceId")
+  @Override
+  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == R.id.action_assignment_delete) {
+      askToDeleteAttachmentNode().show();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
 }

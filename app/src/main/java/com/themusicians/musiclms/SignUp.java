@@ -9,11 +9,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeViews.AssignmentOverviewActivity;
 import java.util.ArrayList;
@@ -108,38 +115,39 @@ public class SignUp extends AppCompatActivity {
            * @param password references newPassword from user input
            */
           fAuth
-              .createUserWithEmailAndPassword(email, password)
-              .addOnCompleteListener(
-                  task -> {
-                    if (task.isSuccessful()) {
+            .createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(
+              task -> {
+                if (task.isSuccessful()) {
 
-                      currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                  currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                      /*
-                       * Saves data in Firebase
-                       */
-                      assert currentUser != null;
-                      newUser = new User(currentUser.getUid());
-                      newUser.setStatus(true);
-                      newUser.setEmail(email);
-                      newUser.setName(name);
-                      newUser.setRole("teacher");
-                      newUser.save();
+                  /*
+                   * Saves data in Firebase
+                   */
+                  assert currentUser != null;
+                  newUser = new User(currentUser.getUid());
+                  newUser.setStatus(true);
+                  newUser.setEmail(email);
+                  newUser.setName(name);
+                  newUser.setRole("Teacher");
+                  newUser.save();
 
-                      reference =
-                          FirebaseDatabase.getInstance().getReference().child("node__isTeacher");
-                      reference.child(currentUser.getUid()).setValue(true);
+                  reference =
+                    FirebaseDatabase.getInstance().getReference().child("node__isTeacher");
+                  reference.child(currentUser.getUid()).setValue(true);
 
-                      Toast.makeText(SignUp.this, R.string.user_created, Toast.LENGTH_SHORT).show();
-                      setContentView(R.layout.user_signup_tech);
-                    } else {
-                      Toast.makeText(
-                              SignUp.this,
-                              getString(R.string.error) + task.getException().getMessage(),
-                              Toast.LENGTH_SHORT)
-                          .show();
-                    }
-                  });
+                  Toast.makeText(SignUp.this, R.string.user_created, Toast.LENGTH_SHORT).show();
+                  setContentView(R.layout.user_signup_tech);
+                } else {
+                  Toast.makeText(
+                    SignUp.this,
+                    getString(R.string.error) + task.getException().getMessage(),
+                    Toast.LENGTH_SHORT)
+                    .show();
+                }
+              });
+
         });
 
     /*
@@ -204,7 +212,7 @@ public class SignUp extends AppCompatActivity {
                       newUser.setStatus(true);
                       newUser.setEmail(email);
                       newUser.setName(name);
-                      newUser.setRole("student");
+                      newUser.setRole("Student");
                       newUser.save();
 
                       Toast.makeText(SignUp.this, R.string.name_created, Toast.LENGTH_SHORT).show();
@@ -289,8 +297,11 @@ public class SignUp extends AppCompatActivity {
 
   /** Redirects user to previous sign up page */
   public void signUpTechBack(View view) {
+    DatabaseReference r = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid());
+    r.removeValue();
     currentUser.delete();
-    setContentView(R.layout.user_signup_main);
+    Intent back = new Intent(this, SignUp.class);
+    startActivity(back);
   }
 
   /** Redirects user to login page */

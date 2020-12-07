@@ -54,13 +54,13 @@ public class UserLogin extends AppCompatActivity {
 
             /** checks if user email is empty */
             if (TextUtils.isEmpty(email)) {
-              myEmail.setError("Email is Required.");
+              myEmail.setError(getString(R.string.email_is_required));
               return;
             }
 
             /** checks if user password is empty */
             if (TextUtils.isEmpty(password)) {
-              myPassword.setError("Password is Required");
+              myPassword.setError(getString(R.string.password_is_required));
               return;
             }
 

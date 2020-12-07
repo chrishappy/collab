@@ -24,8 +24,8 @@ public class ToDoAssignmentFormAdapter
     extends FirebaseRecyclerAdapter<
         ToDoItem, ToDoAssignmentFormAdapter.ToDoAssignmentFormViewholder> {
 
-  private ItemClickListener itemClickListener
-;
+  private ItemClickListener itemClickListener;
+
   public ToDoAssignmentFormAdapter(@NonNull FirebaseRecyclerOptions<ToDoItem> options) {
     super(options);
   }
@@ -40,14 +40,6 @@ public class ToDoAssignmentFormAdapter
     // Set the to do item name
     holder.toDoName.setText(toDoItem.getName());
 
-    // Set the on click listener
-    View.OnClickListener editToDoItemListener =
-        view -> {
-          if (itemClickListener != null) {
-            itemClickListener.onButtonClick("editToDoAssignmentForm", toDoItem.getId());
-          }
-        };
-
     // Set up the checkbox for to items
     holder.toDoCheck.setChecked(toDoItem.getCompleteToDo());
     holder.toDoCheck.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +50,15 @@ public class ToDoAssignmentFormAdapter
       }
     });
 
+    // Set the on click listener
+    View.OnClickListener editToDoItemListener =
+        view -> {
+          if (itemClickListener != null) {
+            itemClickListener.onButtonClick("editToDoAssignmentForm", toDoItem.getId());
+          }
+        };
+
+    holder.toDoWrapper.setOnClickListener(editToDoItemListener);
     holder.toDoName.setOnClickListener(editToDoItemListener);
     holder.editButton.setOnClickListener(editToDoItemListener);
   }
