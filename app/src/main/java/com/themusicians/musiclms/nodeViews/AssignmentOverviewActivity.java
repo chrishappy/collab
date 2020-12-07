@@ -103,7 +103,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     FirebaseRecyclerOptions<Assignment> options1 =
         new FirebaseRecyclerOptions.Builder<Assignment>()
             .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
-            .setLifecycleOwner(this)
+//            .setLifecycleOwner(this)
             .build();
 
 //    long time= System.currentTimeMillis();
@@ -143,7 +143,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
 //
 //    //set join adapter to your RecyclerView
 //    recyclerView.setAdapter(rvJoiner.getAdapter());
-    getItemTouchHelper(assignmentOverviewAdapterWeek1).attachToRecyclerView(recyclerView);
+//    getItemTouchHelper(assignmentOverviewAdapterWeek1).attachToRecyclerView(recyclerView);
     recyclerView.setAdapter(assignmentOverviewAdapterWeek1);
 
     // Set the action button to add a new assignment

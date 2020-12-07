@@ -1,5 +1,6 @@
 package com.themusicians.musiclms.nodeViews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,9 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -35,6 +39,7 @@ import com.themusicians.musiclms.entity.Node.Node;
 import com.themusicians.musiclms.entity.Node.ToDoItem;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,6 +105,10 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   toDoItem = dataSnapshot.getValue(ToDoItem.class);
                   assert toDoItem != null;
+
+                  // Check if user can delete to do item
+                  invalidateOptionsMenu();
+
                   toDoItemName.setText(toDoItem.getName());
 
                   // Set checked

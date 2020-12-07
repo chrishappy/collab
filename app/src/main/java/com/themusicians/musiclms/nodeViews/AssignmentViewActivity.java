@@ -89,6 +89,9 @@ public class AssignmentViewActivity extends NodeViewActivity
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   assignment = dataSnapshot.getValue(Assignment.class);
 
+                  // Register options menu
+                  invalidateOptionsMenu();
+
                   assert assignment != null;
 
                   if (assignment.getName() != null) {
@@ -316,37 +319,6 @@ public class AssignmentViewActivity extends NodeViewActivity
 
     // Always call the superclass so it can save the view hierarchy state
     super.onSaveInstanceState(savedInstanceState);
-  }
-
-  /**
-   * Add delete button
-   */
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.menu_assignment_activity_options, menu);
-    return true;
-  }
-
-  @SuppressLint("NonConstantResourceId")
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.action_assignment_edit:
-        editButton.performClick();
-        return true;
-
-      case R.id.action_assignment_delete:
-        assignment.delete();
-        finish();
-        return true;
-//      case R.id.createassignment:
-//        Intent toCreateAssignment =
-//            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);
-//        startActivity(toCreateAssignment);
-//        return true;
-    }
-    return super.onOptionsItemSelected(item);
   }
 
   /** To handle saving a To Do item */

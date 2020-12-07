@@ -4,12 +4,16 @@ import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.ACC
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.REQUEST_TODO_ENTITY;
 import static com.themusicians.musiclms.nodeForms.ToDoTaskCreateFormActivity.RETURN_INTENT_TODO_ID;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,8 +96,10 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                 @Override
                 public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                   assignment = dataSnapshot.getValue(Assignment.class);
-
                   assert assignment != null;
+
+                  // Add delete menu action
+                  invalidateOptionsMenu();
 
                   if (assignment.getName() != null) {
                     AssignmentName.setText(assignment.getName());

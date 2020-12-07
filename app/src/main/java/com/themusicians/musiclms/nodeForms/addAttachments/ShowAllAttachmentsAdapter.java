@@ -77,6 +77,13 @@ public class ShowAllAttachmentsAdapter
           }
         });
 
+    holder.deleteButton.setOnClickListener(
+        view -> {
+          if (itemClickListener != null) {
+            allAttachment.delete();
+          }
+        });
+
     /*
      * This section will be added to all Nodes. Please use variables to allow us
      * to quickly move these functions into a separate class
@@ -113,7 +120,7 @@ public class ShowAllAttachmentsAdapter
   // view (here "person.xml")
   static class AllAttachmentViewHolder extends RecyclerView.ViewHolder {
     TextView comment;
-    Button fileDownload, zoomOpen, editButton;
+    Button fileDownload, zoomOpen, editButton, deleteButton;
     ConstraintLayout allAttachmentWrapper;
 
     public AllAttachmentViewHolder(@NonNull View itemView) {
@@ -124,6 +131,7 @@ public class ShowAllAttachmentsAdapter
       fileDownload = itemView.findViewById(R.id.attachmentDownloadFile);
       zoomOpen = itemView.findViewById(R.id.zoomOpenMeeting);
       editButton = itemView.findViewById(R.id.edit_button);
+      deleteButton = itemView.findViewById(R.id.delete_button);
     }
   }
 

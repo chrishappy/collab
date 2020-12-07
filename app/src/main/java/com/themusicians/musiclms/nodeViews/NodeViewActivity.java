@@ -2,7 +2,10 @@ package com.themusicians.musiclms.nodeViews;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 
+import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.nodeForms.NodeActivity;
 
 /**
@@ -35,5 +38,23 @@ public abstract class NodeViewActivity extends NodeActivity {
     // Get id to edit
     Intent intent = getIntent();
     viewEntityId = intent.getStringExtra(ACCEPT_ENTITY_ID);
+  }
+
+  /**
+   * Hide delete button if not the author of the node
+   */
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu){
+    super.onPrepareOptionsMenu(menu);
+
+    if (getNodeForAttachments().getUid() == currentUser.getUid()) {
+      try {
+        menu.findItem(R.id.action_assignment_delete).setVisible(false);
+      }
+      catch(Exception e) {
+        Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
+      }
+    }
+    return true;
   }
 }

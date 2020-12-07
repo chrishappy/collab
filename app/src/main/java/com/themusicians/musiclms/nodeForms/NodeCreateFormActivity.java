@@ -1,7 +1,16 @@
 package com.themusicians.musiclms.nodeForms;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+
+import com.themusicians.musiclms.R;
 
 // import com.themusicians.musiclms.attachmentDialogs.AddFileDialogFragment;
 
@@ -41,5 +50,23 @@ public abstract class NodeCreateFormActivity extends NodeActivity {
     if (editEntityId != null) {
       inEditMode = true;
     }
+  }
+
+  /**
+   * Hide delete button if not the author of the node
+   */
+  @Override
+  public boolean onPrepareOptionsMenu(Menu menu){
+    super.onPrepareOptionsMenu(menu);
+
+    if (getNodeForAttachments().getId() == null) {
+      try {
+        menu.findItem(R.id.action_assignment_delete).setVisible(false);
+      }
+      catch(Exception e) {
+        Log.e("PrepareOptionsMenu", "onPrepareOptionsMenu error");
+      }
+    }
+    return true;
   }
 }
