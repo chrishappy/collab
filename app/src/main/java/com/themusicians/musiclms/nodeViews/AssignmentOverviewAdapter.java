@@ -3,6 +3,7 @@ package com.themusicians.musiclms.nodeViews;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -68,21 +69,17 @@ public class AssignmentOverviewAdapter
                     holder.authorName.setText(tempUser.getName());
                   }
 
-                  if (tempUser.getId() == assignment.getUpdated()){ // is teacher/author of assignment
-                    if (assignment.getAssignmentMarked()) {
-                      holder.isDoneCheckBox.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                      holder.isDoneCheckBox.setVisibility(View.INVISIBLE);
-                    }
+                  if (assignment.getAssignmentMarked()) {
+                    holder.isMarkedCheck.setVisibility(View.VISIBLE);
+                    holder.isDoneCheck.setVisibility(View.GONE);
                   }
-                  else { // Is a student
-                    if (assignment.getAssignmentComplete()) {
-                      holder.isDoneCheckBox.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                      holder.isDoneCheckBox.setVisibility(View.INVISIBLE);
-                    }
+                  else if (assignment.getAssignmentComplete()) {
+                    holder.isMarkedCheck.setVisibility(View.GONE);
+                    holder.isDoneCheck.setVisibility(View.VISIBLE);
+                  }
+                  else {
+                    holder.isMarkedCheck.setVisibility(View.GONE);
+                    holder.isDoneCheck.setVisibility(View.GONE);
                   }
                 }
 
@@ -92,26 +89,22 @@ public class AssignmentOverviewAdapter
     }
 
 
-
-    /*if (assignment.getClassId() != null) {
-      holder.userName.setText(assignment.getClassId());
-    }*/
-
     if (assignment.getDueDate() != 0) {
       Date date = new Date(assignment.getDueDate() );
       DateFormat dateFormat = new SimpleDateFormat("MMM d", Locale.CANADA);
       holder.dueDate.setText(dateFormat.format(date));
     }
 
+    // Set the progress
     double amountOfProgress = 0;
     if (assignment.getCountOfTotalToDos() != 0) {
       amountOfProgress = (double) assignment.getCountOfDoneToDos() / assignment.getCountOfTotalToDos();
     }
-    if (amountOfProgress == 0) { // Always show some progress
-      amountOfProgress = 0.05;
-    }
+    if (amountOfProgress == 0) {  amountOfProgress = 0.05;  } // Always show some progress
+
     holder.progressBar.setProgress((int) (amountOfProgress * 100), true);
 
+    // Add on click listener
     holder.wrapper.setOnClickListener(
         view -> {
           if (itemClickListener != null) {
@@ -132,39 +125,23 @@ public class AssignmentOverviewAdapter
     return new AssignmentsViewHolder(view);
   }
 
-  /**
-   * Archive the assignment on swipe
-   *
-   * @param position the recycler item index
-   */
-  public void deleteAssignment(int position) {
-    //    mRecentlyDeletedItem = mListItems.get(position);
-    //    mRecentlyDeletedItemPosition = position;
-    //    items.remove(position);
-  }
-
   // Sub Class to create references of the views in Crad
   // view (here "person.xml")
   static class AssignmentsViewHolder extends RecyclerView.ViewHolder {
-    TextView assignmentName, authorName, dueDate, isDoneCheckBox;
+    TextView assignmentName, authorName, dueDate;
+    ImageView isDoneCheck, isMarkedCheck;
     ProgressBar progressBar;
-//    Button editAssignment, viewAssignment;
     ConstraintLayout wrapper;
 
     public AssignmentsViewHolder(@NonNull View itemView) {
       super(itemView);
       wrapper = itemView.findViewById(R.id.assignment_overview_wrapper);
-
       assignmentName = itemView.findViewById(R.id.assignmentName);
       authorName = itemView.findViewById(R.id.authorName);
       progressBar = itemView.findViewById(R.id.progressBar2);
       dueDate = itemView.findViewById(R.id.dueDate);
-      isDoneCheckBox = itemView.findViewById(R.id.assignment_overview__is_done);
-
-      //userName = itemView.findViewById(R.id.userName);
-
-      // editAssignment = itemView.findViewById(R.id.edit_button);
-      // viewAssignment = itemView.findViewById(R.id.view_button);
+      isDoneCheck = itemView.findViewById(R.id.assignment_overview__is_done);
+      isMarkedCheck = itemView.findViewById(R.id.assignment_overview__is_marked);
     }
   }
 

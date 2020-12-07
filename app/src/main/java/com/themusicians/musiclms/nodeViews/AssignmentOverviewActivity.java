@@ -9,10 +9,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.SolverVariableValues;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,8 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.themusicians.musiclms.R;
 import com.themusicians.musiclms.UserAddUsers;
@@ -36,12 +34,6 @@ import com.themusicians.musiclms.entity.Node.Assignment;
 import com.themusicians.musiclms.entity.Node.User;
 import com.themusicians.musiclms.nodeForms.AssignmentCreateFormActivity;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
-
-import su.j2e.rvjoiner.JoinableAdapter;
-import su.j2e.rvjoiner.JoinableLayout;
-import su.j2e.rvjoiner.RvJoiner;
 
 /**
  * Displays the assignments
@@ -57,17 +49,19 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     implements AssignmentOverviewAdapter.ItemClickListener {
   FirebaseAuth fAuth;
 
+  /** To show assignments */
   private RecyclerView recyclerView;
-  AssignmentOverviewAdapter assignmentOverviewAdapterWeek1;
-  AssignmentOverviewAdapter assignmentOverviewAdapterWeek2;
-  AssignmentOverviewAdapter assignmentOverviewAdapterWeek3;// Create Object of the Adapter class
+  private AssignmentOverviewAdapter assignmentOverviewAdapter;
+  private TextView noAssignmentsTextView;
 
-  BottomNavigationView bottomNavigationView;
+  /** The bottom navigation */
+  private BottomNavigationView bottomNavigationView;
+
   /**
    * For loading and deleting assignments
    */
-  Assignment tempAssignment;
-  User tempUser;
+  private Assignment tempAssignment;
+  private User tempUser;
 
   /**
    * To Group elements, see this tutorial:
@@ -91,60 +85,36 @@ public class AssignmentOverviewActivity extends AppCompatActivity
     // To display the Recycler view using grid layout for slide functionality
     recyclerView.setLayoutManager(new GridLayoutManager(AssignmentOverviewActivity.this, 1));
 
-
     DatabaseReference tempUserRelatedAssignments = tempUser.getRelatedAssignmentDbReference();
 
-    // It is a class provide by the FirebaseUI to make a query in the database to fetch appropriate
-    // data
-
-    long time= System.currentTimeMillis();
-    long week = 605000000;
-//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
-    FirebaseRecyclerOptions<Assignment> options1 =
+    FirebaseRecyclerOptions<Assignment> assignmentOverviewRecyclerOptions =
         new FirebaseRecyclerOptions.Builder<Assignment>()
             .setIndexedQuery(tempUserRelatedAssignments, tempAssignment.getEntityDatabase(), Assignment.class)
-//            .setLifecycleOwner(this)
             .build();
 
-//    long time= System.currentTimeMillis();
-//    long week = 605000000;
-//    Query query1 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(0).endAt(time+week);
-//    FirebaseRecyclerOptions<Assignment> options1 =
-//            new FirebaseRecyclerOptions.Builder<Assignment>()
-//                .setQuery(query1, Assignment.class)
-//                .build();
-//
-//    Query query2 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time+week+1).endAt(time + week*2);
-//    FirebaseRecyclerOptions<Assignment> options2 =
-//            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query2, Assignment.class).build();
-//
-//    Query query3 = tempAssignment.getEntityDatabase().orderByChild("dueDate").startAt(time + week*2 + 1);//.endAt(time+1815000);
-//    FirebaseRecyclerOptions<Assignment> options3 =
-//            new FirebaseRecyclerOptions.Builder<Assignment>().setQuery(query3, Assignment.class).build();
-//
-//    // Create new Adapter
-    assignmentOverviewAdapterWeek1 = new AssignmentOverviewAdapter(options1);
-    assignmentOverviewAdapterWeek1.addItemClickListener(this);
-//
-//    assignmentOverviewAdapterWeek2 = new AssignmentOverviewAdapter(options2);
-//    assignmentOverviewAdapterWeek2.addItemClickListener(this);
-//
-//    assignmentOverviewAdapterWeek3 = new AssignmentOverviewAdapter(options2);
-//    assignmentOverviewAdapterWeek3.addItemClickListener(this);
-//
-//    RvJoiner rvJoiner = new RvJoiner();
-//
-//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week1));
-//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek1));
-//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week2));
-//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek2));
-//    rvJoiner.add(new JoinableLayout(R.layout.due_in_week3));
-//    rvJoiner.add(new JoinableAdapter(assignmentOverviewAdapterWeek3));
-//
-//    //set join adapter to your RecyclerView
-//    recyclerView.setAdapter(rvJoiner.getAdapter());
-//    getItemTouchHelper(assignmentOverviewAdapterWeek1).attachToRecyclerView(recyclerView);
-    recyclerView.setAdapter(assignmentOverviewAdapterWeek1);
+    /**
+     * Split assignments by their due dates
+     */
+    assignmentOverviewAdapter = new AssignmentOverviewAdapter(assignmentOverviewRecyclerOptions);
+    // Allow adapter to handle clicks
+    // See onButtonClick() below
+    assignmentOverviewAdapter.addItemClickListener(this);
+
+    assignmentOverviewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      public void onItemRangeInserted(int positionStart, int itemCount) {
+        if (itemCount == 0) {
+
+        }
+        else {
+
+        }
+      }
+    });
+
+    recyclerView.setAdapter(assignmentOverviewAdapter);
+
+    // Add Empty View
+    // Source: https://stackoverflow.com/a/27801394
 
     // Set the action button to add a new assignment
     FloatingActionButton fab = findViewById(R.id.createAssignment);
@@ -158,9 +128,11 @@ public class AssignmentOverviewActivity extends AppCompatActivity
                         Object role = snapshot.getValue();
                         if (role != null && role.toString().toLowerCase().matches("teacher")){
                           fab.setVisibility(View.VISIBLE);
+                          noAssignmentsTextView.setText(R.string.assignment_overview__no_assignments_text__teacher);
                         }
                         else {
                           fab.setVisibility(View.GONE);
+                          noAssignmentsTextView.setText(R.string.assignment_overview__no_assignments_text__student);
                         }
                       }
 
@@ -204,7 +176,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   @Override
   protected void onStart() {
     super.onStart();
-    assignmentOverviewAdapterWeek1.startListening();
+    assignmentOverviewAdapter.startListening();
 //    assignmentOverviewAdapterWeek2.startListening();
 //    assignmentOverviewAdapterWeek3.startListening();
   }
@@ -214,7 +186,7 @@ public class AssignmentOverviewActivity extends AppCompatActivity
   @Override
   protected void onStop() {
     super.onStop();
-    assignmentOverviewAdapterWeek1.stopListening();
+    assignmentOverviewAdapter.stopListening();
 //    assignmentOverviewAdapterWeek2.startListening();
 //    assignmentOverviewAdapterWeek3.startListening();
   }

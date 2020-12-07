@@ -227,4 +227,25 @@
     <string name="email_is_required">需要电子邮箱</string>
     <string name="addYoutubeUrl">YouTube链接</string>
     <string name="shareVideo">分享视频到YouTube</string>
+    <string name="assignment_overview__no_assignments_text">No Assignments created yet.</string>
+    <string name="assignment_overview__no_assignments_text__teacher">
+        No assignments yet: let\'s create one!
+
+        1. Go to "Chat" on the bottom of the screen
+        2. Search for your students and click "Add"
+        3. Come back
+        3. Click the "+" in the bottom right corner
+        4. Enter your student\'s name in the "Assignees" box
+        5. Click Save!
+    </string>
+    <string name="assignment_overview__no_assignments_text__student">
+        No assignments yet: let\'s change that!
+
+        1. Go to "Chat" on the bottom of the screen
+        2. Click add new users
+        3. Search for your teacher and click "Add"
+        4. Click the back button.
+        5. Find your teacher and under their name, click "Chat"
+        6. Ask them for an assignment!
+    </string>
 </resources>

@@ -35,6 +35,8 @@ public class Assignment extends Node {
    */
   protected List<String> assignees;
 
+  protected LinkedList<String> oldAssignees;
+
   protected String classId;
 
   protected long dueDate;
@@ -165,9 +167,23 @@ public class Assignment extends Node {
     }
 
     if (getAssignees() != null && !getAssignees().isEmpty()) {
-      for (String assignee : getAssignees()) {
-        tempUser.setId(assignee);
+      for (String assigneeUid : getAssignees()) {
+        // Add the assignees that were updated
+        tempUser.setId(assigneeUid);
         tempUser.getRelatedAssignmentDbReference().child(this.getId()).setValue(true);
+
+        // Leave old assignees with only the assignees that are no longer assigned
+        if (oldAssignees != null) {
+          oldAssignees.remove(assigneeUid);
+        }
+      }
+    }
+
+    // Remove assignment from each user that is not longer assigned
+    if (oldAssignees != null && !oldAssignees.isEmpty()) {
+      for (String assignee : oldAssignees) {
+        tempUser.setId(assignee);
+        tempUser.getRelatedAssignmentDbReference().child(this.getId()).removeValue();
       }
     }
   }
@@ -210,8 +226,11 @@ public class Assignment extends Node {
     }
   }
 
-  public void reSetAssignees(){
-    assignees = new LinkedList<>();
+  public void resetAssigneesAndPrepareToRemoveOldAssignees(){
+    oldAssignees = new LinkedList<>(getAssignees());
+
+    LinkedList<String> blankList = new LinkedList<>();
+    setAssignees(blankList);
   }
 
   public void setAssignees(List<String> assignees) {

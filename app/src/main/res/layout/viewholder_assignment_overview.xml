@@ -76,19 +76,35 @@
                 app:layout_constraintStart_toEndOf="@+id/progressBar2"/>
         </LinearLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/assignment_overview__is_done"
             style="@android:style/Widget.Holo.Light.Button.Small"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="9dp"
+            android:layout_marginEnd="9dp"
             android:layout_marginBottom="9dp"
-            android:visibility="visible"
-            android:background="@drawable/fui_ic_check_circle_black_128dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_baseline_check_circle_outline_30"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2"/>
+            app:layout_constraintVertical_bias="0.2"
+            android:contentDescription="@string/assignment_overview__assignment_complete" />
+
+        <ImageView
+            android:id="@+id/assignment_overview__is_marked"
+            style="@android:style/Widget.Holo.Light.Button.Small"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="9dp"
+            android:layout_marginBottom="9dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/fui_ic_check_circle_black_128dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2"
+            android:contentDescription="@string/assignment_overview__assignment_complete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

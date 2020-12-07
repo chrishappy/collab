@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/assignmentsContainer">
+        android:id="@+id/assignmentsContainer"
+        android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/assignmentOverviewRecycler"
@@ -20,6 +21,11 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/nav_footer_height" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/assignment_overview__no_assignments_text"/>
 
     </LinearLayout>
 

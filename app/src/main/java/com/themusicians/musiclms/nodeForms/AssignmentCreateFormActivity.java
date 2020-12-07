@@ -11,9 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
+
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,8 +56,14 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
   /** Fields to edit */
   private EditText AssignmentName;
-  private MultiAutoCompleteTextView StudentOrClass;
+  private MultiAutoCompleteTextView assigneesAutoComplete;
   private EditText dueDate;
+
+  /** Autocomplete adapter for students */
+  private ArrayAdapter<String> assigneesAutoCompleteAdapter;
+
+  /** Used to quickly get user id when saving */
+  HashMap<String, String> assigneeNameAndIdMap;
 
   /** Create adapter for to do items */
   private ToDoAssignmentFormAdapter toDoItemsAdapter; // Create Object of the Adapter class
@@ -98,13 +102,41 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                   }
 
                   if (assignment.getClassId() != null) {
-                    StudentOrClass.setText(assignment.getClassId());
+                    assigneesAutoComplete.setText(assignment.getClassId());
                   }
 
                   if (assignment.getDueDate() != 0) {
-                    Date date = new Date(assignment.getDueDate());
+                    final Date date = new Date(assignment.getDueDate());
                     dueDate.setText(dateFormat.format(date));
                   }
+
+                  // Add autocomplete suggestions
+                  final User tempUser = new User(assignment.getUid());
+
+                  //Child the root before all the push() keys are found and add a ValueEventListener()
+                  tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+                      final User authorUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
+
+                      //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+                      for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
+                        String userId = suggestionSnapshot.child("id").getValue(String.class);
+
+                        if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
+                          String userName = suggestionSnapshot.child("name").getValue(String.class);
+                          assigneesAutoCompleteAdapter.add(userName);
+
+                          // For when saving
+                          assigneeNameAndIdMap.put(userName,userId);
+                        }
+                      }
+                    }
+
+                    @Override
+                    public void onCancelled(@NotNull DatabaseError databaseError) {
+                    }
+                  });
 
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
@@ -146,9 +178,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Temp Entities
-    User tempUser = new User();
-
     // Initiate the entity
     if (inEditMode) {
       assignment = new Assignment(editEntityId);
@@ -160,64 +189,23 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
     // Get fields
     AssignmentName = findViewById(R.id.assignment_name);
-    StudentOrClass = findViewById(R.id.students_or_class);
+    assigneesAutoComplete = findViewById(R.id.students_or_class);
     dueDate = findViewById(R.id.dueDate);
 
     // Make fields required
     addToRequired(AssignmentName);
-    addToRequired(StudentOrClass);
+    addToRequired(assigneesAutoComplete);
     addToRequired(dueDate);
 
     // Show user auto complete
     // Create a new ArrayAdapter with your context and the simple layout for the dropdown menu
     // provided by Android
-      final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line);
-      //Child the root before all the push() keys are found and add a ValueEventListener()
-    tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-        //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-        for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
-          //Get the suggestion by childing the key of the string you want to get.
-          String suggestion = suggestionSnapshot.child("name").getValue(String.class);
-          //Add the retrieved string to the list
-          autoComplete.add(suggestion);
-          //assignment.addAssignees(suggestion);
-        }
-      }
+    assigneesAutoCompleteAdapter = new ArrayAdapter<>(this,android.R.layout.simple_dropdown_item_1line);
+    assigneesAutoComplete.setAdapter(assigneesAutoCompleteAdapter);
+    assigneesAutoComplete.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-      @Override
-      public void onCancelled(@NotNull DatabaseError databaseError) {
-      }
-    });
-
-    StudentOrClass.setAdapter(autoComplete);
-    StudentOrClass.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-    HashMap<String, String> assigneeID = new HashMap<String, String>();
-
-     tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-              //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-              for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()){
-                  //Get the suggestion by childing the key of the string you want to get.
-                  String name = suggestionSnapshot.child("name").getValue(String.class);
-                  //Add the retrieved string to the list
-
-                  String id = suggestionSnapshot.child("id").getValue(String.class);
-
-                  assigneeID.put(name,id);
-
-                  //assignment.addAssignees(suggestion);
-              }
-          }
-          @Override
-          public void onCancelled(@NotNull DatabaseError databaseError) {
-          }
-      });
-
-
+    // Prep for saving
+    assigneeNameAndIdMap = new HashMap<>();
 
     // Due Date Popup
     dueDate.setInputType(InputType.TYPE_NULL);
@@ -247,9 +235,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
     // Show attachments
     initShowAttachments(R.id.showAttachments__assignments, "");
-
-    // Show attachments edit form
-//    initCreateAttachments(assignment);
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
@@ -290,18 +275,19 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
           // Due Date timestamp
           long dueDateTimestamp = cldr.getTimeInMillis();
 
-            String temp = StudentOrClass.getText().toString();
-            String[] assigneeNames = temp.split(", ");
+          // Add Assignees
+          String temp = assigneesAutoComplete.getText().toString();
+          String[] assigneeNames = temp.split(", ?");
 
-            assignment.reSetAssignees();
+          // Reset the assignees and prep for removal afterwards
+          assignment.resetAssigneesAndPrepareToRemoveOldAssignees();
+          for (String studentId: assigneeNames){
+              String id = assigneeNameAndIdMap.get(studentId);
+              assignment.addAssignees(id);
+          }
 
-            for(String name: assigneeNames){
-                String id=assigneeID.get(name);
-                assignment.addAssignees(id);
-            }
-
-            assignment.setName(AssignmentName.getText().toString());
-          assignment.setClassId(StudentOrClass.getText().toString());
+          assignment.setName(AssignmentName.getText().toString());
+          assignment.setClassId(assigneesAutoComplete.getText().toString());
           assignment.setDueDate(dueDateTimestamp);
           assignment.setStatus(true);
           assignment.save();
