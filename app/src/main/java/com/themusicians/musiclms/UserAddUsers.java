@@ -3,6 +3,7 @@ package com.themusicians.musiclms;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
@@ -110,6 +111,7 @@ public class UserAddUsers extends AppCompatActivity {
                     if (ds.getValue(User.class).getId().equals(value)) {
                       addedList.add(ds.getValue(User.class));
                       addedAdapter.notifyDataSetChanged();
+
                     }
                   }
 

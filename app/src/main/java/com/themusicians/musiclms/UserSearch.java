@@ -8,6 +8,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +33,9 @@ public class UserSearch extends AppCompatActivity {
   ArrayList<User> searchList;
   RecyclerView searchRecycler;
   SearchView searchView;
+  FirebaseUser currentUser;
+  User currUser;
+  String role;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,44 +45,64 @@ public class UserSearch extends AppCompatActivity {
     searchRef = FirebaseDatabase.getInstance().getReference().child("node__user");
     searchRecycler = findViewById(R.id.searchRecycler);
     searchView = findViewById(R.id.searchView);
+    currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
   }
 
   /** On page start, display recycler view of searched users */
   @Override
   protected void onStart() {
-    super.onStart();
-    if (searchRef != null) {
-      searchRef.addValueEventListener(
-          new ValueEventListener() {
-            @Override
-            /**
-             * Fetch users from Firebase and add them to the search list
-             *
-             * @param snapshot data snapshot for gathering data from Firebase
-             */
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-              if (snapshot.exists()) {
-                searchList = new ArrayList<>();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                  searchList.add(ds.getValue(User.class));
-                }
-                UserSearchAdapter searchAdapter =
-                    new UserSearchAdapter(searchList, UserSearch.this);
-                searchRecycler.setAdapter(searchAdapter);
-              }
-            }
 
-            /**
-             * Display message for error on fetching data from Firebase
-             *
-             * @param error
-             */
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-              Toast.makeText(UserSearch.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-          });
-    }
+    super.onStart();
+    DatabaseReference roleRef = FirebaseDatabase.getInstance().getReference().child("node__user").child(currentUser.getUid()).child("role");
+    roleRef.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        role = snapshot.getValue(String.class);
+
+        if (searchRef != null) {
+          searchRef.addValueEventListener(
+            new ValueEventListener() {
+              @Override
+              /**
+               * Fetch users from Firebase and add them to the search list
+               *
+               * @param snapshot data snapshot for gathering data from Firebase
+               */
+              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                  searchList = new ArrayList<>();
+
+                  for (DataSnapshot ds : snapshot.getChildren()) {
+                    if(role.equals("Student") && ds.getValue(User.class).getRole().equals("Teacher") || role.equals("Teacher") && ds.getValue(User.class).getRole().equals("Student")) {
+                      searchList.add(ds.getValue(User.class));
+                    }
+                  }
+
+                  UserSearchAdapter searchAdapter = new UserSearchAdapter(searchList, UserSearch.this);
+                  searchRecycler.setAdapter(searchAdapter);
+                }
+              }
+
+              /**
+               * Display message for error on fetching data from Firebase
+               *
+               * @param error
+               */
+              @Override
+              public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(UserSearch.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+              }
+            });
+        }
+      }
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+
     /** Check if search bar is empty */
     if (searchView != null) {
       searchView.setOnQueryTextListener(
