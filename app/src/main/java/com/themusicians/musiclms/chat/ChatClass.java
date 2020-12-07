@@ -1,6 +1,5 @@
 package com.themusicians.musiclms.chat;
 
-
 /**
  * Class for chat information
  *
