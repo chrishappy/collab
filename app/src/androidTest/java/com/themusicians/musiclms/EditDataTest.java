@@ -22,6 +22,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -38,26 +39,16 @@ public class EditDataTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void editDataTest() {
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
+    public void userEditDataTest() {
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.page_2), withContentDescription("User Profile"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("User Profile"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
+                                        withId(R.id.bottom_navigation),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.toEditData), withText("Edit Data"),
@@ -65,12 +56,12 @@ public class EditDataTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                3),
+                                                1)),
+                                2),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        ViewInteraction appCompatEditText7 = onView(
+        ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.changeName),
                         childAtPosition(
                                 childAtPosition(
@@ -78,7 +69,17 @@ public class EditDataTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText7.perform(replaceText("UITest"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("UITest"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.changeEmail),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("signup@test.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.confirmName), withText("Confirm"),
@@ -90,26 +91,6 @@ public class EditDataTest {
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatEditText8 = onView(
-                allOf(withId(R.id.changeName), withText("UITest"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText8.perform(pressImeActionButton());
-
-        ViewInteraction appCompatEditText9 = onView(
-                allOf(withId(R.id.changeEmail),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText9.perform(replaceText("signup@test.com"), closeSoftKeyboard());
-
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.confirmEmail), withText("Confirm"),
                         childAtPosition(
@@ -120,7 +101,7 @@ public class EditDataTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        ViewInteraction appCompatEditText10 = onView(
+        ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.changeEmail), withText("signup@test.com"),
                         childAtPosition(
                                 childAtPosition(
@@ -128,7 +109,7 @@ public class EditDataTest {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText10.perform(pressImeActionButton());
+        appCompatEditText5.perform(pressImeActionButton());
     }
 
     private static Matcher<View> childAtPosition(

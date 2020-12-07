@@ -21,64 +21,62 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UserViewAnalysisTest {
+public class A_LogInTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void userViewAnalysisTest() {
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
+    public void a_LogInTest() {
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.toSignIn), withText("Already have an account? Login here"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("User Profile"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
+                                        withId(R.id.background_signup),
                                         0),
+                                6)));
+        appCompatTextView.perform(scrollTo(), click());
+
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.myEmail),
+                        childAtPosition(
+                                allOf(withId(R.id.container),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
                                 0),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        appCompatEditText.perform(replaceText("signup@test.com"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.toAnalysis), withText("Analysis"),
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.myPassword),
                         childAtPosition(
-                                allOf(withId(R.id.linearLayout),
+                                allOf(withId(R.id.container),
                                         childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                2),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
+                                                withId(android.R.id.content),
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageButton.perform(click());
+        appCompatEditText2.perform(replaceText("signup"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.signin), withText("Sign In"),
+                        childAtPosition(
+                                allOf(withId(R.id.container),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                4),
+                        isDisplayed()));
+        appCompatButton.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

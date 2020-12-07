@@ -30,33 +30,22 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CreateAssignmentTest {
+public class ChatTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void userCreateAssignmentTest() {
-        ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.createAssignment), withContentDescription("Add Assignment"),
+    public void chatTest() {
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.page_3), withContentDescription("Chat"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.content),
+                                        withId(R.id.bottom_navigation),
                                         0),
                                 2),
                         isDisplayed()));
-        floatingActionButton.perform(click());
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.action_bar),
-                                        childAtPosition(
-                                                withId(R.id.action_bar_container),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
+        bottomNavigationItemView.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

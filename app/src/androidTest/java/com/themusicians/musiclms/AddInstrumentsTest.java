@@ -21,72 +21,41 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddIntrumentsTest {
+public class AddInstrumentsTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void addIntrumentsTest() {
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
+    public void userAddInstrumentsTest() {
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.page_2), withContentDescription("User Profile"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("User Profile"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
+                                        withId(R.id.bottom_navigation),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        bottomNavigationItemView.perform(click());
 
         ViewInteraction textInputEditText = onView(
                 allOf(withId(R.id.enterInstruments),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textInputEditText.perform(replaceText("flute"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.addButton), withText("add"),
-                        childAtPosition(
-                                childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                3),
+                                2),
                         isDisplayed()));
-        appCompatButton2.perform(click());
-
-        ViewInteraction textInputEditText2 = onView(
-                allOf(withId(R.id.enterInstruments),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textInputEditText2.perform(replaceText("piano"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("piano"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.addButton), withText("add"),
@@ -98,15 +67,15 @@ public class AddIntrumentsTest {
                         isDisplayed()));
         appCompatButton3.perform(click());
 
-        ViewInteraction textInputEditText3 = onView(
+        ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.enterInstruments),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("com.google.android.material.textfield.TextInputLayout")),
+                                        withId(android.R.id.content),
                                         0),
-                                0),
+                                2),
                         isDisplayed()));
-        textInputEditText3.perform(replaceText("guitar"), closeSoftKeyboard());
+        textInputEditText2.perform(replaceText("guitar"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.addButton), withText("add"),
@@ -117,6 +86,26 @@ public class AddIntrumentsTest {
                                 3),
                         isDisplayed()));
         appCompatButton4.perform(click());
+
+        ViewInteraction textInputEditText3 = onView(
+                allOf(withId(R.id.enterInstruments),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        textInputEditText3.perform(replaceText("flute"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.addButton), withText("add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

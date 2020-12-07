@@ -23,6 +23,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -40,26 +41,16 @@ public class LanguageSwitchTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void languageSwitchTest() {
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
+    public void userLanguageSwitchTest() {
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.page_2), withContentDescription("User Profile"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("User Profile"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
+                                        withId(R.id.bottom_navigation),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.changeMyLang), withText("Language"),
@@ -67,8 +58,8 @@ public class LanguageSwitchTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                1),
+                                                1)),
+                                0),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -86,8 +77,8 @@ public class LanguageSwitchTest {
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                1),
+                                                1)),
+                                0),
                         isDisplayed()));
         appCompatButton3.perform(click());
 

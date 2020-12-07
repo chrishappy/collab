@@ -21,6 +21,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -31,41 +32,31 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddUserTest {
+public class ViewAnalysisTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void addUserTest() {
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
+    public void viewAnalysisTest() {
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.page_2), withContentDescription("User Profile"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        overflowMenuButton.perform(click());
-
-        ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.title), withText("User Profile"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
+                                        withId(R.id.bottom_navigation),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.toAddUsers), withText("Add Users"),
+                allOf(withId(R.id.toAnalysis), withText("Analysis"),
                         childAtPosition(
                                 allOf(withId(R.id.linearLayout),
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                0),
+                                                1)),
+                                1),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
