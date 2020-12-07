@@ -84,8 +84,7 @@ public abstract class NodeCreateFormActivity extends NodeActivity {
     if (!requiredEditTexts.isEmpty()) {
       for (EditText editText : requiredEditTexts) {
         if (editText.getText() == null || TextUtils.isEmpty(editText.getText().toString())) {
-          String hint = editText.getHint() == null ? "" : editText.getHint().toString();
-          editText.setError(String.format(getString(R.string.node_create__empty_field_error), hint));
+          editText.setError(getString(R.string.node_create__empty_field_error));
           result = false;
         }
       }

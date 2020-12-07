@@ -217,8 +217,8 @@
     <string name="add_attachment_literal">Add Attachment</string>
     <string name="activity__dynamic_chat_with_title">Chat with %s</string>
     <string name="Delete">Delete</string>
-    <string name="delete_confirm_message">Do you want to delete %s</string>
-    <string name="node_create__empty_field_error">Field %s must not be empty.</string>
+    <string name="delete_confirm_message">Are you sure you want to delete "%s"? This can not be undone.</string>
+    <string name="node_create__empty_field_error">Field can not be empty.</string>
     <string name="user_profile__choose_language">Choose Language...</string>
     <string name="assignment__form__attachments">Attachments</string>
     <string name="add_attachment__zoom_tutorial">(Zoom Tutorial)</string>

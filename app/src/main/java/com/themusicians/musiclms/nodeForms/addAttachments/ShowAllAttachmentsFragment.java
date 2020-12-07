@@ -367,7 +367,7 @@ public class ShowAllAttachmentsFragment extends CreateFormFragment
   private void initZoomMeeting(View root) {
     zoomMeeting = root.findViewById(R.id.zoomMeeting);
     zoomPasscode = root.findViewById(R.id.zoomPasscode);
-    zoomTutorialLink.findViewById(R.id.zoomTutorialLink);
+    zoomTutorialLink = root.findViewById(R.id.zoomTutorialLink);
 
     zoomTutorialLink.setOnClickListener(view -> {
       final String zoomTutorial = "https://support.zoom.us/hc/en-us/articles/201362413-How-Do-I-Schedule-Meetings-";
