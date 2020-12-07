@@ -225,5 +225,6 @@
     <string name="info_about_graph">About Graph</string>
     <string name="email_is_required">Email is Required.</string>
     <string name="password_is_required">Password is Required</string>
+    <string name="add_recording_feedback__save">Save feedback</string>
 
 </resources>
