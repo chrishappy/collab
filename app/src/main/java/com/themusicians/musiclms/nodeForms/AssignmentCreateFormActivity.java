@@ -110,35 +110,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                     dueDate.setText(dateFormat.format(date));
                   }
 
-                  // Add autocomplete suggestions
-                  final User tempUser = new User();
-
-                  //Child the root before all the push() keys are found and add a ValueEventListener()
-                  tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                      final User authorUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
-
-                      //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
-                      for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
-                        String userId = suggestionSnapshot.child("id").getValue(String.class);
-
-//                        assert authorUser != null;
-//                        if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
-                          String userName = suggestionSnapshot.child("name").getValue(String.class);
-                          assigneesAutoCompleteAdapter.add(userName);
-
-                          // For when saving
-                          assigneeNameAndIdMap.put(userName,userId);
-//                        }
-                      }
-                    }
-
-                    @Override
-                    public void onCancelled(@NotNull DatabaseError databaseError) {
-                    }
-                  });
-
                   Log.w(LOAD_ENTITY_DATABASE_TAG, "loadAssignment:onDataChange");
                 }
 
@@ -152,6 +123,35 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                 }
               });
     }
+
+    // Add assignee suggestions
+    final User tempUser = new User();
+
+    //Child the root before all the push() keys are found and add a ValueEventListener()
+    tempUser.getEntityDatabase().addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
+        final User authorUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
+
+        //Basically, this says "For each DataSnapshot *Data* in dataSnapshot, do what's inside the method.
+        for (DataSnapshot suggestionSnapshot : dataSnapshot.getChildren()) {
+          String userId = suggestionSnapshot.child("id").getValue(String.class);
+
+//                        assert authorUser != null;
+          if (authorUser.getAddedUsers().contains(userId)) { // only add students associated with teacher
+            String userName = suggestionSnapshot.child("name").getValue(String.class);
+            assigneesAutoCompleteAdapter.add(userName);
+
+            // For when saving
+            assigneeNameAndIdMap.put(userName,userId);
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NotNull DatabaseError databaseError) {
+      }
+    });
 
     // Show attachments
     assignment.save();
@@ -434,9 +434,11 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               .show();
         }
       }
-      //        if (resultCode == Activity.RESULT_CANCELED) {
-      // Write your code if there's no result
-      //        }
+
+      // For after creating the first to do item
+      if (toDoItemsAdapter == null) {
+        initToDoItemsList();
+      }
     } else {
       Log.w("AssignmentCreateActivity", "No case to handle activity result.");
     }

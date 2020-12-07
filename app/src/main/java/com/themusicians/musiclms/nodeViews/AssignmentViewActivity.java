@@ -91,7 +91,6 @@ public class AssignmentViewActivity extends NodeViewActivity
 
                   // Register options menu
                   invalidateOptionsMenu();
-
                   assert assignment != null;
 
                   if (assignment.getName() != null) {

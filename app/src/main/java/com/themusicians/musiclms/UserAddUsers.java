@@ -182,9 +182,11 @@ public class UserAddUsers extends AppCompatActivity {
    */
   private void search(String str) {
     ArrayList<User> myAddedList = new ArrayList<>();
-    for (User object : addedList) {
-      if (object.getName().toLowerCase().contains(str.toLowerCase())) {
-        myAddedList.add(object);
+    if (addedList != null) {
+      for (User object : addedList) {
+        if (object.getName().toLowerCase().contains(str.toLowerCase())) {
+          myAddedList.add(object);
+        }
       }
     }
     UserAddedAdapter userAddedAdapter = new UserAddedAdapter(myAddedList, UserAddUsers.this);
