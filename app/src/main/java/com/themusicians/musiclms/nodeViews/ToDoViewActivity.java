@@ -312,7 +312,9 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
   private void showYoutubeVideoAndRecordingFeedback() {
     youtubePlayerAndFeedbackLayout.setVisibility(View.VISIBLE);
 
-    initYoutubeVideoAndRecordingFeedback(toDoItem.getRecordingYoutubeId());
+    if (toDoItem.getRecordingYoutubeId() != null) {
+      initYoutubeVideoAndRecordingFeedback(toDoItem.getRecordingYoutubeId());
+    }
     initRecordingFeedbackAdapter();
   }
 
@@ -400,6 +402,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
           seekToButton.setOnClickListener(view -> {
             int skipToSecs = Integer.parseInt(seekToInput.getText().toString());
             youTubePlayer.seekTo(skipToSecs);
+            youTubePlayer.play();
             youTubePlayer.pause();
 
             Toast.makeText(ToDoViewActivity.this, "Button: Player time changed to: " + skipToSecs, Toast.LENGTH_LONG).show();
@@ -425,7 +428,7 @@ public class ToDoViewActivity extends NodeViewActivity implements ToDoRecordingF
 
             case ENDED:
               youTubePlayer.seekTo(0);
-              youTubePlayer.pause();
+//              youTubePlayer.pause();
               break;
           }
         }
