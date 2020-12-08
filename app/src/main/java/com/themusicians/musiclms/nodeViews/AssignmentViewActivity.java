@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,6 +47,7 @@ public class AssignmentViewActivity extends NodeViewActivity
 
   /** Fields */
   private EditText AssignmentName;
+
   private EditText StudentOrClass;
   private EditText dueDate;
   private FloatingActionButton editButton;

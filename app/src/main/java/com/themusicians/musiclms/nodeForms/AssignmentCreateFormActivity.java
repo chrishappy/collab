@@ -156,9 +156,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                       assigneeNameAndIdMap.put(userName, userId);
                     }
                   }
-                }
-                else {
-                  assigneesAutoComplete.setError(getString(R.string.assignment_create__add_user_error_text));
+                } else {
+                  assigneesAutoComplete.setError(
+                      getString(R.string.assignment_create__add_user_error_text));
                 }
               }
 
