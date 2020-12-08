@@ -102,7 +102,7 @@ public class UserAnalysisStudent extends AppCompatActivity {
           public void onDataChange(@NonNull DataSnapshot snapshot) {
             for (DataSnapshot ds : snapshot.getChildren()) {
               Assignment assignment = ds.getValue(Assignment.class);
-              if (myName.equals(assignment.getClassId())
+              if (assignment.getAssignees().contains(currentUser.getUid())
                   && assignment.getAssignmentCompleteTime() != null) {
 
                 x++;
