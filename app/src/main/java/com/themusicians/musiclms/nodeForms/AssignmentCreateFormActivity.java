@@ -157,6 +157,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
                     }
                   }
                 }
+                else {
+                  assigneesAutoComplete.setError(getString(R.string.assignment_create__add_user_error_text));
+                }
               }
 
               @Override

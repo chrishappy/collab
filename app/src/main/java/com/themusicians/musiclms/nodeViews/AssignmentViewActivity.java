@@ -47,10 +47,9 @@ public class AssignmentViewActivity extends NodeViewActivity
   private RecyclerView toDoItemsRecyclerView;
 
   /** Fields */
-  private TextInputEditText AssignmentName;
-
+  private EditText AssignmentName;
   private EditText StudentOrClass;
-  private TextInputEditText dueDate;
+  private EditText dueDate;
   private FloatingActionButton editButton;
 
   /** Checkbox fields */
