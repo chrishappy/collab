@@ -125,7 +125,7 @@
     <string name="chat_type_a_message">Type a message…</string>
     <string name="chat_send">Send</string>
 
-    <!-- User -->
+    <!-- com.themusicians.musiclms.User -->
     <string name="signin_login">Login</string>
     <string name="sign_in">Sign In</string>
     <string name="add_users">Add Users</string>

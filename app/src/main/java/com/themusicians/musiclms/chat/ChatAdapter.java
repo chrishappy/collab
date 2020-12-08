@@ -58,7 +58,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
   }
   // Function to bind the view in Card view with data in
-  // User class
+  // com.themusicians.musiclms.User class
   @Override
   public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
 

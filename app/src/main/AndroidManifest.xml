@@ -55,11 +55,11 @@
         <activity
             android:name=".UserSearch"
             android:label="@string/title_activity_user_search"
-            android:parentActivityName=".UserAddUsers" /> <!-- User Activities -->
+            android:parentActivityName=".UserAddUsers" /> <!-- com.themusicians.musiclms.User Activities -->
         <activity
             android:name=".chat.Chat"
             android:label="@string/title_activity_chat_landing"
-            android:parentActivityName=".UserAddUsers" /> <!-- User Activities -->
+            android:parentActivityName=".UserAddUsers" /> <!-- com.themusicians.musiclms.User Activities -->
         <activity
             android:name=".SignUp"
             android:label="@string/title_activity_signin" />

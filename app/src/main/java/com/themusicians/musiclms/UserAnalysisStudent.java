@@ -90,13 +90,12 @@ public class UserAnalysisStudent extends AppCompatActivity {
    */
   private void setListeners() {
     DatabaseReference aRef = FirebaseDatabase.getInstance().getReference().child("node__assignment");
-
     aRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         for(DataSnapshot ds : snapshot.getChildren()){
           Assignment assignment = ds.getValue(Assignment.class);
-          if(myName.equals(assignment.getClassId()) && assignment.getAssignmentCompleteTime() != null){
+          if(assignment.getAssignees().contains(currentUser.getUid()) && assignment.getAssignmentCompleteTime() != null){
 
             x++;
             y = (long) assignment.getAssignmentCompleteTimeLong() - assignment.getDueDate();

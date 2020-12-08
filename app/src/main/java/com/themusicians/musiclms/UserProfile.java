@@ -278,7 +278,7 @@ public class UserProfile extends NodeViewActivity {
     /** End of Shifan's code */
   }
 
-  /** Redirects User to Editing data */
+  /** Redirects com.themusicians.musiclms.User to Editing data */
   public void toEditData(View view) {
     setContentView(R.layout.user_profile_edit_data);
 
@@ -353,7 +353,7 @@ public class UserProfile extends NodeViewActivity {
     passwordResetDialog.create().show();
   }
 
-  /** Redirects user to User Analysis */
+  /** Redirects user to com.themusicians.musiclms.User Analysis */
   public void toAnalysis(View view) {
     Intent toUserAnalysis;
     if(currUser.getRole().equals("Student")){

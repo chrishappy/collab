@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/userprofile"
-        android:title="@string/title_activity_user_main_profile"
-        app:showAsAction="never"/>
-
 <!--    <item android:id="@+id/createassignment"-->
 <!--        android:title="@string/title_activity_assignment_create_form"-->
 <!--        app:showAsAction="never"/>-->

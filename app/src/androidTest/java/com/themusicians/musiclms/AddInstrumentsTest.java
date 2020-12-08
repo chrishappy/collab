@@ -38,7 +38,7 @@ public class AddInstrumentsTest {
     @Test
     public void userAddInstrumentsTest() {
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.page_2), withContentDescription("User Profile"),
+                allOf(withId(R.id.page_2), withContentDescription("com.themusicians.musiclms.User Profile"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottom_navigation),

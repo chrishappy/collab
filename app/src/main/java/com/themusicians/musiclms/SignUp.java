@@ -43,7 +43,7 @@ public class SignUp extends AppCompatActivity {
   protected TextView toLogin;
   DatabaseReference reference;
 
-  /** Save User Date */
+  /** Save com.themusicians.musiclms.User Date */
   protected FirebaseUser currentUser;
 
   protected User newUser;

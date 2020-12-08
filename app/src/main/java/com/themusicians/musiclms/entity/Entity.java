@@ -46,7 +46,7 @@ public abstract class Entity implements EntityInterface {
   protected boolean status;
 
   /** Users' id number */
-  protected String uid; // User who the entity belongs to
+  protected String uid; // com.themusicians.musiclms.User who the entity belongs to
 
   /** Whether we could create a new database record for the entity when saving */
   protected boolean isNew = false;
@@ -186,8 +186,8 @@ public abstract class Entity implements EntityInterface {
     return entityDatabase;
   }
   /** Need to save user information first */
-  //  public User getAuthor() {
-  //    User author = new User;
+  //  public com.themusicians.musiclms.User getAuthor() {
+  //    com.themusicians.musiclms.User author = new com.themusicians.musiclms.User;
   //
   //    return author;
   //  }

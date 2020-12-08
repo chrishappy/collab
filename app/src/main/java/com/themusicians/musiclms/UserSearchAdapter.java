@@ -104,7 +104,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.My
     return new MyViewHolder(view);
   }
   // Function to bind the view in Card view with data in
-  // User class
+  // com.themusicians.musiclms.User class
   @Override
   public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
     holder.userName.setText(list.get(position).getName());

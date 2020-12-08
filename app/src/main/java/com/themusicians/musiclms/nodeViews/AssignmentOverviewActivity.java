@@ -243,10 +243,6 @@ public class AssignmentOverviewActivity extends AppCompatActivity
         Intent logout = new Intent(AssignmentOverviewActivity.this, UserLogin.class);
         startActivity(logout);
         return true;
-      case R.id.userprofile:
-        Intent toUserProfile = new Intent(AssignmentOverviewActivity.this, UserProfile.class);
-        startActivity(toUserProfile);
-        return true;
 //      case R.id.createassignment:
 //        Intent toCreateAssignment =
 //            new Intent(AssignmentOverviewActivity.this, AssignmentCreateFormActivity.class);

@@ -43,7 +43,7 @@ public class UserLogin extends AppCompatActivity {
     signIn = findViewById(R.id.signin);
     register = findViewById(R.id.orRegister);
 
-    /** Listens for when the User clicks Sign In */
+    /** Listens for when the com.themusicians.musiclms.User clicks Sign In */
     signIn.setOnClickListener(
         new View.OnClickListener() {
           @Override

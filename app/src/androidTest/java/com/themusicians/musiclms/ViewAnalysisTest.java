@@ -40,7 +40,7 @@ public class ViewAnalysisTest {
     @Test
     public void viewAnalysisTest() {
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.page_2), withContentDescription("User Profile"),
+                allOf(withId(R.id.page_2), withContentDescription("com.themusicians.musiclms.User Profile"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottom_navigation),

@@ -46,8 +46,6 @@ public class UserSearch extends AppCompatActivity {
     searchRecycler = findViewById(R.id.searchRecycler);
     searchView = findViewById(R.id.searchView);
     currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
   }
 
   /** On page start, display recycler view of searched users */
