@@ -454,9 +454,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
       }
 
       // For after creating the first to do item
-      if (toDoItemsAdapter == null) {
+//      if (toDoItemsAdapter == null) {
         initToDoItemsList();
-      }
+//      }
     } else {
       Log.w("AssignmentCreateActivity", "No case to handle activity result.");
     }
