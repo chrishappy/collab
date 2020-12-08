@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -49,8 +47,9 @@ public class AssignmentViewActivity extends NodeViewActivity
 
   /** Fields */
   private TextView AssignmentName;
-  private TextView  StudentOrClass;
-  private TextView  dueDate;
+
+  private TextView StudentOrClass;
+  private TextView dueDate;
   private FloatingActionButton editButton;
 
   /** Checkbox fields */
