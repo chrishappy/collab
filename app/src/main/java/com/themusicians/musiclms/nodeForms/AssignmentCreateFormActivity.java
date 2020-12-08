@@ -55,8 +55,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
   /** Fields to edit */
   private EditText AssignmentName;
-
-  private MultiAutoCompleteTextView assigneesAutoComplete;
+  private MultiAutoCompleteTextView  assigneesAutoComplete;
   private EditText dueDate;
 
   /** Autocomplete adapter for students */
