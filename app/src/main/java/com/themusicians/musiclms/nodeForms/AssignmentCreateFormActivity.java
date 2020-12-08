@@ -165,10 +165,6 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
               public void onCancelled(@NotNull DatabaseError databaseError) {}
             });
 
-    // Show attachments
-    assignment.save();
-    initShowAttachments(R.id.showAttachments__assignments, "");
-
     // For after creating the first to do item
     if (toDoItemsAdapter == null) {
       initToDoItemsList();
@@ -250,6 +246,9 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
     // Load the to do tasks
     initToDoItemsList();
+
+    // Show attachments
+    initShowAttachments(R.id.showAttachments__assignments, "");
 
     // Add a task
     // From: https://stackoverflow.com/questions/10407159
