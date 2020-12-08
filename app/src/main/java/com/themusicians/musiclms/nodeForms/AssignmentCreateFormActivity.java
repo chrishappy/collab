@@ -212,7 +212,7 @@ public class AssignmentCreateFormActivity extends NodeCreateFormActivity
 
     // Make fields required
     addToRequired(AssignmentName);
-//    addToRequired(assigneesAutoComplete);
+    //    addToRequired(assigneesAutoComplete);
     addToRequired(dueDate);
 
     // Show user auto complete
